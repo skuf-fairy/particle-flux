@@ -1,3 +1,4 @@
+// core
 export {ParticleFlux} from './core/ParticleFlux';
 export {ParticleBehaviorConfig, EmitterConfig, IVector2, ViewParticle} from './types';
 

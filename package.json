@@ -46,7 +46,7 @@
   "description": "## TODO",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/skuf-fairy/gcs.git"
+    "url": "git+https://github.com/skuf-fairy/particle-flux.git"
   },
   "keywords": [
     "gamedev",
@@ -55,7 +55,7 @@
     "animation"
   ],
   "bugs": {
-    "url": "https://github.com/skuf-fairy/gcs/issues"
+    "url": "https://github.com/skuf-fairy/particle-flux/issues"
   },
-  "homepage": "https://github.com/skuf-fairy/gcs#readme"
+  "homepage": "https://github.com/skuf-fairy/particle-flux#readme"
 }
