@@ -15,7 +15,7 @@ export interface ViewParticle {
   position: IVector2;
   scale: IVector2;
   alpha: number;
-  tint: string;
+  tint: string | number;
   angle: number;
   width: number;
   height: number;

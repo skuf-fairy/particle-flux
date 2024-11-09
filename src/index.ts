@@ -16,7 +16,6 @@ export {GravityBehaviorConfig} from './behaviors/GravityBehavior/GravityBehavior
 export {LifeTimeBehaviorConfig} from './behaviors/LifeTimeBehavior/LifeTimeBehavior.types';
 export {PathBehaviorConfig} from './behaviors/PathBehavior/PathBehavior.types';
 export {ScaleBehaviorConfig} from './behaviors/ScaleBehavior/ScaleBehavior.types';
-export {SpawnShape} from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
 export {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
 export {ViewportLifeBehaviorConfig} from './behaviors/ViewportLifeBehavior/ViewportLifeBehavior.types';
 
@@ -26,6 +25,8 @@ export {
   SpawnCircleShape,
   SpawnPointShape,
   PolygonalChainShape,
+  SpawnShape,
+  SpawnShapeType,
 } from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
 
 export {
