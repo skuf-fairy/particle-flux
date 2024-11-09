@@ -1,11 +1,11 @@
 import {ColorDynamicBehaviorConfig} from '../ColorBehavior.types';
-import {BaseComponent} from 'src/core/BaseComponent';
+import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
 import {LifeTimeBehavior} from 'src/behaviors/LifeTimeBehavior/LifeTimeBehavior';
 import {NumberUtils} from 'src/utils/NumberUtils';
 import {EASING_FUNCTIONS} from 'src/utils/easing/easing-functions';
 import {EasingFunction, EasingName} from 'src/utils/easing/easing.types';
 
-export class ColorDynamicBehavior extends BaseComponent {
+export class ColorDynamicBehavior extends ParticleBaseComponent {
   private startColor: string;
   private endColor: string;
   private easing: EasingFunction;

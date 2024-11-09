@@ -1,6 +1,6 @@
-import {BaseComponent} from 'src/core/BaseComponent';
+import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
 
-export class MovementComponent extends BaseComponent {
+export class MovementComponent extends ParticleBaseComponent {
   public init(): void {}
 
   /**

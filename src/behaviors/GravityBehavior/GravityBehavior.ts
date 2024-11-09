@@ -1,8 +1,8 @@
 import {GravityBehaviorConfig, isGravityStaticBehaviorConfig} from './GravityBehavior.types';
-import {BaseComponent} from 'src/core/BaseComponent';
+import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
 import {RealRandom} from 'src/utils/random/RealRandom';
 
-export class GravityBehavior extends BaseComponent {
+export class GravityBehavior extends ParticleBaseComponent {
   public gravity: number;
 
   constructor(private readonly config: GravityBehaviorConfig) {

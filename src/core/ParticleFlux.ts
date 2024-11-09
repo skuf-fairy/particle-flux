@@ -1,10 +1,10 @@
-import {Emitter} from './Emitter';
+import {ParticleEmitter} from './ParticleEmitter';
 import {ParticleContainer} from './ParticleContainer';
 import {EmitterConfig, ParticleBehaviorConfig, ViewContainer, ViewRenderFn} from '../types';
 import {ParticleFactory} from './ParticleFactory';
 
 export class ParticleFlux {
-  public readonly emitter: Emitter;
+  public readonly emitter: ParticleEmitter;
   public readonly container: ParticleContainer;
 
   constructor(
@@ -17,7 +17,7 @@ export class ParticleFlux {
       this.viewContainer,
       new ParticleFactory(this.viewFactory, this.particleConfig),
     );
-    this.emitter = new Emitter(this.container, this.emitterConfig);
+    this.emitter = new ParticleEmitter(this.container, this.emitterConfig);
   }
 
   public startEmit(): void {

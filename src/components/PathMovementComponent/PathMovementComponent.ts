@@ -1,10 +1,10 @@
-import {BaseComponent} from 'src/core/BaseComponent';
+import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
 import {PathBehavior} from 'src/behaviors/PathBehavior/PathBehavior';
 import {IVector2} from 'src/types';
 import {Vector2} from 'src/utils/Vector2';
 import {Vector2Utils} from 'src/utils/Vector2Utils';
 
-export class PathMovementComponent extends BaseComponent {
+export class PathMovementComponent extends ParticleBaseComponent {
   private pathBehavior?: PathBehavior;
   private delta: IVector2;
   private initPosition: IVector2;

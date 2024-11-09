@@ -1,7 +1,7 @@
 import {ColorStaticBehaviorConfig} from '../ColorBehavior.types';
-import {BaseComponent} from 'src/core/BaseComponent';
+import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
 
-export class ColorStaticBehavior extends BaseComponent {
+export class ColorStaticBehavior extends ParticleBaseComponent {
   constructor(private readonly config: ColorStaticBehaviorConfig) {
     super();
   }

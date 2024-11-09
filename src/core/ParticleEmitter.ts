@@ -3,7 +3,7 @@ import {RealRandom} from '../utils/random/RealRandom';
 import {Ticker} from 'src/utils/Ticker/Ticker';
 import {EmitterConfig} from 'src/types';
 
-export class Emitter {
+export class ParticleEmitter {
   private readonly ticker: Ticker;
   private readonly random: RealRandom;
   private time: number;

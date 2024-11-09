@@ -1,11 +1,11 @@
 import {DirectionBehaviorConfig, isSingleDirectionBehaviorConfig} from './DirectionBehavior.types';
-import {BaseComponent} from 'src/core/BaseComponent';
+import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
 import {GravityBehavior} from 'src/behaviors/GravityBehavior/GravityBehavior';
 import {NumberUtils} from 'src/utils/NumberUtils';
 import {RealRandom} from 'src/utils/random/RealRandom';
 import {Vector2} from 'src/utils/Vector2';
 
-export class DirectionBehavior extends BaseComponent {
+export class DirectionBehavior extends ParticleBaseComponent {
   private gravityBehavior?: GravityBehavior;
 
   constructor(private readonly config: DirectionBehaviorConfig) {

@@ -1,6 +1,6 @@
 import {IParticle, IParticleComponent} from '../types';
 
-export abstract class BaseComponent implements IParticleComponent {
+export abstract class ParticleBaseComponent implements IParticleComponent {
   public particle: IParticle;
   public tag: string;
 

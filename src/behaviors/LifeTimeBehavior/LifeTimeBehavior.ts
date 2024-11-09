@@ -1,9 +1,9 @@
 import {isLifeTimeStaticBehaviorConfig, LifeTimeBehaviorConfig} from './LifeTimeBehavior.types';
-import {BaseComponent} from 'src/core/BaseComponent';
+import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
 import {TimeComponent} from 'src/components/TimeComponent/TimeComponent';
 import {RealRandom} from 'src/utils/random/RealRandom';
 
-export class LifeTimeBehavior extends BaseComponent {
+export class LifeTimeBehavior extends ParticleBaseComponent {
   public lifeTimeNormalizedProgress: number;
   public lifeTimeCurrent: number;
   public lifeTime: number;

@@ -1,5 +1,5 @@
 import {Vector2} from 'src/utils/Vector2';
-import {BaseComponent} from 'src/core/BaseComponent';
+import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
 import {LifeTimeBehavior} from 'src/behaviors/LifeTimeBehavior/LifeTimeBehavior';
 import {NumberUtils} from 'src/utils/NumberUtils';
 import {EASING_FUNCTIONS} from 'src/utils/easing/easing-functions';
@@ -8,7 +8,7 @@ import {isScalarStaticBehavior, isScalarDynamicBehavior} from '../ScalarBehavior
 import {VectorBehaviorConfig} from './VectorBehavior.types';
 import {RealRandom} from 'src/utils/random/RealRandom';
 
-export abstract class VectorBehavior extends BaseComponent {
+export abstract class VectorBehavior extends ParticleBaseComponent {
   protected startValue: Vector2;
   protected endValue: Vector2;
   protected value: Vector2;

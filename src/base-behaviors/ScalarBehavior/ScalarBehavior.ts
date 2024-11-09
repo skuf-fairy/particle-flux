@@ -1,4 +1,4 @@
-import {BaseComponent} from 'src/core/BaseComponent';
+import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
 import {LifeTimeBehavior} from 'src/behaviors/LifeTimeBehavior/LifeTimeBehavior';
 import {NumberUtils} from 'src/utils/NumberUtils';
 import {EASING_FUNCTIONS} from 'src/utils/easing/easing-functions';
@@ -7,7 +7,7 @@ import {isScalarDynamicBehavior, isScalarStaticBehavior} from './ScalarBehaviorC
 import {ScalarBehaviorConfig} from './ScalarBehaviorConfig.types';
 import {RealRandom} from 'src/utils/random/RealRandom';
 
-export abstract class ScalarBehavior extends BaseComponent {
+export abstract class ScalarBehavior extends ParticleBaseComponent {
   protected startValue: number;
   protected endValue: number;
   protected easing: EasingFunction;
