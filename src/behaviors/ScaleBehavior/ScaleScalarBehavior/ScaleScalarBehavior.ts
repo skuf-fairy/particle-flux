@@ -1,0 +1,7 @@
+import {ScalarBehavior} from 'src/base-behaviors/ScalarBehavior/ScalarBehavior';
+
+export class ScaleScalarBehavior extends ScalarBehavior {
+  protected updateValue(value: number): void {
+    this.particle.view.scale.set(value, value);
+  }
+}

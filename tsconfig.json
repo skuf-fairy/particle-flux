@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "outDir": "lib",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "declaration": true,
+    "declarationMap": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "sourceMap": true,
+    "baseUrl": "./",
+    "paths": {
+      "src/*": ["./src/*"]
+    },
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true
+  },
+  "types": ["node"],
+  "exclude": ["node_modules"]
+}
