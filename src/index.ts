@@ -18,6 +18,9 @@ export {
   ScalarDynamicBehaviorConfig,
   ScalarStaticBehaviorConfig,
 } from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.types';
+export {ScriptBehaviorConfig, TimeScriptConfig} from './base-behaviors/ScriptBehavior/ScriptBehavior.types';
+export {VectorBehaviorConfig} from './base-behaviors/VectorBehavior/VectorBehavior.types';
+
 export {AlphaBehaviorConfig} from './behaviors/AlphaBehavior/AlphaBehavior.types';
 export {ColorBehaviorConfig} from './behaviors/ColorBehavior/ColorBehavior.types';
 export {DirectionBehaviorConfig} from './behaviors/DirectionBehavior/DirectionBehavior.types';
