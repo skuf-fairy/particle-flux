@@ -6,13 +6,13 @@ interface ScalarBaseBehaviorConfig {
   mult?: Multiplicator;
 }
 
-export interface ScalarDynamicBehavior extends ScalarBaseBehaviorConfig {
+export interface ScalarDynamicBehaviorConfig extends ScalarBaseBehaviorConfig {
   start: number;
   end: number;
 }
 
-export interface ScalarStaticBehavior extends ScalarBaseBehaviorConfig {
+export interface ScalarStaticBehaviorConfig extends ScalarBaseBehaviorConfig {
   value: number;
 }
 
-export type ScalarBehaviorConfig = ScalarDynamicBehavior | ScalarStaticBehavior;
+export type ScalarBehaviorConfig = ScalarDynamicBehaviorConfig | ScalarStaticBehaviorConfig;

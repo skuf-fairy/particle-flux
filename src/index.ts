@@ -13,7 +13,11 @@ export {
 } from './base-behaviors/base-behaviors.typeguards';
 
 // configs
-export {ScalarBehaviorConfig} from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.types';
+export {
+  ScalarBehaviorConfig,
+  ScalarDynamicBehaviorConfig,
+  ScalarStaticBehaviorConfig,
+} from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.types';
 export {AlphaBehaviorConfig} from './behaviors/AlphaBehavior/AlphaBehavior.types';
 export {ColorBehaviorConfig} from './behaviors/ColorBehavior/ColorBehavior.types';
 export {DirectionBehaviorConfig} from './behaviors/DirectionBehavior/DirectionBehavior.types';
