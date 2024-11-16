@@ -67,4 +67,8 @@ export class NumberUtils {
     const decimalStr = n.toString().split('.')[1];
     return Number(decimalStr);
   }
+
+  public static getOrderedMinMax(a: number, b: number): [number, number] {
+    return a > b ? [b, a] : [a, b];
+  }
 }

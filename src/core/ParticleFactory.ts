@@ -18,8 +18,7 @@ import {DirectionBehavior} from '../behaviors/DirectionBehavior/DirectionBehavio
 import {GravityBehavior} from '../behaviors/GravityBehavior/GravityBehavior';
 import {LifeTimeBehavior} from '../behaviors/LifeTimeBehavior/LifeTimeBehavior';
 import {PathBehavior} from '../behaviors/PathBehavior/PathBehavior';
-import {RotationBehavior} from '../behaviors/RotationBehavior/RotationBehavior';
-import {RotationSpeedBehavior} from '../behaviors/RotationSpeedBehavior/RotationSpeedBehavior';
+import {ScalarRotationBehavior} from '../behaviors/RotationBehavior/ScalarRotationBehavior/ScalarRotationBehavior';
 import {ScaleScalarBehavior} from '../behaviors/ScaleBehavior/ScaleScalarBehavior/ScaleScalarBehavior';
 import {ScaleScriptBehavior} from '../behaviors/ScaleBehavior/ScaleScriptBehavior/ScaleScriptBehavior';
 import {ScaleVectorBehavior} from '../behaviors/ScaleBehavior/ScaleVectorBehavior/ScaleVectorBehavior';
@@ -44,6 +43,9 @@ import {
 } from '../types';
 import {RealRandom} from '../utils/random/RealRandom';
 import {ParticleContainer} from './ParticleContainer';
+import {isDeltaRotationBehaviorConfig} from 'src/behaviors/RotationBehavior/RotationBehavior.typeguards';
+import {DeltaRotationBehavior} from 'src/behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
+import {ScriptRotationBehavior} from 'src/behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
 
 export class ParticleFactory implements IParticleFactory {
   constructor(
@@ -119,12 +121,18 @@ export class ParticleFactory implements IParticleFactory {
       particle.addComponent(new GravityBehavior(this.config.gravity));
     }
 
-    if (this.config.rotationSpeed) {
-      particle.addComponent(new RotationSpeedBehavior(this.config.rotationSpeed));
-    }
-
     if (this.config.rotation) {
-      particle.addComponent(new RotationBehavior(this.config.rotation));
+      if (isDeltaRotationBehaviorConfig(this.config.rotation)) {
+        particle.addComponent(new DeltaRotationBehavior(this.config.rotation));
+      }
+
+      if (isScalarBehaviorConfig(this.config.rotation)) {
+        particle.addComponent(new ScalarRotationBehavior(this.config.rotation));
+      }
+
+      if (isScriptBehaviorConfig(this.config.rotation)) {
+        particle.addComponent(new ScriptRotationBehavior(this.config.rotation));
+      }
     }
 
     if (this.config.viewportLife) {

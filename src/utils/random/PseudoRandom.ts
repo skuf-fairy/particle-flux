@@ -1,3 +1,4 @@
+import {NumberUtils} from '../NumberUtils';
 import {AbstractRandom} from './Random';
 
 // реализация метода Park-Miller-Carta
@@ -37,11 +38,19 @@ export class PseudoRandom extends AbstractRandom {
     return this.callsCounter;
   }
 
-  public generateIntegerNumber(min: number, max: number): number {
+  public generateIntegerNumber(minValue: number, maxValue: number): number {
+    const [min, max] = NumberUtils.getOrderedMinMax(minValue, maxValue);
+
     return Math.floor(this.generateFloatNumber(min, max));
   }
 
-  public generateFloatNumber(min: number, max: number): number {
+  public generateFloatNumber(minValue: number, maxValue: number): number {
+    const [min, max] = NumberUtils.getOrderedMinMax(minValue, maxValue);
+
+    if (min >= 0 && min < 1 && max >= 0 && max < 1) {
+      return (this.random() / 2147483646) * (max - min + 1) + min;
+    }
+
     return (this.random() / 2147483646) * (max - min + 1) + min;
   }
 

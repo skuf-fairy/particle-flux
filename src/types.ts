@@ -102,7 +102,7 @@ export interface ParticleBehaviorConfig {
   alpha?: AlphaBehaviorConfig;
   scale?: ScaleBehaviorConfig;
   gravity?: GravityBehaviorConfig;
-  rotationSpeed?: ScalarBehaviorConfig;
+  //rotationSpeed?: ScalarBehaviorConfig;
   rotation?: ScalarBehaviorConfig;
   spawnShape?: SpawnShape;
   color?: ColorBehaviorConfig;
