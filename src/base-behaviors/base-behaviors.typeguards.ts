@@ -2,13 +2,6 @@ import {ScalarBehaviorConfig} from './ScalarBehavior/ScalarBehaviorConfig.types'
 import {ScriptBehaviorConfig} from './ScriptBehavior/ScriptBehavior.types';
 import {VectorBehaviorConfig} from './VectorBehavior/VectorBehavior.types';
 
-export type Multiplicator =
-  | {
-      min: number;
-      max: number;
-    }
-  | number;
-
 export type AnyBehaviorConfig = ScalarBehaviorConfig | VectorBehaviorConfig | ScriptBehaviorConfig<any>;
 
 export function isScalarBehaviorConfig(config: AnyBehaviorConfig): config is ScalarBehaviorConfig {

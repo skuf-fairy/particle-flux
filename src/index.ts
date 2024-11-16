@@ -1,11 +1,16 @@
 // core
 export {ParticleFlux} from './core/ParticleFlux';
-export {ParticleBehaviorConfig, EmitterConfig, IVector2, ViewContainer, ViewParticle} from './types';
+export {ParticleBehaviorConfig, EmitterConfig, IVector2, ViewContainer, ViewParticle, Multiplicator} from './types';
 
 // behaviors
 export {ScalarBehavior} from './base-behaviors/ScalarBehavior/ScalarBehavior';
 export {ScriptBehavior} from './base-behaviors/ScriptBehavior/ScriptBehavior';
 export {VectorBehavior} from './base-behaviors/VectorBehavior/VectorBehavior';
+export {
+  isScalarBehaviorConfig,
+  isScriptBehaviorConfig,
+  isVectorBehaviorConfig,
+} from './base-behaviors/base-behaviors.typeguards';
 
 // configs
 export {ScalarBehaviorConfig} from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.types';

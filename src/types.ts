@@ -102,9 +102,15 @@ export interface ParticleBehaviorConfig {
   alpha?: AlphaBehaviorConfig;
   scale?: ScaleBehaviorConfig;
   gravity?: GravityBehaviorConfig;
-  //rotationSpeed?: ScalarBehaviorConfig;
   rotation?: ScalarBehaviorConfig;
   spawnShape?: SpawnShape;
   color?: ColorBehaviorConfig;
   viewportLife?: ViewportLifeBehaviorConfig;
 }
+
+export type Multiplicator =
+  | {
+      min: number;
+      max: number;
+    }
+  | number;
