@@ -1,8 +1,8 @@
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {LifeTimeBehavior} from 'src/behaviors/LifeTimeBehavior/LifeTimeBehavior';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {LifeTimeBehavior} from '../../behaviors/LifeTimeBehavior/LifeTimeBehavior';
 import {ScriptBehaviorConfig, TimeScriptConfig} from './ScriptBehavior.types';
-import {ArrayUtils} from 'src/utils/ArrayUtils';
-import {NumberUtils} from 'src/utils/NumberUtils';
+import {ArrayUtils} from '../../utils/ArrayUtils';
+import {NumberUtils} from '../../utils/NumberUtils';
 
 export abstract class ScriptBehavior<V> extends ParticleBaseComponent {
   protected lifeTimeBehavior?: LifeTimeBehavior;

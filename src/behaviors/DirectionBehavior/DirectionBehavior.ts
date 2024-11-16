@@ -1,9 +1,9 @@
 import {DirectionBehaviorConfig, isSingleDirectionBehaviorConfig} from './DirectionBehavior.types';
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {GravityBehavior} from 'src/behaviors/GravityBehavior/GravityBehavior';
-import {NumberUtils} from 'src/utils/NumberUtils';
-import {RealRandom} from 'src/utils/random/RealRandom';
-import {Vector2} from 'src/utils/Vector2';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {GravityBehavior} from '../../behaviors/GravityBehavior/GravityBehavior';
+import {NumberUtils} from '../../utils/NumberUtils';
+import {RealRandom} from '../../utils/random/RealRandom';
+import {Vector2} from '../../utils/Vector2';
 
 export class DirectionBehavior extends ParticleBaseComponent {
   private gravityBehavior?: GravityBehavior;

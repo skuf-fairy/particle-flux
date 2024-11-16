@@ -1,8 +1,8 @@
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {PathBehavior} from 'src/behaviors/PathBehavior/PathBehavior';
-import {IVector2} from 'src/types';
-import {Vector2} from 'src/utils/Vector2';
-import {Vector2Utils} from 'src/utils/Vector2Utils';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {PathBehavior} from '../../behaviors/PathBehavior/PathBehavior';
+import {IVector2} from '../../types';
+import {Vector2} from '../../utils/Vector2';
+import {Vector2Utils} from '../../utils/Vector2Utils';
 
 export class PathMovementComponent extends ParticleBaseComponent {
   private pathBehavior?: PathBehavior;

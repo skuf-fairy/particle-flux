@@ -1,7 +1,7 @@
 import {ViewportLifeBehaviorConfig} from './ViewportLifeBehavior.types';
 import {isRectIntersectsRect} from 'aabb-collisions-detector';
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {ViewPort} from 'src/types';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {ViewPort} from '../../types';
 
 export class ViewportLifeBehavior extends ParticleBaseComponent {
   private viewPort: ViewPort;

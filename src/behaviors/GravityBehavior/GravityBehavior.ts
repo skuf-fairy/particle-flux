@@ -1,6 +1,6 @@
 import {GravityBehaviorConfig, isGravityStaticBehaviorConfig} from './GravityBehavior.types';
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {RealRandom} from 'src/utils/random/RealRandom';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {RealRandom} from '../../utils/random/RealRandom';
 
 export class GravityBehavior extends ParticleBaseComponent {
   public gravity: number;

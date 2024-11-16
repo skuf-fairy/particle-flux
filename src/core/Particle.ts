@@ -1,7 +1,7 @@
 import {IParticle, IParticleComponent, IParticleContainer, IVector2, ViewParticle} from '../types';
 import {UnknownConstructor} from '../types.utils';
 import {UpdatableEntityContainer} from './UpdatableEntityContainer';
-import {Vector2} from 'src/utils/Vector2';
+import {Vector2} from '../utils/Vector2';
 
 export class Particle extends UpdatableEntityContainer<Function, IParticleComponent> implements IParticle {
   /**

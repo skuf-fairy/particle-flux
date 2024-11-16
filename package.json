@@ -57,8 +57,5 @@
   "bugs": {
     "url": "https://github.com/skuf-fairy/particle-flux/issues"
   },
-  "homepage": "https://github.com/skuf-fairy/particle-flux#readme",
-  "alias": {
-    "src": "./src"
-  }
+  "homepage": "https://github.com/skuf-fairy/particle-flux#readme"
 }

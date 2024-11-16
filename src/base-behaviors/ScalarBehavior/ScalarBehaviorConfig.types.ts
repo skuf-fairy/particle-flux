@@ -1,4 +1,4 @@
-import {EasingName} from 'src/utils/easing/easing.types';
+import {EasingName} from '../../utils/easing/easing.types';
 import {Multiplicator} from '../base-behaviors.typeguards';
 
 interface ScalarBaseBehaviorConfig {

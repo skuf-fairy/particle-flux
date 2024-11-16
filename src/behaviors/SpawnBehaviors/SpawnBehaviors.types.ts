@@ -1,4 +1,4 @@
-import type {Point2d} from '../../types';
+import {Point2d} from '../../types';
 
 export enum SpawnShapeType {
   Point = 'Point',

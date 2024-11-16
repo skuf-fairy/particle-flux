@@ -1,5 +1,5 @@
-import {ScriptBehavior} from 'src/base-behaviors/ScriptBehavior/ScriptBehavior';
-import {IVector2} from 'src/types';
+import {ScriptBehavior} from '../../../base-behaviors/ScriptBehavior/ScriptBehavior';
+import {IVector2} from '../../../types';
 
 export class ScaleScriptBehavior extends ScriptBehavior<IVector2 | number> {
   protected updateValue(value: IVector2 | number): void {

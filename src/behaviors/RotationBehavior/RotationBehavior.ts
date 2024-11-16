@@ -1,4 +1,4 @@
-import {ScalarBehavior} from 'src/base-behaviors/ScalarBehavior/ScalarBehavior';
+import {ScalarBehavior} from '../../base-behaviors/ScalarBehavior/ScalarBehavior';
 
 export class RotationBehavior extends ScalarBehavior {
   protected updateValue(value: number): void {

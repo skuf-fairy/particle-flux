@@ -1,8 +1,8 @@
 import {SpawnCircleShape} from './SpawnBehaviors.types';
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {IVector2} from 'src/types';
-import {RealRandom} from 'src/utils/random/RealRandom';
-import {Vector2} from 'src/utils/Vector2';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {IVector2} from '../../types';
+import {RealRandom} from '../../utils/random/RealRandom';
+import {Vector2} from '../../utils/Vector2';
 
 export class SpawnCircleBehavior extends ParticleBaseComponent {
   private readonly random: RealRandom;

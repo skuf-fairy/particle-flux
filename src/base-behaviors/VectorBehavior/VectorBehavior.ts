@@ -1,12 +1,12 @@
-import {Vector2} from 'src/utils/Vector2';
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {LifeTimeBehavior} from 'src/behaviors/LifeTimeBehavior/LifeTimeBehavior';
-import {NumberUtils} from 'src/utils/NumberUtils';
-import {EASING_FUNCTIONS} from 'src/utils/easing/easing-functions';
-import {EasingFunction, EasingName} from 'src/utils/easing/easing.types';
+import {Vector2} from '../../utils/Vector2';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {LifeTimeBehavior} from '../../behaviors/LifeTimeBehavior/LifeTimeBehavior';
+import {NumberUtils} from '../../utils/NumberUtils';
+import {EASING_FUNCTIONS} from '../../utils/easing/easing-functions';
+import {EasingFunction, EasingName} from '../../utils/easing/easing.types';
 import {isScalarStaticBehavior, isScalarDynamicBehavior} from '../ScalarBehavior/ScalarBehaviorConfig.typeguards';
 import {VectorBehaviorConfig} from './VectorBehavior.types';
-import {RealRandom} from 'src/utils/random/RealRandom';
+import {RealRandom} from '../../utils/random/RealRandom';
 
 export abstract class VectorBehavior extends ParticleBaseComponent {
   protected startValue: Vector2;

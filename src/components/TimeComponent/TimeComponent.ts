@@ -1,5 +1,5 @@
-import {Ticker} from 'src/utils/Ticker/Ticker';
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
+import {Ticker} from '../../utils/Ticker/Ticker';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 
 export class TimeComponent extends ParticleBaseComponent {
   private readonly ticker: Ticker;

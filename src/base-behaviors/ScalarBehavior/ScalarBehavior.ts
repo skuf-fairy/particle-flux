@@ -1,11 +1,11 @@
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {LifeTimeBehavior} from 'src/behaviors/LifeTimeBehavior/LifeTimeBehavior';
-import {NumberUtils} from 'src/utils/NumberUtils';
-import {EASING_FUNCTIONS} from 'src/utils/easing/easing-functions';
-import {EasingFunction, EasingName} from 'src/utils/easing/easing.types';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {LifeTimeBehavior} from '../../behaviors/LifeTimeBehavior/LifeTimeBehavior';
+import {NumberUtils} from '../../utils/NumberUtils';
+import {EASING_FUNCTIONS} from '../../utils/easing/easing-functions';
+import {EasingFunction, EasingName} from '../../utils/easing/easing.types';
 import {isScalarDynamicBehavior, isScalarStaticBehavior} from './ScalarBehaviorConfig.typeguards';
 import {ScalarBehaviorConfig} from './ScalarBehaviorConfig.types';
-import {RealRandom} from 'src/utils/random/RealRandom';
+import {RealRandom} from '../../utils/random/RealRandom';
 
 export abstract class ScalarBehavior extends ParticleBaseComponent {
   protected startValue: number;

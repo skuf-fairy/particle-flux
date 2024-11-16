@@ -1,7 +1,7 @@
 import {SpawnRectangleShape} from './SpawnBehaviors.types';
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {RealRandom} from 'src/utils/random/RealRandom';
-import {Vector2} from 'src/utils/Vector2';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {RealRandom} from '../../utils/random/RealRandom';
+import {Vector2} from '../../utils/Vector2';
 
 export class SpawnRectangleBehavior extends ParticleBaseComponent {
   constructor(private readonly config: SpawnRectangleShape) {

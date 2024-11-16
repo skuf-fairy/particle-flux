@@ -1,7 +1,7 @@
 import {ParticleContainer} from './ParticleContainer';
 import {RealRandom} from '../utils/random/RealRandom';
-import {Ticker} from 'src/utils/Ticker/Ticker';
-import {EmitterConfig} from 'src/types';
+import {Ticker} from '../utils/Ticker/Ticker';
+import {EmitterConfig} from '../types';
 
 export class ParticleEmitter {
   private readonly ticker: Ticker;

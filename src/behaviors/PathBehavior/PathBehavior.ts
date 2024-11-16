@@ -1,6 +1,6 @@
 import {PathBehaviorConfig, PathFunction} from './PathBehavior.types';
 import {parsePath} from './parsePath';
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 
 export class PathBehavior extends ParticleBaseComponent {
   public pathFunc: PathFunction;

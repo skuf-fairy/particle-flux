@@ -1,4 +1,4 @@
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
+import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 
 export class MovementComponent extends ParticleBaseComponent {
   public init(): void {}

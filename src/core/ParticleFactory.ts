@@ -41,8 +41,8 @@ import {
   ViewParticle,
   ViewRenderFn,
   IParticleFactory,
-} from 'src/types';
-import {RealRandom} from 'src/utils/random/RealRandom';
+} from '../types';
+import {RealRandom} from '../utils/random/RealRandom';
 import {ParticleContainer} from './ParticleContainer';
 
 export class ParticleFactory implements IParticleFactory {

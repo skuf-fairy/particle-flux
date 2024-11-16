@@ -1,9 +1,9 @@
 import {ColorDynamicBehaviorConfig} from '../ColorBehavior.types';
-import {ParticleBaseComponent} from 'src/core/ParticleBaseComponent';
-import {LifeTimeBehavior} from 'src/behaviors/LifeTimeBehavior/LifeTimeBehavior';
-import {NumberUtils} from 'src/utils/NumberUtils';
-import {EASING_FUNCTIONS} from 'src/utils/easing/easing-functions';
-import {EasingFunction, EasingName} from 'src/utils/easing/easing.types';
+import {ParticleBaseComponent} from '../../../core/ParticleBaseComponent';
+import {LifeTimeBehavior} from '../../../behaviors/LifeTimeBehavior/LifeTimeBehavior';
+import {NumberUtils} from '../../../utils/NumberUtils';
+import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
+import {EasingFunction, EasingName} from '../../../utils/easing/easing.types';
 
 export class ColorDynamicBehavior extends ParticleBaseComponent {
   private startColor: string;
