@@ -46,3 +46,6 @@ export {
   GravityRangeBehaviorConfig,
   isGravityStaticBehaviorConfig,
 } from './behaviors/GravityBehavior/GravityBehavior.types';
+
+export {EasingName, EasingFunction} from './utils/easing/easing.types';
+export {EASING_FUNCTIONS} from './utils/easing/easing-functions';
