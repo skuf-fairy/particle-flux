@@ -1,6 +1,6 @@
 import {ParticleEmitter} from './ParticleEmitter';
 import {ParticleContainer} from './ParticleContainer';
-import {EmitterConfig, ParticleBehaviorConfig, ViewContainer, ViewRenderFn} from '../types';
+import {EmitterConfig, ParticleBehaviorConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
 import {ParticleFactory} from './ParticleFactory';
 
 export class ParticleFlux {
@@ -8,7 +8,7 @@ export class ParticleFlux {
   public readonly container: ParticleContainer;
 
   constructor(
-    private readonly viewContainer: ViewContainer,
+    private readonly viewContainer: ViewContainer<ViewParticle>,
     private readonly viewFactory: ViewRenderFn[] | ViewRenderFn,
     private readonly emitterConfig: EmitterConfig,
     private readonly particleConfig: ParticleBehaviorConfig,

@@ -1,4 +1,4 @@
-import {IParticle, IParticleContainer, IParticleFactory, ViewContainer} from '../types';
+import {IParticle, IParticleContainer, IParticleFactory, ViewContainer, ViewParticle} from '../types';
 
 /**
  * Контейнер для игровых объектов,
@@ -8,7 +8,10 @@ import {IParticle, IParticleContainer, IParticleFactory, ViewContainer} from '..
 export class ParticleContainer implements IParticleContainer {
   private particles: Set<IParticle>;
 
-  constructor(public readonly viewContainer: ViewContainer, private readonly particleFactory: IParticleFactory) {
+  constructor(
+    public readonly viewContainer: ViewContainer<ViewParticle>,
+    private readonly particleFactory: IParticleFactory,
+  ) {
     this.particles = new Set();
   }
 

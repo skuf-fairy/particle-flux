@@ -30,7 +30,7 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
   }
 
   public onUpdate(delta: number): void {
-    if (this.view.isDestroyed) {
+    if (this.view.destroyed) {
       this.shouldDestroy = true;
       return;
     }
