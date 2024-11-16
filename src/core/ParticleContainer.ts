@@ -54,7 +54,9 @@ export class ParticleContainer implements IParticleContainer {
   }
 
   public addParticle(): void {
-    this.particles.add(this.particleFactory.create(this));
+    const particle = this.particleFactory.create(this);
+    particle.init();
+    this.particles.add(particle);
   }
 
   public clear(): void {
