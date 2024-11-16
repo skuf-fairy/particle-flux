@@ -19,12 +19,12 @@ export interface ViewParticle {
   angle: number;
   width: number;
   height: number;
-  isDestroyed: boolean;
+  destroyed: boolean;
 }
 
-export interface ViewContainer {
-  addChild(child: ViewParticle): void;
-  removeChild(child: ViewParticle): void;
+export interface ViewContainer<U extends ViewParticle> {
+  addChild(children: U): void;
+  removeChild(children: U): void;
 }
 
 export interface IUpdatableEntity {
@@ -35,7 +35,7 @@ export interface IUpdatableEntity {
 }
 
 export interface IParticleContainer extends IUpdatableEntity {
-  viewContainer: ViewContainer;
+  viewContainer: ViewContainer<ViewParticle>;
   addParticle(...particleList: IParticle[]): void;
   getActiveParticlesCount(): number;
   clear(): void;
