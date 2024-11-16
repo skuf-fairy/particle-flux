@@ -1,6 +1,6 @@
 // core
 export {ParticleFlux} from './core/ParticleFlux';
-export {ParticleBehaviorConfig, EmitterConfig, IVector2, ViewParticle, Point2d} from './types';
+export {ParticleBehaviorConfig, EmitterConfig, IVector2, ViewContainer, ViewParticle} from './types';
 
 // behaviors
 export {ScalarBehavior} from './base-behaviors/ScalarBehavior/ScalarBehavior';
