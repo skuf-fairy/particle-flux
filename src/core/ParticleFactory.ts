@@ -43,9 +43,9 @@ import {
 } from '../types';
 import {RealRandom} from '../utils/random/RealRandom';
 import {ParticleContainer} from './ParticleContainer';
-import {isDeltaRotationBehaviorConfig} from 'src/behaviors/RotationBehavior/RotationBehavior.typeguards';
-import {DeltaRotationBehavior} from 'src/behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
-import {ScriptRotationBehavior} from 'src/behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
+import {isDeltaRotationBehaviorConfig} from '../behaviors/RotationBehavior/RotationBehavior.typeguards';
+import {DeltaRotationBehavior} from '../behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
+import {ScriptRotationBehavior} from '../behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
 
 export class ParticleFactory implements IParticleFactory {
   constructor(
