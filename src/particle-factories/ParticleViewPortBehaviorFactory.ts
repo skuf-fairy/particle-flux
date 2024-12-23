@@ -23,7 +23,7 @@ import {
 } from '../types';
 import {RealRandom} from '../utils/random/RealRandom';
 import {ParticleContainer} from '../core/ParticleContainer';
-import {ViewComponent} from 'src/components/ViewComponent/ViewComponent';
+import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 
 export class ParticleViewPortBehaviorFactory implements IParticleFactory {
   constructor(

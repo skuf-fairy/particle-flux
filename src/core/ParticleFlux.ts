@@ -3,7 +3,7 @@ import {ParticleContainer} from './ParticleContainer';
 import {EmitterConfig, ParticleBehaviorConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
 import {ParticleLifeTimeBehaviorFactory} from '../particle-factories/ParticleLifeTimeBehaviorFactory';
 import {ParticleViewPortBehaviorFactory} from '../particle-factories/ParticleViewPortBehaviorFactory';
-import {isParticleLifeTimeBehaviorConfig} from 'src/typeguards';
+import {isParticleLifeTimeBehaviorConfig} from '../typeguards';
 
 export class ParticleFlux {
   public readonly emitter: ParticleEmitter;

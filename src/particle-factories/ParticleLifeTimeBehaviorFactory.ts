@@ -46,7 +46,7 @@ import {ParticleContainer} from '../core/ParticleContainer';
 import {isDeltaRotationBehaviorConfig} from '../behaviors/RotationBehavior/RotationBehavior.typeguards';
 import {DeltaRotationBehavior} from '../behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
 import {ScriptRotationBehavior} from '../behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
-import {ViewComponent} from 'src/components/ViewComponent/ViewComponent';
+import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 
 export class ParticleLifeTimeBehaviorFactory implements IParticleFactory {
   constructor(
