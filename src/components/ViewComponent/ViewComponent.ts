@@ -10,7 +10,7 @@ export class ViewComponent extends ParticleBaseComponent {
     this.viewContainer.addChild(this.particle.view);
   }
 
-  public destroy(): void {
+  public onDestroy(): void {
     this.viewContainer.removeChild(this.particle.view);
   }
 }
