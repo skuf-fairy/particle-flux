@@ -108,6 +108,8 @@ export interface ParticleLifeTimeBehaviorConfig {
 
 export interface ParticleViewPortBehaviorConfig {
   viewportLife: ViewportLifeBehaviorConfig;
+  alpha?: ScalarBehaviorConfig;
+  scale?: ScalarBehaviorConfig;
   speed?: ScalarBehaviorConfig;
   direction?: DirectionBehaviorConfig;
   gravity?: GravityBehaviorConfig;

@@ -27,6 +27,8 @@ import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 import {DirectionBehavior} from '../behaviors/DirectionBehavior/DirectionBehavior';
 import {GravityBehavior} from '../behaviors/GravityBehavior/GravityBehavior';
 import {DeltaRotationBehavior} from '../behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
+import {AlphaScalarBehavior} from '../behaviors/AlphaBehavior/AlphaScalarBehavior/AlphaScalarBehavior';
+import {ScaleScalarBehavior} from '../behaviors/ScaleBehavior/ScaleScalarBehavior/ScaleScalarBehavior';
 
 export class ParticleViewPortBehaviorFactory implements IParticleFactory {
   constructor(
@@ -46,6 +48,14 @@ export class ParticleViewPortBehaviorFactory implements IParticleFactory {
       if (isScalarBehaviorConfig(this.config.speed)) {
         particle.addComponent(new SpeedScalarBehavior(this.config.speed));
       }
+    }
+
+    if (this.config.alpha) {
+      particle.addComponent(new AlphaScalarBehavior(this.config.alpha));
+    }
+
+    if (this.config.scale) {
+      particle.addComponent(new ScaleScalarBehavior(this.config.scale));
     }
 
     if (this.config.spawnShape) {
