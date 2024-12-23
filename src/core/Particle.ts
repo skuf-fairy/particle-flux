@@ -25,7 +25,6 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
   }
 
   public init(): void {
-    this.container.viewContainer.addChild(this.view);
     this.entityList.forEach((e) => e.init());
   }
 
@@ -36,11 +35,6 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
     }
 
     super.onUpdate(delta);
-  }
-
-  public onDestroy(): void {
-    super.onDestroy();
-    this.container.viewContainer.removeChild(this.view);
   }
 
   /**

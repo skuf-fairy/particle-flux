@@ -2,7 +2,7 @@ import {ScalarBehaviorConfig} from '../../base-behaviors/ScalarBehavior/ScalarBe
 import {ScriptBehaviorConfig} from '../../base-behaviors/ScriptBehavior/ScriptBehavior.types';
 
 export interface DeltaRotationConfig {
-  value: number;
+  angle: number;
   deltaAngle: number;
 }
 

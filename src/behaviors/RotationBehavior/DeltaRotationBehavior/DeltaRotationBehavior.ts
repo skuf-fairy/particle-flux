@@ -7,7 +7,7 @@ export class DeltaRotationBehavior extends ParticleBaseComponent {
   }
 
   public init(): void {
-    this.particle.view.angle = this.config.value;
+    this.particle.view.angle = this.config.angle;
   }
 
   public onUpdate(delta: number): void {

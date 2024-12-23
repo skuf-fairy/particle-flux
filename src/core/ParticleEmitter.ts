@@ -9,21 +9,13 @@ export class ParticleEmitter {
   private time: number;
   private lifeTime: number;
 
-  constructor(private readonly container: ParticleContainer, private config: EmitterConfig) {
+  constructor(private readonly container: ParticleContainer, private readonly config: EmitterConfig) {
     this.random = new RealRandom();
     this.ticker = new Ticker();
     this.ticker.autoStart = false;
     this.ticker.add(this.handleUpdate);
     this.time = 0;
     this.lifeTime = 0;
-  }
-
-  public setEmitterConfig(config: EmitterConfig): void {
-    this.config = config;
-  }
-
-  public updateEmitterConfig(key: keyof EmitterConfig, value: number): void {
-    this.config[key] = value;
   }
 
   public emitOnce(particlesCount: number = 1): void {

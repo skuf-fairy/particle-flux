@@ -1,7 +1,9 @@
 import {ParticleEmitter} from './ParticleEmitter';
 import {ParticleContainer} from './ParticleContainer';
 import {EmitterConfig, ParticleBehaviorConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
-import {ParticleFactory} from './ParticleFactory';
+import {ParticleLifeTimeBehaviorFactory} from '../particle-factories/ParticleLifeTimeBehaviorFactory';
+import {ParticleViewPortBehaviorFactory} from '../particle-factories/ParticleViewPortBehaviorFactory';
+import {isParticleLifeTimeBehaviorConfig} from 'src/typeguards';
 
 export class ParticleFlux {
   public readonly emitter: ParticleEmitter;
@@ -14,8 +16,9 @@ export class ParticleFlux {
     private readonly particleConfig: ParticleBehaviorConfig,
   ) {
     this.container = new ParticleContainer(
-      this.viewContainer,
-      new ParticleFactory(this.viewFactory, this.particleConfig),
+      isParticleLifeTimeBehaviorConfig(this.particleConfig)
+        ? new ParticleLifeTimeBehaviorFactory(this.viewContainer, this.viewFactory, this.particleConfig)
+        : new ParticleViewPortBehaviorFactory(this.viewContainer, this.viewFactory, this.particleConfig),
     );
     this.emitter = new ParticleEmitter(this.container, this.emitterConfig);
   }

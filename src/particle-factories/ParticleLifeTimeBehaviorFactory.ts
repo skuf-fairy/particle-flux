@@ -1,4 +1,4 @@
-import {Particle} from './Particle';
+import {Particle} from '../core/Particle';
 import {
   isScalarBehaviorConfig,
   isScriptBehaviorConfig,
@@ -29,28 +29,30 @@ import {SpawnPolygonalChainBehavior} from '../behaviors/SpawnBehaviors/SpawnPoly
 import {SpawnRectangleBehavior} from '../behaviors/SpawnBehaviors/SpawnRectangleBehavior';
 import {SpeedScalarBehavior} from '../behaviors/SpeedBehavior/SpeedScalarBehavior/SpeedScalarBehavior';
 import {SpeedScriptBehavior} from '../behaviors/SpeedBehavior/SpeedScriptBehavior/SpeedScriptBehavior';
-import {ViewportLifeBehavior} from '../behaviors/ViewportLifeBehavior/ViewportLifeBehavior';
 import {MovementComponent} from '../components/MovementComponent/MovementComponent';
 import {PathMovementComponent} from '../components/PathMovementComponent/PathMovementComponent';
 import {TimeComponent} from '../components/TimeComponent/TimeComponent';
 import {
-  ParticleBehaviorConfig,
+  ParticleLifeTimeBehaviorConfig,
   IParticle,
   IParticleComponent,
   ViewParticle,
   ViewRenderFn,
   IParticleFactory,
+  ViewContainer,
 } from '../types';
 import {RealRandom} from '../utils/random/RealRandom';
-import {ParticleContainer} from './ParticleContainer';
+import {ParticleContainer} from '../core/ParticleContainer';
 import {isDeltaRotationBehaviorConfig} from '../behaviors/RotationBehavior/RotationBehavior.typeguards';
 import {DeltaRotationBehavior} from '../behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
 import {ScriptRotationBehavior} from '../behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
+import {ViewComponent} from 'src/components/ViewComponent/ViewComponent';
 
-export class ParticleFactory implements IParticleFactory {
+export class ParticleLifeTimeBehaviorFactory implements IParticleFactory {
   constructor(
+    private readonly viewContainer: ViewContainer<ViewParticle>,
     private readonly viewFactory: ViewRenderFn[] | ViewRenderFn,
-    private config: ParticleBehaviorConfig,
+    private readonly config: ParticleLifeTimeBehaviorConfig,
     private readonly customComponents?: IParticleComponent[],
   ) {}
 
@@ -124,19 +126,15 @@ export class ParticleFactory implements IParticleFactory {
     if (this.config.rotation) {
       if (isDeltaRotationBehaviorConfig(this.config.rotation)) {
         particle.addComponent(new DeltaRotationBehavior(this.config.rotation));
-      }
+      } else {
+        if (isScalarBehaviorConfig(this.config.rotation)) {
+          particle.addComponent(new ScalarRotationBehavior(this.config.rotation));
+        }
 
-      if (isScalarBehaviorConfig(this.config.rotation)) {
-        particle.addComponent(new ScalarRotationBehavior(this.config.rotation));
+        if (isScriptBehaviorConfig(this.config.rotation)) {
+          particle.addComponent(new ScriptRotationBehavior(this.config.rotation));
+        }
       }
-
-      if (isScriptBehaviorConfig(this.config.rotation)) {
-        particle.addComponent(new ScriptRotationBehavior(this.config.rotation));
-      }
-    }
-
-    if (this.config.viewportLife) {
-      particle.addComponent(new ViewportLifeBehavior(this.config.viewportLife));
     }
 
     if (this.customComponents) {
@@ -145,6 +143,7 @@ export class ParticleFactory implements IParticleFactory {
 
     // components
     particle.addComponent(new TimeComponent());
+    particle.addComponent(new ViewComponent(this.viewContainer));
 
     if (this.config.path) {
       particle.addComponent(new PathMovementComponent());
@@ -153,14 +152,6 @@ export class ParticleFactory implements IParticleFactory {
     }
 
     return particle;
-  }
-
-  public setParticleConfig(config: ParticleBehaviorConfig): void {
-    this.config = config;
-  }
-
-  public updateParticleConfig<T extends keyof ParticleBehaviorConfig>(key: T, value: ParticleBehaviorConfig[T]): void {
-    this.config[key] = value;
   }
 
   private getSpawnBehaviorByShapeType(shape: SpawnShape): IParticleComponent {
