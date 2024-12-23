@@ -26,6 +26,7 @@ import {ParticleContainer} from '../core/ParticleContainer';
 import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 import {DirectionBehavior} from '../behaviors/DirectionBehavior/DirectionBehavior';
 import {GravityBehavior} from '../behaviors/GravityBehavior/GravityBehavior';
+import {DeltaRotationBehavior} from '../behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
 
 export class ParticleViewPortBehaviorFactory implements IParticleFactory {
   constructor(
@@ -65,6 +66,10 @@ export class ParticleViewPortBehaviorFactory implements IParticleFactory {
 
     if (this.config.direction) {
       particle.addComponent(new DirectionBehavior(this.config.direction));
+    }
+
+    if (this.config.rotation) {
+      particle.addComponent(new DeltaRotationBehavior(this.config.rotation));
     }
 
     if (this.customComponents) {

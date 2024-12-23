@@ -5,7 +5,7 @@ import {DirectionBehaviorConfig} from './behaviors/DirectionBehavior/DirectionBe
 import {GravityBehaviorConfig} from './behaviors/GravityBehavior/GravityBehavior.types';
 import {LifeTimeBehaviorConfig} from './behaviors/LifeTimeBehavior/LifeTimeBehavior.types';
 import {PathBehaviorConfig} from './behaviors/PathBehavior/PathBehavior.types';
-import {RotationBehaviorConfig} from './behaviors/RotationBehavior/RotationBehavior.types';
+import {DeltaRotationConfig, RotationBehaviorConfig} from './behaviors/RotationBehavior/RotationBehavior.types';
 import {ScaleBehaviorConfig} from './behaviors/ScaleBehavior/ScaleBehavior.types';
 import {SpawnShape} from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
 import {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
@@ -112,6 +112,7 @@ export interface ParticleViewPortBehaviorConfig {
   direction?: DirectionBehaviorConfig;
   gravity?: GravityBehaviorConfig;
   path?: PathBehaviorConfig;
+  rotation?: DeltaRotationConfig;
   spawnShape?: SpawnShape;
 }
 
