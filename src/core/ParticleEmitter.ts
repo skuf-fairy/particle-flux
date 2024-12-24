@@ -23,10 +23,8 @@ export class ParticleEmitter {
 
     this.ticker.add(this.handleUpdate);
 
-    if (this.config.autoStart === undefined) {
-      this.ticker.autoStart = true;
-    } else {
-      this.ticker.autoStart = this.config.autoStart;
+    if (this.config.autoStart === undefined || this.config.autoStart) {
+      this.ticker.start();
     }
   }
 
