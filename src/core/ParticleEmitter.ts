@@ -84,6 +84,9 @@ export class ParticleEmitter {
     if (this.spawnTime !== null && this.time >= this.spawnTime) {
       this.emitWave();
       this.time = 0;
+
+      const nextSpawnTime = this.getNextSpawnTime();
+      this.spawnTime = nextSpawnTime !== undefined ? nextSpawnTime : null;
     }
 
     if (this.config.emitterLifeTime !== undefined && this.lifeTime >= this.config.emitterLifeTime) {
