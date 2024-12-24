@@ -11,7 +11,7 @@ export class ViewportLifeBehavior extends ParticleBaseComponent {
   }
 
   public init(): void {
-    this.viewPort = {...this.config};
+    this.viewPort = this.config;
   }
 
   public onUpdate(): void {

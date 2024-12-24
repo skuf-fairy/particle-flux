@@ -86,11 +86,12 @@ export interface ViewPort {
 }
 
 export interface EmitterConfig {
-  spawnTime: number;
+  spawnInterval?: NumberValue;
   emitterLifeTime?: number;
   spawnParticlesPerWave?: number;
   maxParticles?: number;
   spawnChance?: number;
+  autoStart?: boolean;
 }
 
 export interface ParticleLifeTimeBehaviorConfig {
@@ -120,9 +121,11 @@ export interface ParticleViewPortBehaviorConfig {
 
 export type ParticleBehaviorConfig = ParticleLifeTimeBehaviorConfig | ParticleViewPortBehaviorConfig;
 
-export type Multiplicator =
-  | {
-      min: number;
-      max: number;
-    }
-  | number;
+export type RangeValue = {
+  min: number;
+  max: number;
+};
+
+export type NumberValue = RangeValue | number;
+
+export type Multiplicator = NumberValue;
