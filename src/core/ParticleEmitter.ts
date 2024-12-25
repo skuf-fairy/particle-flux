@@ -61,11 +61,11 @@ export class ParticleEmitter {
   public stopEmit(): void {
     this.ticker.stop();
     this.clean();
+    this.resetTime();
   }
 
   public clean(): void {
     this.container.clear();
-    this.resetTime();
   }
 
   private handleUpdate = (ticker: Ticker): void => {
@@ -73,14 +73,20 @@ export class ParticleEmitter {
 
     this.container.onUpdate(ticker.deltaMS);
 
+    if (this.config.spawnTime !== undefined && this.currentTime >= this.config.spawnTime) {
+      // если время работы вышло, то следим за контейнером, когда он будет пустой, то нужно остановить эмиттер
+      if (this.container.count() === 0) {
+        this.stopEmit();
+      }
+
+      // иначе  просто не даем дальше спавнить
+      return;
+    }
+
     if (this.nextSpawnTime !== null && this.currentTime >= this.nextSpawnTime) {
       this.emitWave();
 
       this.nextSpawnTime = this.getNextSpawnTime();
-    }
-
-    if (this.config.spawnTime !== undefined && this.currentTime >= this.config.spawnTime) {
-      this.stopEmit();
     }
   };
 

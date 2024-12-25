@@ -59,4 +59,8 @@ export class ParticleContainer implements IParticleContainer {
   public clear(): void {
     this.onDestroy();
   }
+
+  public count(): number {
+    return this.particles.size;
+  }
 }
