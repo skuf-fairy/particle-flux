@@ -15,7 +15,6 @@ export class ParticleEmitter {
     this.ticker = new Ticker();
 
     this.currentTime = 0;
-
     this.nextSpawnTime = this.getNextSpawnTime();
 
     this.ticker.add(this.handleUpdate);
@@ -51,7 +50,7 @@ export class ParticleEmitter {
   }
 
   public startEmit(): void {
-    this.emitWave();
+    this.resetTime();
     this.ticker.start();
   }
 
@@ -66,7 +65,7 @@ export class ParticleEmitter {
 
   public clean(): void {
     this.container.clear();
-    this.currentTime = 0;
+    this.resetTime();
   }
 
   private handleUpdate = (ticker: Ticker): void => {
@@ -104,5 +103,10 @@ export class ParticleEmitter {
       return this.currentTime + this.random.generateFloatNumber(spawnInterval.min, spawnInterval.max);
 
     return this.currentTime + spawnInterval;
+  }
+
+  private resetTime(): void {
+    this.currentTime = 0;
+    this.nextSpawnTime = this.getNextSpawnTime();
   }
 }
