@@ -7,19 +7,16 @@ import {isRangeValue} from '../typeguards';
 export class ParticleEmitter {
   private readonly ticker: Ticker;
   private readonly random: RealRandom;
-  private time: number;
-  private lifeTime: number;
-  private spawnTime: number | null;
+  private currentTime: number;
+  private nextSpawnTime: number | null;
 
   constructor(private readonly container: ParticleContainer, private readonly config: EmitterConfig) {
     this.random = new RealRandom();
     this.ticker = new Ticker();
 
-    this.time = 0;
-    this.lifeTime = 0;
+    this.currentTime = 0;
 
-    const nextSpawnTime = this.getNextSpawnTime();
-    this.spawnTime = nextSpawnTime !== undefined ? nextSpawnTime : null;
+    this.nextSpawnTime = this.getNextSpawnTime();
 
     this.ticker.add(this.handleUpdate);
 
@@ -69,29 +66,22 @@ export class ParticleEmitter {
 
   public clean(): void {
     this.container.clear();
-    this.time = 0;
-    this.lifeTime = 0;
+    this.currentTime = 0;
   }
 
   private handleUpdate = (ticker: Ticker): void => {
-    this.time += ticker.deltaMS;
-    if (this.config.emitterLifeTime !== undefined) {
-      this.lifeTime += ticker.deltaMS;
-    }
+    this.currentTime += ticker.deltaMS;
 
     this.container.onUpdate(ticker.deltaMS);
 
-    if (this.spawnTime !== null && this.time >= this.spawnTime) {
+    if (this.nextSpawnTime !== null && this.currentTime >= this.nextSpawnTime) {
       this.emitWave();
-      this.time = 0;
 
-      const nextSpawnTime = this.getNextSpawnTime();
-      this.spawnTime = nextSpawnTime !== undefined ? nextSpawnTime : null;
+      this.nextSpawnTime = this.getNextSpawnTime();
     }
 
-    if (this.config.emitterLifeTime !== undefined && this.lifeTime >= this.config.emitterLifeTime) {
+    if (this.config.spawnTime !== undefined && this.currentTime >= this.config.spawnTime) {
       this.stopEmit();
-      this.lifeTime = 0;
     }
   };
 
@@ -105,13 +95,14 @@ export class ParticleEmitter {
     }
   }
 
-  private getNextSpawnTime(): number | undefined {
+  private getNextSpawnTime(): number | null {
     const spawnInterval = this.config.spawnInterval;
 
-    if (spawnInterval === undefined) return;
+    if (spawnInterval === undefined) return null;
 
-    if (isRangeValue(spawnInterval)) return this.random.generateFloatNumber(spawnInterval.min, spawnInterval.max);
+    if (isRangeValue(spawnInterval))
+      return this.currentTime + this.random.generateFloatNumber(spawnInterval.min, spawnInterval.max);
 
-    return spawnInterval;
+    return this.currentTime + spawnInterval;
   }
 }

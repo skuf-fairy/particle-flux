@@ -87,7 +87,7 @@ export interface ViewPort {
 
 export interface EmitterConfig {
   spawnInterval?: NumberValue;
-  emitterLifeTime?: number;
+  spawnTime?: number;
   spawnParticlesPerWave?: number;
   maxParticles?: number;
   spawnChance?: number;
