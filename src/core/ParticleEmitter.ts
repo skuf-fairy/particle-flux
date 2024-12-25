@@ -34,6 +34,11 @@ export class ParticleEmitter {
     for (let i = 0; i < count; i++) {
       this.emit();
     }
+
+    // стартуем рендеринг, если эмиттер останвлен
+    if (!this.ticker.started) {
+      this.startEmit();
+    }
   }
 
   public emitWave(): void {
@@ -46,6 +51,11 @@ export class ParticleEmitter {
 
     for (let i = 0; i < count; i++) {
       this.emit();
+    }
+
+    // стартуем рендеринг, если эмиттер останвлен
+    if (!this.ticker.started) {
+      this.startEmit();
     }
   }
 
