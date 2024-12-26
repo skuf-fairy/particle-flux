@@ -1,13 +1,18 @@
-import {Vector2} from '../../utils/Vector2';
 import {SpawnPointShape} from './SpawnBehaviors.types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
+import {SpawnPositionBehavior} from '../SpawnPositionBehavior/SpawnPositionBehavior';
 
 export class SpawnPointBehavior extends ParticleBaseComponent {
+  private spawnPositionBehavior?: SpawnPositionBehavior;
+
   constructor(private readonly config: SpawnPointShape) {
     super();
   }
 
   public init(): void {
-    this.particle.view.position = new Vector2(this.config.x, this.config.y);
+    this.spawnPositionBehavior = this.particle.getComponent(SpawnPositionBehavior);
+
+    this.particle.view.position.x = this.config.x + (this.spawnPositionBehavior?.position.x || 0);
+    this.particle.view.position.y = this.config.y + (this.spawnPositionBehavior?.position.y || 0);
   }
 }

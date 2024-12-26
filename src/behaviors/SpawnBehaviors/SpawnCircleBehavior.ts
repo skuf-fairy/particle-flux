@@ -1,11 +1,12 @@
 import {SpawnCircleShape} from './SpawnBehaviors.types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
-import {IVector2} from '../../types';
+import {Point2d} from '../../types';
 import {RealRandom} from '../../utils/random/RealRandom';
-import {Vector2} from '../../utils/Vector2';
+import {SpawnPositionBehavior} from '../SpawnPositionBehavior/SpawnPositionBehavior';
 
 export class SpawnCircleBehavior extends ParticleBaseComponent {
   private readonly random: RealRandom;
+  private spawnPositionBehavior?: SpawnPositionBehavior;
 
   constructor(private readonly config: SpawnCircleShape) {
     super();
@@ -14,10 +15,14 @@ export class SpawnCircleBehavior extends ParticleBaseComponent {
   }
 
   public init(): void {
-    this.particle.view.position = this.getRandomPointFromCircle(this.config.x, this.config.y, this.config.radius);
+    this.spawnPositionBehavior = this.particle.getComponent(SpawnPositionBehavior);
+    const position = this.getRandomPointFromCircle(this.config.x, this.config.y, this.config.radius);
+
+    this.particle.view.position.x = position.x + (this.spawnPositionBehavior?.position.x || 0);
+    this.particle.view.position.y = position.y + (this.spawnPositionBehavior?.position.y || 0);
   }
 
-  private getRandomPointFromCircle(x: number, y: number, radius: number): IVector2 {
+  private getRandomPointFromCircle(x: number, y: number, radius: number): Point2d {
     // Генерируем случайный угол в радианах
     const angle = this.random.generateFloatNumber(0, 2 * Math.PI);
 
@@ -28,6 +33,6 @@ export class SpawnCircleBehavior extends ParticleBaseComponent {
     const pointX = x + r * Math.cos(angle);
     const pointY = y + r * Math.sin(angle);
 
-    return new Vector2(pointX, pointY);
+    return {x: pointX, y: pointY};
   }
 }

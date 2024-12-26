@@ -78,6 +78,10 @@ export class ParticleEmitter {
     this.container.clear();
   }
 
+  public isActive(): boolean {
+    return this.ticker.started;
+  }
+
   private handleUpdate = (ticker: Ticker): void => {
     this.currentTime += ticker.deltaMS;
 

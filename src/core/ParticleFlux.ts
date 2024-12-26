@@ -12,8 +12,8 @@ export class ParticleFlux {
   constructor(
     private readonly viewContainer: ViewContainer<ViewParticle>,
     private readonly viewFactory: ViewRenderFn[] | ViewRenderFn,
-    private readonly emitterConfig: EmitterConfig,
-    private readonly particleConfig: ParticleBehaviorConfig,
+    public readonly emitterConfig: EmitterConfig,
+    public readonly particleConfig: ParticleBehaviorConfig,
   ) {
     this.container = new ParticleContainer(
       isParticleLifeTimeBehaviorConfig(this.particleConfig)
@@ -33,7 +33,6 @@ export class ParticleFlux {
 
   public stopEmit(): void {
     this.emitter.stopEmit();
-    this.container.clear();
   }
 
   public cleanUp(): void {

@@ -1,17 +1,17 @@
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 import {PathBehavior} from '../../behaviors/PathBehavior/PathBehavior';
-import {IVector2} from '../../types';
+import {IVector2, Point2d} from '../../types';
 import {Vector2} from '../../utils/Vector2';
 import {Vector2Utils} from '../../utils/Vector2Utils';
 
 export class PathMovementComponent extends ParticleBaseComponent {
   private pathBehavior?: PathBehavior;
   private delta: IVector2;
-  private initPosition: IVector2;
+  private initPosition: Point2d;
 
   public init(): void {
     this.pathBehavior = this.particle.getComponent(PathBehavior);
-    this.initPosition = this.particle.view.position.clone();
+    this.initPosition = {x: this.particle.view.position.x, y: this.particle.view.position.y};
     this.delta = new Vector2();
   }
 

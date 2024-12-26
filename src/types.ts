@@ -8,13 +8,14 @@ import {PathBehaviorConfig} from './behaviors/PathBehavior/PathBehavior.types';
 import {DeltaRotationConfig, RotationBehaviorConfig} from './behaviors/RotationBehavior/RotationBehavior.types';
 import {ScaleBehaviorConfig} from './behaviors/ScaleBehavior/ScaleBehavior.types';
 import {SpawnShape} from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
+import {SpawnPositionBehaviorConfig} from './behaviors/SpawnPositionBehavior/SpawnPositionBehavior.types';
 import {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
 import {ViewportLifeBehaviorConfig} from './behaviors/ViewportLifeBehavior/ViewportLifeBehavior.types';
 import {UnknownConstructor} from './types.utils';
 
 export interface ViewParticle {
-  position: IVector2;
-  scale: IVector2;
+  position: Point2d;
+  scale: Point2d;
   alpha: number;
   tint: string | number;
   angle: number;
@@ -103,6 +104,7 @@ export interface ParticleLifeTimeBehaviorConfig {
   scale?: ScaleBehaviorConfig;
   gravity?: GravityBehaviorConfig;
   rotation?: RotationBehaviorConfig;
+  spawnPosition?: SpawnPositionBehaviorConfig;
   spawnShape?: SpawnShape;
   color?: ColorBehaviorConfig;
 }
@@ -116,6 +118,7 @@ export interface ParticleViewPortBehaviorConfig {
   gravity?: GravityBehaviorConfig;
   path?: PathBehaviorConfig;
   rotation?: DeltaRotationConfig;
+  spawnPosition?: SpawnPositionBehaviorConfig;
   spawnShape?: SpawnShape;
 }
 

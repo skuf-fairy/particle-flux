@@ -1,11 +1,12 @@
 import {Chain, PolygonalChainShape} from './SpawnBehaviors.types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
-import {IVector2} from '../../types';
+import {Point2d} from '../../types';
 import {RealRandom} from '../../utils/random/RealRandom';
-import {Vector2} from '../../utils/Vector2';
+import {SpawnPositionBehavior} from '../SpawnPositionBehavior/SpawnPositionBehavior';
 
 export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
   private readonly random: RealRandom;
+  private spawnPositionBehavior?: SpawnPositionBehavior;
 
   constructor(private readonly config: PolygonalChainShape) {
     super();
@@ -14,10 +15,14 @@ export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
   }
 
   public init(): void {
-    this.particle.view.position = this.getSpawnPoint();
+    this.spawnPositionBehavior = this.particle.getComponent(SpawnPositionBehavior);
+
+    const position = this.getSpawnPoint();
+    this.particle.view.position.x = position.x + (this.spawnPositionBehavior?.position.x || 0);
+    this.particle.view.position.y = position.y + (this.spawnPositionBehavior?.position.y || 0);
   }
 
-  private getSpawnPoint(): IVector2 {
+  private getSpawnPoint(): Point2d {
     const chain = this.config.chain;
 
     if (chain.length > 0) {
@@ -27,7 +32,7 @@ export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
         return this.getRandomPointOnChain(this.random.choice(chain));
       }
     } else {
-      return new Vector2();
+      return {x: 0, y: 0};
     }
   }
 
@@ -35,27 +40,27 @@ export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
     return !Array.isArray(chain[0]);
   }
 
-  private getRandomPointOnChain(chain: Chain): IVector2 {
+  private getRandomPointOnChain(chain: Chain): Point2d {
     if (chain.length === 1) {
-      return new Vector2(chain[0].x, chain[0].y);
+      return {x: chain[0].x, y: chain[0].y};
     } else if (chain.length > 1) {
       const endPointIndex = this.random.generateIntegerNumber(1, chain.length - 1);
-      const endPoint = new Vector2(chain[endPointIndex].x, chain[endPointIndex].y);
-      const startPoint = new Vector2(chain[endPointIndex - 1].x, chain[endPointIndex - 1].y);
+      const endPoint = {x: chain[endPointIndex].x, y: chain[endPointIndex].y};
+      const startPoint = {x: chain[endPointIndex - 1].x, y: chain[endPointIndex - 1].y};
 
       return this.getRandomPointOnLine(startPoint, endPoint);
     } else {
-      return new Vector2();
+      return {x: 0, y: 0};
     }
   }
 
-  private getRandomPointOnLine(pointA: IVector2, pointB: IVector2): IVector2 {
+  private getRandomPointOnLine(pointA: Point2d, pointB: Point2d): Point2d {
     const randomFactor = Math.random(); // Генерируем случайное число от 0 до 1
 
     // Вычисляем координаты случайной точки между pointA и pointB
     const x = pointA.x + randomFactor * (pointB.x - pointA.x);
     const y = pointA.y + randomFactor * (pointB.y - pointA.y);
 
-    return new Vector2(x, y);
+    return {x, y};
   }
 }
