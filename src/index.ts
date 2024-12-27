@@ -9,6 +9,7 @@ export {
   ViewContainer,
   ViewParticle,
   Multiplicator,
+  Point2d,
 } from './types';
 
 // behaviors

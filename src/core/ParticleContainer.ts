@@ -1,8 +1,7 @@
 import {IParticle, IParticleContainer, IParticleFactory} from '../types';
 
 /**
- * Контейнер для игровых объектов,
- * в которой можно добавлять и удалять игровые объекты
+ * Контейнер для частиц, в который можно добавлять и удалять игровые объекты
  * а так же получать их из контейнера
  */
 export class ParticleContainer implements IParticleContainer {
@@ -12,12 +11,13 @@ export class ParticleContainer implements IParticleContainer {
     this.particles = new Set();
   }
 
+  // количество частиц в контейнере
   public getActiveParticlesCount(): number {
     return this.particles.size;
   }
 
   /**
-   * Обновление игровых объектов + чистка от уничтоженных
+   * Выполняет обновление частиц в контейнеое и чисит от уничтоженных
    * @param delta Время между кадрами
    */
   public onUpdate(delta: number): void {

@@ -13,6 +13,7 @@ import {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types
 import {ViewportLifeBehaviorConfig} from './behaviors/ViewportLifeBehavior/ViewportLifeBehavior.types';
 import {UnknownConstructor} from './types.utils';
 
+// параметры частицы, которые могут обновляться
 export interface ViewParticle {
   position: Point2d;
   scale: Point2d;
@@ -24,16 +25,18 @@ export interface ViewParticle {
   destroyed: boolean;
 }
 
+// внешний контейнер для отображения, в который добавляются частицы
 export interface ViewContainer<U extends ViewParticle> {
   addChild(children: U): void;
   removeChild(children: U): void;
 }
 
+// базовая обновляемая сущность
 export interface IUpdatableEntity {
-  onUpdate?(delta: number): void; // обновление в геймлупе
-  onDestroy?(): void; // деструктуризация игры
-  onPause?(): void; // пауза в игре
-  onResume?(): void; // возобновление игры
+  onUpdate?(delta: number): void; // обновление на вызове requestAnimationFrame
+  onDestroy?(): void; // деструктуризация эмиттера
+  onPause?(): void; // пауза обновления времени в эмиттере
+  onResume?(): void; // возобновление обновления времени в эмиттере
 }
 
 export interface IParticleContainer extends IUpdatableEntity {
@@ -42,6 +45,7 @@ export interface IParticleContainer extends IUpdatableEntity {
   clear(): void;
 }
 
+// фабрика по созданию частиц
 export interface IParticleFactory {
   create(container: IParticleContainer): IParticle;
 }

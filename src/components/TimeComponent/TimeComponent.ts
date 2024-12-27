@@ -13,12 +13,12 @@ export class TimeComponent extends ParticleBaseComponent {
 
   public init(): void {}
 
-  public start(): void {
-    this.ticker.start();
-  }
-
   get delta(): number {
     return this.ticker.deltaMS;
+  }
+
+  public start(): void {
+    this.ticker.start();
   }
 
   public onPause(): void {

@@ -5,10 +5,10 @@ import {Vector2} from '../utils/Vector2';
 
 export class Particle extends UpdatableEntityContainer<Function, IParticleComponent> implements IParticle {
   /**
-   * Мир, в котором находится игровой объект
-   * Если он null, то почему-то не привязан к миру, возможно, из-за утечки памяти
+   * Контейнер, в котором находятся частицы
    */
   public container: IParticleContainer;
+  // параметры отображения частицы
   public view: ViewParticle;
   public speed: number;
   public direction: IVector2;
@@ -38,8 +38,8 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
   }
 
   /**
-   * Добавление компонентов в игровой объект
-   * @param componentList список инстансов игровых компонентов
+   * Добавление компонентов в частицу
+   * @param componentList список инстансов компонентов
    */
   public addComponent(...componentList: IParticleComponent[]): void {
     componentList.forEach((component) => {
@@ -49,7 +49,7 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
   }
 
   /**
-   * Удалить компонент из игрового объекта
+   * Удалить компонент из частицы
    * @param component класс компонента
    */
   public removeComponent(component: UnknownConstructor<IParticleComponent>): void {
@@ -57,7 +57,7 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
   }
 
   /**
-   * Получить инстанс компонента игрового объекта
+   * Получить инстанс компонента частицы
    * @param component ссылка на класс-компонент
    * @returns инстанс компонента либо undefined, если такого компонента нет в игровом объекте
    */
