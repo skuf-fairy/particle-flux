@@ -26,8 +26,10 @@ export class PathMovementComponent extends ParticleBaseComponent {
       this.delta.y = this.pathBehavior.pathFunc(this.delta.x);
       const delta = Vector2Utils.rotate(this.delta, -Math.PI / 2);
 
-      this.particle.view.position.x = this.initPosition.x + delta.x;
-      this.particle.view.position.y = this.initPosition.y + delta.y;
+      this.particle.view.position = {
+        x: this.initPosition.x + delta.x,
+        y: this.initPosition.y + delta.y,
+      };
     }
   }
 }

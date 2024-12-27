@@ -12,7 +12,9 @@ export class SpawnPointBehavior extends ParticleBaseComponent {
   public init(): void {
     this.spawnPositionBehavior = this.particle.getComponent(SpawnPositionBehavior);
 
-    this.particle.view.position.x = this.config.x + (this.spawnPositionBehavior?.position.x || 0);
-    this.particle.view.position.y = this.config.y + (this.spawnPositionBehavior?.position.y || 0);
+    this.particle.view.position = {
+      x: this.config.x + (this.spawnPositionBehavior?.position.x || 0),
+      y: this.config.y + (this.spawnPositionBehavior?.position.y || 0),
+    };
   }
 }
