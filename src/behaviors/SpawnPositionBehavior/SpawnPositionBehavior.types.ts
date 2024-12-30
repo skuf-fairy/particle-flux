@@ -1,5 +1,4 @@
-import {Point2d} from '../../types';
-
 export interface SpawnPositionBehaviorConfig {
-  position: Point2d;
+  x: number;
+  y: number;
 }

@@ -12,6 +12,8 @@ export {
   Point2d,
 } from './types';
 
+export {isParticleViewPortBehaviorConfig, isParticleLifeTimeBehaviorConfig, isRangeValue} from './typeguards';
+
 // behaviors
 export {ScalarBehavior} from './base-behaviors/ScalarBehavior/ScalarBehavior';
 export {ScriptBehavior} from './base-behaviors/ScriptBehavior/ScriptBehavior';
@@ -43,8 +45,8 @@ export {
 export {
   DirectionBehaviorConfig,
   DirectionRangeBehaviorConfig,
-  SingleDirectionBehaviorConfig,
-  isSingleDirectionBehaviorConfig,
+  StaticDirectionBehaviorConfig,
+  isStaticDirectionBehaviorConfig,
 } from './behaviors/DirectionBehavior/DirectionBehavior.types';
 export {GravityBehaviorConfig} from './behaviors/GravityBehavior/GravityBehavior.types';
 export {

@@ -3,14 +3,14 @@ export interface DirectionRangeBehaviorConfig {
   maxAngle: number;
 }
 
-export interface SingleDirectionBehaviorConfig {
+export interface StaticDirectionBehaviorConfig {
   angle: number;
 }
 
-export type DirectionBehaviorConfig = DirectionRangeBehaviorConfig | SingleDirectionBehaviorConfig;
+export type DirectionBehaviorConfig = DirectionRangeBehaviorConfig | StaticDirectionBehaviorConfig;
 
-export function isSingleDirectionBehaviorConfig(
+export function isStaticDirectionBehaviorConfig(
   config: DirectionBehaviorConfig,
-): config is SingleDirectionBehaviorConfig {
+): config is StaticDirectionBehaviorConfig {
   return 'angle' in config;
 }

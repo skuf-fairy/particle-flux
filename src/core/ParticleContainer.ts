@@ -6,14 +6,16 @@ import {IParticle, IParticleContainer, IParticleFactory} from '../types';
  */
 export class ParticleContainer implements IParticleContainer {
   private particles: Set<IParticle>;
+  private destroyedParticles: Set<IParticle>;
 
   constructor(private readonly particleFactory: IParticleFactory) {
     this.particles = new Set();
+    this.destroyedParticles = new Set();
   }
 
   // количество частиц в контейнере
   public getActiveParticlesCount(): number {
-    return this.particles.size;
+    return this.particles.size - this.destroyedParticles.size;
   }
 
   /**
@@ -21,25 +23,30 @@ export class ParticleContainer implements IParticleContainer {
    * @param delta Время между кадрами
    */
   public onUpdate(delta: number): void {
-    const destroyedParticles: IParticle[] = [];
-
     this.particles.forEach((p) => {
       p.onUpdate?.(delta);
 
       if (p.shouldDestroy) {
-        destroyedParticles.push(p);
+        this.destroyedParticles.add(p);
       }
     });
 
-    destroyedParticles.forEach((p) => {
+    this.destroyedParticles.forEach((p) => {
       p.onDestroy?.();
       this.particles.delete(p);
     });
+
+    this.destroyedParticles = new Set();
   }
 
   public onDestroy(): void {
+    this.destroyedParticles.forEach((p) => {
+      p.onDestroy?.();
+      this.particles.delete(p);
+    });
     this.particles.forEach((p) => p.onDestroy?.());
     this.particles = new Set();
+    this.destroyedParticles = new Set();
   }
 
   public onPause(): void {
@@ -58,9 +65,5 @@ export class ParticleContainer implements IParticleContainer {
 
   public clear(): void {
     this.onDestroy();
-  }
-
-  public count(): number {
-    return this.particles.size;
   }
 }

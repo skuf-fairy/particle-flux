@@ -8,7 +8,7 @@ export class SpawnPositionBehavior extends ParticleBaseComponent {
   constructor(private readonly config: SpawnPositionBehaviorConfig) {
     super();
 
-    this.position = this.config.position;
+    this.position = {...this.config};
   }
 
   public init(): void {}

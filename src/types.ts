@@ -59,7 +59,7 @@ export interface IParticle extends IUpdatableEntity {
   shouldDestroy: boolean;
 
   speed: number;
-  direction: IVector2;
+  direction: Point2d;
   view: ViewParticle;
   container: IParticleContainer;
 }
