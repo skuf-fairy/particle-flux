@@ -128,6 +128,11 @@ export interface ParticleViewPortBehaviorConfig {
 
 export type ParticleBehaviorConfig = ParticleLifeTimeBehaviorConfig | ParticleViewPortBehaviorConfig;
 
+export interface ParticleFluxConfig {
+  emitterConfig: EmitterConfig;
+  particleBehaviorsConfig: ParticleBehaviorConfig;
+}
+
 export type RangeValue = {
   min: number;
   max: number;
@@ -135,4 +140,4 @@ export type RangeValue = {
 
 export type NumberValue = RangeValue | number;
 
-export type Multiplicator = NumberValue;
+export type Multiplier = NumberValue;

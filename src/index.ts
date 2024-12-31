@@ -1,6 +1,7 @@
 // core
 export {ParticleFlux} from './core/ParticleFlux';
 export {
+  ParticleFluxConfig,
   ParticleBehaviorConfig,
   ParticleLifeTimeBehaviorConfig,
   ParticleViewPortBehaviorConfig,
@@ -8,7 +9,7 @@ export {
   IVector2,
   ViewContainer,
   ViewParticle,
-  Multiplicator,
+  Multiplier,
   Point2d,
 } from './types';
 
