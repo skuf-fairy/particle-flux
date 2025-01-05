@@ -24,12 +24,18 @@ export {
   isScriptBehaviorConfig,
   isVectorBehaviorConfig,
 } from './base-behaviors/base-behaviors.typeguards';
+export {
+  isScalarDeltaBehaviorConfig,
+  isScalarDynamicBehavior,
+  isScalarStaticBehavior,
+} from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.typeguards';
 
 // configs
 export {
   ScalarBehaviorConfig,
   ScalarDynamicBehaviorConfig,
   ScalarStaticBehaviorConfig,
+  ScalarDeltaBehaviorConfig,
 } from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.types';
 export {ScriptBehaviorConfig, TimeScriptConfig} from './base-behaviors/ScriptBehavior/ScriptBehavior.types';
 export {VectorBehaviorConfig} from './base-behaviors/VectorBehavior/VectorBehavior.types';
