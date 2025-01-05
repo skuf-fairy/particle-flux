@@ -50,6 +50,7 @@ export interface IParticleFactory {
   create(container: IParticleContainer): IParticle;
 }
 
+// частица
 export interface IParticle extends IUpdatableEntity {
   addComponent(...componentList: IParticleComponent[]): void;
   removeComponent(component: UnknownConstructor<IParticleComponent>): void;
@@ -64,6 +65,7 @@ export interface IParticle extends IUpdatableEntity {
   container: IParticleContainer;
 }
 
+// компонент для частицы
 export interface IParticleComponent extends IUpdatableEntity {
   tag: string;
   particle: IParticle;
@@ -99,6 +101,8 @@ export interface EmitterConfig {
   autoStart?: boolean;
 }
 
+// поведение частицы, которое основано на времени жизни частицы
+// то есть параметры в повдении измяняются с течением жизни частицы
 export interface ParticleLifeTimeBehaviorConfig {
   lifeTime: LifeTimeBehaviorConfig;
   speed?: SpeedBehaviorConfig;
@@ -113,6 +117,7 @@ export interface ParticleLifeTimeBehaviorConfig {
   color?: ColorBehaviorConfig;
 }
 
+// поведение частицы, которое основано на ее существовании в прямоугольнике
 export interface ParticleViewPortBehaviorConfig {
   viewportLife: ViewportLifeBehaviorConfig;
   alpha?: ScalarBehaviorConfig;
@@ -128,6 +133,7 @@ export interface ParticleViewPortBehaviorConfig {
 
 export type ParticleBehaviorConfig = ParticleLifeTimeBehaviorConfig | ParticleViewPortBehaviorConfig;
 
+// полный конфиг для создания частиц
 export interface ParticleFluxConfig {
   emitterConfig: EmitterConfig;
   particleBehaviorsConfig: ParticleBehaviorConfig;

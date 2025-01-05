@@ -1,20 +1,9 @@
-import {GravityBehaviorConfig, isGravityStaticBehaviorConfig} from './GravityBehavior.types';
-import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
-import {RealRandom} from '../../utils/random/RealRandom';
+import {ScalarBehavior} from '../../base-behaviors/ScalarBehavior/ScalarBehavior';
 
-export class GravityBehavior extends ParticleBaseComponent {
+export class GravityBehavior extends ScalarBehavior {
   public gravity: number;
 
-  constructor(private readonly config: GravityBehaviorConfig) {
-    super();
-  }
-
-  public init(): void {
-    if (isGravityStaticBehaviorConfig(this.config)) {
-      this.gravity = this.config.value;
-    } else {
-      // todo здесь деление для ввода больших чисел, но может убрать
-      this.gravity = new RealRandom().generateFloatNumber(this.config.min, this.config.max) / 100;
-    }
+  protected updateValue(value: number): void {
+    this.gravity = value;
   }
 }

@@ -1,14 +1,3 @@
-export interface GravityRangeBehaviorConfig {
-  min: number;
-  max: number;
-}
+import {ScalarBehaviorConfig} from '../../base-behaviors/ScalarBehavior/ScalarBehaviorConfig.types';
 
-export interface GravityStaticBehaviorConfig {
-  value: number;
-}
-
-export type GravityBehaviorConfig = GravityStaticBehaviorConfig | GravityRangeBehaviorConfig;
-
-export function isGravityStaticBehaviorConfig(config: GravityBehaviorConfig): config is GravityStaticBehaviorConfig {
-  return 'value' in config;
-}
+export type GravityBehaviorConfig = ScalarBehaviorConfig;
