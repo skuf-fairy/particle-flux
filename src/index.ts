@@ -60,7 +60,7 @@ export {PathBehaviorConfig} from './behaviors/PathBehavior/PathBehavior.types';
 export {ScaleBehaviorConfig} from './behaviors/ScaleBehavior/ScaleBehavior.types';
 export {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
 export {ViewportLifeBehaviorConfig} from './behaviors/ViewportLifeBehavior/ViewportLifeBehavior.types';
-export {RotationBehaviorConfig, DeltaRotationConfig} from './behaviors/RotationBehavior/RotationBehavior.types';
+export {RotationBehaviorConfig} from './behaviors/RotationBehavior/RotationBehavior.types';
 
 export {
   SpawnRectangleShape,

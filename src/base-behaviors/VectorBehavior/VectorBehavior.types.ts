@@ -1,6 +1,6 @@
-import {ScalarBehaviorConfig} from '../ScalarBehavior/ScalarBehaviorConfig.types';
+import {ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from '../ScalarBehavior/ScalarBehaviorConfig.types';
 
 export interface VectorBehaviorConfig {
-  x: ScalarBehaviorConfig;
-  y: ScalarBehaviorConfig;
+  x: ScalarDynamicBehaviorConfig | ScalarStaticBehaviorConfig;
+  y: ScalarDynamicBehaviorConfig | ScalarStaticBehaviorConfig;
 }

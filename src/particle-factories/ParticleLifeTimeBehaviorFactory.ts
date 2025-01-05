@@ -43,8 +43,6 @@ import {
 } from '../types';
 import {RealRandom} from '../utils/random/RealRandom';
 import {ParticleContainer} from '../core/ParticleContainer';
-import {isDeltaRotationBehaviorConfig} from '../behaviors/RotationBehavior/RotationBehavior.typeguards';
-import {DeltaRotationBehavior} from '../behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
 import {ScriptRotationBehavior} from '../behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
 import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 import {SpawnPositionBehavior} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior';
@@ -129,16 +127,12 @@ export class ParticleLifeTimeBehaviorFactory implements IParticleFactory {
     }
 
     if (this.config.rotation) {
-      if (isDeltaRotationBehaviorConfig(this.config.rotation)) {
-        particle.addComponent(new DeltaRotationBehavior(this.config.rotation));
-      } else {
-        if (isScalarBehaviorConfig(this.config.rotation)) {
-          particle.addComponent(new ScalarRotationBehavior(this.config.rotation));
-        }
+      if (isScalarBehaviorConfig(this.config.rotation)) {
+        particle.addComponent(new ScalarRotationBehavior(this.config.rotation));
+      }
 
-        if (isScriptBehaviorConfig(this.config.rotation)) {
-          particle.addComponent(new ScriptRotationBehavior(this.config.rotation));
-        }
+      if (isScriptBehaviorConfig(this.config.rotation)) {
+        particle.addComponent(new ScriptRotationBehavior(this.config.rotation));
       }
     }
 

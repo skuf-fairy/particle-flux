@@ -26,7 +26,6 @@ import {ParticleContainer} from '../core/ParticleContainer';
 import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 import {DirectionBehavior} from '../behaviors/DirectionBehavior/DirectionBehavior';
 import {GravityBehavior} from '../behaviors/GravityBehavior/GravityBehavior';
-import {DeltaRotationBehavior} from '../behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
 import {AlphaScalarBehavior} from '../behaviors/AlphaBehavior/AlphaScalarBehavior/AlphaScalarBehavior';
 import {ScaleScalarBehavior} from '../behaviors/ScaleBehavior/ScaleScalarBehavior/ScaleScalarBehavior';
 import {SpawnPositionBehavior} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior';
@@ -84,7 +83,7 @@ export class ParticleViewPortBehaviorFactory implements IParticleFactory {
     }
 
     if (this.config.rotation) {
-      particle.addComponent(new DeltaRotationBehavior(this.config.rotation));
+      particle.addComponent(new ScaleScalarBehavior(this.config.rotation));
     }
 
     if (this.customComponents) {

@@ -7,6 +7,8 @@ import {EasingFunction, EasingName} from '../../utils/easing/easing.types';
 import {isScalarStaticBehavior, isScalarDynamicBehavior} from '../ScalarBehavior/ScalarBehaviorConfig.typeguards';
 import {VectorBehaviorConfig} from './VectorBehavior.types';
 import {RealRandom} from '../../utils/random/RealRandom';
+import {ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from '../ScalarBehavior/ScalarBehaviorConfig.types';
+import {isRangeValue} from '../../typeguards';
 
 export abstract class VectorBehavior extends ParticleBaseComponent {
   protected startValue: Vector2;
@@ -14,9 +16,10 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
   protected value: Vector2;
   protected easingX: EasingFunction;
   protected easingY: EasingFunction;
-  protected multiplicatorX: number;
-  protected multiplicatorY: number;
+  protected multiplierX: number;
+  protected multiplierY: number;
   protected lifeTimeBehavior?: LifeTimeBehavior;
+  private random: RealRandom;
 
   constructor(protected readonly config: VectorBehaviorConfig) {
     super();
@@ -25,6 +28,8 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
   protected abstract updateValue(value: Vector2): void;
 
   public init(): void {
+    this.random = new RealRandom();
+
     this.startValue = new Vector2();
     this.endValue = new Vector2();
 
@@ -49,31 +54,12 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
     this.easingX = EASING_FUNCTIONS[config.x.easing || EasingName.linear];
     this.easingY = EASING_FUNCTIONS[config.y.easing || EasingName.linear];
 
-    const random = new RealRandom();
-
-    this.multiplicatorX = 1;
-
-    if (config.x.mult && typeof config.x.mult === 'number') {
-      this.multiplicatorX = config.x.mult;
-    }
-
-    if (config.x.mult && typeof config.x.mult === 'object') {
-      this.multiplicatorX = random.generateFloatNumber(config.x.mult.min, config.x.mult.max);
-    }
-
-    this.multiplicatorY = 1;
-
-    if (config.y.mult && typeof config.y.mult === 'number') {
-      this.multiplicatorX = config.y.mult;
-    }
-
-    if (config.y.mult && typeof config.y.mult === 'object') {
-      this.multiplicatorY = random.generateFloatNumber(config.y.mult.min, config.y.mult.max);
-    }
+    this.multiplierX = this.getInitialMultiplier(this.config.x);
+    this.multiplierY = this.getInitialMultiplier(this.config.y);
 
     this.lifeTimeBehavior = this.particle.getComponent(LifeTimeBehavior);
 
-    this.updateValue(this.getValue(this.getTimeProgress()));
+    this.onUpdate();
   }
 
   public onUpdate(): void {
@@ -81,13 +67,25 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
   }
 
   protected getValue(progress: number): Vector2 {
-    this.value.x = NumberUtils.lerp(this.startValue.x, this.endValue.x, this.easingX(progress)) * this.multiplicatorX;
-    this.value.y = NumberUtils.lerp(this.startValue.y, this.endValue.y, this.easingY(progress)) * this.multiplicatorY;
+    this.value.x = NumberUtils.lerp(this.startValue.x, this.endValue.x, this.easingX(progress)) * this.multiplierX;
+    this.value.y = NumberUtils.lerp(this.startValue.y, this.endValue.y, this.easingY(progress)) * this.multiplierY;
 
     return this.value;
   }
 
   private getTimeProgress(): number {
     return this.lifeTimeBehavior?.lifeTimeNormalizedProgress || 0;
+  }
+
+  private getInitialMultiplier(config: ScalarDynamicBehaviorConfig | ScalarStaticBehaviorConfig): number {
+    if (config.mult) {
+      if (isRangeValue(config.mult)) {
+        return this.random.generateFloatNumber(config.mult.min, config.mult.max);
+      } else {
+        return config.mult;
+      }
+    }
+
+    return 1;
   }
 }
