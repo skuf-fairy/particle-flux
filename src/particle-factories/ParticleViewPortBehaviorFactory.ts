@@ -29,6 +29,9 @@ import {GravityBehavior} from '../behaviors/GravityBehavior/GravityBehavior';
 import {AlphaScalarBehavior} from '../behaviors/AlphaBehavior/AlphaScalarBehavior/AlphaScalarBehavior';
 import {ScaleScalarBehavior} from '../behaviors/ScaleBehavior/ScaleScalarBehavior/ScaleScalarBehavior';
 import {SpawnPositionBehavior} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior';
+import {isDeltaBehaviorConfig} from '../base-behaviors/DeltaBehavior/DeltaBehavior.typeguards';
+import {DeltaRotationBehavior} from '../behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
+import {ScalarRotationBehavior} from '../behaviors/RotationBehavior/ScalarRotationBehavior/ScalarRotationBehavior';
 
 export class ParticleViewPortBehaviorFactory implements IParticleFactory {
   constructor(
@@ -83,7 +86,13 @@ export class ParticleViewPortBehaviorFactory implements IParticleFactory {
     }
 
     if (this.config.rotation) {
-      particle.addComponent(new ScaleScalarBehavior(this.config.rotation));
+      if (isDeltaBehaviorConfig(this.config.rotation)) {
+        particle.addComponent(new DeltaRotationBehavior(this.config.rotation));
+      }
+
+      if (isScalarBehaviorConfig(this.config.rotation)) {
+        particle.addComponent(new ScalarRotationBehavior(this.config.rotation));
+      }
     }
 
     if (this.customComponents) {

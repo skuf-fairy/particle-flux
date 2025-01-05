@@ -3,11 +3,7 @@ import {LifeTimeBehavior} from '../../behaviors/LifeTimeBehavior/LifeTimeBehavio
 import {NumberUtils} from '../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../utils/easing/easing-functions';
 import {EasingFunction, EasingName} from '../../utils/easing/easing.types';
-import {
-  isScalarDeltaBehaviorConfig,
-  isScalarDynamicBehavior,
-  isScalarStaticBehavior,
-} from './ScalarBehaviorConfig.typeguards';
+import {isScalarDynamicBehavior, isScalarStaticBehavior} from './ScalarBehaviorConfig.typeguards';
 import {ScalarBehaviorConfig} from './ScalarBehaviorConfig.types';
 import {RealRandom} from '../../utils/random/RealRandom';
 import {isRangeValue} from '../../typeguards';
@@ -29,40 +25,27 @@ export abstract class ScalarBehavior extends ParticleBaseComponent {
   public init(): void {
     this.startValue = 0;
     this.endValue = 0;
-
-    if (isScalarStaticBehavior(this.config)) {
-      this.startValue = this.config.value;
-      this.endValue = this.config.value;
-      this.easing = EASING_FUNCTIONS[this.config.easing || EasingName.linear];
-    }
-
-    if (isScalarDeltaBehaviorConfig(this.config)) {
-      this.startValue = this.config.value;
-      this.endValue = this.config.value;
-      this.easing = EASING_FUNCTIONS[EasingName.linear];
-    }
-
-    if (isScalarDynamicBehavior(this.config)) {
-      this.startValue = this.config.start;
-      this.endValue = this.config.end;
-      this.easing = EASING_FUNCTIONS[this.config.easing || EasingName.linear];
-    }
+    this.easing = EASING_FUNCTIONS[this.config.easing || EasingName.linear];
 
     this.multiplier = this.getInitialMultiplier();
 
     this.lifeTimeBehavior = this.particle.getComponent(LifeTimeBehavior);
 
-    this.onUpdate(0);
+    if (isScalarStaticBehavior(this.config)) {
+      this.startValue = this.config.value;
+      this.endValue = this.config.value;
+    }
+
+    if (isScalarDynamicBehavior(this.config)) {
+      this.startValue = this.config.start;
+      this.endValue = this.config.end;
+    }
+
+    this.onUpdate();
   }
 
-  public onUpdate(delta: number): void {
-    if (isScalarDeltaBehaviorConfig(this.config)) {
-      this.startValue += this.config.delta * delta;
-      this.endValue += this.config.delta * delta;
-      this.updateValue(this.startValue);
-    } else {
-      this.updateValue(this.getValue(this.getTimeProgress()));
-    }
+  public onUpdate(): void {
+    this.updateValue(this.getValue(this.getTimeProgress()));
   }
 
   protected getValue(progress: number): number {

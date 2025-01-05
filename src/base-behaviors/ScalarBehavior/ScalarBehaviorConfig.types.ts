@@ -11,14 +11,8 @@ export interface ScalarDynamicBehaviorConfig extends ScalarBaseBehaviorConfig {
   end: number;
 }
 
-export interface ScalarDeltaBehaviorConfig {
-  value: number;
-  delta: number;
-  mult?: Multiplier;
-}
-
 export interface ScalarStaticBehaviorConfig extends ScalarBaseBehaviorConfig {
   value: number;
 }
 
-export type ScalarBehaviorConfig = ScalarDynamicBehaviorConfig | ScalarStaticBehaviorConfig | ScalarDeltaBehaviorConfig;
+export type ScalarBehaviorConfig = ScalarDynamicBehaviorConfig | ScalarStaticBehaviorConfig;

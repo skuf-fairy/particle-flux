@@ -46,6 +46,8 @@ import {ParticleContainer} from '../core/ParticleContainer';
 import {ScriptRotationBehavior} from '../behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
 import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 import {SpawnPositionBehavior} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior';
+import {isDeltaBehaviorConfig} from 'src/base-behaviors/DeltaBehavior/DeltaBehavior.typeguards';
+import {DeltaRotationBehavior} from 'src/behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
 
 export class ParticleLifeTimeBehaviorFactory implements IParticleFactory {
   constructor(
@@ -127,6 +129,10 @@ export class ParticleLifeTimeBehaviorFactory implements IParticleFactory {
     }
 
     if (this.config.rotation) {
+      if (isDeltaBehaviorConfig(this.config.rotation)) {
+        particle.addComponent(new DeltaRotationBehavior(this.config.rotation));
+      }
+
       if (isScalarBehaviorConfig(this.config.rotation)) {
         particle.addComponent(new ScalarRotationBehavior(this.config.rotation));
       }

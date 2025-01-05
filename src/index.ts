@@ -19,26 +19,28 @@ export {isParticleViewPortBehaviorConfig, isParticleLifeTimeBehaviorConfig, isRa
 export {ScalarBehavior} from './base-behaviors/ScalarBehavior/ScalarBehavior';
 export {ScriptBehavior} from './base-behaviors/ScriptBehavior/ScriptBehavior';
 export {VectorBehavior} from './base-behaviors/VectorBehavior/VectorBehavior';
+export {DeltaBehavior} from './base-behaviors/DeltaBehavior/DeltaBehavior';
+
 export {
   isScalarBehaviorConfig,
   isScriptBehaviorConfig,
   isVectorBehaviorConfig,
 } from './base-behaviors/base-behaviors.typeguards';
 export {
-  isScalarDeltaBehaviorConfig,
   isScalarDynamicBehavior,
   isScalarStaticBehavior,
 } from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.typeguards';
+export {isDeltaBehaviorConfig} from './base-behaviors/DeltaBehavior/DeltaBehavior.typeguards';
 
 // configs
 export {
   ScalarBehaviorConfig,
   ScalarDynamicBehaviorConfig,
   ScalarStaticBehaviorConfig,
-  ScalarDeltaBehaviorConfig,
 } from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.types';
 export {ScriptBehaviorConfig, TimeScriptConfig} from './base-behaviors/ScriptBehavior/ScriptBehavior.types';
 export {VectorBehaviorConfig} from './base-behaviors/VectorBehavior/VectorBehavior.types';
+export {DeltaBehaviorConfig} from './base-behaviors/DeltaBehavior/DeltaBehavior.types';
 
 export {AlphaBehaviorConfig} from './behaviors/AlphaBehavior/AlphaBehavior.types';
 export {
