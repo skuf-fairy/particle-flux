@@ -1,4 +1,4 @@
-import {NumberValue, ParticleFluxConfig} from '../types';
+import {NumberValue, ParticleFluxConfig, ViewRenderFn} from '../types';
 import {LifeTimeBehaviorConfig} from '../behaviors/LifeTimeBehavior/LifeTimeBehavior.types';
 import {SpeedBehaviorConfig} from '../behaviors/SpeedBehavior/SpeedBehavior.types';
 import {DirectionBehaviorConfig} from '../behaviors/DirectionBehavior/DirectionBehavior.types';
@@ -12,7 +12,15 @@ import {SpawnShapeBehavior} from '../behaviors/SpawnBehaviors/SpawnBehaviors.typ
 import {ColorBehaviorConfig} from '../behaviors/ColorBehavior/ColorBehavior.types';
 
 export class ConfigManager {
-  constructor(private readonly config: ParticleFluxConfig) {}
+  constructor(private readonly config: ParticleFluxConfig, private viewFactory: ViewRenderFn[] | ViewRenderFn) {}
+
+  get view(): ViewRenderFn[] | ViewRenderFn {
+    return this.viewFactory;
+  }
+
+  set view(viewFactory: ViewRenderFn[] | ViewRenderFn) {
+    this.viewFactory = viewFactory;
+  }
 
   // emitter config
   set spawnInterval(interval: NumberValue | undefined) {

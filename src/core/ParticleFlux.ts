@@ -14,10 +14,8 @@ export class ParticleFlux {
     private readonly viewFactory: ViewRenderFn[] | ViewRenderFn,
     private readonly initialConfig: ParticleFluxConfig,
   ) {
-    this.config = new ConfigManager(this.initialConfig);
-    this.container = new ParticleContainer(
-      new ParticleBehaviorFactory(this.viewContainer, this.viewFactory, this.config),
-    );
+    this.config = new ConfigManager(this.initialConfig, this.viewFactory);
+    this.container = new ParticleContainer(new ParticleBehaviorFactory(this.viewContainer, this.config));
     this.emitter = new ParticleEmitter(this.container, this.config);
   }
 

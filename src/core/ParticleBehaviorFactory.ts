@@ -27,7 +27,7 @@ import {SpeedScriptBehavior} from '../behaviors/SpeedBehavior/SpeedScriptBehavio
 import {MovementComponent} from '../components/MovementComponent/MovementComponent';
 import {PathMovementComponent} from '../components/PathMovementComponent/PathMovementComponent';
 import {TimeComponent} from '../components/TimeComponent/TimeComponent';
-import {IParticle, IParticleComponent, ViewParticle, ViewRenderFn, IParticleFactory, ViewContainer} from '../types';
+import {IParticle, IParticleComponent, ViewParticle, IParticleFactory, ViewContainer} from '../types';
 import {RealRandom} from '../utils/random/RealRandom';
 import {ParticleContainer} from './ParticleContainer';
 import {ScriptRotationBehavior} from '../behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
@@ -43,11 +43,11 @@ import {
 } from '../behaviors/ColorBehavior/ColorBehavior.typeguards';
 
 export class ParticleBehaviorFactory implements IParticleFactory {
-  constructor(
-    private readonly viewContainer: ViewContainer<ViewParticle>,
-    private readonly viewFactory: ViewRenderFn[] | ViewRenderFn,
-    private readonly config: ConfigManager,
-  ) {}
+  private readonly random: RealRandom;
+
+  constructor(private readonly viewContainer: ViewContainer<ViewParticle>, private readonly config: ConfigManager) {
+    this.random = new RealRandom();
+  }
 
   public create(container: ParticleContainer): IParticle {
     const particle = new Particle(this.createView(), container);
@@ -164,6 +164,7 @@ export class ParticleBehaviorFactory implements IParticleFactory {
   }
 
   private createView(): ViewParticle {
-    return Array.isArray(this.viewFactory) ? new RealRandom().choice(this.viewFactory)() : this.viewFactory();
+    const viewFactory = this.config.view;
+    return Array.isArray(viewFactory) ? this.random.choice(viewFactory)() : viewFactory();
   }
 }
