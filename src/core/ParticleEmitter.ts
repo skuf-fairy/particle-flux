@@ -1,7 +1,8 @@
 import {RealRandom} from '../utils/random/RealRandom';
 import {Ticker} from '../utils/Ticker/Ticker';
-import {EmitterConfig, IParticleContainer} from '../types';
+import {IParticleContainer} from '../types';
 import {isRangeValue} from '../typeguards';
+import {ConfigManager} from './ConfigManager';
 
 /**
  * Обновляет контейнер, создавая частицы по переданному конфигу
@@ -14,7 +15,7 @@ export class ParticleEmitter {
   // время, когда нужно будет заспавнить частицу
   private nextSpawnTime: number | null;
 
-  constructor(private readonly container: IParticleContainer, private readonly config: EmitterConfig) {
+  constructor(private readonly container: IParticleContainer, private readonly config: ConfigManager) {
     this.random = new RealRandom();
     this.ticker = new Ticker();
 

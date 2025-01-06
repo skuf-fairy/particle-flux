@@ -29,4 +29,4 @@ export interface PolygonalChainShape {
   chain: Chain | Chain[];
 }
 
-export type SpawnShape = SpawnRectangleShape | SpawnCircleShape | SpawnPointShape | PolygonalChainShape;
+export type SpawnShapeBehavior = SpawnRectangleShape | SpawnCircleShape | SpawnPointShape | PolygonalChainShape;

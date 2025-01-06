@@ -1,29 +1,24 @@
 import {ParticleEmitter} from './ParticleEmitter';
 import {ParticleContainer} from './ParticleContainer';
 import {ParticleFluxConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
-import {ParticleLifeTimeBehaviorFactory} from '../particle-factories/ParticleLifeTimeBehaviorFactory';
-import {ParticleViewPortBehaviorFactory} from '../particle-factories/ParticleViewPortBehaviorFactory';
-import {isParticleLifeTimeBehaviorConfig} from '../typeguards';
+import {ConfigManager} from './ConfigManager';
+import {ParticleBehaviorFactory} from './ParticleBehaviorFactory';
 
 export class ParticleFlux {
   public readonly emitter: ParticleEmitter;
   public readonly container: ParticleContainer;
+  public readonly config: ConfigManager;
 
   constructor(
     private readonly viewContainer: ViewContainer<ViewParticle>,
     private readonly viewFactory: ViewRenderFn[] | ViewRenderFn,
-    private readonly config: ParticleFluxConfig,
+    private readonly initialConfig: ParticleFluxConfig,
   ) {
+    this.config = new ConfigManager(this.initialConfig);
     this.container = new ParticleContainer(
-      isParticleLifeTimeBehaviorConfig(this.config.particleBehaviorsConfig)
-        ? new ParticleLifeTimeBehaviorFactory(this.viewContainer, this.viewFactory, this.config.particleBehaviorsConfig)
-        : new ParticleViewPortBehaviorFactory(
-            this.viewContainer,
-            this.viewFactory,
-            this.config.particleBehaviorsConfig,
-          ),
+      new ParticleBehaviorFactory(this.viewContainer, this.viewFactory, this.config),
     );
-    this.emitter = new ParticleEmitter(this.container, this.config.emitterConfig);
+    this.emitter = new ParticleEmitter(this.container, this.config);
   }
 
   public startEmit(): void {
@@ -31,7 +26,7 @@ export class ParticleFlux {
   }
 
   public pauseEmit(): void {
-    this.emitter.stopEmit();
+    this.emitter.pauseEmit();
   }
 
   public stopEmit(): void {

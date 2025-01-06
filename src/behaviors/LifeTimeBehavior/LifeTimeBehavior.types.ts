@@ -8,7 +8,3 @@ export interface LifeTimeStaticBehaviorConfig {
 }
 
 export type LifeTimeBehaviorConfig = LifeTimeRangeBehaviorConfig | LifeTimeStaticBehaviorConfig;
-
-export function isLifeTimeStaticBehaviorConfig(config: LifeTimeBehaviorConfig): config is LifeTimeStaticBehaviorConfig {
-  return 'value' in config;
-}

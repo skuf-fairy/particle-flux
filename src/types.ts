@@ -1,4 +1,3 @@
-import {ScalarBehaviorConfig} from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.types';
 import {AlphaBehaviorConfig} from './behaviors/AlphaBehavior/AlphaBehavior.types';
 import {ColorBehaviorConfig} from './behaviors/ColorBehavior/ColorBehavior.types';
 import {DirectionBehaviorConfig} from './behaviors/DirectionBehavior/DirectionBehavior.types';
@@ -7,10 +6,9 @@ import {LifeTimeBehaviorConfig} from './behaviors/LifeTimeBehavior/LifeTimeBehav
 import {PathBehaviorConfig} from './behaviors/PathBehavior/PathBehavior.types';
 import {RotationBehaviorConfig} from './behaviors/RotationBehavior/RotationBehavior.types';
 import {ScaleBehaviorConfig} from './behaviors/ScaleBehavior/ScaleBehavior.types';
-import {SpawnShape} from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
+import {SpawnShapeBehavior} from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
 import {SpawnPositionBehaviorConfig} from './behaviors/SpawnPositionBehavior/SpawnPositionBehavior.types';
 import {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
-import {ViewportLifeBehaviorConfig} from './behaviors/ViewportLifeBehavior/ViewportLifeBehavior.types';
 import {UnknownConstructor} from './types.utils';
 
 // параметры частицы, которые могут обновляться
@@ -103,7 +101,7 @@ export interface EmitterConfig {
 
 // поведение частицы, которое основано на времени жизни частицы
 // то есть параметры в повдении измяняются с течением жизни частицы
-export interface ParticleLifeTimeBehaviorConfig {
+export interface ParticleBehaviorConfig {
   lifeTime: LifeTimeBehaviorConfig;
   speed?: SpeedBehaviorConfig;
   direction?: DirectionBehaviorConfig;
@@ -113,25 +111,9 @@ export interface ParticleLifeTimeBehaviorConfig {
   gravity?: GravityBehaviorConfig;
   rotation?: RotationBehaviorConfig;
   spawnPosition?: SpawnPositionBehaviorConfig;
-  spawnShape?: SpawnShape;
+  spawnShape?: SpawnShapeBehavior;
   color?: ColorBehaviorConfig;
 }
-
-// поведение частицы, которое основано на ее существовании в прямоугольнике
-export interface ParticleViewPortBehaviorConfig {
-  viewportLife: ViewportLifeBehaviorConfig;
-  alpha?: ScalarBehaviorConfig;
-  scale?: ScalarBehaviorConfig;
-  speed?: ScalarBehaviorConfig;
-  direction?: DirectionBehaviorConfig;
-  gravity?: GravityBehaviorConfig;
-  path?: PathBehaviorConfig;
-  rotation?: ScalarBehaviorConfig;
-  spawnPosition?: SpawnPositionBehaviorConfig;
-  spawnShape?: SpawnShape;
-}
-
-export type ParticleBehaviorConfig = ParticleLifeTimeBehaviorConfig | ParticleViewPortBehaviorConfig;
 
 // полный конфиг для создания частиц
 export interface ParticleFluxConfig {

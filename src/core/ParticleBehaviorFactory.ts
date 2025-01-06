@@ -1,4 +1,4 @@
-import {Particle} from '../core/Particle';
+import {Particle} from './Particle';
 import {
   isScalarBehaviorConfig,
   isScriptBehaviorConfig,
@@ -6,11 +6,6 @@ import {
 } from '../base-behaviors/base-behaviors.typeguards';
 import {AlphaScalarBehavior} from '../behaviors/AlphaBehavior/AlphaScalarBehavior/AlphaScalarBehavior';
 import {AlphaScriptBehavior} from '../behaviors/AlphaBehavior/AlphaScriptBehavior/AlphaScriptBehavior';
-import {
-  isColorDynamicBehaviorConfig,
-  isColorScriptBehaviorConfig,
-  isColorStaticBehaviorConfig,
-} from '../behaviors/ColorBehavior/ColorBehavior.types';
 import {ColorDynamicBehavior} from '../behaviors/ColorBehavior/ColorDynamicBehavior/ColorDynamicBehavior';
 import {ColorScriptBehavior} from '../behaviors/ColorBehavior/ColorScriptBehavior/ColorScriptBehavior';
 import {ColorStaticBehavior} from '../behaviors/ColorBehavior/ColorStaticBehavior/ColorStaticBehavior';
@@ -22,7 +17,7 @@ import {ScalarRotationBehavior} from '../behaviors/RotationBehavior/ScalarRotati
 import {ScaleScalarBehavior} from '../behaviors/ScaleBehavior/ScaleScalarBehavior/ScaleScalarBehavior';
 import {ScaleScriptBehavior} from '../behaviors/ScaleBehavior/ScaleScriptBehavior/ScaleScriptBehavior';
 import {ScaleVectorBehavior} from '../behaviors/ScaleBehavior/ScaleVectorBehavior/ScaleVectorBehavior';
-import {SpawnShape, SpawnShapeType} from '../behaviors/SpawnBehaviors/SpawnBehaviors.types';
+import {SpawnShapeBehavior, SpawnShapeType} from '../behaviors/SpawnBehaviors/SpawnBehaviors.types';
 import {SpawnCircleBehavior} from '../behaviors/SpawnBehaviors/SpawnCircleBehavior';
 import {SpawnPointBehavior} from '../behaviors/SpawnBehaviors/SpawnPointBehavior';
 import {SpawnPolygonalChainBehavior} from '../behaviors/SpawnBehaviors/SpawnPolygonalChainBehavior';
@@ -32,29 +27,26 @@ import {SpeedScriptBehavior} from '../behaviors/SpeedBehavior/SpeedScriptBehavio
 import {MovementComponent} from '../components/MovementComponent/MovementComponent';
 import {PathMovementComponent} from '../components/PathMovementComponent/PathMovementComponent';
 import {TimeComponent} from '../components/TimeComponent/TimeComponent';
-import {
-  ParticleLifeTimeBehaviorConfig,
-  IParticle,
-  IParticleComponent,
-  ViewParticle,
-  ViewRenderFn,
-  IParticleFactory,
-  ViewContainer,
-} from '../types';
+import {IParticle, IParticleComponent, ViewParticle, ViewRenderFn, IParticleFactory, ViewContainer} from '../types';
 import {RealRandom} from '../utils/random/RealRandom';
-import {ParticleContainer} from '../core/ParticleContainer';
+import {ParticleContainer} from './ParticleContainer';
 import {ScriptRotationBehavior} from '../behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
 import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 import {SpawnPositionBehavior} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior';
-import {isDeltaBehaviorConfig} from 'src/base-behaviors/DeltaBehavior/DeltaBehavior.typeguards';
-import {DeltaRotationBehavior} from 'src/behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
+import {isDeltaBehaviorConfig} from '../base-behaviors/DeltaBehavior/DeltaBehavior.typeguards';
+import {DeltaRotationBehavior} from '../behaviors/RotationBehavior/DeltaRotationBehavior/DeltaRotationBehavior';
+import {ConfigManager} from './ConfigManager';
+import {
+  isColorScriptBehaviorConfig,
+  isColorStaticBehaviorConfig,
+  isColorDynamicBehaviorConfig,
+} from '../behaviors/ColorBehavior/ColorBehavior.typeguards';
 
-export class ParticleLifeTimeBehaviorFactory implements IParticleFactory {
+export class ParticleBehaviorFactory implements IParticleFactory {
   constructor(
     private readonly viewContainer: ViewContainer<ViewParticle>,
     private readonly viewFactory: ViewRenderFn[] | ViewRenderFn,
-    private readonly config: ParticleLifeTimeBehaviorConfig,
-    private readonly customComponents?: IParticleComponent[],
+    private readonly config: ConfigManager,
   ) {}
 
   public create(container: ParticleContainer): IParticle {
@@ -142,10 +134,6 @@ export class ParticleLifeTimeBehaviorFactory implements IParticleFactory {
       }
     }
 
-    if (this.customComponents) {
-      particle.addComponent(...this.customComponents);
-    }
-
     // components
     particle.addComponent(new TimeComponent());
     particle.addComponent(new ViewComponent(this.viewContainer));
@@ -159,7 +147,7 @@ export class ParticleLifeTimeBehaviorFactory implements IParticleFactory {
     return particle;
   }
 
-  private getSpawnBehaviorByShapeType(shape: SpawnShape): IParticleComponent {
+  private getSpawnBehaviorByShapeType(shape: SpawnShapeBehavior): IParticleComponent {
     switch (shape.type) {
       case SpawnShapeType.Point:
         return new SpawnPointBehavior(shape);

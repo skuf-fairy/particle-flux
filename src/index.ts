@@ -3,8 +3,6 @@ export {ParticleFlux} from './core/ParticleFlux';
 export {
   ParticleFluxConfig,
   ParticleBehaviorConfig,
-  ParticleLifeTimeBehaviorConfig,
-  ParticleViewPortBehaviorConfig,
   EmitterConfig,
   IVector2,
   ViewContainer,
@@ -13,7 +11,7 @@ export {
   Point2d,
 } from './types';
 
-export {isParticleViewPortBehaviorConfig, isParticleLifeTimeBehaviorConfig, isRangeValue} from './typeguards';
+export {isRangeValue} from './typeguards';
 
 // behaviors
 export {ScalarBehavior} from './base-behaviors/ScalarBehavior/ScalarBehavior';
@@ -47,27 +45,28 @@ export {
   ColorBehaviorConfig,
   ColorDynamicBehaviorConfig,
   ColorStaticBehaviorConfig,
+} from './behaviors/ColorBehavior/ColorBehavior.types';
+export {
   isColorStaticBehaviorConfig,
   isColorDynamicBehaviorConfig,
   isColorScriptBehaviorConfig,
-} from './behaviors/ColorBehavior/ColorBehavior.types';
+} from './behaviors/ColorBehavior/ColorBehavior.typeguards';
 export {
   DirectionBehaviorConfig,
   DirectionRangeBehaviorConfig,
   StaticDirectionBehaviorConfig,
-  isStaticDirectionBehaviorConfig,
 } from './behaviors/DirectionBehavior/DirectionBehavior.types';
+export {isStaticDirectionBehaviorConfig} from './behaviors/DirectionBehavior/DirectionBehavior.typeguards';
 export {GravityBehaviorConfig} from './behaviors/GravityBehavior/GravityBehavior.types';
 export {
   LifeTimeBehaviorConfig,
   LifeTimeRangeBehaviorConfig,
   LifeTimeStaticBehaviorConfig,
-  isLifeTimeStaticBehaviorConfig,
 } from './behaviors/LifeTimeBehavior/LifeTimeBehavior.types';
+export {isLifeTimeStaticBehaviorConfig} from './behaviors/LifeTimeBehavior/LifeTimeBehavior.typeguards';
 export {PathBehaviorConfig} from './behaviors/PathBehavior/PathBehavior.types';
 export {ScaleBehaviorConfig} from './behaviors/ScaleBehavior/ScaleBehavior.types';
 export {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
-export {ViewportLifeBehaviorConfig} from './behaviors/ViewportLifeBehavior/ViewportLifeBehavior.types';
 export {RotationBehaviorConfig} from './behaviors/RotationBehavior/RotationBehavior.types';
 
 export {
@@ -75,7 +74,7 @@ export {
   SpawnCircleShape,
   SpawnPointShape,
   PolygonalChainShape,
-  SpawnShape,
+  SpawnShapeBehavior,
   SpawnShapeType,
 } from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
 

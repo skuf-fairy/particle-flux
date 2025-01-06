@@ -12,15 +12,3 @@ export interface ColorStaticBehaviorConfig {
 }
 
 export type ColorBehaviorConfig = ColorStaticBehaviorConfig | ColorDynamicBehaviorConfig | ScriptBehaviorConfig<string>;
-
-export function isColorStaticBehaviorConfig(config: ColorBehaviorConfig): config is ColorStaticBehaviorConfig {
-  return 'value' in config;
-}
-
-export function isColorDynamicBehaviorConfig(config: ColorBehaviorConfig): config is ColorDynamicBehaviorConfig {
-  return 'start' in config && 'end' in config;
-}
-
-export function isColorScriptBehaviorConfig(config: ColorBehaviorConfig): config is ScriptBehaviorConfig<string> {
-  return 'script' in config;
-}

@@ -1,9 +1,10 @@
-import {DirectionBehaviorConfig, isStaticDirectionBehaviorConfig} from './DirectionBehavior.types';
+import {DirectionBehaviorConfig} from './DirectionBehavior.types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 import {GravityBehavior} from '../../behaviors/GravityBehavior/GravityBehavior';
 import {NumberUtils} from '../../utils/NumberUtils';
 import {RealRandom} from '../../utils/random/RealRandom';
 import {Point2d} from '../../types';
+import {isStaticDirectionBehaviorConfig} from './DirectionBehavior.typeguards';
 
 export class DirectionBehavior extends ParticleBaseComponent {
   private gravityBehavior?: GravityBehavior;

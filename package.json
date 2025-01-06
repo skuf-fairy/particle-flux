@@ -1,6 +1,6 @@
 {
   "name": "particle-flux",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "main": "lib/index.js",
   "license": "UNLICENSED",
   "files": [
@@ -38,9 +38,6 @@
     "prettier": "2.8.7",
     "typescript": "5.2.2",
     "vitest": "0.28.3"
-  },
-  "dependencies": {
-    "aabb-collisions-detector": "1.1.2"
   },
   "author": "skuf-fairy",
   "description": "## TODO",
