@@ -76,19 +76,7 @@ export interface Point2d {
   y: number;
 }
 
-export interface IVector2 extends Point2d {
-  clone(): IVector2;
-  set(x: number, y: number): void;
-}
-
 export type ViewRenderFn = () => ViewParticle;
-
-export interface ViewPort {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
 
 export interface EmitterConfig {
   spawnInterval?: NumberValue;

@@ -4,7 +4,6 @@ export {
   ParticleFluxConfig,
   ParticleBehaviorConfig,
   EmitterConfig,
-  IVector2,
   ViewContainer,
   ViewParticle,
   Multiplier,
