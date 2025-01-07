@@ -1,8 +1,7 @@
+import {AnyBehaviorConfig} from './base-behaviors.types';
 import {ScalarBehaviorConfig} from './ScalarBehavior/ScalarBehaviorConfig.types';
 import {ScriptBehaviorConfig} from './ScriptBehavior/ScriptBehavior.types';
 import {VectorBehaviorConfig} from './VectorBehavior/VectorBehavior.types';
-
-export type AnyBehaviorConfig = ScalarBehaviorConfig | VectorBehaviorConfig | ScriptBehaviorConfig<any>;
 
 export function isScalarBehaviorConfig(config: AnyBehaviorConfig): config is ScalarBehaviorConfig {
   return ('start' in config && 'end' in config) || 'value' in config;
