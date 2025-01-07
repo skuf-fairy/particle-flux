@@ -13,9 +13,14 @@ export class ParticleContainer implements IParticleContainer {
     this.destroyedParticles = new Set();
   }
 
+  // возвращает активные частицы
+  public getParticles(): IParticle[] {
+    return [...this.particles].filter((x) => !this.destroyedParticles.has(x));
+  }
+
   // количество частиц в контейнере
   public getActiveParticlesCount(): number {
-    return this.particles.size - this.destroyedParticles.size;
+    return Math.max(0, this.particles.size - this.destroyedParticles.size);
   }
 
   /**
