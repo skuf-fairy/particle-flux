@@ -5,15 +5,13 @@ type TickerCallback = (deltaMS: number) => void;
 export class Ticker {
   private rafID: number | null;
   private lastTime: number | null;
-  private callbackList: TickerCallback[];
 
   private isStarted: boolean;
 
-  constructor(autostart: boolean = false) {
+  constructor(private readonly callback: TickerCallback, autostart: boolean = false) {
     this.rafID = null;
     this.lastTime = null;
     this.isStarted = false;
-    this.callbackList = [];
 
     if (autostart) {
       this.start();
@@ -29,22 +27,13 @@ export class Ticker {
     return this.isStarted;
   }
 
-  public add(callback: TickerCallback): void {
-    this.callbackList.push(callback);
-  }
-
-  public remove(removeCallback: TickerCallback): void {
-    this.callbackList = this.callbackList.filter((cb) => cb !== removeCallback);
-  }
-
   public start(): void {
     if (this.rafID !== null) return;
 
     this.isStarted = true;
 
     const update = (): void => {
-      const delta = this.getDeltaBetweenFrames();
-      this.callbackList.forEach((cb) => cb(delta));
+      this.callback(this.getDeltaBetweenFrames());
       this.requestAnimationFrame(update);
     };
 

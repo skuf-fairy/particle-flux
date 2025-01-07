@@ -17,12 +17,10 @@ export class ParticleEmitter {
 
   constructor(private readonly container: IParticleContainer, private readonly config: ConfigManager) {
     this.random = new RealRandom();
-    this.ticker = new Ticker();
+    this.ticker = new Ticker(this.handleUpdate);
 
     this.currentTime = 0;
     this.nextSpawnTime = this.getNextSpawnTime();
-
-    this.ticker.add(this.handleUpdate);
 
     if (this.config.autoStart === undefined || this.config.autoStart) {
       this.ticker.start();
