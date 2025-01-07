@@ -26,7 +26,6 @@ import {SpeedScalarBehavior} from '../behaviors/SpeedBehavior/SpeedScalarBehavio
 import {SpeedScriptBehavior} from '../behaviors/SpeedBehavior/SpeedScriptBehavior/SpeedScriptBehavior';
 import {MovementComponent} from '../components/MovementComponent/MovementComponent';
 import {PathMovementComponent} from '../components/PathMovementComponent/PathMovementComponent';
-import {TimeComponent} from '../components/TimeComponent/TimeComponent';
 import {IParticle, IParticleComponent, ViewParticle, IParticleFactory, ViewContainer} from '../types';
 import {RealRandom} from '../utils/random/RealRandom';
 import {ParticleContainer} from './ParticleContainer';
@@ -135,7 +134,6 @@ export class ParticleBehaviorFactory implements IParticleFactory {
     }
 
     // components
-    particle.addComponent(new TimeComponent());
     particle.addComponent(new ViewComponent(this.viewContainer));
 
     if (this.config.path) {

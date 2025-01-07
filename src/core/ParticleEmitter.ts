@@ -1,5 +1,5 @@
 import {RealRandom} from '../utils/random/RealRandom';
-import {Ticker} from '../utils/Ticker/Ticker';
+import {Ticker} from '../utils/Ticker';
 import {IParticleContainer} from '../types';
 import {isRangeValue} from '../typeguards';
 import {ConfigManager} from './ConfigManager';
@@ -106,10 +106,10 @@ export class ParticleEmitter {
   }
 
   // обновление контейнера и создание новых частиц по переданному конфигу
-  private handleUpdate = (ticker: Ticker): void => {
-    this.currentTime += ticker.deltaMS;
+  private handleUpdate = (deltaMS: number): void => {
+    this.currentTime += deltaMS;
 
-    this.container.onUpdate?.(ticker.deltaMS);
+    this.container.onUpdate?.(deltaMS);
 
     // если время работы закончилось
     if (this.config.spawnTime !== undefined && this.currentTime >= this.config.spawnTime) {
