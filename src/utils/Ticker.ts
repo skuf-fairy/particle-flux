@@ -1,3 +1,5 @@
+import {globalWindow} from '../globalWindow';
+
 type TickerCallback = (deltaMS: number) => void;
 
 export class Ticker {
@@ -43,32 +45,41 @@ export class Ticker {
     const update = (): void => {
       const delta = this.getDeltaBetweenFrames();
       this.callbackList.forEach((cb) => cb(delta));
-      this.rafID = window.requestAnimationFrame(update);
+      this.requestAnimationFrame(update);
     };
 
-    this.rafID = window.requestAnimationFrame(update);
+    this.requestAnimationFrame(update);
   }
 
   public stop(): void {
-    if (this.rafID !== null) {
-      window.cancelAnimationFrame(this.rafID);
-      this.rafID = null;
-      this.lastTime = null;
-      this.isStarted = false;
-    }
+    if (this.rafID === null) return;
+
+    globalWindow?.cancelAnimationFrame(this.rafID);
+    this.rafID = null;
+    this.lastTime = null;
+    this.isStarted = false;
   }
 
   private getDeltaBetweenFrames(): number {
+    if (globalWindow === null) return 0;
+
     if (this.lastTime === null) {
       this.lastTime = performance.now();
 
       return 0;
     }
 
-    const now = performance.now();
+    const now = globalWindow.performance.now();
+
+    if (now === undefined) return 0;
+
     const delta = now - this.lastTime;
     this.lastTime = now;
 
     return delta;
+  }
+
+  private requestAnimationFrame(update: TickerCallback): void {
+    this.rafID = globalWindow?.requestAnimationFrame(update) || null;
   }
 }

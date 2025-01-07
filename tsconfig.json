@@ -16,5 +16,5 @@
     "skipLibCheck": true
   },
   "types": ["node"],
-  "exclude": ["node_modules", "lib/**/*"]
+  "exclude": ["node_modules", "lib/**/*", "src/__tests__"]
 }
