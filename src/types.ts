@@ -11,6 +11,8 @@ import {SpawnPositionBehaviorConfig} from './behaviors/SpawnPositionBehavior/Spa
 import {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
 import {UnknownConstructor} from './types.utils';
 
+export type GlobalWindow = Window & typeof globalThis;
+
 // параметры частицы, которые могут обновляться
 export interface ViewParticle {
   position: Point2d;
@@ -33,8 +35,6 @@ export interface ViewContainer<U extends ViewParticle> {
 export interface IUpdatableEntity {
   onUpdate?(delta: number): void; // обновление на вызове requestAnimationFrame
   onDestroy?(): void; // деструктуризация эмиттера
-  onPause?(): void; // пауза обновления времени в эмиттере
-  onResume?(): void; // возобновление обновления времени в эмиттере
 }
 
 export interface IParticleContainer extends IUpdatableEntity {

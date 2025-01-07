@@ -60,14 +60,6 @@ export class ParticleContainer implements IParticleContainer {
     this.destroyedParticles = new Set();
   }
 
-  public onPause(): void {
-    this.particles.forEach((p) => p.onPause?.());
-  }
-
-  public onResume(): void {
-    this.particles.forEach((p) => p.onResume?.());
-  }
-
   public addParticle(): void {
     const particle = this.particleFactory.create(this);
     particle.init();

@@ -80,12 +80,4 @@ export class UpdatableEntityContainer<K, E extends IUpdatableEntity> implements 
     this.entityMap = new KeyUniqValuesVault<K, E>();
     this.updatableEntityMap = new KeyUniqValuesVault<K, E>();
   }
-
-  public onPause(): void {
-    this.entityList.forEach((c) => c.onPause?.());
-  }
-
-  public onResume(): void {
-    this.entityList.forEach((c) => c.onResume?.());
-  }
 }
