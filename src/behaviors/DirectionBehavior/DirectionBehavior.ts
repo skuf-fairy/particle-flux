@@ -23,7 +23,7 @@ export class DirectionBehavior extends ParticleBaseComponent {
     this.gravityBehavior = this.particle.getComponent(GravityBehavior);
   }
 
-  public onUpdate(): void {
+  public update(): void {
     this.particle.direction.y += this.gravityBehavior?.gravity || 0;
   }
 

@@ -60,10 +60,10 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
 
     this.lifeTimeBehavior = this.particle.getComponent(LifeTimeBehavior);
 
-    this.onUpdate();
+    this.update();
   }
 
-  public onUpdate(): void {
+  public update(): void {
     this.updateValue(this.getValue(this.getTimeProgress()));
   }
 

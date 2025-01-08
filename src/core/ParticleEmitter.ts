@@ -107,7 +107,7 @@ export class ParticleEmitter {
   private handleUpdate = (deltaMS: number): void => {
     this.currentTime += deltaMS;
 
-    this.container.onUpdate?.(deltaMS);
+    this.container.update(deltaMS);
 
     // если время работы закончилось
     if (this.config.spawnTime !== undefined && this.currentTime >= this.config.spawnTime) {

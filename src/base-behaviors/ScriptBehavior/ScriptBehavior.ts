@@ -24,10 +24,10 @@ export abstract class ScriptBehavior<V> extends ParticleBaseComponent {
 
     this.lifeTimeBehavior = this.particle.getComponent(LifeTimeBehavior);
 
-    this.updateValue(this.getValue(this.getTimeProgress()));
+    this.update();
   }
 
-  public onUpdate(): void {
+  public update(): void {
     this.updateValue(this.getValue(this.getTimeProgress()));
   }
 

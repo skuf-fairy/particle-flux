@@ -31,16 +31,12 @@ export interface ViewContainer<U extends ViewParticle> {
   removeChild(children: U): void;
 }
 
-// базовая обновляемая сущность
-export interface IUpdatableEntity {
-  onUpdate?(delta: number): void; // обновление на вызове requestAnimationFrame
-  onDestroy?(): void; // деструктуризация эмиттера
-}
-
-export interface IParticleContainer extends IUpdatableEntity {
+export interface IParticleContainer {
   addParticle(...particleList: IParticle[]): void;
   getActiveParticlesCount(): number;
   clear(): void;
+  update(deltaMS: number): void;
+  destroy(): void;
 }
 
 // фабрика по созданию частиц
@@ -49,12 +45,14 @@ export interface IParticleFactory {
 }
 
 // частица
-export interface IParticle extends IUpdatableEntity {
+export interface IParticle {
   addComponent(...componentList: IParticleComponent[]): void;
   removeComponent(component: UnknownConstructor<IParticleComponent>): void;
   getComponent<T extends IParticleComponent>(component: UnknownConstructor<T>): T | undefined;
   getComponentByTag<T extends IParticleComponent>(tag: string): T | undefined;
   init(): void;
+  update(deltaMS: number): void;
+  destroy(): void;
   shouldDestroy: boolean;
 
   speed: number;
@@ -64,10 +62,12 @@ export interface IParticle extends IUpdatableEntity {
 }
 
 // компонент для частицы
-export interface IParticleComponent extends IUpdatableEntity {
+export interface IParticleComponent {
   tag: string;
   particle: IParticle;
   init(): void;
+  update?(deltaMS: number): void;
+  destroy?(): void;
   bindParticle(particle: IParticle): void;
 }
 

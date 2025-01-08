@@ -24,7 +24,7 @@ export class ColorDynamicBehavior extends ParticleBaseComponent {
     this.lifeTimeBehavior = this.particle.getComponent(LifeTimeBehavior);
   }
 
-  public onUpdate(): void {
+  public update(): void {
     if (!this.lifeTimeBehavior) return;
 
     this.particle.view.tint = NumberUtils.lerpColor(

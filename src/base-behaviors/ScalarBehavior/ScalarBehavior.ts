@@ -41,10 +41,10 @@ export abstract class ScalarBehavior extends ParticleBaseComponent {
       this.endValue = this.config.end;
     }
 
-    this.onUpdate();
+    this.update();
   }
 
-  public onUpdate(): void {
+  public update(): void {
     this.updateValue(this.getValue(this.getTimeProgress()));
   }
 

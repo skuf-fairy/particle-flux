@@ -1,5 +1,9 @@
-import {IUpdatableEntity} from '../types';
 import {KeyUniqValuesVault} from '../utils/vaults/KeyUniqValuesVault';
+
+interface IUpdatableEntity {
+  update?(deltaMS: number): void;
+  destroy?(): void;
+}
 
 /**
  * Обертка над обновляемыми сущностями
@@ -7,7 +11,7 @@ import {KeyUniqValuesVault} from '../utils/vaults/KeyUniqValuesVault';
  * entityList - весь список обновляемых сущностей
  * updatableEntityMap - список только тех сущностей, у которых реализован метод update
  */
-export class UpdatableEntityContainer<K, E extends IUpdatableEntity> implements IUpdatableEntity {
+export class UpdatableEntityContainer<K, E extends IUpdatableEntity> {
   /**
    * весь список обновляемых сущностей
    */
@@ -30,10 +34,6 @@ export class UpdatableEntityContainer<K, E extends IUpdatableEntity> implements 
     return this.entityMap.valuesList;
   }
 
-  public cloneMap(map: Map<K, E[]>): Map<K, E[]> {
-    return new Map(map);
-  }
-
   public getEntityByKey(key: K): E | undefined {
     return this.entityMap.getValue(key);
   }
@@ -44,14 +44,14 @@ export class UpdatableEntityContainer<K, E extends IUpdatableEntity> implements 
 
   public pushEntity(key: K, entity: E): void {
     this.entityMap.addValue(key, entity);
-    if (entity.onUpdate) {
+    if (entity.update) {
       this.updatableEntityMap.addValue(key, entity);
     }
   }
 
   public dropEntityByKey(key: K): void {
     this.entityMap.dropKey(key).forEach((e) => {
-      e.onDestroy?.();
+      e.destroy?.();
     });
 
     this.updatableEntityMap.dropKey(key);
@@ -59,7 +59,7 @@ export class UpdatableEntityContainer<K, E extends IUpdatableEntity> implements 
 
   public dropEntity(key: K, entity: E): void {
     this.entityMap.dropSetValue(key, entity).forEach((e) => {
-      e.onDestroy?.();
+      e.destroy?.();
     });
 
     this.updatableEntityMap.dropSetValue(key, entity);
@@ -69,12 +69,12 @@ export class UpdatableEntityContainer<K, E extends IUpdatableEntity> implements 
     return this.entityMap.getValueCountByKey(key);
   }
 
-  public onUpdate(delta: number): void {
-    this.updatableEntityMap.getVault().forEach((e) => e.forEach((e) => e.onUpdate?.(delta)));
+  public update(delta: number): void {
+    this.updatableEntityMap.getVault().forEach((e) => e.forEach((e) => e.update?.(delta)));
   }
 
-  public onDestroy(): void {
-    this.entityList.forEach((c) => c.onDestroy?.());
+  public destroy(): void {
+    this.entityList.forEach((c) => c.destroy?.());
     this.entityMap.clear();
     this.updatableEntityMap.clear();
     this.entityMap = new KeyUniqValuesVault<K, E>();

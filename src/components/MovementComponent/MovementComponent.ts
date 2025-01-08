@@ -7,7 +7,7 @@ export class MovementComponent extends ParticleBaseComponent {
    * Обновление позиции игрового объекта в соответствующем направлении с заданной скоростью
    * @param delta время между кадрами
    */
-  public onUpdate(delta: number): void {
+  public update(delta: number): void {
     const speed = this.particle.speed * delta;
     const direction = this.particle.direction;
 

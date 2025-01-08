@@ -37,13 +37,13 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
     this.entityList.forEach((e) => e.init());
   }
 
-  public onUpdate(delta: number): void {
+  public update(delta: number): void {
     if (this.view.destroyed) {
       this.shouldDestroy = true;
       return;
     }
 
-    super.onUpdate(delta);
+    super.update(delta);
   }
 
   /**

@@ -14,7 +14,7 @@ export abstract class DeltaBehavior extends ParticleBaseComponent {
     this.value = this.config.value;
   }
 
-  public onUpdate(delta: number): void {
+  public update(delta: number): void {
     this.value += this.config.delta * delta;
     this.updateValue(this.value);
   }
