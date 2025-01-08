@@ -81,8 +81,8 @@ export type ViewRenderFn = () => ViewParticle;
 export interface EmitterConfig {
   spawnInterval?: NumberValue;
   spawnTime?: number;
-  spawnParticlesPerWave?: number;
   maxParticles?: number;
+  spawnParticlesPerWave?: number;
   spawnChance?: number;
   autoStart?: boolean;
 }
@@ -91,16 +91,19 @@ export interface EmitterConfig {
 // то есть параметры в повдении измяняются с течением жизни частицы
 export interface ParticleBehaviorConfig {
   lifeTime: LifeTimeBehaviorConfig;
-  speed?: SpeedBehaviorConfig;
-  direction?: DirectionBehaviorConfig;
-  path?: PathBehaviorConfig;
-  alpha?: AlphaBehaviorConfig;
-  scale?: ScaleBehaviorConfig;
-  gravity?: GravityBehaviorConfig;
-  rotation?: RotationBehaviorConfig;
+  // начальная позиция частицы
   spawnPosition?: SpawnPositionBehaviorConfig;
   spawnShape?: SpawnShapeBehavior;
+  // не меняется со временем, указывает направление движения
+  direction?: DirectionBehaviorConfig;
+  // параметры, которые меняются со временем
+  speed?: SpeedBehaviorConfig;
+  scale?: ScaleBehaviorConfig;
+  alpha?: AlphaBehaviorConfig;
+  gravity?: GravityBehaviorConfig;
+  rotation?: RotationBehaviorConfig;
   color?: ColorBehaviorConfig;
+  path?: PathBehaviorConfig;
 }
 
 // полный конфиг для создания частиц
