@@ -8,7 +8,7 @@
 
 Конфигурация эмиттера частиц, который отвечает за создание частиц
 
-`typescript
+```typescript
 interface EmitterConfig {
   spawnInterval?: NumberValue;
   spawnTime?: number;
@@ -17,7 +17,7 @@ interface EmitterConfig {
   spawnChance?: number;
   autoStart?: boolean;
 }
-`
+```
 
 ### Spawn Interval
 
@@ -25,12 +25,12 @@ interface EmitterConfig {
 Может быть как постоянной, например, если указать 250 мс, то каждые 250 мс (как минимум, если позволит браузер) будет создаваться волна частиц.
 Так же этот параметр можно указать в формате диапазона:
 
-`typescript
+```typescript
 type RangeValue = {
   min: number;
   max: number;
 };
-`
+```
 
 тогда следующее создание волны частиц будет через случайное время в диапазоне от **min** до **max** включительно.
 
@@ -58,7 +58,7 @@ type RangeValue = {
 
 Конфигурация для каждой частицы, которая определяет ее начальное положение, направление движения, скорость и другие параметры для ее отображения.
 
-`typescript
+```typescript
 interface ParticleBehaviorConfig {
   lifeTime: LifeTimeBehaviorConfig;
   spawnPosition?: SpawnPositionBehaviorConfig;
@@ -72,7 +72,7 @@ interface ParticleBehaviorConfig {
   color?: ColorBehaviorConfig;
   path?: PathBehaviorConfig;
 }
-`
+```
 
 ### Life Time
 
@@ -80,31 +80,31 @@ interface ParticleBehaviorConfig {
 Параметры, которые меняются со временем меняются относительно времени жизни частицы.
 Может быть статичным, то есть время жизни каждой созданной частицы будет всегда одинаковым.
 
-`typescript
+```typescript
 interface LifeTimeStaticBehaviorConfig {
   value: number;
 }
-`
+```
 
 Если передать диапазон, то время жизни созданной частицы будет варьироваться в диапазоне от **min** до **max**
 
-`typescript
+```typescript
 interface LifeTimeRangeBehaviorConfig {
   min: number;
   max: number;
 }
-`
+```
 
 ### Spawn Position
 
 Определяет начальную позицию частицы либо, если указан **Spawn Shape**, то позицию относительно которой рассчитывается позиция с помощью конфига в **Spawn Shape**. По умолчанию это начало координат.
 
-`typescript
+```typescript
 interface SpawnPositionBehaviorConfig {
   x: number;
   y: number;
 }
-`
+```
 
 ### Spawn Shape
 
@@ -114,19 +114,19 @@ interface SpawnPositionBehaviorConfig {
 
 Область для создания частицы - точка.
 
-`typescript
+```typescript
 interface SpawnPointShape {
   type: SpawnShapeType.Point;
   x: number;
   y: number;
 }
-`
+```
 
 #### Rectangle Spawn Shape
 
 Область для создания частицы - прямоугольник, параллельный оси Х.
 
-`typescript
+```typescript
 interface SpawnRectangleShape {
   type: SpawnShapeType.Rectangle;
   x: number;
@@ -134,38 +134,38 @@ interface SpawnRectangleShape {
   width: number;
   height: number;
 }
-`
+```
 
 #### Circle Spawn Shape
 
 Область для создания частицы - круг.
 
-`typescript
+```typescript
 interface SpawnCircleShape {
   type: SpawnShapeType.Circle;
   x: number;
   y: number;
   radius: number;
 }
-`
+```
 
 #### Polygonal Chain Spawn Shape
 
 Область для создания частицы - линия полигона.
 
-`typescript
+```typescript
 interface Point2d {
-x: number;
-y: number;
+  x: number;
+  y: number;
 }
 
 type Chain = Point2d[];
 
 interface PolygonalChainShape {
-type: SpawnShapeType.Polygon;
-chain: Chain | Chain[];
+  type: SpawnShapeType.Polygon;
+  chain: Chain | Chain[];
 }
-`
+```
 
 Chain[] - разделенные полигоны
 
@@ -175,20 +175,20 @@ Chain[] - разделенные полигоны
 
 Может быть статичным, тогда каждая частица будет двигаться в этом направлении
 
-`typescript
+```typescript
 interface StaticDirectionBehaviorConfig {
   angle: number;
 }
-`
+```
 
 Можно передать диапазон, тогда направление движения частицы будет случайное в этом диапазоне
 
-`typescript
+```typescript
 interface DirectionRangeBehaviorConfig {
   minAngle: number;
   maxAngle: number;
 }
-`
+```
 
 ## Параметры, которые меняются со временем
 
@@ -205,13 +205,13 @@ interface DirectionRangeBehaviorConfig {
 
 Статичное значение, которое будет постоянным на протяжении всей жизни частицы
 
-`typescript
+```typescript
 interface ScalarStaticBehaviorConfig extends ScalarBaseBehaviorConfig {
   value: number;
   easing?: EasingName;
   mult?: Multiplier;
 }
-`
+```
 
 ## Использование на примере pixi.js
 
