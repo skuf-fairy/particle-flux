@@ -53,7 +53,7 @@ export class Ticker {
     if (globalWindow === null) return 0;
 
     if (this.lastTime === null) {
-      this.lastTime = performance.now();
+      this.lastTime = globalWindow.performance.now();
 
       return 0;
     }
