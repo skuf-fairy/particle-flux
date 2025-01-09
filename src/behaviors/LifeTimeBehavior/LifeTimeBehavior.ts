@@ -26,7 +26,7 @@ export class LifeTimeBehavior extends ParticleBaseComponent {
     this.remainingLifeTime = this.lifeTime;
   }
 
-  public update(deltaMS: number): void {
+  public update(_: number, deltaMS: number): void {
     this.remainingLifeTime = this.getRemainingLifeTime(deltaMS);
     this.lifeTimeNormalizedProgress = this.getLifeTimeNormalizedProgress();
 

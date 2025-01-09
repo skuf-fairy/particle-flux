@@ -104,10 +104,10 @@ export class ParticleEmitter {
   }
 
   // обновление контейнера и создание новых частиц по переданному конфигу
-  private handleUpdate = (deltaMS: number): void => {
+  private handleUpdate = (elapsedDelta: number, deltaMS: number): void => {
     this.currentTime += deltaMS;
 
-    this.container.update(deltaMS);
+    this.container.update(elapsedDelta, deltaMS);
 
     // если время работы закончилось
     if (this.config.spawnTime !== undefined && this.currentTime >= this.config.spawnTime) {

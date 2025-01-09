@@ -1,7 +1,7 @@
 import {KeyUniqValuesVault} from '../utils/vaults/KeyUniqValuesVault';
 
 interface IUpdatableEntity {
-  update?(deltaMS: number): void;
+  update?(elapsedDelta: number, deltaMS: number): void;
   destroy?(): void;
 }
 
@@ -69,8 +69,8 @@ export class UpdatableEntityContainer<K, E extends IUpdatableEntity> {
     return this.entityMap.getValueCountByKey(key);
   }
 
-  public update(delta: number): void {
-    this.updatableEntityMap.getVault().forEach((e) => e.forEach((e) => e.update?.(delta)));
+  public update(elapsedDelta: number, deltaMS: number): void {
+    this.updatableEntityMap.getVault().forEach((e) => e.forEach((e) => e.update?.(elapsedDelta, deltaMS)));
   }
 
   public destroy(): void {

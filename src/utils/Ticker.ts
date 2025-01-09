@@ -1,26 +1,38 @@
 import {globalWindow} from '../globalWindow';
 
-type TickerCallback = (deltaMS: number) => void;
+export type TickerCallback = (elapsedDelta: number, deltaMS: number) => void;
+
+// за стандарт взято 60 FPS
+const STANDARD_DELTA_MS = 1 / 0.06;
 
 export class Ticker {
   private rafID: number | null;
   private lastTime: number | null;
-
   private isStarted: boolean;
+  private deltaBetweenFrames: number;
 
-  constructor(private readonly callback: TickerCallback, autostart: boolean = false) {
+  constructor(private readonly callback: TickerCallback) {
     this.rafID = null;
     this.lastTime = null;
     this.isStarted = false;
-
-    if (autostart) {
-      this.start();
-    }
+    this.deltaBetweenFrames = 0;
   }
 
-  // 144 = 1 / 6.94 * 1000
+  // FPS = 1 / deltaMS * 1000
   get FPS(): number {
-    return (1 / this.getDeltaBetweenFrames()) * 1000;
+    if (this.isWrongDeltaBetweenFrames()) return 0;
+
+    return (1 / this.deltaBetweenFrames) * 1000;
+  }
+
+  get deltaMS(): number {
+    return this.deltaBetweenFrames;
+  }
+
+  get elapsedDelta(): number {
+    if (this.isWrongDeltaBetweenFrames()) return 0;
+
+    return this.deltaBetweenFrames / STANDARD_DELTA_MS;
   }
 
   get started(): boolean {
@@ -33,7 +45,10 @@ export class Ticker {
     this.isStarted = true;
 
     const update = (): void => {
-      this.callback(this.getDeltaBetweenFrames());
+      this.deltaBetweenFrames = this.getDeltaBetweenFrames();
+      if (!this.isWrongDeltaBetweenFrames()) {
+        this.callback(this.elapsedDelta, this.deltaBetweenFrames);
+      }
       this.requestAnimationFrame(update);
     };
 
@@ -47,10 +62,12 @@ export class Ticker {
     this.rafID = null;
     this.lastTime = null;
     this.isStarted = false;
+    this.deltaBetweenFrames = 0;
   }
 
   private getDeltaBetweenFrames(): number {
     if (globalWindow === null) return 0;
+    if (!this.started) return 0;
 
     if (this.lastTime === null) {
       this.lastTime = globalWindow.performance.now();
@@ -68,7 +85,11 @@ export class Ticker {
     return delta;
   }
 
-  private requestAnimationFrame(update: TickerCallback): void {
+  private requestAnimationFrame(update: VoidFunction): void {
     this.rafID = globalWindow?.requestAnimationFrame(update) || null;
+  }
+
+  private isWrongDeltaBetweenFrames(): boolean {
+    return this.deltaBetweenFrames <= 0;
   }
 }

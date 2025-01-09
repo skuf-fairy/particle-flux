@@ -27,7 +27,7 @@ export class ParticleContainer implements IParticleContainer {
    * Выполняет обновление частиц в контейнере и чистит от уничтоженных
    * @param delta Время между кадрами
    */
-  public update(delta: number): void {
+  public update(elapsedDelta: number, deltaMS: number): void {
     this.particles.forEach((p) => {
       // если частица уже каким-либо образом была уничтожена, то добавляем ее в массив, но не вызываем обновление
       if (p.shouldDestroy) {
@@ -35,7 +35,7 @@ export class ParticleContainer implements IParticleContainer {
         return;
       }
 
-      p.update?.(delta);
+      p.update?.(elapsedDelta, deltaMS);
 
       if (p.shouldDestroy) {
         this.destroyedParticles.add(p);

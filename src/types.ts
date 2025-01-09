@@ -35,7 +35,7 @@ export interface IParticleContainer {
   addParticle(...particleList: IParticle[]): void;
   getActiveParticlesCount(): number;
   clear(): void;
-  update(deltaMS: number): void;
+  update(elapsedDelta: number, deltaMS: number): void;
   destroy(): void;
 }
 
@@ -51,7 +51,7 @@ export interface IParticle {
   getComponent<T extends IParticleComponent>(component: UnknownConstructor<T>): T | undefined;
   getComponentByTag<T extends IParticleComponent>(tag: string): T | undefined;
   init(): void;
-  update(deltaMS: number): void;
+  update(elapsedDelta: number, deltaMS: number): void;
   destroy(): void;
   shouldDestroy: boolean;
 
@@ -66,7 +66,7 @@ export interface IParticleComponent {
   tag: string;
   particle: IParticle;
   init(): void;
-  update?(deltaMS: number): void;
+  update?(elapsedDelta: number, deltaMS: number): void;
   destroy?(): void;
   bindParticle(particle: IParticle): void;
 }

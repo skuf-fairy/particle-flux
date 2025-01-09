@@ -18,9 +18,9 @@ export class PathMovementComponent extends ParticleBaseComponent {
    * Обновление позиции игрового объекта в соответствующем направлении с заданной скоростью
    * @param delta время между кадрами
    */
-  public update(timeDelta: number): void {
+  public update(elapsedDelta: number): void {
     if (this.pathBehavior) {
-      const speed = this.particle.speed * timeDelta;
+      const speed = this.particle.speed * elapsedDelta;
       this.delta.x = this.delta.x + speed;
       this.delta.y = this.pathBehavior.pathFunc(this.delta.x);
       const delta = Vector2Utils.rotate(this.delta, -Math.PI / 2);
