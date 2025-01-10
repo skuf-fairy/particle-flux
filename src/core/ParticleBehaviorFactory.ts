@@ -70,6 +70,14 @@ export class ParticleBehaviorFactory implements IParticleFactory {
 
     if (this.config.spawnShape) {
       particle.addComponent(this.getSpawnBehaviorByShapeType(this.config.spawnShape));
+    } else {
+      particle.addComponent(
+        new SpawnPointBehavior({
+          type: SpawnShapeType.Point,
+          x: 0,
+          y: 0,
+        }),
+      );
     }
 
     if (this.config.alpha) {
