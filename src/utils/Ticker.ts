@@ -52,6 +52,8 @@ export class Ticker {
 
       globalWindow?.requestAnimationFrame(update);
     };
+
+    globalWindow?.requestAnimationFrame(update);
   }
 
   public stop(): void {
