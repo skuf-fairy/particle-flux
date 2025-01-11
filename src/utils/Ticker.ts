@@ -6,13 +6,11 @@ export type TickerCallback = (elapsedDelta: number, deltaMS: number) => void;
 const STANDARD_DELTA_MS = 1 / 0.06;
 
 export class Ticker {
-  private rafID: number | null;
   private lastTime: number | null;
   private isStarted: boolean;
   private deltaBetweenFrames: number;
 
   constructor(private readonly callback: TickerCallback) {
-    this.rafID = null;
     this.lastTime = null;
     this.isStarted = false;
     this.deltaBetweenFrames = 0;
@@ -40,32 +38,28 @@ export class Ticker {
   }
 
   public start(): void {
-    if (this.rafID !== null) return;
-    console.log('start');
+    if (this.isStarted) return;
 
     this.isStarted = true;
 
     const update = (): void => {
+      if (!this.isStarted) return;
+
       this.deltaBetweenFrames = this.getDeltaBetweenFrames();
       if (!this.isWrongDeltaBetweenFrames()) {
         this.callback(this.elapsedDelta, this.deltaBetweenFrames);
       }
-      this.requestAnimationFrame(update);
-    };
 
-    this.requestAnimationFrame(update);
+      globalWindow?.requestAnimationFrame(update);
+    };
   }
 
   public stop(): void {
-    if (this.rafID === null) return;
+    if (!this.isStarted) return;
 
-    globalWindow?.cancelAnimationFrame(this.rafID);
-    console.log('end');
-    this.rafID = null;
     this.lastTime = null;
     this.isStarted = false;
     this.deltaBetweenFrames = 0;
-    console.log('raf', this.rafID);
   }
 
   private getDeltaBetweenFrames(): number {
@@ -86,13 +80,6 @@ export class Ticker {
     this.lastTime = now;
 
     return delta;
-  }
-
-  private requestAnimationFrame(update: VoidFunction): void {
-    if (this.lastTime === null || this.rafID === null) {
-      console.trace('requestAnimationFrame');
-    }
-    this.rafID = globalWindow?.requestAnimationFrame(update) || null;
   }
 
   private isWrongDeltaBetweenFrames(): boolean {
