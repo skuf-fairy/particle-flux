@@ -41,6 +41,7 @@ export class Ticker {
 
   public start(): void {
     if (this.rafID !== null) return;
+    console.log('start');
 
     this.isStarted = true;
 
@@ -59,10 +60,12 @@ export class Ticker {
     if (this.rafID === null) return;
 
     globalWindow?.cancelAnimationFrame(this.rafID);
+    console.log('end');
     this.rafID = null;
     this.lastTime = null;
     this.isStarted = false;
     this.deltaBetweenFrames = 0;
+    console.log('raf', this.rafID);
   }
 
   private getDeltaBetweenFrames(): number {
@@ -86,6 +89,9 @@ export class Ticker {
   }
 
   private requestAnimationFrame(update: VoidFunction): void {
+    if (this.lastTime === null || this.rafID === null) {
+      console.trace('requestAnimationFrame');
+    }
     this.rafID = globalWindow?.requestAnimationFrame(update) || null;
   }
 
