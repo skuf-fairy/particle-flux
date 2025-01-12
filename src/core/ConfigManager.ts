@@ -10,9 +10,14 @@ import {RotationBehaviorConfig} from '../behaviors/RotationBehavior/RotationBeha
 import {SpawnPositionBehaviorConfig} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior.types';
 import {SpawnShapeBehavior} from '../behaviors/SpawnBehaviors/SpawnBehaviors.types';
 import {ColorBehaviorConfig} from '../behaviors/ColorBehavior/ColorBehavior.types';
+import {cloneDeep} from 'src/utils/cloneDeep';
 
 export class ConfigManager {
-  constructor(private readonly config: ParticleFluxConfig, private viewFactory: ViewRenderFn[] | ViewRenderFn) {}
+  private readonly config: ParticleFluxConfig;
+
+  constructor(initialConfig: ParticleFluxConfig, private viewFactory: ViewRenderFn[] | ViewRenderFn) {
+    this.config = cloneDeep(initialConfig);
+  }
 
   get view(): ViewRenderFn[] | ViewRenderFn {
     return this.viewFactory;

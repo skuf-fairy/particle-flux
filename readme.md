@@ -190,6 +190,16 @@ interface DirectionRangeBehaviorConfig {
 }
 ```
 
+### Path
+
+TODO
+
+```typescript
+interface PathBehaviorConfig {
+  path: string;
+}
+```
+
 ## Параметры, которые меняются со временем
 
 | Behavior | ScalarStaticBehaviorConfig | ScalarDynamicBehaviorConfig | ScriptBehaviorConfig | VectorBehaviorConfig | DeltaBehaviorConfig |
@@ -213,6 +223,102 @@ interface ScalarStaticBehaviorConfig extends ScalarBaseBehaviorConfig {
 }
 ```
 
-## Использование на примере pixi.js
+### ScriptBehaviorConfig
 
-TODO
+Значение изменяется по прописанному скрипту. Необходимо указать массив в виде **время - значение**. Время нормализованное, изменяется от 0 до 1, где 0 - это начало жизни частицы, 1 - это конец.
+
+```typescript
+type TimeScriptConfig<V> = {time: number; value: V}[];
+
+interface ScriptBehaviorConfig<V> {
+  script: TimeScriptConfig<V>;
+}
+```
+
+Пример, где размер частицы увеличивается от 1 до 3
+
+```typescript
+scale: {
+  script: [
+    {
+      time: 0,
+      value: 1,
+    },
+    {
+      time: 0.25,
+      value: 2,
+    },
+    {
+      time: 1,
+      value: 3,
+    },
+  ],
+}
+```
+
+### VectorBehaviorConfig
+
+Применимо только к векторным значениям, например, scale, который изменяется по обеим осям.
+
+```typescript
+interface VectorBehaviorConfig {
+  x: ScalarBehaviorConfig;
+  y: ScalarBehaviorConfig;
+}
+```
+
+### DeltaBehaviorConfig
+
+Значение value \* mult изменяется каждый кадр на константу delta
+
+```typescript
+interface DeltaBehaviorConfig {
+  value: number;
+  delta: number;
+  mult?: Multiplier;
+}
+```
+
+## Использование на примере pixi.js 8 версии
+
+Простой пример использования эмиттера
+
+```typescript
+import {ParticleFlux} from 'particle-flux';
+import {Application, Assets, Sprite} from 'pixi.js';
+
+// init pixi app
+const app = new Application();
+
+await app.init();
+const particleTexture = await Assets.load(PATH_TO_TEXTURE);
+
+// set particle fabric function
+function createParticle(): Sprite {
+  const sprite = new Sprite(particleTexture);
+
+  sprite.anchor.set(0.5);
+
+  return sprite;
+}
+
+// create emitter
+new ParticleFlux(app.stage, createParticle, {
+  emitterConfig: {spawnInterval: 150},
+  particleBehaviorsConfig: {
+    lifeTime: {value: 250},
+    speed: {
+      start: 1,
+      end: 0,
+    },
+    scale: {
+      start: 1,
+      end: 0,
+    },
+    alpha: {
+      start: 1,
+      end: 0,
+    },
+  },
+});
+```
