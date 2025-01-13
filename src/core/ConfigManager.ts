@@ -10,7 +10,7 @@ import {RotationBehaviorConfig} from '../behaviors/RotationBehavior/RotationBeha
 import {SpawnPositionBehaviorConfig} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior.types';
 import {SpawnShapeBehavior} from '../behaviors/SpawnBehaviors/SpawnBehaviors.types';
 import {ColorBehaviorConfig} from '../behaviors/ColorBehavior/ColorBehavior.types';
-import {cloneDeep} from 'src/utils/cloneDeep';
+import {cloneDeep} from '../utils/cloneDeep';
 
 export class ConfigManager {
   private readonly config: ParticleFluxConfig;
