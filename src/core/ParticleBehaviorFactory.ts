@@ -51,6 +51,9 @@ export class ParticleBehaviorFactory implements IParticleFactory {
   public create(container: ParticleContainer): IParticle {
     const particle = new Particle(this.createView(), container);
 
+    // первым нужно добавить компонент отображения, чтобы остальные проинициализировали вьюху
+    particle.addComponent(new ViewComponent(this.viewContainer));
+
     if (this.config.lifeTime) {
       particle.addComponent(new LifeTimeBehavior(this.config.lifeTime));
     }
@@ -140,9 +143,6 @@ export class ParticleBehaviorFactory implements IParticleFactory {
         particle.addComponent(new ScriptRotationBehavior(this.config.rotation));
       }
     }
-
-    // components
-    particle.addComponent(new ViewComponent(this.viewContainer));
 
     if (this.config.path) {
       particle.addComponent(new PathMovementComponent());
