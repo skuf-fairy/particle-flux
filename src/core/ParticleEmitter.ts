@@ -80,6 +80,10 @@ export class ParticleEmitter {
     this.ticker.stop();
   }
 
+  public resumeEmit(): void {
+    this.ticker.start();
+  }
+
   /**
    * Остановка эмиттера, которая означает конец его работы по текущему конфигу
    * Очищает контейнер и сбрасывает время
