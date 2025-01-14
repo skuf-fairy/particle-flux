@@ -124,6 +124,13 @@ export class ParticleEmitter {
       return;
     }
 
+    // на старте работы эмиттера нужно заспавнить первую волну, чтобы не было задержки
+    if (this.nextSpawnTime !== null && this.currentTime - deltaMS === 0) {
+      this.emitWave();
+
+      return;
+    }
+
     // время создать волну частиц
     if (this.nextSpawnTime !== null && this.currentTime >= this.nextSpawnTime) {
       this.emitWave();
