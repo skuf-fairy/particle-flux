@@ -12,6 +12,7 @@
 interface EmitterConfig {
   spawnInterval?: NumberValue;
   spawnTime?: number;
+  spawnTimeout?: number;
   maxParticles?: number;
   spawnParticlesPerWave?: number;
   spawnChance?: number;
@@ -37,6 +38,10 @@ type RangeValue = {
 ### Spawn Time
 
 Определяет время работы эмиттера. Указывается в миллисекундах. Если не указать, то эмиттер будет бесконечно спавнить частицы (если конечно был указан **Spawn Interval**)
+
+### Spawn Timeout
+
+Таймаут до первого создания волны частиц
 
 ### Max Particles
 

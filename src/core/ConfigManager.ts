@@ -44,6 +44,10 @@ export class ConfigManager {
     return this.config.emitterConfig.spawnTime;
   }
 
+  get spawnTimeout(): number | undefined {
+    return this.config.emitterConfig.spawnTimeout;
+  }
+
   set spawnParticlesPerWave(count: number | undefined) {
     this.config.emitterConfig.spawnParticlesPerWave = count;
   }

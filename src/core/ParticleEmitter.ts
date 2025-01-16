@@ -111,6 +111,8 @@ export class ParticleEmitter {
   private handleUpdate = (elapsedDelta: number, deltaMS: number): void => {
     this.currentTime += deltaMS;
 
+    if (this.currentTime < 0) return;
+
     this.container.update(elapsedDelta, deltaMS);
 
     // если время работы закончилось
@@ -125,7 +127,7 @@ export class ParticleEmitter {
     }
 
     // на старте работы эмиттера нужно заспавнить первую волну, чтобы не было задержки
-    if (this.nextSpawnTime !== null && this.currentTime - deltaMS === 0) {
+    if (this.nextSpawnTime !== null && this.currentTime - deltaMS <= 0) {
       this.emitWave();
 
       return;
@@ -163,7 +165,7 @@ export class ParticleEmitter {
 
   // сбрасывает время эмиттера
   private resetTime(): void {
-    this.currentTime = 0;
+    this.currentTime = this.config.spawnTimeout !== undefined ? -this.config.spawnTimeout : 0;
     this.nextSpawnTime = this.getNextSpawnTime();
   }
 }

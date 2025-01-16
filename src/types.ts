@@ -81,6 +81,7 @@ export type ViewRenderFn = () => ViewParticle;
 export interface EmitterConfig {
   spawnInterval?: NumberValue;
   spawnTime?: number;
+  spawnTimeout?: number;
   maxParticles?: number;
   spawnParticlesPerWave?: number;
   spawnChance?: number;
