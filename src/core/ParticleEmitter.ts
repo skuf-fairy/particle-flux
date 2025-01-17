@@ -126,17 +126,9 @@ export class ParticleEmitter {
       return;
     }
 
-    // на старте работы эмиттера нужно заспавнить первую волну, чтобы не было задержки
-    if (this.nextSpawnTime !== null && this.currentTime - deltaMS <= 0) {
-      this.emitWave();
-
-      return;
-    }
-
-    // время создать волну частиц
+    // время создать очередную волну частиц
     if (this.nextSpawnTime !== null && this.currentTime >= this.nextSpawnTime) {
       this.emitWave();
-
       this.nextSpawnTime = this.getNextSpawnTime();
     }
   };
@@ -166,6 +158,7 @@ export class ParticleEmitter {
   // сбрасывает время эмиттера
   private resetTime(): void {
     this.currentTime = this.config.spawnTimeout !== undefined ? -this.config.spawnTimeout : 0;
-    this.nextSpawnTime = this.getNextSpawnTime();
+    // первое создание волны должны быть на старте работы эмиттера, затем уже проставится время следующей волны
+    this.nextSpawnTime = 0;
   }
 }
