@@ -1,4 +1,4 @@
-import {ScalarBehaviorConfig} from '../ScalarBehavior/ScalarBehaviorConfig.types';
+import {ScalarBehaviorConfig} from '../ScalarBehavior/ScalarBehavior.types';
 
 export interface VectorBehaviorConfig {
   x: ScalarBehaviorConfig;

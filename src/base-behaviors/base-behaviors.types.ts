@@ -1,4 +1,4 @@
-import {ScalarBehaviorConfig} from './ScalarBehavior/ScalarBehaviorConfig.types';
+import {ScalarBehaviorConfig} from './ScalarBehavior/ScalarBehavior.types';
 import {ScriptBehaviorConfig} from './ScriptBehavior/ScriptBehavior.types';
 import {VectorBehaviorConfig} from './VectorBehavior/VectorBehavior.types';
 

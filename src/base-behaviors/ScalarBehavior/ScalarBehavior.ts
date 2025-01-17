@@ -3,8 +3,8 @@ import {LifeTimeBehavior} from '../../behaviors/LifeTimeBehavior/LifeTimeBehavio
 import {NumberUtils} from '../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../utils/easing/easing-functions';
 import {EasingFunction, EasingName} from '../../utils/easing/easing.types';
-import {isScalarDynamicBehavior, isScalarStaticBehavior} from './ScalarBehaviorConfig.typeguards';
-import {ScalarBehaviorConfig} from './ScalarBehaviorConfig.types';
+import {isScalarDynamicBehavior, isScalarStaticBehavior} from './ScalarBehavior.typeguards';
+import {ScalarBehaviorConfig} from './ScalarBehavior.types';
 import {RealRandom} from '../../utils/random/RealRandom';
 import {isRangeValue} from '../../typeguards';
 

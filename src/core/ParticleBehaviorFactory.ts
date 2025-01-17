@@ -1,9 +1,7 @@
 import {Particle} from './Particle';
-import {
-  isScalarBehaviorConfig,
-  isScriptBehaviorConfig,
-  isVectorBehaviorConfig,
-} from '../base-behaviors/base-behaviors.typeguards';
+import {isVectorBehaviorConfig} from '../base-behaviors/VectorBehavior/VectorBehavior.typeguards';
+import {isScalarBehaviorConfig} from '../base-behaviors/ScalarBehavior/ScalarBehavior.typeguards';
+import {isScriptBehaviorConfig} from '../base-behaviors/ScriptBehavior/ScriptBehavior.typeguards';
 import {AlphaScalarBehavior} from '../behaviors/AlphaBehavior/AlphaScalarBehavior/AlphaScalarBehavior';
 import {AlphaScriptBehavior} from '../behaviors/AlphaBehavior/AlphaScriptBehavior/AlphaScriptBehavior';
 import {ColorDynamicBehavior} from '../behaviors/ColorBehavior/ColorDynamicBehavior/ColorDynamicBehavior';
@@ -61,8 +59,7 @@ export class ParticleBehaviorFactory implements IParticleFactory {
     if (this.config.speed) {
       if (isScriptBehaviorConfig(this.config.speed)) {
         particle.addComponent(new SpeedScriptBehavior(this.config.speed));
-      }
-      if (isScalarBehaviorConfig(this.config.speed)) {
+      } else if (isScalarBehaviorConfig(this.config.speed)) {
         particle.addComponent(new SpeedScalarBehavior(this.config.speed));
       }
     }
@@ -86,8 +83,7 @@ export class ParticleBehaviorFactory implements IParticleFactory {
     if (this.config.alpha) {
       if (isScriptBehaviorConfig(this.config.alpha)) {
         particle.addComponent(new AlphaScriptBehavior(this.config.alpha));
-      }
-      if (isScalarBehaviorConfig(this.config.alpha)) {
+      } else if (isScalarBehaviorConfig(this.config.alpha)) {
         particle.addComponent(new AlphaScalarBehavior(this.config.alpha));
       }
     }
@@ -95,11 +91,9 @@ export class ParticleBehaviorFactory implements IParticleFactory {
     if (this.config.color) {
       if (isColorScriptBehaviorConfig(this.config.color)) {
         particle.addComponent(new ColorScriptBehavior(this.config.color));
-      }
-      if (isColorStaticBehaviorConfig(this.config.color)) {
+      } else if (isColorStaticBehaviorConfig(this.config.color)) {
         particle.addComponent(new ColorStaticBehavior(this.config.color));
-      }
-      if (isColorDynamicBehaviorConfig(this.config.color)) {
+      } else if (isColorDynamicBehaviorConfig(this.config.color)) {
         particle.addComponent(new ColorDynamicBehavior(this.config.color));
       }
     }
@@ -115,13 +109,9 @@ export class ParticleBehaviorFactory implements IParticleFactory {
     if (this.config.scale) {
       if (isScalarBehaviorConfig(this.config.scale)) {
         particle.addComponent(new ScaleScalarBehavior(this.config.scale));
-      }
-
-      if (isScriptBehaviorConfig(this.config.scale)) {
+      } else if (isScriptBehaviorConfig(this.config.scale)) {
         particle.addComponent(new ScaleScriptBehavior(this.config.scale));
-      }
-
-      if (isVectorBehaviorConfig(this.config.scale)) {
+      } else if (isVectorBehaviorConfig(this.config.scale)) {
         particle.addComponent(new ScaleVectorBehavior(this.config.scale));
       }
     }
@@ -133,13 +123,9 @@ export class ParticleBehaviorFactory implements IParticleFactory {
     if (this.config.rotation) {
       if (isDeltaBehaviorConfig(this.config.rotation)) {
         particle.addComponent(new DeltaRotationBehavior(this.config.rotation));
-      }
-
-      if (isScalarBehaviorConfig(this.config.rotation)) {
+      } else if (isScalarBehaviorConfig(this.config.rotation)) {
         particle.addComponent(new ScalarRotationBehavior(this.config.rotation));
-      }
-
-      if (isScriptBehaviorConfig(this.config.rotation)) {
+      } else if (isScriptBehaviorConfig(this.config.rotation)) {
         particle.addComponent(new ScriptRotationBehavior(this.config.rotation));
       }
     }

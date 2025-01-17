@@ -18,15 +18,13 @@ export {ScriptBehavior} from './base-behaviors/ScriptBehavior/ScriptBehavior';
 export {VectorBehavior} from './base-behaviors/VectorBehavior/VectorBehavior';
 export {DeltaBehavior} from './base-behaviors/DeltaBehavior/DeltaBehavior';
 
-export {
-  isScalarBehaviorConfig,
-  isScriptBehaviorConfig,
-  isVectorBehaviorConfig,
-} from './base-behaviors/base-behaviors.typeguards';
+export {isScriptBehaviorConfig} from './base-behaviors/ScriptBehavior/ScriptBehavior.typeguards';
+export {isVectorBehaviorConfig} from './base-behaviors/VectorBehavior/VectorBehavior.typeguards';
 export {
   isScalarDynamicBehavior,
   isScalarStaticBehavior,
-} from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.typeguards';
+  isScalarBehaviorConfig,
+} from './base-behaviors/ScalarBehavior/ScalarBehavior.typeguards';
 export {isDeltaBehaviorConfig} from './base-behaviors/DeltaBehavior/DeltaBehavior.typeguards';
 
 // configs
@@ -34,7 +32,7 @@ export {
   ScalarBehaviorConfig,
   ScalarDynamicBehaviorConfig,
   ScalarStaticBehaviorConfig,
-} from './base-behaviors/ScalarBehavior/ScalarBehaviorConfig.types';
+} from './base-behaviors/ScalarBehavior/ScalarBehavior.types';
 export {ScriptBehaviorConfig, TimeScriptConfig} from './base-behaviors/ScriptBehavior/ScriptBehavior.types';
 export {VectorBehaviorConfig} from './base-behaviors/VectorBehavior/VectorBehavior.types';
 export {DeltaBehaviorConfig} from './base-behaviors/DeltaBehavior/DeltaBehavior.types';
