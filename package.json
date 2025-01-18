@@ -1,6 +1,6 @@
 {
   "name": "particle-flux",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "main": "lib/index.js",
   "license": "UNLICENSED",
   "files": [

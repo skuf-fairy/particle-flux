@@ -16,7 +16,7 @@ import {ScaleScalarBehavior} from '../behaviors/ScaleBehavior/ScaleScalarBehavio
 import {ScaleScriptBehavior} from '../behaviors/ScaleBehavior/ScaleScriptBehavior/ScaleScriptBehavior';
 import {ScaleVectorBehavior} from '../behaviors/ScaleBehavior/ScaleVectorBehavior/ScaleVectorBehavior';
 import {SpawnShapeBehavior, SpawnShapeType} from '../behaviors/SpawnBehaviors/SpawnBehaviors.types';
-import {SpawnCircleBehavior} from '../behaviors/SpawnBehaviors/SpawnCircleBehavior';
+import {SpawnTorusBehavior} from '../behaviors/SpawnBehaviors/SpawnTorusBehavior';
 import {SpawnPointBehavior} from '../behaviors/SpawnBehaviors/SpawnPointBehavior';
 import {SpawnPolygonalChainBehavior} from '../behaviors/SpawnBehaviors/SpawnPolygonalChainBehavior';
 import {SpawnRectangleBehavior} from '../behaviors/SpawnBehaviors/SpawnRectangleBehavior';
@@ -147,8 +147,8 @@ export class ParticleBehaviorFactory implements IParticleFactory {
       case SpawnShapeType.Rectangle:
         return new SpawnRectangleBehavior(shape);
 
-      case SpawnShapeType.Circle:
-        return new SpawnCircleBehavior(shape);
+      case SpawnShapeType.Torus:
+        return new SpawnTorusBehavior(shape);
 
       case SpawnShapeType.Polygon:
         return new SpawnPolygonalChainBehavior(shape);

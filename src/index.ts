@@ -68,7 +68,7 @@ export {RotationBehaviorConfig} from './behaviors/RotationBehavior/RotationBehav
 
 export {
   SpawnRectangleShape,
-  SpawnCircleShape,
+  SpawnTorusShape,
   SpawnPointShape,
   PolygonalChainShape,
   SpawnShapeBehavior,

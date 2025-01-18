@@ -141,16 +141,19 @@ interface SpawnRectangleShape {
 }
 ```
 
-#### Circle Spawn Shape
+#### Torus Spawn Shape
 
-Область для создания частицы - круг.
+Область для создания частицы - торус. Если не заданы опциональные параметры, то будет круг.
 
 ```typescript
-interface SpawnCircleShape {
-  type: SpawnShapeType.Circle;
+interface SpawnTorusShape {
+  type: SpawnShapeType.Torus;
   x: number;
   y: number;
-  radius: number;
+  outerRadius: number;
+  innerRadius?: number;
+  startAngle?: number;
+  endAngle?: number;
 }
 ```
 

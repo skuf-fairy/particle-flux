@@ -3,7 +3,7 @@ import {Point2d} from '../../types';
 export enum SpawnShapeType {
   Point = 'Point',
   Rectangle = 'Rectangle',
-  Circle = 'Circle',
+  Torus = 'Torus',
   Polygon = 'Polygon',
 }
 
@@ -13,9 +13,12 @@ export interface SpawnRectangleShape extends Point2d {
   height: number;
 }
 
-export interface SpawnCircleShape extends Point2d {
-  type: SpawnShapeType.Circle;
-  radius: number;
+export interface SpawnTorusShape extends Point2d {
+  type: SpawnShapeType.Torus;
+  outerRadius: number;
+  innerRadius?: number;
+  startAngle?: number;
+  endAngle?: number;
 }
 
 export interface SpawnPointShape extends Point2d {
@@ -29,4 +32,4 @@ export interface PolygonalChainShape {
   chain: Chain | Chain[];
 }
 
-export type SpawnShapeBehavior = SpawnRectangleShape | SpawnCircleShape | SpawnPointShape | PolygonalChainShape;
+export type SpawnShapeBehavior = SpawnRectangleShape | SpawnTorusShape | SpawnPointShape | PolygonalChainShape;

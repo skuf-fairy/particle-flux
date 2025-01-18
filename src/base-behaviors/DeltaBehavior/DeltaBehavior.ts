@@ -12,6 +12,8 @@ export abstract class DeltaBehavior extends ParticleBaseComponent {
 
   public init(): void {
     this.value = this.config.value;
+
+    this.update(0);
   }
 
   public update(elapsedDelta: number): void {
