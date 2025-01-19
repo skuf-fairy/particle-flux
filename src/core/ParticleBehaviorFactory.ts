@@ -26,7 +26,6 @@ import {MovementComponent} from '../components/MovementComponent/MovementCompone
 import {PathMovementComponent} from '../components/PathMovementComponent/PathMovementComponent';
 import {IParticle, IParticleComponent, ViewParticle, IParticleFactory, ViewContainer} from '../types';
 import {RealRandom} from '../utils/random/RealRandom';
-import {ParticleContainer} from './ParticleContainer';
 import {ScriptRotationBehavior} from '../behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
 import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 import {SpawnPositionBehavior} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior';
@@ -46,8 +45,8 @@ export class ParticleBehaviorFactory implements IParticleFactory {
     this.random = new RealRandom();
   }
 
-  public create(container: ParticleContainer): IParticle {
-    const particle = new Particle(this.createView(), container);
+  public create(): IParticle {
+    const particle = new Particle(this.createView());
 
     // первым нужно добавить компонент отображения, чтобы остальные проинициализировали вьюху
     particle.addComponent(new ViewComponent(this.viewContainer));
@@ -135,6 +134,8 @@ export class ParticleBehaviorFactory implements IParticleFactory {
     } else {
       particle.addComponent(new MovementComponent());
     }
+
+    particle.init();
 
     return particle;
   }

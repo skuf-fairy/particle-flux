@@ -32,16 +32,15 @@ export interface ViewContainer<U extends ViewParticle> {
 }
 
 export interface IParticleContainer {
-  addParticle(...particleList: IParticle[]): void;
+  addParticle(...particleList: IParticle[]): IParticle;
   getActiveParticlesCount(): number;
   clear(): void;
   update(elapsedDelta: number, deltaMS: number): void;
-  destroy(): void;
 }
 
 // фабрика по созданию частиц
 export interface IParticleFactory {
-  create(container: IParticleContainer): IParticle;
+  create(): IParticle;
 }
 
 // частица
@@ -49,7 +48,6 @@ export interface IParticle {
   addComponent(...componentList: IParticleComponent[]): void;
   removeComponent(component: UnknownConstructor<IParticleComponent>): void;
   getComponent<T extends IParticleComponent>(component: UnknownConstructor<T>): T | undefined;
-  getComponentByTag<T extends IParticleComponent>(tag: string): T | undefined;
   init(): void;
   update(elapsedDelta: number, deltaMS: number): void;
   destroy(): void;
@@ -58,12 +56,10 @@ export interface IParticle {
   speed: number;
   direction: Point2d;
   view: ViewParticle;
-  container: IParticleContainer;
 }
 
 // компонент для частицы
 export interface IParticleComponent {
-  tag: string;
   particle: IParticle;
   init(): void;
   update?(elapsedDelta: number, deltaMS: number): void;

@@ -15,12 +15,12 @@ export class ParticleContainer implements IParticleContainer {
 
   // возвращает активные частицы
   public getParticles(): IParticle[] {
-    return [...this.particles].filter((x) => !this.destroyedParticles.has(x));
+    return [...this.particles].filter((p) => !p.shouldDestroy && !this.destroyedParticles.has(p));
   }
 
   // количество частиц в контейнере
   public getActiveParticlesCount(): number {
-    return Math.max(0, this.particles.size - this.destroyedParticles.size);
+    return this.getParticles().length;
   }
 
   /**
@@ -50,7 +50,7 @@ export class ParticleContainer implements IParticleContainer {
     this.destroyedParticles = new Set();
   }
 
-  public destroy(): void {
+  public clear(): void {
     this.destroyedParticles.forEach((p) => {
       p.destroy?.();
       this.particles.delete(p);
@@ -60,13 +60,9 @@ export class ParticleContainer implements IParticleContainer {
     this.destroyedParticles = new Set();
   }
 
-  public addParticle(): void {
-    const particle = this.particleFactory.create(this);
-    particle.init();
+  public addParticle(): IParticle {
+    const particle = this.particleFactory.create();
     this.particles.add(particle);
-  }
-
-  public clear(): void {
-    this.destroy();
+    return particle;
   }
 }

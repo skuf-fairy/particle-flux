@@ -1,14 +1,11 @@
-import {IParticle, IParticleComponent, IParticleContainer, Point2d, ViewParticle} from '../types';
+import {KeyUniqValuesVault} from '../utils/vaults/KeyUniqValuesVault';
+import {IParticle, IParticleComponent, Point2d, ViewParticle} from '../types';
 import {UnknownConstructor} from '../types.utils';
-import {UpdatableEntityContainer} from './UpdatableEntityContainer';
 
 /*
  * Класс-контейнер для компонентов и поведений частицы
  */
-export class Particle extends UpdatableEntityContainer<Function, IParticleComponent> implements IParticle {
-  // Контейнер, в котором находятся частицы
-  public container: IParticleContainer;
-  // параметры частицы
+export class Particle implements IParticle {
   // отображение частицы, определяется извне
   // может быть спрайтом из pixi.js, HTML элементом и прочим
   public view: ViewParticle;
@@ -19,10 +16,16 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
   // нужно ли дропнуть частицу из контейнера после обновления контейнера
   public shouldDestroy: boolean;
 
-  constructor(view: ViewParticle, container: IParticleContainer) {
-    super();
+  public componentsMap: KeyUniqValuesVault<Function, IParticleComponent>;
+  /**
+   * список только тех сущностей, у которых реализован метод update
+   */
+  public updatableComponentsMap: KeyUniqValuesVault<Function, IParticleComponent>;
 
-    this.container = container;
+  constructor(view: ViewParticle) {
+    this.componentsMap = new KeyUniqValuesVault<Function, IParticleComponent>();
+    this.updatableComponentsMap = new KeyUniqValuesVault<Function, IParticleComponent>();
+
     this.view = view;
     this.speed = 0;
     this.direction = {
@@ -32,9 +35,9 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
     this.shouldDestroy = false;
   }
 
-  // инициализация параметров частицы
+  // инициализация параметров частицы через компоненты
   public init(): void {
-    this.entityList.forEach((e) => e.init());
+    this.componentsMap.valuesList.forEach((e) => e.init());
   }
 
   public update(elapsedDelta: number, deltaMS: number): void {
@@ -43,7 +46,13 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
       return;
     }
 
-    super.update(elapsedDelta, deltaMS);
+    this.updatableComponentsMap.getVault().forEach((e) => e.forEach((e) => e.update?.(elapsedDelta, deltaMS)));
+  }
+
+  public destroy(): void {
+    this.componentsMap.valuesList.forEach((c) => c.destroy?.());
+    this.componentsMap.clear();
+    this.updatableComponentsMap.clear();
   }
 
   /**
@@ -52,7 +61,10 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
    */
   public addComponent(...componentList: IParticleComponent[]): void {
     componentList.forEach((component) => {
-      this.pushEntity(component.constructor, component);
+      this.componentsMap.addValue(component.constructor, component);
+      if (component.update) {
+        this.updatableComponentsMap.addValue(component.constructor, component);
+      }
       component.bindParticle(this);
     });
   }
@@ -62,7 +74,11 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
    * @param component класс компонента
    */
   public removeComponent(component: UnknownConstructor<IParticleComponent>): void {
-    this.dropEntityByKey(component);
+    this.componentsMap.dropKey(component).forEach((e) => {
+      e.destroy?.();
+    });
+
+    this.updatableComponentsMap.dropKey(component);
   }
 
   /**
@@ -71,15 +87,10 @@ export class Particle extends UpdatableEntityContainer<Function, IParticleCompon
    * @returns инстанс компонента либо undefined, если такого компонента нет у частицы
    */
   public getComponent<T extends IParticleComponent>(component: UnknownConstructor<IParticleComponent>): T | undefined {
-    return this.getEntityByKey(component) as T | undefined;
+    return this.componentsMap.getValue(component) as T | undefined;
   }
 
-  /**
-   * Получить инстанс компонента частицы по ее тегу
-   * @param component ссылка на класс-компонент
-   * @returns инстанс компонента либо undefined, если такого компонента нет у частицы
-   */
-  public getComponentByTag<T extends IParticleComponent>(tag: string): T | undefined {
-    return this.entityList.find((e) => e.tag === tag) as T | undefined;
+  public componentsCount(): number {
+    return this.componentsMap.size;
   }
 }
