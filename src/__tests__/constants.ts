@@ -7,6 +7,8 @@ export const TEST_CONFIG = (): ParticleFluxConfig => ({
   emitterConfig: {
     spawnInterval: 100,
     spawnTime: 10000,
+    maxParticles: 10,
+    spawnParticlesPerWave: 5,
   },
   particleBehaviorsConfig: {
     lifeTime: {

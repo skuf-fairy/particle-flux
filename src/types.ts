@@ -10,6 +10,7 @@ import {SpawnShapeBehavior} from './behaviors/SpawnBehaviors/SpawnBehaviors.type
 import {SpawnPositionBehaviorConfig} from './behaviors/SpawnPositionBehavior/SpawnPositionBehavior.types';
 import {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
 import {UnknownConstructor} from './types.utils';
+import {TickerCallback} from './utils/Ticker';
 
 export type GlobalWindow = Window & typeof globalThis;
 
@@ -65,6 +66,16 @@ export interface IParticleComponent {
   update?(elapsedDelta: number, deltaMS: number): void;
   destroy?(): void;
   bindParticle(particle: IParticle): void;
+}
+
+export interface ITicker {
+  FPS: number;
+  deltaMS: number;
+  elapsedDelta: number;
+  started: boolean;
+  start(): void;
+  stop(): void;
+  setCallback(cb: TickerCallback): void;
 }
 
 export interface Point2d {

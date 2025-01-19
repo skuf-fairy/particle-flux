@@ -1,3 +1,4 @@
+import {ITicker} from '../types';
 import {globalWindow} from '../globalWindow';
 
 export type TickerCallback = (elapsedDelta: number, deltaMS: number) => void;
@@ -5,15 +6,17 @@ export type TickerCallback = (elapsedDelta: number, deltaMS: number) => void;
 // за стандарт взято 60 FPS
 const STANDARD_DELTA_MS = 1 / 0.06;
 
-export class Ticker {
+export class Ticker implements ITicker {
   private lastTime: number | null;
   private isStarted: boolean;
   private deltaBetweenFrames: number;
+  private callback: TickerCallback;
 
-  constructor(private readonly callback: TickerCallback) {
+  constructor() {
     this.lastTime = null;
     this.isStarted = false;
     this.deltaBetweenFrames = 0;
+    this.callback = () => {};
   }
 
   // FPS = 1 / deltaMS * 1000
@@ -35,6 +38,10 @@ export class Ticker {
 
   get started(): boolean {
     return this.isStarted;
+  }
+
+  public setCallback(cb: TickerCallback): void {
+    this.callback = cb;
   }
 
   public start(): void {

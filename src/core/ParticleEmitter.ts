@@ -1,6 +1,5 @@
 import {RealRandom} from '../utils/random/RealRandom';
-import {Ticker} from '../utils/Ticker';
-import {IParticleContainer} from '../types';
+import {IParticleContainer, ITicker} from '../types';
 import {isRangeValue} from '../typeguards';
 import {ConfigManager} from './ConfigManager';
 
@@ -8,16 +7,19 @@ import {ConfigManager} from './ConfigManager';
  * Обновляет контейнер, создавая частицы по переданному конфигу
  */
 export class ParticleEmitter {
-  private readonly ticker: Ticker;
   private readonly random: RealRandom;
   // время таймера
   private currentTime: number;
   // время, когда нужно будет заспавнить частицу
   private nextSpawnTime: number | null;
 
-  constructor(private readonly container: IParticleContainer, private readonly config: ConfigManager) {
+  constructor(
+    private readonly container: IParticleContainer,
+    private readonly config: ConfigManager,
+    private readonly ticker: ITicker,
+  ) {
     this.random = new RealRandom();
-    this.ticker = new Ticker(this.handleUpdate);
+    this.ticker.setCallback(this.handleUpdate);
 
     this.currentTime = 0;
     this.nextSpawnTime = this.getNextSpawnTime();
@@ -33,11 +35,7 @@ export class ParticleEmitter {
    * @param particlesCount количество частиц
    */
   public emitOnce(particlesCount: number = 1): void {
-    const particlesInContainer = this.container.getActiveParticlesCount();
-    const maxParticles = this.config.maxParticles;
-    const count = !maxParticles
-      ? particlesCount
-      : Math.min(Math.max(0, maxParticles - particlesInContainer), particlesCount);
+    const count = this.getAvailableForEmitParticlesCount(particlesCount);
 
     for (let i = 0; i < count; i++) {
       this.emit();
@@ -55,11 +53,7 @@ export class ParticleEmitter {
    */
   public emitWave(): void {
     const countPerWave = this.config.spawnParticlesPerWave || 1;
-    const particlesInContainer = this.container.getActiveParticlesCount();
-    const maxParticles = this.config.maxParticles;
-    const count = !maxParticles
-      ? countPerWave
-      : Math.min(Math.max(0, maxParticles - particlesInContainer), countPerWave);
+    const count = this.getAvailableForEmitParticlesCount(countPerWave);
 
     for (let i = 0; i < count; i++) {
       this.emit();
@@ -105,6 +99,10 @@ export class ParticleEmitter {
    */
   public isActive(): boolean {
     return this.ticker.started;
+  }
+
+  public update(elapsedDelta: number, deltaMS: number): void {
+    this.handleUpdate(elapsedDelta, deltaMS);
   }
 
   // обновление контейнера и создание новых частиц по переданному конфигу
@@ -160,5 +158,14 @@ export class ParticleEmitter {
     this.currentTime = this.config.spawnTimeout !== undefined ? -this.config.spawnTimeout : 0;
     // первое создание волны должны быть на старте работы эмиттера, затем уже проставится время следующей волны
     this.nextSpawnTime = 0;
+  }
+
+  private getAvailableForEmitParticlesCount(emitParticlesCount: number): number {
+    const particlesInContainer = this.container.getActiveParticlesCount();
+    const maxParticles = this.config.maxParticles;
+
+    return !maxParticles
+      ? emitParticlesCount
+      : Math.min(Math.max(0, maxParticles - particlesInContainer), emitParticlesCount);
   }
 }

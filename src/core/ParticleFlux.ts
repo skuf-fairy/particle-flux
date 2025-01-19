@@ -3,6 +3,7 @@ import {ParticleContainer} from './ParticleContainer';
 import {ParticleFluxConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {ParticleBehaviorFactory} from './ParticleBehaviorFactory';
+import {Ticker} from 'src/utils/Ticker';
 
 export class ParticleFlux {
   public readonly emitter: ParticleEmitter;
@@ -16,7 +17,7 @@ export class ParticleFlux {
   ) {
     this.config = new ConfigManager(this.initialConfig, this.viewFactory);
     this.container = new ParticleContainer(new ParticleBehaviorFactory(this.viewContainer, this.config));
-    this.emitter = new ParticleEmitter(this.container, this.config);
+    this.emitter = new ParticleEmitter(this.container, this.config, new Ticker());
   }
 
   public startEmit(): void {
