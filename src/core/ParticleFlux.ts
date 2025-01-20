@@ -3,7 +3,7 @@ import {ParticleContainer} from './ParticleContainer';
 import {ParticleFluxConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {ParticleBehaviorFactory} from './ParticleBehaviorFactory';
-import {Ticker} from 'src/utils/Ticker';
+import {Ticker} from '../utils/Ticker';
 
 export class ParticleFlux {
   public readonly emitter: ParticleEmitter;
