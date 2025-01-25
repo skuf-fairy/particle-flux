@@ -1,8 +1,8 @@
-import {ViewContainer, ViewParticle} from '../../types';
+import {ViewContainer} from '../../types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 
 export class ViewComponent extends ParticleBaseComponent {
-  constructor(private readonly viewContainer: ViewContainer<ViewParticle>) {
+  constructor(private readonly viewContainer: ViewContainer) {
     super();
   }
 
