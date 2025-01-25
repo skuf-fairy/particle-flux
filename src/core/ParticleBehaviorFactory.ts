@@ -41,7 +41,7 @@ import {
 export class ParticleBehaviorFactory implements IParticleFactory {
   private readonly random: RealRandom;
 
-  constructor(private readonly viewContainer: ViewContainer, private readonly config: ConfigManager) {
+  constructor(private readonly viewContainer: ViewContainer<ViewParticle>, private readonly config: ConfigManager) {
     this.random = new RealRandom();
   }
 
