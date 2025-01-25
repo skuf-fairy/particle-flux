@@ -5,13 +5,13 @@ import {ConfigManager} from './ConfigManager';
 import {ParticleBehaviorFactory} from './ParticleBehaviorFactory';
 import {Ticker} from '../utils/Ticker';
 
-export class ParticleFlux {
+export class ParticleFlux<V extends ViewParticle = ViewParticle> {
   public readonly emitter: ParticleEmitter;
   public readonly container: ParticleContainer;
   public readonly config: ConfigManager;
 
   constructor(
-    private readonly viewContainer: ViewContainer<ViewParticle>,
+    private readonly viewContainer: ViewContainer<V>,
     private readonly viewFactory: ViewRenderFn[] | ViewRenderFn,
     private readonly initialConfig: ParticleFluxConfig,
   ) {
