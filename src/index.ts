@@ -8,6 +8,9 @@ export {
   ViewParticle,
   Multiplier,
   Point2d,
+  IParticle,
+  IParticleComponent,
+  IParticleContainer,
 } from './types';
 
 export {isRangeValue} from './typeguards';
