@@ -157,7 +157,7 @@ export class ParticleEmitter {
   private resetTime(): void {
     this.currentTime = this.config.spawnTimeout !== undefined ? -this.config.spawnTimeout : 0;
     // первое создание волны должны быть на старте работы эмиттера, затем уже проставится время следующей волны
-    this.nextSpawnTime = 0;
+    this.nextSpawnTime = this.config.spawnInterval !== undefined ? 0 : null;
   }
 
   private getAvailableForEmitParticlesCount(emitParticlesCount: number): number {
