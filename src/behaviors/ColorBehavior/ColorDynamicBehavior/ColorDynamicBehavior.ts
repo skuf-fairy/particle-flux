@@ -22,6 +22,8 @@ export class ColorDynamicBehavior extends ParticleBaseComponent {
     this.easing = EASING_FUNCTIONS[this.config.easing || EasingName.linear];
 
     this.lifeTimeBehavior = this.particle.getComponent(LifeTimeBehavior);
+
+    this.particle.view.tint = this.startColor;
   }
 
   public update(): void {

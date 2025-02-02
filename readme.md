@@ -8,7 +8,12 @@
 
 Примеры некоторых анимация и эффектов, которые можно создать с помощью эмиттера. Во всех примерах используется [pixi.js](https://www.npmjs.com/package/pixi.js), но все они могут быть выполнены на любой другой библиотеке для визуализации на канвасе.
 
-- [Pulse](https://codepen.io/vladosina/pen/OPLGQyG?editors=1100)
+- [Pulse](https://codepen.io/vladosina/pen/OPLGQyG)
+- [Points](https://codepen.io/vladosina/pen/QwLPQYG)
+- [Bubbles](https://codepen.io/vladosina/pen/raBbdav)
+- [Bubbles Spiral (Particles Path)](https://codepen.io/vladosina/pen/azoxYdQ)
+- [Cartoon Smoke Blast](https://codepen.io/vladosina/pen/QwLPmdM)
+- [Flame](https://codepen.io/vladosina/pen/mybgxwV)
 
 ## Particle Emitter Config
 
