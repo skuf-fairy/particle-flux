@@ -1,7 +1,7 @@
 import {NumberUtils} from '../NumberUtils';
 import {AbstractRandom} from './Random';
 
-// реализация метода Park-Miller-Carta
+// implementation of the Park-Miller-Carta method
 export class PseudoRandom extends AbstractRandom {
   private prevValue!: number;
   private callsCounter!: number;
@@ -31,9 +31,7 @@ export class PseudoRandom extends AbstractRandom {
     this.prevValue = this.randomSeed;
   }
 
-  /**
-   * Возвращает количество совершенных вызовов псевдорандомайзера
-   */
+  // Returns the number of completed calls
   public getCallsCounter(): number {
     return this.callsCounter;
   }
@@ -54,7 +52,7 @@ export class PseudoRandom extends AbstractRandom {
     return (this.random() / 2147483646) * (max - min + 1) + min;
   }
 
-  // возвращает псевдорадомное целое число от 1 до 2^32
+  // returns a pseudo-random integer from 1 to 2^32
   private random(): number {
     this.prevValue = (this.prevValue * 16807) % 2147483647;
     this.callsCounter++;

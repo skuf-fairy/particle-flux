@@ -18,7 +18,7 @@ export abstract class ScriptBehavior<V> extends ParticleBaseComponent {
     this.scriptConfig = this.config.script.slice().sort((a, b) => a.time - b.time);
 
     if (this.scriptConfig.length === 0) {
-      // todo вынести ошибки
+      // todo making mistakes
       throw new Error('Script config must contain at least 1 item');
     }
 
@@ -46,7 +46,7 @@ export abstract class ScriptBehavior<V> extends ParticleBaseComponent {
       }
     }
 
-    // проверка на инициализации
+    // the check was on initialization, but here we skip
     return ArrayUtils.last(this.scriptConfig)!.value;
   }
 }

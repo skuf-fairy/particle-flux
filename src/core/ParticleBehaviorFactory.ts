@@ -48,7 +48,7 @@ export class ParticleBehaviorFactory implements IParticleFactory {
   public create(): IParticle {
     const particle = new Particle(this.createView());
 
-    // первым нужно добавить компонент отображения, чтобы остальные проинициализировали вьюху
+    // The first thing to do is add a display component so that the rest initialize the view.
     particle.addComponent(new ViewComponent(this.viewContainer));
 
     if (this.config.lifeTime) {

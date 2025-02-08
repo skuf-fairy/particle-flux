@@ -3,11 +3,11 @@ import {IParticle, IParticleComponent} from '../types';
 export abstract class ParticleBaseComponent implements IParticleComponent {
   public particle: IParticle;
 
-  // каждый компонент должен проинициазилизироваться начальными значениями
-  // используется вместо конструктора
+  // each component must be initialized with initial values
+  // used instead of the constructor
   public abstract init(): void;
 
-  // привязать компонент к частице
+  // bind a component to a particle
   public bindParticle(particle: IParticle): void {
     this.particle = particle;
   }

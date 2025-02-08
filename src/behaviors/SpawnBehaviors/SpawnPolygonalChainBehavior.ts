@@ -57,9 +57,9 @@ export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
   }
 
   private getRandomPointOnLine(pointA: Point2d, pointB: Point2d): Point2d {
-    const randomFactor = Math.random(); // Генерируем случайное число от 0 до 1
+    const randomFactor = Math.random(); // Generating a random number from 0 to 1
 
-    // Вычисляем координаты случайной точки между pointA и pointB
+    // Calculating the coordinates of a random point between point and pointB
     const x = pointA.x + randomFactor * (pointB.x - pointA.x);
     const y = pointA.y + randomFactor * (pointB.y - pointA.y);
 

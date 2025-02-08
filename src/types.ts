@@ -14,7 +14,7 @@ import {TickerCallback} from './utils/Ticker';
 
 export type GlobalWindow = Window & typeof globalThis;
 
-// параметры частицы, которые могут обновляться
+// the particle parameters that are displayed on the screen
 export interface ViewParticle {
   position: Point2d;
   scale: Point2d;
@@ -26,7 +26,7 @@ export interface ViewParticle {
   destroyed: boolean;
 }
 
-// внешний контейнер для отображения, в который добавляются частицы
+// an external display container to which the particles are added
 export interface ViewContainer<U extends ViewParticle> {
   addChild(children: U): void;
   removeChild(children: U): void;
@@ -34,17 +34,17 @@ export interface ViewContainer<U extends ViewParticle> {
 
 export interface IParticleContainer {
   addParticle(...particleList: IParticle[]): IParticle;
-  getActiveParticlesCount(): number;
+  getParticlesCount(): number;
   clear(): void;
   update(elapsedDelta: number, deltaMS: number): void;
 }
 
-// фабрика по созданию частиц
+// a factory for creating particles
 export interface IParticleFactory {
   create(): IParticle;
 }
 
-// частица
+// particle
 export interface IParticle {
   addComponent(...componentList: IParticleComponent[]): void;
   removeComponent(component: UnknownConstructor<IParticleComponent>): void;
@@ -59,7 +59,7 @@ export interface IParticle {
   view: ViewParticle;
 }
 
-// компонент для частицы
+// the component for the particle
 export interface IParticleComponent {
   particle: IParticle;
   init(): void;
@@ -95,26 +95,32 @@ export interface EmitterConfig {
   autoStart?: boolean;
 }
 
-// поведение частицы, которое основано на времени жизни частицы
-// то есть параметры в повдении измяняются с течением жизни частицы
 export interface ParticleBehaviorConfig {
+  // lifetime of the particle
   lifeTime: LifeTimeBehaviorConfig;
-  // начальная позиция частицы
+  // the initial position of the particle
   spawnPosition?: SpawnPositionBehaviorConfig;
+  // the particle creation area
   spawnShape?: SpawnShapeBehavior;
-  // не меняется со временем, указывает направление движения
+  // does not change with time, indicates the direction of movement
   direction?: DirectionBehaviorConfig;
-  // параметры, которые меняются со временем
+  // parameters that change over time
   speed?: SpeedBehaviorConfig;
+  // particle size
   scale?: ScaleBehaviorConfig;
+  // particle transparency
   alpha?: AlphaBehaviorConfig;
+  // gravity
   gravity?: GravityBehaviorConfig;
+  // rotation
   rotation?: RotationBehaviorConfig;
+  // color
   color?: ColorBehaviorConfig;
+  // path
   path?: PathBehaviorConfig;
 }
 
-// полный конфиг для создания частиц
+// full configuration for creating particles
 export interface ParticleFluxConfig {
   emitterConfig: EmitterConfig;
   particleBehaviorsConfig: ParticleBehaviorConfig;

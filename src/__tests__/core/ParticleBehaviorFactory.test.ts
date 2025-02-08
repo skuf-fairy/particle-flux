@@ -14,7 +14,7 @@ describe('ParticleBehaviorFactory', () => {
   const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
   const container = new TestViewContainer();
 
-  it('Частица создалась с правильным набором поведений', () => {
+  it('The particle was created with the right set of behaviors', () => {
     const factory = new ParticleBehaviorFactory(container, configManager);
 
     const particle = factory.create();

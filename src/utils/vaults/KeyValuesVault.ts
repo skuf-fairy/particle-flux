@@ -1,5 +1,5 @@
 /**
- * Хранение массивов значений по ключам
+ * Storing arrays of values by keys
  * @example
  * const vault = new Vault<string, number>();
  * vault.addValue('v1', 1);

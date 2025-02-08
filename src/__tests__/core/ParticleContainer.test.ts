@@ -15,42 +15,42 @@ describe('ParticleContainer', () => {
   const p1 = container.addParticle();
   const p2 = container.addParticle();
 
-  it('Добавили несколько частиц', () => {
-    expect(container.getActiveParticlesCount()).toEqual(2);
+  it('Added a few particles', () => {
+    expect(container.getParticlesCount()).toEqual(2);
     expect(container.getParticles()).toEqual([p1, p2]);
   });
 
-  it('Контейнер обновился', () => {
+  it('The container has been updated', () => {
     container.update(1, 10);
 
-    expect(container.getActiveParticlesCount()).toEqual(2);
+    expect(container.getParticlesCount()).toEqual(2);
     expect(container.getParticles()).toEqual([p1, p2]);
     expect(p1.shouldDestroy).toEqual(false);
     expect(p2.shouldDestroy).toEqual(false);
   });
 
-  it('Одна из частиц уничтожилась', () => {
+  it('One of the particles was destroyed', () => {
     p1.shouldDestroy = true;
 
-    expect(container.getActiveParticlesCount()).toEqual(1);
+    expect(container.getParticlesCount()).toEqual(1);
     expect(container.getParticles()).toEqual([p2]);
     expect(p1.shouldDestroy).toEqual(true);
     expect(p2.shouldDestroy).toEqual(false);
   });
 
-  it('Контейнер обновился', () => {
+  it('The container has been updated', () => {
     container.update(1, 10);
 
-    expect(container.getActiveParticlesCount()).toEqual(1);
+    expect(container.getParticlesCount()).toEqual(1);
     expect(container.getParticles()).toEqual([p2]);
     expect(p1.shouldDestroy).toEqual(true);
     expect(p2.shouldDestroy).toEqual(false);
   });
 
-  it('Очистили контейнер', () => {
+  it('Cleared the container', () => {
     container.clear();
 
-    expect(container.getActiveParticlesCount()).toEqual(0);
+    expect(container.getParticlesCount()).toEqual(0);
     expect(container.getParticles()).toEqual([]);
     expect(p1.shouldDestroy).toEqual(true);
     expect(p2.shouldDestroy).toEqual(false);

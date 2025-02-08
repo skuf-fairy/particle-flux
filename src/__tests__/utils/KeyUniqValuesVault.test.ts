@@ -2,7 +2,7 @@ import {KeyUniqValuesVault} from '../../utils/vaults/KeyUniqValuesVault';
 import {describe, expect, it} from 'vitest';
 
 describe('KeyUniqValuesVault', () => {
-  describe('Добавление в хранилище', () => {
+  describe('Adding to the repository', () => {
     const vault = new KeyUniqValuesVault<string, number>();
 
     vault.addValue('v1', 1);
@@ -10,12 +10,12 @@ describe('KeyUniqValuesVault', () => {
     vault.addValue('v1', 3);
     vault.addValue('v2', 1);
 
-    it('Проверка на размер хранилища', () => {
+    it('Checking for storage size', () => {
       expect(vault.size).toEqual(2);
       expect(vault.valuesList.length).toEqual(4);
     });
 
-    it('Проверка добавленных значений по ключам', () => {
+    it('Checking added values by keys', () => {
       expect(vault.getValueByKey('v1')).toEqual([1, 2, 3]);
       expect(vault.getValue('v1')).toEqual(1);
       expect(vault.getValueByKey('v2')).toEqual([1]);
@@ -27,7 +27,7 @@ describe('KeyUniqValuesVault', () => {
     });
   });
 
-  describe('Удаление из хранилища', () => {
+  describe('Deleting from storage', () => {
     const vault = new KeyUniqValuesVault<string, number>();
 
     vault.addValue('v1', 1);
@@ -35,7 +35,7 @@ describe('KeyUniqValuesVault', () => {
     vault.addValue('v1', 3);
     vault.addValue('v2', 1);
 
-    it('Удаление по ключу', () => {
+    it('Deleting by key', () => {
       vault.dropKey('v2');
       expect(vault.size).toEqual(1);
       expect(vault.valuesList.length).toEqual(3);
@@ -43,7 +43,7 @@ describe('KeyUniqValuesVault', () => {
       expect(vault.getValueByKey('v2')).toEqual(undefined);
     });
 
-    it('Удаление по ключу и значению', () => {
+    it('Deleting by key and value', () => {
       vault.dropSetValue('v1', 2);
       expect(vault.size).toEqual(1);
       expect(vault.valuesList.length).toEqual(2);

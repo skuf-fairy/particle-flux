@@ -41,13 +41,13 @@ export class SpawnTorusBehavior extends ParticleBaseComponent {
     startAngle: number,
     endAngle: number,
   ): Point2d {
-    // Генерируем случайный угол в радианах
+    // Generating a random angle in radians
     const angle = this.random.generateFloatNumber(startAngle, endAngle);
 
-    // Генерируем случайное значение радиуса в пределах от внутреннего до внешнего радиуса
+    // Generating a random radius value ranging from the inner to the outer radius
     const r = this.random.generateFloatNumber(innerRadius, outerRadius);
 
-    // Вычисляем координаты точки
+    // Calculating the coordinates of a point
     const pointX = x + r * Math.cos(angle);
     const pointY = y + r * Math.sin(angle);
 

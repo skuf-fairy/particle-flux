@@ -4,11 +4,11 @@ import {RealRandom} from '../../utils/random/RealRandom';
 import {isLifeTimeStaticBehaviorConfig} from './LifeTimeBehavior.typeguards';
 
 export class LifeTimeBehavior extends ParticleBaseComponent {
-  // прогресс жизни чаcтицы в диапазоне [0, 1]
+  // particle life progress in the range [0, 1]
   public lifeTimeNormalizedProgress: number;
-  // оставшееся время жизни в миллисекундах
+  // remaining lifetime in milliseconds
   public remainingLifeTime: number;
-  // время жизни частицы в миллисекундах после которого она уничтожится
+  // the lifetime of the particle in milliseconds after which it will be destroyed
   public lifeTime: number;
 
   constructor(private readonly config: LifeTimeBehaviorConfig) {

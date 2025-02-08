@@ -2,7 +2,7 @@ import {describe, expect, it} from 'vitest';
 import {cloneDeep} from '../../utils/cloneDeep';
 
 describe('cloneDeep', () => {
-  it('Метод возвращает новый объект с теми же значениями', () => {
+  it('The method returns a new object with the same values.', () => {
     const original = {
       a: 1,
       b: [2, 3, {d: 4}],
@@ -15,7 +15,7 @@ describe('cloneDeep', () => {
     expect(copied).toEqual({a: 1, b: [2, 3, {d: 4}], c: {e: 5}});
   });
 
-  it('В скопированном объекте вложенные массивы и объекты новые', () => {
+  it('The copied object has nested arrays and new objects.', () => {
     const original = {
       a: 1,
       b: [2, 3, {d: 4}],
@@ -28,7 +28,7 @@ describe('cloneDeep', () => {
     expect(copied.c).not.toBe(original.c);
   });
 
-  it('Вложенные значения скопированного объекта можно изменить, не влияя на оригинальный объект', () => {
+  it('The nested values of the copied object can be changed without affecting the original object.', () => {
     const original = {
       a: 1,
       b: [2, 3, {d: 4}],

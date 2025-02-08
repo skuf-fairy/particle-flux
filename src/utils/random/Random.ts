@@ -7,12 +7,12 @@ export abstract class AbstractRandom implements IRandomGenerator {
   }
 
   /**
-   * Возвращает рандомный элемент массива
-   * @param valuesArray Массив, элемент из которого, будет выбран рандомно
+   * Returns a random element of the array
+   * @param valuesArray The array from which the element will be randomly selected
    */
   public choice<T>(valuesArray: T[]): T {
     if (valuesArray.length === 0) {
-      throw new Error('Пустой массив был передан в метод Random.choice');
+      throw new Error('An empty array was passed to the Random.choice method.');
     }
 
     return valuesArray[this.getRandomArrayIndex(valuesArray)];

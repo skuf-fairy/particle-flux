@@ -4,11 +4,11 @@ import {TEST_VIEW_FACTORY} from '../constants';
 import {TestParticleComponent} from '../TestParticleComponent';
 
 describe('Particle', () => {
-  describe('Создание частицы', () => {
+  describe('Creating a particle', () => {
     const view = TEST_VIEW_FACTORY();
     const particle = new Particle(view);
 
-    it('Частица правильно создалась без добавления компонентов', () => {
+    it('The particle was created correctly without adding components', () => {
       expect(particle.view).toEqual(view);
       expect(particle.direction).toEqual({x: 0, y: 0});
       expect(particle.speed).toEqual(0);
@@ -17,37 +17,37 @@ describe('Particle', () => {
     });
   });
 
-  describe('Добавление компонента', () => {
+  describe('Adding a component', () => {
     const view = TEST_VIEW_FACTORY();
     const particle = new Particle(view);
     const testComponent = new TestParticleComponent();
 
     particle.addComponent(testComponent);
 
-    it('Компонент есть в частице', () => {
+    it('The component is in the particle', () => {
       expect(particle.componentsCount()).toEqual(1);
     });
 
-    it('К компоненту привязана частица', () => {
+    it('A particle is attached to the component', () => {
       expect(testComponent.particle).toEqual(particle);
     });
 
-    it('Компонент валидно проинициализирован', () => {
+    it('The component is initialized correctly', () => {
       expect(testComponent.isInitialized).toEqual(false);
       expect(testComponent.updateCount).toEqual(0);
       expect(testComponent.isDestroyed).toEqual(false);
     });
 
-    it('Можно получить компонент по классу', () => {
+    it('You can get a component by class', () => {
       expect(particle.getComponent(TestParticleComponent)).toEqual(testComponent);
     });
 
-    it('Компонент добавился в обновляемые компоненты, так как реализован метод update', () => {
+    it('The component was added to the updated components because the update method is implemented.', () => {
       expect(particle.updatableComponentsMap.getValue(TestParticleComponent)).toEqual(testComponent);
     });
   });
 
-  describe('Инициализация частицы, то есть компонентов', () => {
+  describe('Initialization of a particle, i.e. components', () => {
     const view = TEST_VIEW_FACTORY();
     const particle = new Particle(view);
     const testComponent = new TestParticleComponent();
@@ -55,12 +55,12 @@ describe('Particle', () => {
     particle.addComponent(testComponent);
     particle.init();
 
-    it('Компонент проинициализирован', () => {
+    it('The component has been initialized', () => {
       expect(testComponent.isInitialized).toEqual(true);
     });
   });
 
-  describe('Обновление частицы и компонентов в ней', () => {
+  describe('Updating a particle and its components', () => {
     const view = TEST_VIEW_FACTORY();
     const particle = new Particle(view);
     const testComponent = new TestParticleComponent();
@@ -71,12 +71,12 @@ describe('Particle', () => {
     particle.update(1, 10);
     particle.update(1, 10);
 
-    it('Компонент обновился тоже', () => {
+    it('The component has been updated too', () => {
       expect(testComponent.updateCount).toEqual(3);
     });
   });
 
-  describe('Деструктуризация частицы', () => {
+  describe('Particle destructurization', () => {
     const view = TEST_VIEW_FACTORY();
     const particle = new Particle(view);
     const testComponent = new TestParticleComponent();
@@ -86,11 +86,11 @@ describe('Particle', () => {
     particle.update(1, 10);
     particle.destroy();
 
-    it('Частицы очистилась от компонентов', () => {
+    it('The particles were cleared of the components', () => {
       expect(particle.componentsCount()).toEqual(0);
     });
 
-    it('Деструктуризация компонентов', () => {
+    it('Component destructuring', () => {
       expect(testComponent.isDestroyed).toEqual(testComponent.isDestroyed);
     });
   });

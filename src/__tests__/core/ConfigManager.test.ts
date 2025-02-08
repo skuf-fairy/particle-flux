@@ -6,12 +6,12 @@ describe('ConfigManager', () => {
   const initialConfig = TEST_CONFIG();
   const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
 
-  it('Корректная инициализация', () => {
+  it('Correct initialization', () => {
     expect(configManager.alpha).toEqual(initialConfig.particleBehaviorsConfig.alpha);
     expect(configManager.lifeTime).toEqual(initialConfig.particleBehaviorsConfig.lifeTime);
   });
 
-  it('Изменение значений конфига', () => {
+  it('Changing config values', () => {
     configManager.scale = {
       start: 0,
       end: 1,
@@ -24,7 +24,7 @@ describe('ConfigManager', () => {
     expect(configManager.color).toEqual(configManager.color);
   });
 
-  it('Иммутабельность изначального конфига', () => {
+  it('The immutability of the initial config', () => {
     expect(initialConfig).toEqual(TEST_CONFIG());
   });
 });

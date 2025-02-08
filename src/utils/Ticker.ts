@@ -3,8 +3,8 @@ import {globalWindow} from '../globalWindow';
 
 export type TickerCallback = (elapsedDelta: number, deltaMS: number) => void;
 
-// за стандарт взято 60 FPS
-const STANDARD_DELTA_MS = 1 / 0.06;
+// 60 FPS is taken as the standard
+const STANDARD_DELTA_MS = 1000 / 60;
 
 export class Ticker implements ITicker {
   private lastTime: number | null;

@@ -1,6 +1,6 @@
 import {ParticleEmitter} from './ParticleEmitter';
 import {ParticleContainer} from './ParticleContainer';
-import {ParticleFluxConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
+import {IParticle, ParticleFluxConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {ParticleBehaviorFactory} from './ParticleBehaviorFactory';
 import {Ticker} from '../utils/Ticker';
@@ -20,6 +20,14 @@ export class ParticleFlux<V extends ViewParticle = ViewParticle> {
     this.emitter = new ParticleEmitter(this.container, this.config, new Ticker());
   }
 
+  public emitOnce(particlesCount: number = 1): void {
+    this.emitter.emitOnce(particlesCount);
+  }
+
+  public emitWave(): void {
+    this.emitter.emitWave();
+  }
+
   public startEmit(): void {
     this.emitter.startEmit();
   }
@@ -32,7 +40,23 @@ export class ParticleFlux<V extends ViewParticle = ViewParticle> {
     this.emitter.stopEmit();
   }
 
-  public cleanUp(): void {
+  public clean(): void {
     this.emitter.clean();
+  }
+
+  public isEmitterActive(): boolean {
+    return this.emitter.isActive();
+  }
+
+  public updateContainer(elapsedDelta: number, deltaMS: number): void {
+    this.container.update(elapsedDelta, deltaMS);
+  }
+
+  public getParticlesCount(): number {
+    return this.container.getParticlesCount();
+  }
+
+  public getParticles(): IParticle[] {
+    return this.container.getParticles();
   }
 }

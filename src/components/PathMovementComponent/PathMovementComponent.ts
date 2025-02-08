@@ -14,10 +14,7 @@ export class PathMovementComponent extends ParticleBaseComponent {
     this.delta = {x: 0, y: 0};
   }
 
-  /**
-   * Обновление позиции игрового объекта в соответствующем направлении с заданной скоростью
-   * @param delta время между кадрами
-   */
+  // Updating the position of the game object in the appropriate direction at a given speed
   public update(elapsedDelta: number): void {
     if (this.pathBehavior) {
       const speed = this.particle.speed * elapsedDelta;

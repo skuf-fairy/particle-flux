@@ -1,24 +1,24 @@
-// выполняет глубокое копирование
+// performs deep copying
 export function cloneDeep<T>(obj: T): T {
-  // Проверяем, является ли объект null или не является объектом
+  // Checking whether the object is null or not an object.
   if (obj === null || typeof obj !== 'object') {
-    return obj; // Возвращаем значение, если это не объект
+    return obj; // Return the value if it is not an object
   }
 
-  // Определяем, является ли объект массивом
+  // Determining whether an object is an array
   if (Array.isArray(obj)) {
-    return obj.map((item) => cloneDeep(item)) as unknown as T; // Рекурсивно копируем каждый элемент массива
+    return obj.map((item) => cloneDeep(item)) as unknown as T; // Recursively copying each element of the array
   }
 
-  // Создаем новый объект
+  // Creating a new object
   const newObj: {[key: string]: any} = {};
 
-  // Копируем каждое свойство объекта
+  // Copying each property of the object
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
-      newObj[key] = cloneDeep(obj[key]); // Рекурсивно копируем значение свойства
+      newObj[key] = cloneDeep(obj[key]); // Recursively copying the property value
     }
   }
 
-  return newObj as T; // Возвращаем новый объект
+  return newObj as T; // Returning a new object
 }

@@ -4,13 +4,13 @@ import {isRangeValue} from '../typeguards';
 import {ConfigManager} from './ConfigManager';
 
 /**
- * Обновляет контейнер, создавая частицы по переданному конфигу
+ * Updates the container by creating particles according to the passed configuration
  */
 export class ParticleEmitter {
   private readonly random: RealRandom;
-  // время таймера
+  // timer time
   private currentTime: number;
-  // время, когда нужно будет заспавнить частицу
+  // the time when it will be necessary to freeze the particle
   private nextSpawnTime: number | null;
 
   constructor(
@@ -30,9 +30,9 @@ export class ParticleEmitter {
   }
 
   /**
-   * создать частицу и добавить в контейнер, не более указанного maxParticles количества частиц
-   * стартует эмиттер
-   * @param particlesCount количество частиц
+   * create a particle and add to the container no more than the specified max Particles number of particles
+   * The emitter starts
+   * @param particlesCount number of particles
    */
   public emitOnce(particlesCount: number = 1): void {
     const count = this.getAvailableForEmitParticlesCount(particlesCount);
@@ -41,15 +41,15 @@ export class ParticleEmitter {
       this.emit();
     }
 
-    // стартуем эмиттер, если он остановлен
+    // we start the emitter if it is stopped
     if (!this.ticker.started) {
       this.startEmit();
     }
   }
 
   /**
-   * Создает волну частиц, не более указанного maxParticles количества частиц
-   * стартует эмиттер
+   * Creates a wave of particles, no more than the specified max Particles number of particles
+   * The emitter starts
    */
   public emitWave(): void {
     const countPerWave = this.config.spawnParticlesPerWave || 1;
@@ -59,7 +59,7 @@ export class ParticleEmitter {
       this.emit();
     }
 
-    // стартуем эмиттер, если он остановлен
+    // we start the emitter if it is stopped
     if (!this.ticker.started) {
       this.startEmit();
     }
@@ -79,8 +79,8 @@ export class ParticleEmitter {
   }
 
   /**
-   * Остановка эмиттера, которая означает конец его работы по текущему конфигу
-   * Очищает контейнер и сбрасывает время
+   * Stopping the emitter, which means the end of its operation according to the current configuration
+   * Cleans the container and resets the time
    */
   public stopEmit(): void {
     this.ticker.stop();
@@ -88,14 +88,14 @@ export class ParticleEmitter {
     this.resetTime();
   }
 
-  // очистка контейнера
+  // cleaning the container
   public clean(): void {
     this.container.clear();
   }
 
   /**
-   * true если эмиттер запущен и спавнит частицы
-   * @returns активен ли эмиттер
+   * true if the emitter is running and compare the particles
+   * @returns is the emitter active
    */
   public isActive(): boolean {
     return this.ticker.started;
@@ -105,7 +105,7 @@ export class ParticleEmitter {
     this.handleUpdate(elapsedDelta, deltaMS);
   }
 
-  // обновление контейнера и создание новых частиц по переданному конфигу
+  // updating the container and creating new particles according to the passed configuration
   private handleUpdate = (elapsedDelta: number, deltaMS: number): void => {
     this.currentTime += deltaMS;
 
@@ -113,25 +113,25 @@ export class ParticleEmitter {
 
     this.container.update(elapsedDelta, deltaMS);
 
-    // если время работы закончилось
+    // if the working time is over
     if (this.config.spawnTime !== undefined && this.currentTime >= this.config.spawnTime) {
-      // если время работы вышло, то следим за контейнером, когда он будет пустой, то нужно остановить эмиттер
-      if (this.container.getActiveParticlesCount() === 0) {
+      // if the operating time is up, then we monitor the container, when it is empty, then we need to stop the emitter.
+      if (this.container.getParticlesCount() === 0) {
         this.stopEmit();
       }
 
-      // иначе  просто не даем дальше спавнить
+      // Otherwise, we just don't let them spawn any further.
       return;
     }
 
-    // время создать очередную волну частиц
+    // Time to create another wave of particles
     if (this.nextSpawnTime !== null && this.currentTime >= this.nextSpawnTime) {
       this.emitWave();
       this.nextSpawnTime = this.getNextSpawnTime();
     }
   };
 
-  // создает частицу с переданным шансом на создание
+  // creates a particle with a transferred chance of creation
   private emit(): void {
     if (this.config.spawnChance !== undefined) {
       if (this.random.generateFloatNumber(0, 100) < this.config.spawnChance) {
@@ -153,15 +153,15 @@ export class ParticleEmitter {
     return this.currentTime + spawnInterval;
   }
 
-  // сбрасывает время эмиттера
+  // resets the emitter time
   private resetTime(): void {
     this.currentTime = this.config.spawnTimeout !== undefined ? -this.config.spawnTimeout : 0;
-    // первое создание волны должны быть на старте работы эмиттера, затем уже проставится время следующей волны
+    // The first wave creation should be at the start of the emitter operation, then the time of the next wave will be set.
     this.nextSpawnTime = this.config.spawnInterval !== undefined ? 0 : null;
   }
 
   private getAvailableForEmitParticlesCount(emitParticlesCount: number): number {
-    const particlesInContainer = this.container.getActiveParticlesCount();
+    const particlesInContainer = this.container.getParticlesCount();
     const maxParticles = this.config.maxParticles;
 
     return !maxParticles

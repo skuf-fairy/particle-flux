@@ -22,9 +22,9 @@ export class NumberUtils {
   }
 
   public static hexToRgb(hexColor: string) {
-    // Удаляем символ '#' если он есть
+    // Delete the '#' character if there is one.
     const hex = hexColor.replace(/^#/, '');
-    // Преобразуем HEX в RGB
+    // Convert HEX to RGB
     const bigint = parseInt(hex, 16);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
@@ -38,15 +38,15 @@ export class NumberUtils {
   }
 
   public static lerpColor(color1: string, color2: string, progress: number): string {
-    // Преобразуем HEX в RGB
+    // Convert HEX to RGB
     const rgb1 = NumberUtils.hexToRgb(color1);
     const rgb2 = NumberUtils.hexToRgb(color2);
-    // Интерполируем каждый канал
+    // Interpolation of each channel
     const r = NumberUtils.lerp(rgb1.r, rgb2.r, progress);
     const g = NumberUtils.lerp(rgb1.g, rgb2.g, progress);
     const b = NumberUtils.lerp(rgb1.b, rgb2.b, progress);
 
-    // Преобразуем обратно в HEX
+    // Convert it back to HEX
     return NumberUtils.rgbToHex(r, g, b);
   }
 
@@ -54,7 +54,7 @@ export class NumberUtils {
     return (angleInDegrees * Math.PI) / 180;
   }
 
-  // обрезает число до 2 числе после запятой
+  // truncates the number to 2 numbers after the decimal point
   public static roundWith2Precision(n: number): number {
     return Math.round((n + Number.EPSILON) * 100) / 100;
   }
