@@ -4,7 +4,7 @@ A particle system for various graphics libraries in JavaScript.
 
 An interactive editor for configuring of the emitter. TODO
 
-## Использование на примере pixi.js 8 версии
+## Using the pixi.js (v8) example
 
 A simple example of using an emitter
 
@@ -54,7 +54,7 @@ init();
 
 ## Interactive Examples
 
-Examples of some animations and effects that can be created using the emitter. All the examples use [pixi.js ](https://www.npmjs.com/package/pixi .js), but all of them can be executed on any other library for rendering on canvas.
+Examples of some animations and effects that can be created using the emitter. All the examples use [pixi.js](https://www.npmjs.com/package/pixi.js), but all of them can be executed on any other library for rendering on canvas.
 
 - [Pulse](https://codepen.io/vladosina/pen/OPLGQyG)
 - [Points](https://codepen.io/vladosina/pen/QwLPQYG)
