@@ -1,4 +1,4 @@
-import {RealRandom} from '../utils/random/RealRandom';
+import {realRandom} from '../utils/random/RealRandom';
 import {IParticleContainer, ITicker} from '../types';
 import {isRangeValue} from '../typeguards';
 import {ConfigManager} from './ConfigManager';
@@ -7,7 +7,6 @@ import {ConfigManager} from './ConfigManager';
  * Updates the container by creating particles according to the passed configuration
  */
 export class ParticleEmitter {
-  private readonly random: RealRandom;
   // timer time
   private currentTime: number;
   // the time when it will be necessary to freeze the particle
@@ -18,7 +17,6 @@ export class ParticleEmitter {
     private readonly config: ConfigManager,
     private readonly ticker: ITicker,
   ) {
-    this.random = new RealRandom();
     this.ticker.setCallback(this.handleUpdate);
 
     this.currentTime = 0;
@@ -134,7 +132,7 @@ export class ParticleEmitter {
   // creates a particle with a transferred chance of creation
   private emit(): void {
     if (this.config.spawnChance !== undefined) {
-      if (this.random.generateFloatNumber(0, 100) < this.config.spawnChance) {
+      if (realRandom.generateFloatNumber(0, 100) < this.config.spawnChance) {
         this.container.addParticle();
       }
     } else {
@@ -148,7 +146,7 @@ export class ParticleEmitter {
     if (spawnInterval === undefined) return null;
 
     if (isRangeValue(spawnInterval))
-      return this.currentTime + this.random.generateFloatNumber(spawnInterval.min, spawnInterval.max);
+      return this.currentTime + realRandom.generateFloatNumber(spawnInterval.min, spawnInterval.max);
 
     return this.currentTime + spawnInterval;
   }

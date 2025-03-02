@@ -11,6 +11,7 @@ export {
   IParticle,
   IParticleComponent,
   IParticleContainer,
+  RangeValue,
 } from './types';
 
 export {isRangeValue} from './typeguards';

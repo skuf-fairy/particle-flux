@@ -1,17 +1,14 @@
 import {Multiplier} from '../../types';
 import {EasingName} from '../../utils/easing/easing.types';
 
-interface ScalarBaseBehaviorConfig {
-  easing?: EasingName;
-  mult?: Multiplier;
-}
-
-export interface ScalarDynamicBehaviorConfig extends ScalarBaseBehaviorConfig {
+export interface ScalarDynamicBehaviorConfig {
   start: number;
   end: number;
+  easing?: EasingName;
+  multiplier?: Multiplier;
 }
 
-export interface ScalarStaticBehaviorConfig extends ScalarBaseBehaviorConfig {
+export interface ScalarStaticBehaviorConfig {
   value: number;
 }
 

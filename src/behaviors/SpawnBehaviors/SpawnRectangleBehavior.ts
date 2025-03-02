@@ -1,17 +1,14 @@
 import {SpawnRectangleShape} from './SpawnBehaviors.types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
-import {RealRandom} from '../../utils/random/RealRandom';
+import {realRandom} from '../../utils/random/RealRandom';
 import {Point2d} from '../../types';
 import {SpawnPositionBehavior} from '../SpawnPositionBehavior/SpawnPositionBehavior';
 
 export class SpawnRectangleBehavior extends ParticleBaseComponent {
-  private readonly random: RealRandom;
   private spawnPositionBehavior?: SpawnPositionBehavior;
 
   constructor(private readonly config: SpawnRectangleShape) {
     super();
-
-    this.random = new RealRandom();
   }
 
   public init(): void {
@@ -27,8 +24,8 @@ export class SpawnRectangleBehavior extends ParticleBaseComponent {
   private generateSpawnPoint(): Point2d {
     const {x, y, width, height} = this.config;
     return {
-      x: this.random.generateFloatNumber(x, x + width),
-      y: this.random.generateFloatNumber(y, y + height),
+      x: realRandom.generateFloatNumber(x, x + width),
+      y: realRandom.generateFloatNumber(y, y + height),
     };
   }
 }

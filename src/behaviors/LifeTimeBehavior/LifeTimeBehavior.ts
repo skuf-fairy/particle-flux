@@ -1,6 +1,6 @@
 import {LifeTimeBehaviorConfig} from './LifeTimeBehavior.types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
-import {RealRandom} from '../../utils/random/RealRandom';
+import {realRandom} from '../../utils/random/RealRandom';
 import {isLifeTimeStaticBehaviorConfig} from './LifeTimeBehavior.typeguards';
 
 export class LifeTimeBehavior extends ParticleBaseComponent {
@@ -19,7 +19,7 @@ export class LifeTimeBehavior extends ParticleBaseComponent {
     if (isLifeTimeStaticBehaviorConfig(this.config)) {
       this.lifeTime = this.config.value;
     } else {
-      this.lifeTime = new RealRandom().generateIntegerNumber(this.config.min, this.config.max);
+      this.lifeTime = realRandom.generateIntegerNumber(this.config.min, this.config.max);
     }
 
     this.lifeTimeNormalizedProgress = 0;

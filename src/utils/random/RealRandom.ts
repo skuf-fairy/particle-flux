@@ -18,3 +18,5 @@ export class RealRandom extends AbstractRandom {
     return Math.random() * (max - min + 1) + min;
   }
 }
+
+export const realRandom = new RealRandom();

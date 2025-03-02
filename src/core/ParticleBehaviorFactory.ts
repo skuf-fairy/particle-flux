@@ -25,7 +25,7 @@ import {SpeedScriptBehavior} from '../behaviors/SpeedBehavior/SpeedScriptBehavio
 import {MovementComponent} from '../components/MovementComponent/MovementComponent';
 import {PathMovementComponent} from '../components/PathMovementComponent/PathMovementComponent';
 import {IParticle, IParticleComponent, ViewParticle, IParticleFactory, ViewContainer} from '../types';
-import {RealRandom} from '../utils/random/RealRandom';
+import {realRandom} from '../utils/random/RealRandom';
 import {ScriptRotationBehavior} from '../behaviors/RotationBehavior/ScriptRotationBehavior/RotationScriptBehavior';
 import {ViewComponent} from '../components/ViewComponent/ViewComponent';
 import {SpawnPositionBehavior} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior';
@@ -39,11 +39,7 @@ import {
 } from '../behaviors/ColorBehavior/ColorBehavior.typeguards';
 
 export class ParticleBehaviorFactory implements IParticleFactory {
-  private readonly random: RealRandom;
-
-  constructor(private readonly viewContainer: ViewContainer<ViewParticle>, private readonly config: ConfigManager) {
-    this.random = new RealRandom();
-  }
+  constructor(private readonly viewContainer: ViewContainer<ViewParticle>, private readonly config: ConfigManager) {}
 
   public create(): IParticle {
     const particle = new Particle(this.createView());
@@ -158,6 +154,6 @@ export class ParticleBehaviorFactory implements IParticleFactory {
 
   private createView(): ViewParticle {
     const viewFactory = this.config.view;
-    return Array.isArray(viewFactory) ? this.random.choice(viewFactory)() : viewFactory();
+    return Array.isArray(viewFactory) ? realRandom.choice(viewFactory)() : viewFactory();
   }
 }

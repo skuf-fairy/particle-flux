@@ -1,18 +1,15 @@
 import {SpawnTorusShape} from './SpawnBehaviors.types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 import {Point2d} from '../../types';
-import {RealRandom} from '../../utils/random/RealRandom';
+import {realRandom} from '../../utils/random/RealRandom';
 import {SpawnPositionBehavior} from '../SpawnPositionBehavior/SpawnPositionBehavior';
 import {NumberUtils} from '../../utils/NumberUtils';
 
 export class SpawnTorusBehavior extends ParticleBaseComponent {
-  private readonly random: RealRandom;
   private spawnPositionBehavior?: SpawnPositionBehavior;
 
   constructor(private readonly config: SpawnTorusShape) {
     super();
-
-    this.random = new RealRandom();
   }
 
   public init(): void {
@@ -42,10 +39,10 @@ export class SpawnTorusBehavior extends ParticleBaseComponent {
     endAngle: number,
   ): Point2d {
     // Generating a random angle in radians
-    const angle = this.random.generateFloatNumber(startAngle, endAngle);
+    const angle = realRandom.generateFloatNumber(startAngle, endAngle);
 
     // Generating a random radius value ranging from the inner to the outer radius
-    const r = this.random.generateFloatNumber(innerRadius, outerRadius);
+    const r = realRandom.generateFloatNumber(innerRadius, outerRadius);
 
     // Calculating the coordinates of a point
     const pointX = x + r * Math.cos(angle);

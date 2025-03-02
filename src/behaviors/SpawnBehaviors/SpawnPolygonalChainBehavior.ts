@@ -1,17 +1,14 @@
 import {Chain, PolygonalChainShape} from './SpawnBehaviors.types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 import {Point2d} from '../../types';
-import {RealRandom} from '../../utils/random/RealRandom';
+import {realRandom} from '../../utils/random/RealRandom';
 import {SpawnPositionBehavior} from '../SpawnPositionBehavior/SpawnPositionBehavior';
 
 export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
-  private readonly random: RealRandom;
   private spawnPositionBehavior?: SpawnPositionBehavior;
 
   constructor(private readonly config: PolygonalChainShape) {
     super();
-
-    this.random = new RealRandom();
   }
 
   public init(): void {
@@ -31,7 +28,7 @@ export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
       if (this.isSingleChain(chain)) {
         return this.getRandomPointOnChain(chain);
       } else {
-        return this.getRandomPointOnChain(this.random.choice(chain));
+        return this.getRandomPointOnChain(realRandom.choice(chain));
       }
     } else {
       return {x: 0, y: 0};
@@ -46,7 +43,7 @@ export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
     if (chain.length === 1) {
       return {x: chain[0].x, y: chain[0].y};
     } else if (chain.length > 1) {
-      const endPointIndex = this.random.generateIntegerNumber(1, chain.length - 1);
+      const endPointIndex = realRandom.generateIntegerNumber(1, chain.length - 1);
       const endPoint = {x: chain[endPointIndex].x, y: chain[endPointIndex].y};
       const startPoint = {x: chain[endPointIndex - 1].x, y: chain[endPointIndex - 1].y};
 

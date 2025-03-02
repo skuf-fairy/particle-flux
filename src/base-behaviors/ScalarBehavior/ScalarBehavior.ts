@@ -5,7 +5,7 @@ import {EASING_FUNCTIONS} from '../../utils/easing/easing-functions';
 import {EasingFunction, EasingName} from '../../utils/easing/easing.types';
 import {isScalarDynamicBehavior, isScalarStaticBehavior} from './ScalarBehavior.typeguards';
 import {ScalarBehaviorConfig} from './ScalarBehavior.types';
-import {RealRandom} from '../../utils/random/RealRandom';
+import {realRandom} from '../../utils/random/RealRandom';
 import {isRangeValue} from '../../typeguards';
 
 export abstract class ScalarBehavior extends ParticleBaseComponent {
@@ -25,7 +25,7 @@ export abstract class ScalarBehavior extends ParticleBaseComponent {
   public init(): void {
     this.startValue = 0;
     this.endValue = 0;
-    this.easing = EASING_FUNCTIONS[this.config.easing || EasingName.linear];
+    this.easing = EASING_FUNCTIONS[EasingName.linear];
 
     this.multiplier = this.getInitialMultiplier();
 
@@ -39,6 +39,7 @@ export abstract class ScalarBehavior extends ParticleBaseComponent {
     if (isScalarDynamicBehavior(this.config)) {
       this.startValue = this.config.start;
       this.endValue = this.config.end;
+      this.easing = EASING_FUNCTIONS[this.config.easing || EasingName.linear];
     }
 
     this.update();
@@ -57,11 +58,13 @@ export abstract class ScalarBehavior extends ParticleBaseComponent {
   }
 
   private getInitialMultiplier(): number {
-    if (this.config.mult) {
-      if (isRangeValue(this.config.mult)) {
-        return new RealRandom().generateFloatNumber(this.config.mult.min, this.config.mult.max);
+    if (isScalarStaticBehavior(this.config)) return 1;
+
+    if (this.config.multiplier) {
+      if (isRangeValue(this.config.multiplier)) {
+        return realRandom.generateFloatNumber(this.config.multiplier.min, this.config.multiplier.max);
       } else {
-        return this.config.mult;
+        return this.config.multiplier;
       }
     }
 

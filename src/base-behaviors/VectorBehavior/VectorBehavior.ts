@@ -5,7 +5,7 @@ import {EASING_FUNCTIONS} from '../../utils/easing/easing-functions';
 import {EasingFunction, EasingName} from '../../utils/easing/easing.types';
 import {isScalarStaticBehavior, isScalarDynamicBehavior} from '../ScalarBehavior/ScalarBehavior.typeguards';
 import {VectorBehaviorConfig} from './VectorBehavior.types';
-import {RealRandom} from '../../utils/random/RealRandom';
+import {realRandom} from '../../utils/random/RealRandom';
 import {ScalarBehaviorConfig} from '../ScalarBehavior/ScalarBehavior.types';
 import {isRangeValue} from '../../typeguards';
 import {Point2d} from '../../types';
@@ -19,7 +19,6 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
   protected multiplierX: number;
   protected multiplierY: number;
   protected lifeTimeBehavior?: LifeTimeBehavior;
-  private random: RealRandom;
 
   constructor(protected readonly config: VectorBehaviorConfig) {
     super();
@@ -28,10 +27,11 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
   protected abstract updateValue(value: Point2d): void;
 
   public init(): void {
-    this.random = new RealRandom();
-
     this.startValue = {x: 0, y: 0};
     this.endValue = {x: 0, y: 0};
+
+    this.easingX = EASING_FUNCTIONS[EasingName.linear];
+    this.easingY = EASING_FUNCTIONS[EasingName.linear];
 
     const config = this.config;
 
@@ -41,19 +41,23 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
     } else if (isScalarDynamicBehavior(config.x) && isScalarDynamicBehavior(config.y)) {
       this.startValue = {x: config.x.start, y: config.y.start};
       this.endValue = {x: config.x.end, y: config.y.end};
+
+      this.easingX = EASING_FUNCTIONS[config.x.easing || EasingName.linear];
+      this.easingY = EASING_FUNCTIONS[config.y.easing || EasingName.linear];
     } else if (isScalarStaticBehavior(config.x) && isScalarDynamicBehavior(config.y)) {
       this.startValue = {x: config.x.value, y: config.y.start};
       this.endValue = {x: config.x.value, y: config.y.end};
+
+      this.easingY = EASING_FUNCTIONS[config.y.easing || EasingName.linear];
     } else if (isScalarDynamicBehavior(config.x) && isScalarStaticBehavior(config.y)) {
       this.startValue = {x: config.x.start, y: config.y.value};
       this.endValue = {x: config.x.end, y: config.y.value};
+
+      this.easingX = EASING_FUNCTIONS[config.x.easing || EasingName.linear];
     }
 
     this.value.x = this.startValue.x;
     this.value.y = this.startValue.y;
-
-    this.easingX = EASING_FUNCTIONS[config.x.easing || EasingName.linear];
-    this.easingY = EASING_FUNCTIONS[config.y.easing || EasingName.linear];
 
     this.multiplierX = this.getInitialMultiplier(this.config.x);
     this.multiplierY = this.getInitialMultiplier(this.config.y);
@@ -79,11 +83,13 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
   }
 
   private getInitialMultiplier(config: ScalarBehaviorConfig): number {
-    if (config.mult) {
-      if (isRangeValue(config.mult)) {
-        return this.random.generateFloatNumber(config.mult.min, config.mult.max);
+    if (isScalarStaticBehavior(config)) return 1;
+
+    if (config.multiplier) {
+      if (isRangeValue(config.multiplier)) {
+        return realRandom.generateFloatNumber(config.multiplier.min, config.multiplier.max);
       } else {
-        return config.mult;
+        return config.multiplier;
       }
     }
 
