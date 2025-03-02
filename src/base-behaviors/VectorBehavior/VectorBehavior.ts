@@ -83,8 +83,6 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
   }
 
   private getInitialMultiplier(config: ScalarBehaviorConfig): number {
-    if (isScalarStaticBehavior(config)) return 1;
-
     if (config.multiplier) {
       if (isRangeValue(config.multiplier)) {
         return realRandom.generateFloatNumber(config.multiplier.min, config.multiplier.max);

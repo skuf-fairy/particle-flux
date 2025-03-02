@@ -58,13 +58,13 @@ export abstract class ScalarBehavior extends ParticleBaseComponent {
   }
 
   private getInitialMultiplier(): number {
-    if (isScalarStaticBehavior(this.config)) return 1;
+    const multiplier = this.config.multiplier;
 
-    if (this.config.multiplier) {
-      if (isRangeValue(this.config.multiplier)) {
-        return realRandom.generateFloatNumber(this.config.multiplier.min, this.config.multiplier.max);
+    if (multiplier) {
+      if (isRangeValue(multiplier)) {
+        return realRandom.generateFloatNumber(multiplier.min, multiplier.max);
       } else {
-        return this.config.multiplier;
+        return multiplier;
       }
     }
 

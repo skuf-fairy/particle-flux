@@ -10,6 +10,7 @@ export interface ScalarDynamicBehaviorConfig {
 
 export interface ScalarStaticBehaviorConfig {
   value: number;
+  multiplier?: Multiplier;
 }
 
 export type ScalarBehaviorConfig = ScalarDynamicBehaviorConfig | ScalarStaticBehaviorConfig;
