@@ -57,7 +57,10 @@ export {
   DirectionRangeBehaviorConfig,
   StaticDirectionBehaviorConfig,
 } from './behaviors/DirectionBehavior/DirectionBehavior.types';
-export {isStaticDirectionBehaviorConfig} from './behaviors/DirectionBehavior/DirectionBehavior.typeguards';
+export {
+  isStaticDirectionBehaviorConfig,
+  isDirectionRangeBehaviorConfig,
+} from './behaviors/DirectionBehavior/DirectionBehavior.typeguards';
 export {GravityBehaviorConfig} from './behaviors/GravityBehavior/GravityBehavior.types';
 export {
   LifeTimeBehaviorConfig,
