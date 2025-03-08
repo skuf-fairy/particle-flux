@@ -2,11 +2,11 @@ import {AnyBehaviorConfig} from '../base-behaviors.types';
 import {isDeltaBehaviorConfig} from '../DeltaBehavior/DeltaBehavior.typeguards';
 import {ScalarBehaviorConfig, ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from './ScalarBehavior.types';
 
-export function isScalarDynamicBehavior(config: ScalarBehaviorConfig): config is ScalarDynamicBehaviorConfig {
+export function isScalarDynamicBehavior(config: AnyBehaviorConfig): config is ScalarDynamicBehaviorConfig {
   return 'start' in config && 'end' in config;
 }
 
-export function isScalarStaticBehavior(config: ScalarBehaviorConfig): config is ScalarStaticBehaviorConfig {
+export function isScalarStaticBehavior(config: AnyBehaviorConfig): config is ScalarStaticBehaviorConfig {
   return 'value' in config;
 }
 
