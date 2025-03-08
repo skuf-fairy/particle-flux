@@ -64,7 +64,10 @@ export {
   LifeTimeRangeBehaviorConfig,
   LifeTimeStaticBehaviorConfig,
 } from './behaviors/LifeTimeBehavior/LifeTimeBehavior.types';
-export {isLifeTimeStaticBehaviorConfig} from './behaviors/LifeTimeBehavior/LifeTimeBehavior.typeguards';
+export {
+  isLifeTimeStaticBehaviorConfig,
+  isLifeTimeRangeBehaviorConfig,
+} from './behaviors/LifeTimeBehavior/LifeTimeBehavior.typeguards';
 export {PathBehaviorConfig} from './behaviors/PathBehavior/PathBehavior.types';
 export {ScaleBehaviorConfig} from './behaviors/ScaleBehavior/ScaleBehavior.types';
 export {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
