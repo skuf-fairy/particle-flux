@@ -78,8 +78,12 @@ export class ConfigManager {
   }
 
   // particles behavior
-  set lifeTime(config: LifeTimeBehaviorConfig) {
-    this.config.particleBehaviorsConfig.lifeTime = cloneDeep(config);
+  set lifeTime(config: LifeTimeBehaviorConfig | undefined) {
+    if (config !== undefined) {
+      this.config.particleBehaviorsConfig.lifeTime = cloneDeep(config);
+    } else {
+      this.config.particleBehaviorsConfig.lifeTime = DEFAULT_LIFE_TIME_CONFIG;
+    }
   }
 
   get lifeTime(): LifeTimeBehaviorConfig {
