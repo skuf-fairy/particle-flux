@@ -97,7 +97,7 @@ export interface EmitterConfig {
 
 export interface ParticleBehaviorConfig {
   // lifetime of the particle
-  lifeTime: LifeTimeBehaviorConfig;
+  lifeTime?: LifeTimeBehaviorConfig;
   // the initial position of the particle
   spawnPosition?: SpawnPositionBehaviorConfig;
   // the particle creation area

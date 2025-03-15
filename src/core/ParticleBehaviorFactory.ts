@@ -37,6 +37,7 @@ import {
   isColorStaticBehaviorConfig,
   isColorDynamicBehaviorConfig,
 } from '../behaviors/ColorBehavior/ColorBehavior.typeguards';
+import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
 
 export class ParticleBehaviorFactory implements IParticleFactory {
   constructor(private readonly viewContainer: ViewContainer<ViewParticle>, private readonly config: ConfigManager) {}
@@ -47,8 +48,10 @@ export class ParticleBehaviorFactory implements IParticleFactory {
     // The first thing to do is add a display component so that the rest initialize the view.
     particle.addComponent(new ViewComponent(this.viewContainer));
 
-    if (this.config.lifeTime) {
+    if (this.config.lifeTime !== undefined) {
       particle.addComponent(new LifeTimeBehavior(this.config.lifeTime));
+    } else {
+      particle.addComponent(new LifeTimeBehavior(DEFAULT_LIFE_TIME_CONFIG));
     }
 
     if (this.config.speed) {

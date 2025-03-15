@@ -11,6 +11,7 @@ import {SpawnPositionBehaviorConfig} from '../behaviors/SpawnPositionBehavior/Sp
 import {SpawnShapeBehavior} from '../behaviors/SpawnBehaviors/SpawnBehaviors.types';
 import {ColorBehaviorConfig} from '../behaviors/ColorBehavior/ColorBehavior.types';
 import {cloneDeep} from '../utils/cloneDeep';
+import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
 
 export class ConfigManager {
   private readonly config: ParticleFluxConfig;
@@ -78,15 +79,19 @@ export class ConfigManager {
 
   // particles behavior
   set lifeTime(config: LifeTimeBehaviorConfig) {
-    this.config.particleBehaviorsConfig.lifeTime = {...config};
+    this.config.particleBehaviorsConfig.lifeTime = cloneDeep(config);
   }
 
   get lifeTime(): LifeTimeBehaviorConfig {
-    return this.config.particleBehaviorsConfig.lifeTime;
+    if (this.config.particleBehaviorsConfig.lifeTime) {
+      return this.config.particleBehaviorsConfig.lifeTime;
+    } else {
+      return DEFAULT_LIFE_TIME_CONFIG;
+    }
   }
 
   set speed(config: SpeedBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.speed = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.speed = config === undefined ? undefined : cloneDeep(config);
   }
 
   get speed(): SpeedBehaviorConfig | undefined {
@@ -94,7 +99,7 @@ export class ConfigManager {
   }
 
   set direction(config: DirectionBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.direction = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.direction = config === undefined ? undefined : cloneDeep(config);
   }
 
   get direction(): DirectionBehaviorConfig | undefined {
@@ -102,7 +107,7 @@ export class ConfigManager {
   }
 
   set path(config: PathBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.path = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.path = config === undefined ? undefined : cloneDeep(config);
   }
 
   get path(): PathBehaviorConfig | undefined {
@@ -110,7 +115,7 @@ export class ConfigManager {
   }
 
   set alpha(config: AlphaBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.alpha = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.alpha = config === undefined ? undefined : cloneDeep(config);
   }
 
   get alpha(): AlphaBehaviorConfig | undefined {
@@ -118,7 +123,7 @@ export class ConfigManager {
   }
 
   set scale(config: ScaleBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.scale = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.scale = config === undefined ? undefined : cloneDeep(config);
   }
 
   get scale(): ScaleBehaviorConfig | undefined {
@@ -126,7 +131,7 @@ export class ConfigManager {
   }
 
   set gravity(config: GravityBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.gravity = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.gravity = config === undefined ? undefined : cloneDeep(config);
   }
 
   get gravity(): GravityBehaviorConfig | undefined {
@@ -134,7 +139,7 @@ export class ConfigManager {
   }
 
   set rotation(config: RotationBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.rotation = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.rotation = config === undefined ? undefined : cloneDeep(config);
   }
 
   get rotation(): RotationBehaviorConfig | undefined {
@@ -142,7 +147,7 @@ export class ConfigManager {
   }
 
   set spawnPosition(config: SpawnPositionBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.spawnPosition = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.spawnPosition = config === undefined ? undefined : cloneDeep(config);
   }
 
   get spawnPosition(): SpawnPositionBehaviorConfig | undefined {
@@ -150,7 +155,7 @@ export class ConfigManager {
   }
 
   set spawnShape(config: SpawnShapeBehavior | undefined) {
-    this.config.particleBehaviorsConfig.spawnShape = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.spawnShape = config === undefined ? undefined : cloneDeep(config);
   }
 
   get spawnShape(): SpawnShapeBehavior | undefined {
@@ -158,7 +163,7 @@ export class ConfigManager {
   }
 
   set color(config: ColorBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.color = config === undefined ? undefined : {...config};
+    this.config.particleBehaviorsConfig.color = config === undefined ? undefined : cloneDeep(config);
   }
 
   get color(): ColorBehaviorConfig | undefined {
