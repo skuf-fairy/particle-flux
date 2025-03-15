@@ -27,9 +27,11 @@ export interface SpawnPointShape extends Point2d {
 
 export type Chain = Point2d[];
 
+export type PolygonalChain = Chain | Chain[];
+
 export interface PolygonalChainShape {
   type: SpawnShapeType.Polygon;
-  chain: Chain | Chain[];
+  chain: PolygonalChain;
 }
 
 export type SpawnShapeBehavior = SpawnRectangleShape | SpawnTorusShape | SpawnPointShape | PolygonalChainShape;

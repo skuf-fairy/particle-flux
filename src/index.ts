@@ -83,7 +83,10 @@ export {
   PolygonalChainShape,
   SpawnShapeBehavior,
   SpawnShapeType,
+  Chain,
+  PolygonalChain,
 } from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
+export {isSinglePolygonalChain} from './behaviors/SpawnBehaviors/SpawnShape.typeguards';
 
 export {EasingName, EasingFunction} from './utils/easing/easing.types';
 export {EASING_FUNCTIONS} from './utils/easing/easing-functions';
