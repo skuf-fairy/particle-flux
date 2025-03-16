@@ -132,7 +132,7 @@ export class ParticleEmitter {
   // creates a particle with a transferred chance of creation
   private emit(): void {
     if (this.config.spawnChance !== undefined) {
-      if (realRandom.generateFloatNumber(0, 100) < this.config.spawnChance) {
+      if (realRandom.generateIntegerNumber(1, 100) <= this.config.spawnChance) {
         this.container.addParticle();
       }
     } else {
