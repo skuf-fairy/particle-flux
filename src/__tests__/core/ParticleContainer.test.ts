@@ -32,8 +32,8 @@ describe('ParticleContainer', () => {
   it('One of the particles was destroyed', () => {
     p1.shouldDestroy = true;
 
-    expect(container.getParticlesCount()).toEqual(1);
-    expect(container.getParticles()).toEqual([p2]);
+    expect(container.getParticlesCount()).toEqual(2);
+    expect(container.getParticles()).toEqual([p1, p2]);
     expect(p1.shouldDestroy).toEqual(true);
     expect(p2.shouldDestroy).toEqual(false);
   });

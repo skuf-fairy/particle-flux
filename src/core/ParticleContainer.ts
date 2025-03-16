@@ -4,17 +4,15 @@ import {IParticle, IParticleContainer, IParticleFactory} from '../types';
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
  */
 export class ParticleContainer implements IParticleContainer {
-  private particles: Set<IParticle>;
-  private destroyedParticles: Set<IParticle>;
+  private particles: IParticle[];
 
   constructor(private readonly particleFactory: IParticleFactory) {
-    this.particles = new Set();
-    this.destroyedParticles = new Set();
+    this.particles = [];
   }
 
   // returns active particles
   public getParticles(): IParticle[] {
-    return [...this.particles].filter((p) => !p.shouldDestroy && !this.destroyedParticles.has(p));
+    return this.particles;
   }
 
   // returns massive active particles
@@ -24,41 +22,39 @@ export class ParticleContainer implements IParticleContainer {
 
   // It updates the particles in the container and cleans them from the destroyed ones.
   public update(elapsedDelta: number, deltaMS: number): void {
-    this.particles.forEach((p) => {
+    const length = this.particles.length;
+
+    const livingParticles: IParticle[] = [];
+
+    let i = 0;
+
+    while (i < length) {
+      const p = this.particles[i];
+
       // if the particle has already been destroyed in any way, then add it to the array, but do not cause an update.
       if (p.shouldDestroy) {
-        this.destroyedParticles.add(p);
-        return;
+        p.destroy?.();
+      } else {
+        p.update!(elapsedDelta, deltaMS);
+        livingParticles.push(p);
       }
 
-      p.update!(elapsedDelta, deltaMS);
+      i++;
+    }
 
-      if (p.shouldDestroy) {
-        this.destroyedParticles.add(p);
-      }
-    });
-
-    this.destroyedParticles.forEach((p) => {
-      p.destroy?.();
-      this.particles.delete(p);
-    });
-
-    this.destroyedParticles = new Set();
+    if (livingParticles.length !== this.particles.length) {
+      this.particles = livingParticles;
+    }
   }
 
   public clear(): void {
-    this.destroyedParticles.forEach((p) => {
-      p.destroy?.();
-      this.particles.delete(p);
-    });
     this.particles.forEach((p) => p.destroy?.());
-    this.particles = new Set();
-    this.destroyedParticles = new Set();
+    this.particles = [];
   }
 
   public addParticle(): IParticle {
     const particle = this.particleFactory.create();
-    this.particles.add(particle);
+    this.particles.push(particle);
     return particle;
   }
 }
