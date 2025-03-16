@@ -50,7 +50,9 @@ export abstract class ScalarBehavior extends ParticleBaseComponent {
   }
 
   protected getValue(progress: number): number {
-    return NumberUtils.lerp(this.startValue, this.endValue, this.easing(progress)) * this.multiplier;
+    return NumberUtils.roundWith2Precision(
+      NumberUtils.lerp(this.startValue, this.endValue, this.easing(progress)) * this.multiplier,
+    );
   }
 
   private getTimeProgress(): number {

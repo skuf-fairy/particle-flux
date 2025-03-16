@@ -2,6 +2,7 @@ import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 import {PathBehavior} from '../../behaviors/PathBehavior/PathBehavior';
 import {Point2d} from '../../types';
 import {Vector2Utils} from '../../utils/Vector2Utils';
+import {NumberUtils} from '../../utils/NumberUtils';
 
 export class PathMovementComponent extends ParticleBaseComponent {
   private pathBehavior?: PathBehavior;
@@ -23,8 +24,8 @@ export class PathMovementComponent extends ParticleBaseComponent {
       const delta = Vector2Utils.rotate(this.delta, -Math.PI / 2);
 
       this.particle.view.position = {
-        x: this.initPosition.x + delta.x,
-        y: this.initPosition.y + delta.y,
+        x: NumberUtils.roundWith2Precision(this.initPosition.x + delta.x),
+        y: NumberUtils.roundWith2Precision(this.initPosition.y + delta.y),
       };
     }
   }

@@ -1,3 +1,4 @@
+import {NumberUtils} from '../../utils/NumberUtils';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 
 export class MovementComponent extends ParticleBaseComponent {
@@ -9,8 +10,8 @@ export class MovementComponent extends ParticleBaseComponent {
     const direction = this.particle.direction;
 
     this.particle.view.position = {
-      x: this.particle.view.position.x + direction.x * speed,
-      y: this.particle.view.position.y + direction.y * speed,
+      x: NumberUtils.roundWith2Precision(this.particle.view.position.x + direction.x * speed),
+      y: NumberUtils.roundWith2Precision(this.particle.view.position.y + direction.y * speed),
     };
   }
 }

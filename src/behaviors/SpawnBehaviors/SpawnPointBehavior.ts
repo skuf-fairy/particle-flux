@@ -1,6 +1,7 @@
 import {SpawnPointShape} from './SpawnBehaviors.types';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 import {SpawnPositionBehavior} from '../SpawnPositionBehavior/SpawnPositionBehavior';
+import {NumberUtils} from '../../utils/NumberUtils';
 
 export class SpawnPointBehavior extends ParticleBaseComponent {
   private spawnPositionBehavior?: SpawnPositionBehavior;
@@ -13,8 +14,8 @@ export class SpawnPointBehavior extends ParticleBaseComponent {
     this.spawnPositionBehavior = this.particle.getComponent(SpawnPositionBehavior);
 
     this.particle.view.position = {
-      x: this.config.x + (this.spawnPositionBehavior?.position.x || 0),
-      y: this.config.y + (this.spawnPositionBehavior?.position.y || 0),
+      x: NumberUtils.roundWith2Precision(this.config.x + (this.spawnPositionBehavior?.position.x || 0)),
+      y: NumberUtils.roundWith2Precision(this.config.y + (this.spawnPositionBehavior?.position.y || 0)),
     };
   }
 }

@@ -25,8 +25,8 @@ export class SpawnTorusBehavior extends ParticleBaseComponent {
     );
 
     this.particle.view.position = {
-      x: position.x + (this.spawnPositionBehavior?.position.x || 0),
-      y: position.y + (this.spawnPositionBehavior?.position.y || 0),
+      x: NumberUtils.roundWith2Precision(position.x + (this.spawnPositionBehavior?.position.x || 0)),
+      y: NumberUtils.roundWith2Precision(position.y + (this.spawnPositionBehavior?.position.y || 0)),
     };
   }
 

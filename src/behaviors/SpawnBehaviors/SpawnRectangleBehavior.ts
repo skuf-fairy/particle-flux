@@ -3,6 +3,7 @@ import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 import {realRandom} from '../../utils/random/RealRandom';
 import {Point2d} from '../../types';
 import {SpawnPositionBehavior} from '../SpawnPositionBehavior/SpawnPositionBehavior';
+import {NumberUtils} from '../../utils/NumberUtils';
 
 export class SpawnRectangleBehavior extends ParticleBaseComponent {
   private spawnPositionBehavior?: SpawnPositionBehavior;
@@ -16,8 +17,8 @@ export class SpawnRectangleBehavior extends ParticleBaseComponent {
 
     const position = this.generateSpawnPoint();
     this.particle.view.position = {
-      x: position.x + (this.spawnPositionBehavior?.position.x || 0),
-      y: position.y + (this.spawnPositionBehavior?.position.y || 0),
+      x: NumberUtils.roundWith2Precision(position.x + (this.spawnPositionBehavior?.position.x || 0)),
+      y: NumberUtils.roundWith2Precision(position.y + (this.spawnPositionBehavior?.position.y || 0)),
     };
   }
 

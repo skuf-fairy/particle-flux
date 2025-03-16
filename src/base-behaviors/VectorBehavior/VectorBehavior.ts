@@ -72,8 +72,12 @@ export abstract class VectorBehavior extends ParticleBaseComponent {
   }
 
   protected getValue(progress: number): Point2d {
-    this.value.x = NumberUtils.lerp(this.startValue.x, this.endValue.x, this.easingX(progress)) * this.multiplierX;
-    this.value.y = NumberUtils.lerp(this.startValue.y, this.endValue.y, this.easingY(progress)) * this.multiplierY;
+    this.value.x = NumberUtils.roundWith2Precision(
+      NumberUtils.lerp(this.startValue.x, this.endValue.x, this.easingX(progress)) * this.multiplierX,
+    );
+    this.value.y = NumberUtils.roundWith2Precision(
+      NumberUtils.lerp(this.startValue.y, this.endValue.y, this.easingY(progress)) * this.multiplierY,
+    );
 
     return this.value;
   }

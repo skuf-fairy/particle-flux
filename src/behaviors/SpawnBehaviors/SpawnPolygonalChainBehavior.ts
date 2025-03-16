@@ -3,6 +3,7 @@ import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 import {Point2d} from '../../types';
 import {realRandom} from '../../utils/random/RealRandom';
 import {SpawnPositionBehavior} from '../SpawnPositionBehavior/SpawnPositionBehavior';
+import {isSinglePolygonalChain} from './SpawnShape.typeguards';
 
 export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
   private spawnPositionBehavior?: SpawnPositionBehavior;
@@ -25,7 +26,7 @@ export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
     const chain = this.config.chain;
 
     if (chain.length > 0) {
-      if (this.isSingleChain(chain)) {
+      if (isSinglePolygonalChain(chain)) {
         return this.getRandomPointOnChain(chain);
       } else {
         return this.getRandomPointOnChain(realRandom.choice(chain));
@@ -33,10 +34,6 @@ export class SpawnPolygonalChainBehavior extends ParticleBaseComponent {
     } else {
       return {x: 0, y: 0};
     }
-  }
-
-  private isSingleChain(chain: Chain | Chain[]): chain is Chain {
-    return !Array.isArray(chain[0]);
   }
 
   private getRandomPointOnChain(chain: Chain): Point2d {

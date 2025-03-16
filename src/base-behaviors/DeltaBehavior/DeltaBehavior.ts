@@ -2,6 +2,7 @@ import {realRandom} from '../../utils/random/RealRandom';
 import {ParticleBaseComponent} from '../../core/ParticleBaseComponent';
 import {DeltaBehaviorConfig} from './DeltaBehavior.types';
 import {isRangeValue} from '../../typeguards';
+import {NumberUtils} from '../../utils/NumberUtils';
 
 export abstract class DeltaBehavior extends ParticleBaseComponent {
   protected value: number;
@@ -20,7 +21,7 @@ export abstract class DeltaBehavior extends ParticleBaseComponent {
 
   public update(elapsedDelta: number): void {
     this.value += this.config.delta * elapsedDelta;
-    this.updateValue(this.value);
+    this.updateValue(NumberUtils.roundWith2Precision(this.value));
   }
 
   private getInitialMultiplier(): number {
