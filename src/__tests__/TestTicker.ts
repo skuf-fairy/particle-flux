@@ -4,10 +4,12 @@ import {TickerCallback} from '../utils/Ticker';
 export class TestTicker implements ITicker {
   public started: boolean;
   private cb: TickerCallback;
+  private ticks: number;
 
   constructor() {
     this.started = false;
     this.cb = () => {};
+    this.ticks = 0;
   }
 
   get FPS(): number {
@@ -34,7 +36,12 @@ export class TestTicker implements ITicker {
     this.cb = cb;
   }
 
-  // public update(): void {
-  //   this.cb(1, 1);
+  // public tick(): void {
+  //   this.ticks++;
   // }
+
+  public update(): void {
+    this.ticks++;
+    this.cb(1, this.ticks);
+  }
 }

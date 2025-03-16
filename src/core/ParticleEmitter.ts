@@ -23,7 +23,7 @@ export class ParticleEmitter {
     this.nextSpawnTime = this.getNextSpawnTime();
 
     if (this.config.autoStart === undefined || this.config.autoStart) {
-      this.ticker.start();
+      this.startEmit();
     }
   }
 
@@ -146,7 +146,7 @@ export class ParticleEmitter {
     if (spawnInterval === undefined) return null;
 
     if (isRangeValue(spawnInterval))
-      return this.currentTime + realRandom.generateFloatNumber(spawnInterval.min, spawnInterval.max);
+      return this.currentTime + realRandom.generateIntegerNumber(spawnInterval.min, spawnInterval.max);
 
     return this.currentTime + spawnInterval;
   }
