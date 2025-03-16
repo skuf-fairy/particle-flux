@@ -4,57 +4,92 @@ import {IParticle, IParticleContainer, IParticleFactory} from '../types';
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
  */
 export class ParticleContainer implements IParticleContainer {
-  private particles: IParticle[];
+  public headParticle: IParticle | null;
+  public tailParticle: IParticle | null;
+  private containerParticlesCount: number;
 
   constructor(private readonly particleFactory: IParticleFactory) {
-    this.particles = [];
+    this.headParticle = null;
+    this.tailParticle = null;
+    this.containerParticlesCount = 0;
   }
 
   // returns active particles
   public getParticles(): IParticle[] {
-    return this.particles;
+    const particleList: IParticle[] = [];
+
+    let particle: IParticle | null = this.headParticle;
+
+    while (particle !== null) {
+      particleList.push(particle);
+
+      particle = particle.next;
+    }
+
+    return particleList;
   }
 
   // returns massive active particles
   public getParticlesCount(): number {
-    return this.getParticles().length;
+    return this.containerParticlesCount;
   }
 
   // It updates the particles in the container and cleans them from the destroyed ones.
   public update(elapsedDelta: number, deltaMS: number): void {
-    const length = this.particles.length;
+    let particle: IParticle | null = this.headParticle;
+    let prevParticle: IParticle | null = null;
+    this.containerParticlesCount = 0;
 
-    const livingParticles: IParticle[] = [];
-
-    let i = 0;
-
-    while (i < length) {
-      const p = this.particles[i];
-
+    while (particle !== null) {
       // if the particle has already been destroyed in any way, then add it to the array, but do not cause an update.
-      if (p.shouldDestroy) {
-        p.destroy?.();
+      if (particle.shouldDestroy) {
+        particle.destroy?.();
+
+        if (particle === this.headParticle) {
+          this.headParticle = this.headParticle.next;
+        } else if (prevParticle === null) {
+          prevParticle = particle.next;
+        } else {
+          prevParticle.next = particle.next;
+        }
       } else {
-        p.update!(elapsedDelta, deltaMS);
-        livingParticles.push(p);
+        particle.update!(elapsedDelta, deltaMS);
+        prevParticle = particle;
+        this.containerParticlesCount++;
       }
 
-      i++;
+      particle = particle.next;
     }
 
-    if (livingParticles.length !== this.particles.length) {
-      this.particles = livingParticles;
-    }
+    this.tailParticle = prevParticle;
   }
 
   public clear(): void {
-    this.particles.forEach((p) => p.destroy?.());
-    this.particles = [];
+    let particle: IParticle | null = this.headParticle;
+
+    while (particle !== null) {
+      particle.destroy?.();
+      particle = particle.next;
+    }
+
+    this.headParticle = null;
+    this.tailParticle = null;
+
+    this.containerParticlesCount = 0;
   }
 
   public addParticle(): IParticle {
     const particle = this.particleFactory.create();
-    this.particles.push(particle);
+
+    if (this.headParticle === null) {
+      this.headParticle = this.tailParticle = particle;
+    } else {
+      this.tailParticle!.next = particle;
+      this.tailParticle = particle;
+    }
+
+    this.containerParticlesCount++;
+
     return particle;
   }
 }

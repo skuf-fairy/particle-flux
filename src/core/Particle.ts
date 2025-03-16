@@ -17,6 +17,7 @@ export class Particle implements IParticle {
   public componentsMap: Map<Function, IParticleComponent>;
   // a list of only those entities that have the update method implemented
   public updatableComponentsMap: Map<Function, IParticleComponent>;
+  public next: IParticle | null;
 
   constructor(view: ViewParticle) {
     this.componentsMap = new Map<Function, IParticleComponent>();
@@ -29,6 +30,8 @@ export class Particle implements IParticle {
       y: 0,
     };
     this.shouldDestroy = false;
+
+    this.next = null;
   }
 
   // initialization of particle parameters through components

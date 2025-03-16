@@ -51,6 +51,7 @@ export interface IParticle {
   update(elapsedDelta: number, deltaMS: number): void;
   destroy(): void;
   shouldDestroy: boolean;
+  next: IParticle | null;
 
   speed: number;
   direction: Point2d;
