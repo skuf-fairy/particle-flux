@@ -43,7 +43,7 @@ describe('Particle', () => {
     });
 
     it('The component was added to the updated components because the update method is implemented.', () => {
-      expect(particle.updatableComponentsMap.getValue(TestParticleComponent)).toEqual(testComponent);
+      expect(particle.updatableComponentsMap.get(TestParticleComponent)).toEqual(testComponent);
     });
   });
 

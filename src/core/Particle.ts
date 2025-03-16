@@ -1,4 +1,3 @@
-import {KeyUniqValuesVault} from '../utils/vaults/KeyUniqValuesVault';
 import {IParticle, IParticleComponent, Point2d, ViewParticle} from '../types';
 import {UnknownConstructor} from '../types.utils';
 
@@ -15,13 +14,13 @@ export class Particle implements IParticle {
   // do I need to remove the particle from the container after updating the container
   public shouldDestroy: boolean;
   // particle components
-  public componentsMap: KeyUniqValuesVault<Function, IParticleComponent>;
+  public componentsMap: Map<Function, IParticleComponent>;
   // a list of only those entities that have the update method implemented
-  public updatableComponentsMap: KeyUniqValuesVault<Function, IParticleComponent>;
+  public updatableComponentsMap: Map<Function, IParticleComponent>;
 
   constructor(view: ViewParticle) {
-    this.componentsMap = new KeyUniqValuesVault<Function, IParticleComponent>();
-    this.updatableComponentsMap = new KeyUniqValuesVault<Function, IParticleComponent>();
+    this.componentsMap = new Map<Function, IParticleComponent>();
+    this.updatableComponentsMap = new Map<Function, IParticleComponent>();
 
     this.view = view;
     this.speed = 0;
@@ -34,7 +33,7 @@ export class Particle implements IParticle {
 
   // initialization of particle parameters through components
   public init(): void {
-    this.componentsMap.valuesList.forEach((e) => e.init());
+    this.componentsMap.forEach((e) => e.init());
   }
 
   public update(elapsedDelta: number, deltaMS: number): void {
@@ -43,11 +42,11 @@ export class Particle implements IParticle {
       return;
     }
 
-    this.updatableComponentsMap.getVault().forEach((e) => e.forEach((e) => e.update?.(elapsedDelta, deltaMS)));
+    this.updatableComponentsMap.forEach((e) => e.update!(elapsedDelta, deltaMS));
   }
 
   public destroy(): void {
-    this.componentsMap.valuesList.forEach((c) => c.destroy?.());
+    this.componentsMap.forEach((c) => c.destroy?.());
     this.componentsMap.clear();
     this.updatableComponentsMap.clear();
   }
@@ -56,14 +55,12 @@ export class Particle implements IParticle {
    * Adding components to a particle
    * @param componentList list of component instances
    */
-  public addComponent(...componentList: IParticleComponent[]): void {
-    componentList.forEach((component) => {
-      this.componentsMap.addValue(component.constructor, component);
-      if (component.update) {
-        this.updatableComponentsMap.addValue(component.constructor, component);
-      }
-      component.bindParticle(this);
-    });
+  public addComponent(component: IParticleComponent): void {
+    this.componentsMap.set(component.constructor, component);
+    if (component.update) {
+      this.updatableComponentsMap.set(component.constructor, component);
+    }
+    component.bindParticle(this);
   }
 
   /**
@@ -71,11 +68,8 @@ export class Particle implements IParticle {
    * @param component link to the component class
    */
   public removeComponent(component: UnknownConstructor<IParticleComponent>): void {
-    this.componentsMap.dropKey(component).forEach((e) => {
-      e.destroy?.();
-    });
-
-    this.updatableComponentsMap.dropKey(component);
+    this.componentsMap.get(component)?.destroy?.();
+    this.componentsMap.delete(component);
   }
 
   /**
@@ -84,7 +78,7 @@ export class Particle implements IParticle {
    * @returns the instance of the component is either undefined if the particle does not have such a component.
    */
   public getComponent<T extends IParticleComponent>(component: UnknownConstructor<IParticleComponent>): T | undefined {
-    return this.componentsMap.getValue(component) as T | undefined;
+    return this.componentsMap.get(component) as T | undefined;
   }
 
   public componentsCount(): number {

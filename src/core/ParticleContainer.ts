@@ -31,7 +31,7 @@ export class ParticleContainer implements IParticleContainer {
         return;
       }
 
-      p.update?.(elapsedDelta, deltaMS);
+      p.update!(elapsedDelta, deltaMS);
 
       if (p.shouldDestroy) {
         this.destroyedParticles.add(p);
