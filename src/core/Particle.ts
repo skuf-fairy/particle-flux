@@ -70,6 +70,7 @@ export class Particle implements IParticle {
   public removeComponent(component: UnknownConstructor<IParticleComponent>): void {
     this.componentsMap.get(component)?.destroy?.();
     this.componentsMap.delete(component);
+    this.updatableComponentsMap.delete(component);
   }
 
   /**
