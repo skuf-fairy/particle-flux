@@ -21,8 +21,6 @@ export interface ViewParticle {
   alpha: number;
   tint: string | number;
   angle: number;
-  width: number;
-  height: number;
   destroyed: boolean;
 }
 
