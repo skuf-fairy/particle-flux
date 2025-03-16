@@ -80,4 +80,8 @@ export class Particle implements IParticle {
   public getComponent<T extends IParticleComponent>(component: UnknownConstructor<IParticleComponent>): T | undefined {
     return this.componentsMap.get(component) as T | undefined;
   }
+
+  public componentsCount(): number {
+    return this.componentsMap.size;
+  }
 }
