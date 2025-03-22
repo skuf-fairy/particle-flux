@@ -14,7 +14,7 @@ describe('ParticleEmitter', () => {
       emitterConfig: {
         maxParticles: 10,
       },
-      particleBehaviorsConfig: {
+      particleConfig: {
         lifeTime: {
           value: 100,
         },
@@ -44,7 +44,7 @@ describe('ParticleEmitter', () => {
         spawnParticlesPerWave: 10,
         maxParticles: 15,
       },
-      particleBehaviorsConfig: {
+      particleConfig: {
         lifeTime: {
           value: 100,
         },
@@ -74,7 +74,7 @@ describe('ParticleEmitter', () => {
         spawnInterval: 2,
         autoStart: true,
       },
-      particleBehaviorsConfig: {
+      particleConfig: {
         lifeTime: {
           value: 100,
         },
@@ -116,7 +116,7 @@ describe('ParticleEmitter', () => {
         spawnInterval: 2,
         autoStart: true,
       },
-      particleBehaviorsConfig: {
+      particleConfig: {
         lifeTime: {
           value: 100,
         },

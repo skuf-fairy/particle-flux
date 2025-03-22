@@ -103,7 +103,7 @@ export interface ParticleConfig {
 // full configuration for creating particles
 export interface ParticleFluxConfig {
   emitterConfig: EmitterConfig;
-  particleBehaviorsConfig: ParticleConfig;
+  particleConfig: ParticleConfig;
 }
 
 export type RangeValue = {

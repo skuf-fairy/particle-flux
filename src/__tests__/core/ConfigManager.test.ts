@@ -7,8 +7,8 @@ describe('ConfigManager', () => {
   const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
 
   it('Correct initialization', () => {
-    expect(configManager.alpha).toEqual(initialConfig.particleBehaviorsConfig.alpha);
-    expect(configManager.lifeTime).toEqual(initialConfig.particleBehaviorsConfig.lifeTime);
+    expect(configManager.alpha).toEqual(initialConfig.particleConfig.alpha);
+    expect(configManager.lifeTime).toEqual(initialConfig.particleConfig.lifeTime);
   });
 
   it('Changing config values', () => {

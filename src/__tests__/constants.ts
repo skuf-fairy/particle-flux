@@ -10,7 +10,7 @@ export const TEST_CONFIG = (): ParticleFluxConfig => ({
     maxParticles: 10,
     spawnParticlesPerWave: 5,
   },
-  particleBehaviorsConfig: {
+  particleConfig: {
     lifeTime: {
       value: 100,
     },

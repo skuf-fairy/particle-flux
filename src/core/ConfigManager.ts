@@ -25,7 +25,7 @@ export class ConfigManager {
   }
 
   get particleConfig(): ParticleConfig {
-    return cloneDeep(this.config.particleBehaviorsConfig);
+    return cloneDeep(this.config.particleConfig);
   }
 
   get view(): ViewRenderFn[] | ViewRenderFn {
@@ -88,97 +88,97 @@ export class ConfigManager {
   // particles behavior
   set lifeTime(config: LifeTimeBehaviorConfig | undefined) {
     if (config !== undefined) {
-      this.config.particleBehaviorsConfig.lifeTime = cloneDeep(config);
+      this.config.particleConfig.lifeTime = cloneDeep(config);
     } else {
-      this.config.particleBehaviorsConfig.lifeTime = DEFAULT_LIFE_TIME_CONFIG;
+      this.config.particleConfig.lifeTime = DEFAULT_LIFE_TIME_CONFIG;
     }
   }
 
   get lifeTime(): LifeTimeBehaviorConfig {
-    if (this.config.particleBehaviorsConfig.lifeTime) {
-      return this.config.particleBehaviorsConfig.lifeTime;
+    if (this.config.particleConfig.lifeTime) {
+      return this.config.particleConfig.lifeTime;
     } else {
       return DEFAULT_LIFE_TIME_CONFIG;
     }
   }
 
   set speed(config: SpeedBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.speed = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.speed = config === undefined ? undefined : cloneDeep(config);
   }
 
   get speed(): SpeedBehaviorConfig | undefined {
-    return this.config.particleBehaviorsConfig.speed;
+    return this.config.particleConfig.speed;
   }
 
   set direction(config: DirectionConfig | undefined) {
-    this.config.particleBehaviorsConfig.direction = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.direction = config === undefined ? undefined : cloneDeep(config);
   }
 
   get direction(): DirectionConfig | undefined {
-    return this.config.particleBehaviorsConfig.direction;
+    return this.config.particleConfig.direction;
   }
 
   set path(config: PathConfig | undefined) {
-    this.config.particleBehaviorsConfig.path = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.path = config === undefined ? undefined : cloneDeep(config);
   }
 
   get path(): PathConfig | undefined {
-    return this.config.particleBehaviorsConfig.path;
+    return this.config.particleConfig.path;
   }
 
   set alpha(config: AlphaBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.alpha = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.alpha = config === undefined ? undefined : cloneDeep(config);
   }
 
   get alpha(): AlphaBehaviorConfig | undefined {
-    return this.config.particleBehaviorsConfig.alpha;
+    return this.config.particleConfig.alpha;
   }
 
   set scale(config: ScaleBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.scale = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.scale = config === undefined ? undefined : cloneDeep(config);
   }
 
   get scale(): ScaleBehaviorConfig | undefined {
-    return this.config.particleBehaviorsConfig.scale;
+    return this.config.particleConfig.scale;
   }
 
   set gravity(config: GravityBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.gravity = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.gravity = config === undefined ? undefined : cloneDeep(config);
   }
 
   get gravity(): GravityBehaviorConfig | undefined {
-    return this.config.particleBehaviorsConfig.gravity;
+    return this.config.particleConfig.gravity;
   }
 
   set rotation(config: RotationBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.rotation = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.rotation = config === undefined ? undefined : cloneDeep(config);
   }
 
   get rotation(): RotationBehaviorConfig | undefined {
-    return this.config.particleBehaviorsConfig.rotation;
+    return this.config.particleConfig.rotation;
   }
 
   set spawnPosition(config: SpawnPositionConfig | undefined) {
-    this.config.particleBehaviorsConfig.spawnPosition = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.spawnPosition = config === undefined ? undefined : cloneDeep(config);
   }
 
   get spawnPosition(): SpawnPositionConfig | undefined {
-    return this.config.particleBehaviorsConfig.spawnPosition;
+    return this.config.particleConfig.spawnPosition;
   }
 
   set spawnShape(config: SpawnShapeBehavior | undefined) {
-    this.config.particleBehaviorsConfig.spawnShape = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.spawnShape = config === undefined ? undefined : cloneDeep(config);
   }
 
   get spawnShape(): SpawnShapeBehavior | undefined {
-    return this.config.particleBehaviorsConfig.spawnShape;
+    return this.config.particleConfig.spawnShape;
   }
 
   set color(config: ColorBehaviorConfig | undefined) {
-    this.config.particleBehaviorsConfig.color = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.color = config === undefined ? undefined : cloneDeep(config);
   }
 
   get color(): ColorBehaviorConfig | undefined {
-    return this.config.particleBehaviorsConfig.color;
+    return this.config.particleConfig.color;
   }
 }
