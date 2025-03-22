@@ -1,13 +1,13 @@
 import {ParticleEmitter} from './ParticleEmitter';
 import {ParticleContainer} from './ParticleContainer';
-import {IParticle, ParticleFluxConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
+import {IParticle, IParticleContainer, ParticleFluxConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {Ticker} from '../utils/Ticker';
 import {Particle} from './Particle';
 
 export class ParticleFlux<V extends ViewParticle = ViewParticle> {
   public readonly emitter: ParticleEmitter;
-  public readonly container: ParticleContainer;
+  public readonly container: IParticleContainer;
   public readonly config: ConfigManager;
 
   constructor(
@@ -19,7 +19,7 @@ export class ParticleFlux<V extends ViewParticle = ViewParticle> {
     this.container = new ParticleContainer(
       () => new Particle(this.viewContainer, this.config.view, this.config.particleConfig),
     );
-    this.emitter = new ParticleEmitter(this.container, this.config, new Ticker());
+    this.emitter = new ParticleEmitter(this.container, this.config, Ticker.getInstance());
   }
 
   public emitOnce(particlesCount: number = 1): void {

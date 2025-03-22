@@ -30,8 +30,9 @@ export interface ViewContainer<U extends ViewParticle> {
 }
 
 export interface IParticleContainer {
-  addParticle(...particleList: IParticle[]): IParticle;
+  addParticle(): void;
   getParticlesCount(): number;
+  getParticles(): IParticle[];
   clear(): void;
   update(elapsedDelta: number, deltaMS: number): void;
 }

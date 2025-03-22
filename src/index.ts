@@ -84,3 +84,11 @@ export {
 
 export {EasingName, EasingFunction} from './utils/easing/easing.types';
 export {EASING_FUNCTIONS} from './utils/easing/easing-functions';
+
+// experimental
+export {
+  ExperimentalParticleFlux,
+  ExperimentalViewParticle,
+  ExperimentalViewRenderFn,
+  ExperimentalViewContainer,
+} from './core/ExperimentalParticleFlux';
