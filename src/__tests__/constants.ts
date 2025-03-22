@@ -1,4 +1,4 @@
-import {SpawnShapeType} from '../behaviors/SpawnBehaviors/SpawnBehaviors.types';
+import {SpawnShapeType} from '../core/spawn-shapes/spawn-shapes.types';
 import {ParticleFluxConfig, ViewParticle, ViewRenderFn} from '../types';
 import {TestViewParticle} from './TestViewParticle';
 

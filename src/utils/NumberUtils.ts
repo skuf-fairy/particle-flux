@@ -1,12 +1,6 @@
-import {IntRange} from '../types.utils';
-
 export class NumberUtils {
-  public static clamp<Min extends number, Max extends number>(
-    min: number,
-    max: number,
-    value: number,
-  ): IntRange<Min, Max> {
-    return Math.min(Math.max(value, min), max) as IntRange<Min, Max>;
+  public static clamp(min: number, max: number, value: number): number {
+    return Math.min(Math.max(value, min), max);
   }
 
   public static inRange(min: number, max: number, value: number): boolean {

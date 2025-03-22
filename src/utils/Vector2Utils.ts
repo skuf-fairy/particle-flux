@@ -45,4 +45,11 @@ export class Vector2Utils {
       y: v.x * s + v.y * c,
     };
   }
+
+  public static angleToPoint(angleInRad: number): Point2d {
+    return {
+      x: Math.cos(angleInRad),
+      y: Math.sin(angleInRad),
+    };
+  }
 }

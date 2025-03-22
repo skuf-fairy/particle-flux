@@ -1,16 +1,15 @@
-import {AlphaBehaviorConfig} from './behaviors/AlphaBehavior/AlphaBehavior.types';
-import {ColorBehaviorConfig} from './behaviors/ColorBehavior/ColorBehavior.types';
-import {DirectionBehaviorConfig} from './behaviors/DirectionBehavior/DirectionBehavior.types';
-import {GravityBehaviorConfig} from './behaviors/GravityBehavior/GravityBehavior.types';
-import {LifeTimeBehaviorConfig} from './behaviors/LifeTimeBehavior/LifeTimeBehavior.types';
-import {PathBehaviorConfig} from './behaviors/PathBehavior/PathBehavior.types';
-import {RotationBehaviorConfig} from './behaviors/RotationBehavior/RotationBehavior.types';
-import {ScaleBehaviorConfig} from './behaviors/ScaleBehavior/ScaleBehavior.types';
-import {SpawnShapeBehavior} from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
-import {SpawnPositionBehaviorConfig} from './behaviors/SpawnPositionBehavior/SpawnPositionBehavior.types';
-import {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
-import {UnknownConstructor} from './types.utils';
+import {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/AlphaBehavior.types';
+import {ColorBehaviorConfig} from './core/behaviors/color-behavior/ColorBehavior.types';
+import {DirectionConfig} from './core/direction/direction.types';
+import {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/GravityBehavior.types';
+import {LifeTimeBehaviorConfig} from './core/behaviors/life-time-behavior/LifeTimeBehavior.types';
+import {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/RotationBehavior.types';
+import {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/ScaleBehavior.types';
+import {SpawnShapeBehavior} from './core/spawn-shapes/spawn-shapes.types';
+import {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/SpeedBehavior.types';
 import {TickerCallback} from './utils/Ticker';
+import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
+import {PathConfig} from './core/path/path.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 
@@ -37,17 +36,8 @@ export interface IParticleContainer {
   update(elapsedDelta: number, deltaMS: number): void;
 }
 
-// a factory for creating particles
-export interface IParticleFactory {
-  create(): IParticle;
-}
-
 // particle
 export interface IParticle {
-  addComponent(...componentList: IParticleComponent[]): void;
-  removeComponent(component: UnknownConstructor<IParticleComponent>): void;
-  getComponent<T extends IParticleComponent>(component: UnknownConstructor<T>): T | undefined;
-  init(): void;
   update(elapsedDelta: number, deltaMS: number): void;
   destroy(): void;
   shouldDestroy: boolean;
@@ -56,15 +46,6 @@ export interface IParticle {
   speed: number;
   direction: Point2d;
   view: ViewParticle;
-}
-
-// the component for the particle
-export interface IParticleComponent {
-  particle: IParticle;
-  init(): void;
-  update?(elapsedDelta: number, deltaMS: number): void;
-  destroy?(): void;
-  bindParticle(particle: IParticle): void;
 }
 
 export interface ITicker {
@@ -94,15 +75,15 @@ export interface EmitterConfig {
   autoStart?: boolean;
 }
 
-export interface ParticleBehaviorConfig {
+export interface ParticleConfig {
   // lifetime of the particle
   lifeTime?: LifeTimeBehaviorConfig;
   // the initial position of the particle
-  spawnPosition?: SpawnPositionBehaviorConfig;
+  spawnPosition?: SpawnPositionConfig;
   // the particle creation area
   spawnShape?: SpawnShapeBehavior;
   // does not change with time, indicates the direction of movement
-  direction?: DirectionBehaviorConfig;
+  direction?: DirectionConfig;
   // parameters that change over time
   speed?: SpeedBehaviorConfig;
   // particle size
@@ -116,13 +97,13 @@ export interface ParticleBehaviorConfig {
   // color
   color?: ColorBehaviorConfig;
   // path
-  path?: PathBehaviorConfig;
+  path?: PathConfig;
 }
 
 // full configuration for creating particles
 export interface ParticleFluxConfig {
   emitterConfig: EmitterConfig;
-  particleBehaviorsConfig: ParticleBehaviorConfig;
+  particleBehaviorsConfig: ParticleConfig;
 }
 
 export type RangeValue = {

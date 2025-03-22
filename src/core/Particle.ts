@@ -1,5 +1,30 @@
-import {IParticle, IParticleComponent, Point2d, ViewParticle} from '../types';
-import {UnknownConstructor} from '../types.utils';
+import {NumberUtils} from '../utils/NumberUtils';
+import {IParticle, ParticleConfig, Point2d, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
+import {getLifeTimeBehavior} from './behaviors/life-time-behavior/LifeTimeBehavior';
+import {getScalarBehavior} from './base-behaviors/scalar-behavior/ScalarBehavior';
+import {isScalarBehaviorConfig} from './base-behaviors/scalar-behavior/ScalarBehavior.typeguards';
+import {isScriptBehaviorConfig} from './base-behaviors/script-behavior/ScriptBehavior.typeguards';
+import {getScriptBehavior} from './base-behaviors/script-behavior/ScriptBehavior';
+import {getDirection} from './direction/getDirection';
+import {realRandom} from '../utils/random/RealRandom';
+import {Vector2Utils} from '../utils/Vector2Utils';
+import {getDeltaBehavior} from './base-behaviors/delta-behavior/DeltaBehavior';
+import {isDeltaBehaviorConfig} from './base-behaviors/delta-behavior/DeltaBehavior.typeguards';
+import {isVectorBehaviorConfig} from './base-behaviors/vector-behavior/VectorBehavior.typeguards';
+import {getVectorBehavior} from './base-behaviors/vector-behavior/VectorBehavior';
+import {
+  isColorDynamicBehaviorConfig,
+  isColorScriptBehaviorConfig,
+  isColorStaticBehaviorConfig,
+} from '../core/behaviors/color-behavior/ColorBehavior.typeguards';
+import {getColorDynamicBehavior} from '../core/behaviors/color-behavior/ColorDynamicBehavior/ColorDynamicBehavior';
+import {getColorStaticBehavior} from '../core/behaviors/color-behavior/ColorStaticBehavior/ColorStaticBehavior';
+import {parsePath} from '../utils/parsePath';
+import {getSpawnPosition} from './spawn-shapes/getSpawnPosition';
+import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
+import {PathFunction} from './path/path.types';
+
+export type UpdateFunction<V> = (lifeTimeNormalizedProgress: number, elapsedDelta: number) => V;
 
 /*
  * A container class for components and behaviors of a particle
@@ -11,32 +36,130 @@ export class Particle implements IParticle {
   public speed: number;
   // the direction of movement in two-dimensional space
   public direction: Point2d;
-  // do I need to remove the particle from the container after updating the container
+  // its need to remove the particle from the container after updating the container
   public shouldDestroy: boolean;
-  // particle components
-  public componentsMap: Map<Function, IParticleComponent>;
-  // a list of only those entities that have the update method implemented
-  public updatableComponentsMap: Map<Function, IParticleComponent>;
   public next: IParticle | null;
 
-  constructor(view: ViewParticle) {
-    this.componentsMap = new Map<Function, IParticleComponent>();
-    this.updatableComponentsMap = new Map<Function, IParticleComponent>();
+  private lifeTimeBehavior: (deltaMS: number) => number;
+  private speedBehavior?: UpdateFunction<number>;
+  private alphaBehavior?: UpdateFunction<number>;
+  private rotationBehavior?: UpdateFunction<number>;
+  private scaleBehavior?: UpdateFunction<Point2d>;
+  private colorBehavior?: UpdateFunction<string>;
+  private gravityBehavior?: UpdateFunction<number>;
+  private pathFunc?: PathFunction;
 
-    this.view = view;
+  private deltaPath: Point2d;
+  private initialPosition: Point2d;
+
+  constructor(
+    private readonly viewContainer: ViewContainer<ViewParticle>,
+    private readonly viewRenderFn: ViewRenderFn | ViewRenderFn[],
+    private readonly config: ParticleConfig,
+  ) {
     this.speed = 0;
-    this.direction = {
-      x: 0,
-      y: 0,
-    };
+
     this.shouldDestroy = false;
 
     this.next = null;
-  }
 
-  // initialization of particle parameters through components
-  public init(): void {
-    this.componentsMap.forEach((e) => e.init());
+    this.view = createView(this.viewRenderFn);
+
+    viewContainer.addChild(this.view);
+
+    this.lifeTimeBehavior = getLifeTimeBehavior(config.lifeTime || DEFAULT_LIFE_TIME_CONFIG);
+
+    this.deltaPath = {x: 0, y: 0};
+
+    this.initialPosition = config.spawnShape
+      ? getSpawnPosition(config.spawnShape, config.spawnPosition)
+      : config.spawnPosition || {x: 0, y: 0};
+
+    this.view.position = {...this.initialPosition};
+
+    if (config.direction) {
+      this.direction = getDirection(config.direction);
+    } else {
+      this.direction = {
+        x: 0,
+        y: 0,
+      };
+    }
+
+    if (config.speed) {
+      if (isScriptBehaviorConfig(config.speed)) {
+        this.speedBehavior = getScriptBehavior(config.speed);
+      } else if (isScalarBehaviorConfig(config.speed)) {
+        this.speedBehavior = getScalarBehavior(config.speed);
+      }
+    }
+
+    if (config.alpha) {
+      if (isScriptBehaviorConfig(config.alpha)) {
+        this.alphaBehavior = getScriptBehavior(config.alpha);
+      } else if (isScalarBehaviorConfig(config.alpha)) {
+        this.alphaBehavior = getScalarBehavior(config.alpha);
+      }
+    }
+
+    if (config.rotation) {
+      if (isDeltaBehaviorConfig(config.rotation)) {
+        this.rotationBehavior = getDeltaBehavior(config.rotation);
+      } else if (isScalarBehaviorConfig(config.rotation)) {
+        this.rotationBehavior = getScalarBehavior(config.rotation);
+      } else if (isScriptBehaviorConfig(config.rotation)) {
+        this.rotationBehavior = getScriptBehavior(config.rotation);
+      }
+    }
+
+    if (config.scale) {
+      if (isScalarBehaviorConfig(config.scale)) {
+        this.scaleBehavior = (lifeTimeNormalizedProgress: number, elapsedDelta: number): Point2d => {
+          // @ts-ignore
+          const value = getScalarBehavior(config.scale)(lifeTimeNormalizedProgress, elapsedDelta);
+
+          return {
+            x: value,
+            y: value,
+          };
+        };
+      } else if (isScriptBehaviorConfig(config.scale)) {
+        this.scaleBehavior = (lifeTimeNormalizedProgress: number, elapsedDelta: number): Point2d => {
+          // @ts-ignore
+          const value = getScriptBehavior(config.scale)(lifeTimeNormalizedProgress, elapsedDelta);
+
+          if (typeof value === 'number') {
+            return {
+              x: value,
+              y: value,
+            };
+          } else {
+            return value;
+          }
+        };
+      } else if (isVectorBehaviorConfig(config.scale)) {
+        this.scaleBehavior = getVectorBehavior(config.scale);
+      }
+    }
+
+    if (config.color) {
+      if (isColorScriptBehaviorConfig(config.color)) {
+        this.colorBehavior = getScriptBehavior(config.color);
+      } else if (isColorStaticBehaviorConfig(config.color)) {
+        this.colorBehavior = getColorStaticBehavior(config.color);
+      } else if (isColorDynamicBehaviorConfig(config.color)) {
+        this.colorBehavior = getColorDynamicBehavior(config.color);
+      }
+    }
+
+    if (config.gravity) {
+      this.gravityBehavior = getScalarBehavior(config.gravity);
+    }
+
+    // todo error
+    this.pathFunc = this.config.path ? parsePath(this.config.path.path) : undefined;
+
+    this.update(0, 0);
   }
 
   public update(elapsedDelta: number, deltaMS: number): void {
@@ -45,47 +168,63 @@ export class Particle implements IParticle {
       return;
     }
 
-    this.updatableComponentsMap.forEach((e) => e.update!(elapsedDelta, deltaMS));
+    const lifeTimeNormalizedProgress = this.lifeTimeBehavior(deltaMS);
+    if (isDead(lifeTimeNormalizedProgress)) {
+      this.shouldDestroy = true;
+      return;
+    }
+
+    if (this.speedBehavior) {
+      this.speed = this.speedBehavior(lifeTimeNormalizedProgress, elapsedDelta);
+    }
+
+    if (this.alphaBehavior) {
+      this.view.alpha = this.alphaBehavior(lifeTimeNormalizedProgress, elapsedDelta);
+    }
+
+    if (this.rotationBehavior) {
+      this.view.angle = this.rotationBehavior(lifeTimeNormalizedProgress, elapsedDelta);
+    }
+
+    if (this.scaleBehavior) {
+      this.view.scale = this.scaleBehavior(lifeTimeNormalizedProgress, elapsedDelta);
+    }
+
+    if (this.colorBehavior) {
+      this.view.tint = this.colorBehavior(lifeTimeNormalizedProgress, elapsedDelta);
+    }
+
+    const speed = this.speed * elapsedDelta;
+
+    if (this.pathFunc) {
+      this.deltaPath.x = this.deltaPath.x + speed;
+      this.deltaPath.y = this.pathFunc(this.deltaPath.x);
+      const delta = Vector2Utils.rotate(this.deltaPath, -Math.PI / 2);
+
+      this.view.position = {
+        x: NumberUtils.roundWith2Precision(this.initialPosition.x + delta.x),
+        y: NumberUtils.roundWith2Precision(this.initialPosition.y + delta.y),
+      };
+    } else {
+      // todo наверное лучше накопление
+      const gravityShift = this.gravityBehavior ? this.gravityBehavior(lifeTimeNormalizedProgress, elapsedDelta) : 0;
+
+      this.view.position = {
+        x: NumberUtils.roundWith2Precision(this.view.position.x + this.direction.x * speed),
+        y: NumberUtils.roundWith2Precision(this.view.position.y + (this.direction.y + gravityShift) * speed),
+      };
+    }
   }
 
   public destroy(): void {
-    this.componentsMap.forEach((c) => c.destroy?.());
-    this.componentsMap.clear();
-    this.updatableComponentsMap.clear();
+    this.viewContainer.removeChild(this.view);
   }
+}
 
-  /**
-   * Adding components to a particle
-   * @param componentList list of component instances
-   */
-  public addComponent(component: IParticleComponent): void {
-    this.componentsMap.set(component.constructor, component);
-    if (component.update) {
-      this.updatableComponentsMap.set(component.constructor, component);
-    }
-    component.bindParticle(this);
-  }
+function createView(viewFactory: ViewRenderFn | ViewRenderFn[]): ViewParticle {
+  return Array.isArray(viewFactory) ? realRandom.choice(viewFactory)() : viewFactory();
+}
 
-  /**
-   * Remove a component from a particle
-   * @param component link to the component class
-   */
-  public removeComponent(component: UnknownConstructor<IParticleComponent>): void {
-    this.componentsMap.get(component)?.destroy?.();
-    this.componentsMap.delete(component);
-    this.updatableComponentsMap.delete(component);
-  }
-
-  /**
-   * Get an instance of the particle component
-   * @param component link to the component class
-   * @returns the instance of the component is either undefined if the particle does not have such a component.
-   */
-  public getComponent<T extends IParticleComponent>(component: UnknownConstructor<IParticleComponent>): T | undefined {
-    return this.componentsMap.get(component) as T | undefined;
-  }
-
-  public componentsCount(): number {
-    return this.componentsMap.size;
-  }
+function isDead(lifeTimeNormalizedProgress: number): boolean {
+  return lifeTimeNormalizedProgress === 1;
 }

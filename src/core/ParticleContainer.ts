@@ -1,4 +1,4 @@
-import {IParticle, IParticleContainer, IParticleFactory} from '../types';
+import {IParticle, IParticleContainer} from '../types';
 
 /**
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
@@ -8,7 +8,7 @@ export class ParticleContainer implements IParticleContainer {
   public tailParticle: IParticle | null;
   private containerParticlesCount: number;
 
-  constructor(private readonly particleFactory: IParticleFactory) {
+  constructor(private readonly particleFactory: () => IParticle) {
     this.headParticle = null;
     this.tailParticle = null;
     this.containerParticlesCount = 0;
@@ -79,7 +79,7 @@ export class ParticleContainer implements IParticleContainer {
   }
 
   public addParticle(): IParticle {
-    const particle = this.particleFactory.create();
+    const particle = this.particleFactory();
 
     if (this.headParticle === null) {
       this.headParticle = this.tailParticle = particle;

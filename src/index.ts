@@ -2,14 +2,13 @@
 export {ParticleFlux} from './core/ParticleFlux';
 export {
   ParticleFluxConfig,
-  ParticleBehaviorConfig,
+  ParticleConfig,
   EmitterConfig,
   ViewContainer,
   ViewParticle,
   Multiplier,
   Point2d,
   IParticle,
-  IParticleComponent,
   IParticleContainer,
   RangeValue,
 } from './types';
@@ -17,64 +16,53 @@ export {
 export {isRangeValue} from './typeguards';
 
 // behaviors
-export {ScalarBehavior} from './base-behaviors/ScalarBehavior/ScalarBehavior';
-export {ScriptBehavior} from './base-behaviors/ScriptBehavior/ScriptBehavior';
-export {VectorBehavior} from './base-behaviors/VectorBehavior/VectorBehavior';
-export {DeltaBehavior} from './base-behaviors/DeltaBehavior/DeltaBehavior';
 
-export {isScriptBehaviorConfig} from './base-behaviors/ScriptBehavior/ScriptBehavior.typeguards';
-export {isVectorBehaviorConfig} from './base-behaviors/VectorBehavior/VectorBehavior.typeguards';
+export {isScriptBehaviorConfig} from './core/base-behaviors/script-behavior/ScriptBehavior.typeguards';
+export {isVectorBehaviorConfig} from './core/base-behaviors/vector-behavior/VectorBehavior.typeguards';
 export {
   isScalarDynamicBehavior,
   isScalarStaticBehavior,
   isScalarBehaviorConfig,
-} from './base-behaviors/ScalarBehavior/ScalarBehavior.typeguards';
-export {isDeltaBehaviorConfig} from './base-behaviors/DeltaBehavior/DeltaBehavior.typeguards';
+} from './core/base-behaviors/scalar-behavior/ScalarBehavior.typeguards';
+export {isDeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/DeltaBehavior.typeguards';
 
 // configs
 export {
   ScalarBehaviorConfig,
   ScalarDynamicBehaviorConfig,
   ScalarStaticBehaviorConfig,
-} from './base-behaviors/ScalarBehavior/ScalarBehavior.types';
-export {ScriptBehaviorConfig, TimeScriptConfig} from './base-behaviors/ScriptBehavior/ScriptBehavior.types';
-export {VectorBehaviorConfig} from './base-behaviors/VectorBehavior/VectorBehavior.types';
-export {DeltaBehaviorConfig} from './base-behaviors/DeltaBehavior/DeltaBehavior.types';
+} from './core/base-behaviors/scalar-behavior/ScalarBehavior.types';
+export {ScriptBehaviorConfig, TimeScriptConfig} from './core/base-behaviors/script-behavior/ScriptBehavior.types';
+export {VectorBehaviorConfig} from './core/base-behaviors/vector-behavior/VectorBehavior.types';
+export {DeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/DeltaBehavior.types';
 
-export {AlphaBehaviorConfig} from './behaviors/AlphaBehavior/AlphaBehavior.types';
+export {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/AlphaBehavior.types';
 export {
   ColorBehaviorConfig,
   ColorDynamicBehaviorConfig,
   ColorStaticBehaviorConfig,
-} from './behaviors/ColorBehavior/ColorBehavior.types';
+} from './core/behaviors/color-behavior/ColorBehavior.types';
 export {
   isColorStaticBehaviorConfig,
   isColorDynamicBehaviorConfig,
   isColorScriptBehaviorConfig,
-} from './behaviors/ColorBehavior/ColorBehavior.typeguards';
-export {
-  DirectionBehaviorConfig,
-  DirectionRangeBehaviorConfig,
-  StaticDirectionBehaviorConfig,
-} from './behaviors/DirectionBehavior/DirectionBehavior.types';
-export {
-  isStaticDirectionBehaviorConfig,
-  isDirectionRangeBehaviorConfig,
-} from './behaviors/DirectionBehavior/DirectionBehavior.typeguards';
-export {GravityBehaviorConfig} from './behaviors/GravityBehavior/GravityBehavior.types';
+} from './core/behaviors/color-behavior/ColorBehavior.typeguards';
+export {DirectionConfig, DirectionRangeConfig, StaticDirectionConfig} from './core/direction/direction.types';
+export {isStaticDirectionBehaviorConfig, isDirectionRangeBehaviorConfig} from './core/direction/direction.typeguards';
+export {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/GravityBehavior.types';
 export {
   LifeTimeBehaviorConfig,
   LifeTimeRangeBehaviorConfig,
   LifeTimeStaticBehaviorConfig,
-} from './behaviors/LifeTimeBehavior/LifeTimeBehavior.types';
+} from './core/behaviors/life-time-behavior/LifeTimeBehavior.types';
 export {
   isLifeTimeStaticBehaviorConfig,
   isLifeTimeRangeBehaviorConfig,
-} from './behaviors/LifeTimeBehavior/LifeTimeBehavior.typeguards';
-export {PathBehaviorConfig} from './behaviors/PathBehavior/PathBehavior.types';
-export {ScaleBehaviorConfig} from './behaviors/ScaleBehavior/ScaleBehavior.types';
-export {SpeedBehaviorConfig} from './behaviors/SpeedBehavior/SpeedBehavior.types';
-export {RotationBehaviorConfig} from './behaviors/RotationBehavior/RotationBehavior.types';
+} from './core/behaviors/life-time-behavior/LifeTimeBehavior.typeguards';
+export {PathConfig} from './core/path/path.types';
+export {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/ScaleBehavior.types';
+export {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/SpeedBehavior.types';
+export {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/RotationBehavior.types';
 
 export {
   SpawnRectangleShape,
@@ -85,14 +73,14 @@ export {
   SpawnShapeType,
   Chain,
   PolygonalChain,
-} from './behaviors/SpawnBehaviors/SpawnBehaviors.types';
+} from './core/spawn-shapes/spawn-shapes.types';
 export {
   isSinglePolygonalChain,
   isSpawnPointShape,
   isSpawnRectangleShape,
   isTorusShape,
   isPolygonalShape,
-} from './behaviors/SpawnBehaviors/SpawnShape.typeguards';
+} from './core/spawn-shapes/spawn-shapes.typeguards';
 
 export {EasingName, EasingFunction} from './utils/easing/easing.types';
 export {EASING_FUNCTIONS} from './utils/easing/easing-functions';

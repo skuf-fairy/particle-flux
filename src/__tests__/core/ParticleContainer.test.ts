@@ -1,16 +1,17 @@
 import {describe, expect, it} from 'vitest';
 import {ParticleContainer} from '../../core/ParticleContainer';
+import {Particle} from '../../core/Particle';
 import {TEST_CONFIG, TEST_VIEW_FACTORY} from '../constants';
 import {ConfigManager} from '../../core/ConfigManager';
 import {TestViewContainer} from '../TestViewContainer';
-import {ParticleBehaviorFactory} from '../../core/ParticleBehaviorFactory';
 
 describe('Add in container', () => {
   const initialConfig = TEST_CONFIG();
   const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
   const viewContainer = new TestViewContainer();
-  const factory = new ParticleBehaviorFactory(viewContainer, configManager);
-  const container = new ParticleContainer(factory);
+  const container = new ParticleContainer(
+    () => new Particle(viewContainer, TEST_VIEW_FACTORY, configManager.particleConfig),
+  );
 
   const p = container.addParticle();
 
@@ -27,8 +28,9 @@ describe('Linked list of particles is valid', () => {
   const initialConfig = TEST_CONFIG();
   const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
   const viewContainer = new TestViewContainer();
-  const factory = new ParticleBehaviorFactory(viewContainer, configManager);
-  const container = new ParticleContainer(factory);
+  const container = new ParticleContainer(
+    () => new Particle(viewContainer, TEST_VIEW_FACTORY, configManager.particleConfig),
+  );
 
   const p1 = container.addParticle();
   const p2 = container.addParticle();
@@ -84,8 +86,9 @@ describe('Middle particle of linked list was destroyed', () => {
   const initialConfig = TEST_CONFIG();
   const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
   const viewContainer = new TestViewContainer();
-  const factory = new ParticleBehaviorFactory(viewContainer, configManager);
-  const container = new ParticleContainer(factory);
+  const container = new ParticleContainer(
+    () => new Particle(viewContainer, TEST_VIEW_FACTORY, configManager.particleConfig),
+  );
 
   const p1 = container.addParticle();
   const p2 = container.addParticle();
@@ -108,8 +111,9 @@ describe('Last particle of linked list was destroyed', () => {
   const initialConfig = TEST_CONFIG();
   const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
   const viewContainer = new TestViewContainer();
-  const factory = new ParticleBehaviorFactory(viewContainer, configManager);
-  const container = new ParticleContainer(factory);
+  const container = new ParticleContainer(
+    () => new Particle(viewContainer, TEST_VIEW_FACTORY, configManager.particleConfig),
+  );
 
   const p1 = container.addParticle();
   const p2 = container.addParticle();
@@ -132,8 +136,9 @@ describe('Clear the container', () => {
   const initialConfig = TEST_CONFIG();
   const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
   const viewContainer = new TestViewContainer();
-  const factory = new ParticleBehaviorFactory(viewContainer, configManager);
-  const container = new ParticleContainer(factory);
+  const container = new ParticleContainer(
+    () => new Particle(viewContainer, TEST_VIEW_FACTORY, configManager.particleConfig),
+  );
 
   container.addParticle();
   container.addParticle();

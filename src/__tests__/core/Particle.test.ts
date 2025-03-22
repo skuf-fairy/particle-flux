@@ -1,97 +1,147 @@
 import {describe, expect, it} from 'vitest';
-import {Particle} from '../../core/Particle';
 import {TEST_VIEW_FACTORY} from '../constants';
-import {TestParticleComponent} from '../TestParticleComponent';
+import {Particle} from '../../core/Particle';
+import {TestViewContainer} from '../TestViewContainer';
+import {ParticleConfig} from '../../types';
 
 describe('Particle', () => {
   describe('Creating a particle', () => {
-    const view = TEST_VIEW_FACTORY();
-    const particle = new Particle(view);
+    const particleConfig: ParticleConfig = {
+      lifeTime: {
+        value: 10,
+      },
+      alpha: {
+        start: 0,
+        end: 1,
+      },
+    };
+    const viewContainer = new TestViewContainer();
 
-    it('The particle was created correctly without adding components', () => {
-      expect(particle.view).toEqual(view);
-      expect(particle.direction).toEqual({x: 0, y: 0});
+    const particle = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+
+    it('Correct initialization', () => {
+      expect(particle.view.alpha).toEqual(0);
+      expect(particle.direction.x).toEqual(0);
+      expect(particle.direction.y).toEqual(0);
       expect(particle.speed).toEqual(0);
-      expect(particle.shouldDestroy).toEqual(false);
-      expect(particle.componentsCount()).toEqual(0);
+      expect(particle.next).toEqual(null);
     });
   });
 
-  describe('Adding a component', () => {
-    const view = TEST_VIEW_FACTORY();
-    const particle = new Particle(view);
-    const testComponent = new TestParticleComponent();
+  describe('Updating the particle', () => {
+    const particleConfig: ParticleConfig = {
+      lifeTime: {
+        value: 10,
+      },
+      alpha: {
+        start: 0,
+        end: 1,
+      },
+    };
+    const viewContainer = new TestViewContainer();
 
-    particle.addComponent(testComponent);
+    const particle = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
 
-    it('The component is in the particle', () => {
-      expect(particle.componentsCount()).toEqual(1);
-    });
-
-    it('A particle is attached to the component', () => {
-      expect(testComponent.particle).toEqual(particle);
-    });
-
-    it('The component is initialized correctly', () => {
-      expect(testComponent.isInitialized).toEqual(false);
-      expect(testComponent.updateCount).toEqual(0);
-      expect(testComponent.isDestroyed).toEqual(false);
-    });
-
-    it('You can get a component by class', () => {
-      expect(particle.getComponent(TestParticleComponent)).toEqual(testComponent);
-    });
-
-    it('The component was added to the updated components because the update method is implemented.', () => {
-      expect(particle.updatableComponentsMap.get(TestParticleComponent)).toEqual(testComponent);
+    it('After updating the alpha particle, it changed correctly', () => {
+      particle.update(1, 5);
+      expect(particle.view.alpha).toEqual(0.5);
     });
   });
 
-  describe('Initialization of a particle, i.e. components', () => {
-    const view = TEST_VIEW_FACTORY();
-    const particle = new Particle(view);
-    const testComponent = new TestParticleComponent();
+  describe('Immutability of the update', () => {
+    it('Both particles should have the same positions after updating', () => {
+      const particleConfig: ParticleConfig = {
+        lifeTime: {
+          value: 10,
+        },
+        direction: {
+          angle: 90,
+        },
+        speed: {
+          value: 1,
+        },
+      };
+      const viewContainer = new TestViewContainer();
 
-    particle.addComponent(testComponent);
-    particle.init();
+      const particle1 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+      const particle2 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
 
-    it('The component has been initialized', () => {
-      expect(testComponent.isInitialized).toEqual(true);
+      particle1.update(1, 5);
+      particle2.update(1 / 2, 5 / 2);
+      particle2.update(1 / 2, 5 / 2);
+
+      expect(particle1.view.position).toEqual(particle2.view.position);
     });
-  });
 
-  describe('Updating a particle and its components', () => {
-    const view = TEST_VIEW_FACTORY();
-    const particle = new Particle(view);
-    const testComponent = new TestParticleComponent();
+    it('Immutability for gravity', () => {
+      const particleConfig: ParticleConfig = {
+        lifeTime: {
+          value: 10,
+        },
+        direction: {
+          angle: 90,
+        },
+        speed: {
+          value: 1,
+        },
+        gravity: {
+          value: 0.1,
+        },
+      };
+      const viewContainer = new TestViewContainer();
 
-    particle.addComponent(testComponent);
-    particle.init();
-    particle.update(1, 10);
-    particle.update(1, 10);
-    particle.update(1, 10);
+      const particle1 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+      const particle2 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
 
-    it('The component has been updated too', () => {
-      expect(testComponent.updateCount).toEqual(3);
+      particle1.update(1, 5);
+      particle2.update(1 / 2, 5 / 2);
+      particle2.update(1 / 2, 5 / 2);
+
+      expect(particle1.view.position).toEqual(particle2.view.position);
+    });
+
+    it('Immutability for path', () => {
+      const particleConfig: ParticleConfig = {
+        lifeTime: {
+          value: 10,
+        },
+        path: {
+          path: 'sin(x)',
+        },
+        speed: {
+          value: 1,
+        },
+      };
+      const viewContainer = new TestViewContainer();
+
+      const particle1 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+      const particle2 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+
+      particle1.update(1, 5);
+      particle2.update(1 / 2, 5 / 2);
+      particle2.update(1 / 2, 5 / 2);
+
+      expect(particle1.view.position).toEqual(particle2.view.position);
     });
   });
 
   describe('Particle destructurization', () => {
-    const view = TEST_VIEW_FACTORY();
-    const particle = new Particle(view);
-    const testComponent = new TestParticleComponent();
+    const particleConfig: ParticleConfig = {
+      lifeTime: {
+        value: 10,
+      },
+      alpha: {
+        start: 0,
+        end: 1,
+      },
+    };
+    const viewContainer = new TestViewContainer();
 
-    particle.addComponent(testComponent);
-    particle.init();
-    particle.update(1, 10);
-    particle.destroy();
+    const particle = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+    particle.update(1, 100);
 
-    it('The particles were cleared of the components', () => {
-      expect(particle.componentsCount()).toEqual(0);
-    });
-
-    it('Component destructuring', () => {
-      expect(testComponent.isDestroyed).toEqual(testComponent.isDestroyed);
+    it('The particle is subject to destructuring, so the lifetime is over.', () => {
+      expect(particle.shouldDestroy).toEqual(true);
     });
   });
 });

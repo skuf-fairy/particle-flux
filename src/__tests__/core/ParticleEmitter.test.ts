@@ -3,10 +3,10 @@ import {TestTicker} from '../TestTicker';
 import {ParticleEmitter} from '../../core/ParticleEmitter';
 import {ParticleContainer} from '../../core/ParticleContainer';
 import {ConfigManager} from '../../core/ConfigManager';
-import {ParticleBehaviorFactory} from '../../core/ParticleBehaviorFactory';
 import {TEST_VIEW_FACTORY} from '../constants';
 import {TestViewContainer} from '../TestViewContainer';
 import {ParticleFluxConfig} from '../../types';
+import {Particle} from '../../core/Particle';
 
 describe('ParticleEmitter', () => {
   it('Creating particles via emitOnce', () => {
@@ -22,9 +22,10 @@ describe('ParticleEmitter', () => {
     };
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
     const viewContainer = new TestViewContainer();
-    const factory = new ParticleBehaviorFactory(viewContainer, configManager);
-    const container = new ParticleContainer(factory);
 
+    const container = new ParticleContainer(
+      () => new Particle(viewContainer, TEST_VIEW_FACTORY, configManager.particleConfig),
+    );
     const particleEmitter = new ParticleEmitter(container, configManager, new TestTicker());
 
     particleEmitter.emitOnce(5);
@@ -51,8 +52,9 @@ describe('ParticleEmitter', () => {
     };
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
     const viewContainer = new TestViewContainer();
-    const factory = new ParticleBehaviorFactory(viewContainer, configManager);
-    const container = new ParticleContainer(factory);
+    const container = new ParticleContainer(
+      () => new Particle(viewContainer, TEST_VIEW_FACTORY, configManager.particleConfig),
+    );
 
     const particleEmitter = new ParticleEmitter(container, configManager, new TestTicker());
 
@@ -80,8 +82,9 @@ describe('ParticleEmitter', () => {
     };
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
     const viewContainer = new TestViewContainer();
-    const factory = new ParticleBehaviorFactory(viewContainer, configManager);
-    const container = new ParticleContainer(factory);
+    const container = new ParticleContainer(
+      () => new Particle(viewContainer, TEST_VIEW_FACTORY, configManager.particleConfig),
+    );
 
     const particleEmitter = new ParticleEmitter(container, configManager, new TestTicker());
 
@@ -121,8 +124,9 @@ describe('ParticleEmitter', () => {
     };
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
     const viewContainer = new TestViewContainer();
-    const factory = new ParticleBehaviorFactory(viewContainer, configManager);
-    const container = new ParticleContainer(factory);
+    const container = new ParticleContainer(
+      () => new Particle(viewContainer, TEST_VIEW_FACTORY, configManager.particleConfig),
+    );
 
     const particleEmitter = new ParticleEmitter(container, configManager, new TestTicker());
 

@@ -1,23 +1,31 @@
-import {NumberValue, ParticleFluxConfig, ViewRenderFn} from '../types';
-import {LifeTimeBehaviorConfig} from '../behaviors/LifeTimeBehavior/LifeTimeBehavior.types';
-import {SpeedBehaviorConfig} from '../behaviors/SpeedBehavior/SpeedBehavior.types';
-import {DirectionBehaviorConfig} from '../behaviors/DirectionBehavior/DirectionBehavior.types';
-import {PathBehaviorConfig} from '../behaviors/PathBehavior/PathBehavior.types';
-import {AlphaBehaviorConfig} from '../behaviors/AlphaBehavior/AlphaBehavior.types';
-import {ScaleBehaviorConfig} from '../behaviors/ScaleBehavior/ScaleBehavior.types';
-import {GravityBehaviorConfig} from '../behaviors/GravityBehavior/GravityBehavior.types';
-import {RotationBehaviorConfig} from '../behaviors/RotationBehavior/RotationBehavior.types';
-import {SpawnPositionBehaviorConfig} from '../behaviors/SpawnPositionBehavior/SpawnPositionBehavior.types';
-import {SpawnShapeBehavior} from '../behaviors/SpawnBehaviors/SpawnBehaviors.types';
-import {ColorBehaviorConfig} from '../behaviors/ColorBehavior/ColorBehavior.types';
+import {EmitterConfig, NumberValue, ParticleConfig, ParticleFluxConfig, ViewRenderFn} from '../types';
+import {LifeTimeBehaviorConfig} from './behaviors/life-time-behavior/LifeTimeBehavior.types';
+import {SpeedBehaviorConfig} from './behaviors/speed-behavior/SpeedBehavior.types';
+import {DirectionConfig} from './direction/direction.types';
+import {AlphaBehaviorConfig} from './behaviors/alpha-behavior/AlphaBehavior.types';
+import {ScaleBehaviorConfig} from './behaviors/scale-behavior/ScaleBehavior.types';
+import {GravityBehaviorConfig} from './behaviors/gravity-behavior/GravityBehavior.types';
+import {RotationBehaviorConfig} from './behaviors/rotation-behavior/RotationBehavior.types';
+import {SpawnPositionConfig} from './spawn-position/spawn-position.types';
+import {SpawnShapeBehavior} from './spawn-shapes/spawn-shapes.types';
+import {ColorBehaviorConfig} from './behaviors/color-behavior/ColorBehavior.types';
 import {cloneDeep} from '../utils/cloneDeep';
 import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
+import {PathConfig} from './path/path.types';
 
 export class ConfigManager {
   private readonly config: ParticleFluxConfig;
 
   constructor(initialConfig: ParticleFluxConfig, private viewFactory: ViewRenderFn[] | ViewRenderFn) {
     this.config = cloneDeep(initialConfig);
+  }
+
+  get emitterConfig(): EmitterConfig {
+    return cloneDeep(this.config.emitterConfig);
+  }
+
+  get particleConfig(): ParticleConfig {
+    return cloneDeep(this.config.particleBehaviorsConfig);
   }
 
   get view(): ViewRenderFn[] | ViewRenderFn {
@@ -102,19 +110,19 @@ export class ConfigManager {
     return this.config.particleBehaviorsConfig.speed;
   }
 
-  set direction(config: DirectionBehaviorConfig | undefined) {
+  set direction(config: DirectionConfig | undefined) {
     this.config.particleBehaviorsConfig.direction = config === undefined ? undefined : cloneDeep(config);
   }
 
-  get direction(): DirectionBehaviorConfig | undefined {
+  get direction(): DirectionConfig | undefined {
     return this.config.particleBehaviorsConfig.direction;
   }
 
-  set path(config: PathBehaviorConfig | undefined) {
+  set path(config: PathConfig | undefined) {
     this.config.particleBehaviorsConfig.path = config === undefined ? undefined : cloneDeep(config);
   }
 
-  get path(): PathBehaviorConfig | undefined {
+  get path(): PathConfig | undefined {
     return this.config.particleBehaviorsConfig.path;
   }
 
@@ -150,11 +158,11 @@ export class ConfigManager {
     return this.config.particleBehaviorsConfig.rotation;
   }
 
-  set spawnPosition(config: SpawnPositionBehaviorConfig | undefined) {
+  set spawnPosition(config: SpawnPositionConfig | undefined) {
     this.config.particleBehaviorsConfig.spawnPosition = config === undefined ? undefined : cloneDeep(config);
   }
 
-  get spawnPosition(): SpawnPositionBehaviorConfig | undefined {
+  get spawnPosition(): SpawnPositionConfig | undefined {
     return this.config.particleBehaviorsConfig.spawnPosition;
   }
 
