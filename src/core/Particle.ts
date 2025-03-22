@@ -157,7 +157,9 @@ export class Particle implements IParticle {
     }
 
     // todo error
-    this.pathFunc = this.config.path ? parsePath(this.config.path.path) : undefined;
+    if (this.config.path) {
+      this.pathFunc = parsePath(this.config.path.path);
+    }
 
     this.update(0, 0);
   }

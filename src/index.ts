@@ -63,6 +63,7 @@ export {PathConfig} from './core/path/path.types';
 export {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/ScaleBehavior.types';
 export {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/SpeedBehavior.types';
 export {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/RotationBehavior.types';
+export {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 
 export {
   SpawnRectangleShape,

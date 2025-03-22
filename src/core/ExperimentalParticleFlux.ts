@@ -63,13 +63,17 @@ export class ExperimentalParticleFlux {
           ? realRandom.choice(viewFactory)()
           : viewFactory();
 
-        p.constructor.prototype.speed = 0;
+        //@ts-ignore
+        p.speed = 0;
 
-        p.constructor.prototype.lifeTimeBehavior = getLifeTimeBehavior(config.lifeTime || DEFAULT_LIFE_TIME_CONFIG);
+        //@ts-ignore
+        p.lifeTimeBehavior = getLifeTimeBehavior(config.lifeTime || DEFAULT_LIFE_TIME_CONFIG);
 
-        p.constructor.prototype.deltaPath = {x: 0, y: 0};
+        //@ts-ignore
+        p.deltaPath = {x: 0, y: 0};
 
-        p.constructor.prototype.initialPosition = config.spawnShape
+        //@ts-ignore
+        p.initialPosition = config.spawnShape
           ? getSpawnPosition(config.spawnShape, config.spawnPosition)
           : config.spawnPosition || {x: 0, y: 0};
 
@@ -77,9 +81,11 @@ export class ExperimentalParticleFlux {
         p.position = {...p.initialPosition};
 
         if (config.direction) {
-          p.constructor.prototype.direction = getDirection(config.direction);
+          //@ts-ignore
+          p.direction = getDirection(config.direction);
         } else {
-          p.constructor.prototype.direction = {
+          //@ts-ignore
+          p.direction = {
             x: 0,
             y: 0,
           };
@@ -87,36 +93,41 @@ export class ExperimentalParticleFlux {
 
         if (config.speed) {
           if (isScriptBehaviorConfig(config.speed)) {
-            p.constructor.prototype.speedBehavior = getScriptBehavior(config.speed);
+            //@ts-ignore
+            p.speedBehavior = getScriptBehavior(config.speed);
           } else if (isScalarBehaviorConfig(config.speed)) {
-            p.constructor.prototype.speedBehavior = getScalarBehavior(config.speed);
+            //@ts-ignore
+            p.speedBehavior = getScalarBehavior(config.speed);
           }
         }
 
         if (config.alpha) {
           if (isScriptBehaviorConfig(config.alpha)) {
-            p.constructor.prototype.alphaBehavior = getScriptBehavior(config.alpha);
+            //@ts-ignore
+            p.alphaBehavior = getScriptBehavior(config.alpha);
           } else if (isScalarBehaviorConfig(config.alpha)) {
-            p.constructor.prototype.alphaBehavior = getScalarBehavior(config.alpha);
+            //@ts-ignore
+            p.alphaBehavior = getScalarBehavior(config.alpha);
           }
         }
 
         if (config.rotation) {
           if (isDeltaBehaviorConfig(config.rotation)) {
-            p.constructor.prototype.rotationBehavior = getDeltaBehavior(config.rotation);
+            //@ts-ignore
+            p.rotationBehavior = getDeltaBehavior(config.rotation);
           } else if (isScalarBehaviorConfig(config.rotation)) {
-            p.constructor.prototype.rotationBehavior = getScalarBehavior(config.rotation);
+            //@ts-ignore
+            p.rotationBehavior = getScalarBehavior(config.rotation);
           } else if (isScriptBehaviorConfig(config.rotation)) {
-            p.constructor.prototype.rotationBehavior = getScriptBehavior(config.rotation);
+            //@ts-ignore
+            p.rotationBehavior = getScriptBehavior(config.rotation);
           }
         }
 
         if (config.scale) {
           if (isScalarBehaviorConfig(config.scale)) {
-            p.constructor.prototype.scaleBehavior = (
-              lifeTimeNormalizedProgress: number,
-              elapsedDelta: number,
-            ): Point2d => {
+            //@ts-ignore
+            p.scaleBehavior = (lifeTimeNormalizedProgress: number, elapsedDelta: number): Point2d => {
               // @ts-ignore
               const value = getScalarBehavior(config.scale)(lifeTimeNormalizedProgress, elapsedDelta);
 
@@ -126,10 +137,8 @@ export class ExperimentalParticleFlux {
               };
             };
           } else if (isScriptBehaviorConfig(config.scale)) {
-            p.constructor.prototype.scaleBehavior = (
-              lifeTimeNormalizedProgress: number,
-              elapsedDelta: number,
-            ): Point2d => {
+            //@ts-ignore
+            p.scaleBehavior = (lifeTimeNormalizedProgress: number, elapsedDelta: number): Point2d => {
               // @ts-ignore
               const value = getScriptBehavior(config.scale)(lifeTimeNormalizedProgress, elapsedDelta);
 
@@ -143,26 +152,34 @@ export class ExperimentalParticleFlux {
               }
             };
           } else if (isVectorBehaviorConfig(config.scale)) {
-            p.constructor.prototype.scaleBehavior = getVectorBehavior(config.scale);
+            //@ts-ignore
+            p.scaleBehavior = getVectorBehavior(config.scale);
           }
         }
 
         if (config.color) {
           if (isColorScriptBehaviorConfig(config.color)) {
-            p.constructor.prototype.colorBehavior = getScriptBehavior(config.color);
+            //@ts-ignore
+            p.colorBehavior = getScriptBehavior(config.color);
           } else if (isColorStaticBehaviorConfig(config.color)) {
-            p.constructor.prototype.colorBehavior = getColorStaticBehavior(config.color);
+            //@ts-ignore
+            p.colorBehavior = getColorStaticBehavior(config.color);
           } else if (isColorDynamicBehaviorConfig(config.color)) {
-            p.constructor.prototype.colorBehavior = getColorDynamicBehavior(config.color);
+            //@ts-ignore
+            p.colorBehavior = getColorDynamicBehavior(config.color);
           }
         }
 
         if (config.gravity) {
-          p.constructor.prototype.gravityBehavior = getScalarBehavior(config.gravity);
+          //@ts-ignore
+          p.gravityBehavior = getScalarBehavior(config.gravity);
         }
 
         // todo error
-        p.constructor.prototype.pathFunc = this.config.path ? parsePath(this.config.path.path) : undefined;
+        if (this.config.path) {
+          //@ts-ignore
+          p.pathFunc = parsePath(this.config.path.path);
+        }
 
         p.onRender = () => {
           const deltaMS = ticker.deltaMS;
