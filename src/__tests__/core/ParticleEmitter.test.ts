@@ -2,11 +2,11 @@ import {describe, expect, it} from 'vitest';
 import {ParticleEmitter} from '../../core/ParticleEmitter';
 import {TEST_VIEW_FACTORY} from '../constants';
 import {TestViewContainer} from '../TestViewContainer';
-import {ParticleFluxConfig} from '../../types';
+import {ParticleFullConfig} from '../../types';
 
 describe('ParticleEmitter', () => {
   it('Creating particles via emitOnce', () => {
-    const initialConfig: ParticleFluxConfig = {
+    const initialConfig: ParticleFullConfig = {
       emitterConfig: {
         maxParticles: 10,
       },
@@ -30,7 +30,7 @@ describe('ParticleEmitter', () => {
   });
 
   it('Creating particles via emitWave', () => {
-    const initialConfig: ParticleFluxConfig = {
+    const initialConfig: ParticleFullConfig = {
       emitterConfig: {
         spawnParticlesPerWave: 10,
         maxParticles: 15,
@@ -55,7 +55,7 @@ describe('ParticleEmitter', () => {
   });
 
   describe('Creating particles at a constant interval', () => {
-    const initialConfig: ParticleFluxConfig = {
+    const initialConfig: ParticleFullConfig = {
       emitterConfig: {
         spawnInterval: 2,
         autoStart: true,
@@ -91,7 +91,7 @@ describe('ParticleEmitter', () => {
   });
 
   describe('Creating particles with timeout in mind', () => {
-    const initialConfig: ParticleFluxConfig = {
+    const initialConfig: ParticleFullConfig = {
       emitterConfig: {
         spawnTimeout: 2,
         spawnInterval: 2,

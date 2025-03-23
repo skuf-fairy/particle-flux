@@ -103,7 +103,7 @@ export interface ParticleConfig {
 }
 
 // full configuration for creating particles
-export interface ParticleFluxConfig {
+export interface ParticleFullConfig {
   emitterConfig: EmitterConfig;
   particleConfig: ParticleConfig;
 }

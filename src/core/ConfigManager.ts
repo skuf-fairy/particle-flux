@@ -1,4 +1,4 @@
-import {EmitterConfig, NumberValue, ParticleConfig, ParticleFluxConfig, ViewRenderFn} from '../types';
+import {EmitterConfig, NumberValue, ParticleConfig, ParticleFullConfig, ViewRenderFn} from '../types';
 import {LifeTimeBehaviorConfig} from './behaviors/life-time-behavior/LifeTimeBehavior.types';
 import {SpeedBehaviorConfig} from './behaviors/speed-behavior/SpeedBehavior.types';
 import {DirectionConfig} from './direction/direction.types';
@@ -14,14 +14,26 @@ import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
 import {PathConfig} from './path/path.types';
 
 export class ConfigManager {
-  private readonly config: ParticleFluxConfig;
+  private config: ParticleFullConfig;
 
-  constructor(initialConfig: ParticleFluxConfig, private viewFactory: ViewRenderFn[] | ViewRenderFn) {
+  constructor(initialConfig: ParticleFullConfig, private viewFactory: ViewRenderFn[] | ViewRenderFn) {
     this.config = cloneDeep(initialConfig);
+  }
+
+  set fullConfig(config: ParticleFullConfig) {
+    this.config = cloneDeep(config);
+  }
+
+  set emitterConfig(config: EmitterConfig) {
+    this.config.emitterConfig = cloneDeep(config);
   }
 
   get emitterConfig(): EmitterConfig {
     return cloneDeep(this.config.emitterConfig);
+  }
+
+  set particleConfig(config: ParticleConfig) {
+    this.config.particleConfig = cloneDeep(config);
   }
 
   get particleConfig(): ParticleConfig {
