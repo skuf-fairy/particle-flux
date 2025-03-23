@@ -12,22 +12,11 @@ export class Ticker implements ITicker {
   private deltaBetweenFrames: number;
   private callback: TickerCallback;
 
-  private static instance: ITicker | undefined;
-
-  private constructor() {
+  constructor(cb: TickerCallback) {
     this.lastTime = null;
     this.isStarted = false;
     this.deltaBetweenFrames = 0;
-    this.callback = () => {};
-  }
-
-  public static getInstance(): ITicker {
-    if (Ticker.instance === undefined) {
-      Ticker.instance = new Ticker();
-      return Ticker.instance;
-    }
-
-    return Ticker.instance;
+    this.callback = cb;
   }
 
   // FPS = 1 / deltaMS * 1000

@@ -21,11 +21,9 @@ export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
     viewFactory: ViewRenderFn[] | ViewRenderFn,
     initialConfig: ParticleFluxConfig,
   ) {
-    this.ticker = Ticker.getInstance();
+    this.ticker = new Ticker(this.handleUpdate);
     this.config = new ConfigManager(initialConfig, viewFactory);
     this.container = new ParticleContainer(viewContainer, this.config);
-
-    this.ticker.setCallback(this.handleUpdate);
 
     this.currentTime = 0;
     this.nextSpawnTime = this.getNextSpawnTime();
