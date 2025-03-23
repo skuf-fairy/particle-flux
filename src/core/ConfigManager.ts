@@ -53,6 +53,10 @@ export class ConfigManager {
     return this.config.emitterConfig.spawnTime;
   }
 
+  set spawnTimeout(time: number) {
+    this.config.emitterConfig.spawnTimeout = time;
+  }
+
   get spawnTimeout(): number | undefined {
     return this.config.emitterConfig.spawnTimeout;
   }
