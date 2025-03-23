@@ -28,7 +28,7 @@ class TestViewContainer implements ViewContainer<ViewParticle> {
   }
 }
 
-const particleFlux = new ParticleEmitter(new TestViewContainer(), () => new TestViewParticle(), {
+const emitter = new ParticleEmitter(new TestViewContainer(), () => new TestViewParticle(), {
   emitterConfig: {
     autoStart: false,
   },
@@ -49,10 +49,10 @@ const particleFlux = new ParticleEmitter(new TestViewContainer(), () => new Test
   },
 });
 
-particleFlux.emitOnce(50000);
+emitter.emitOnce(50000);
 
 const startTime = performance.now();
 
-particleFlux.updateContainer(1, 16.6);
+emitter.updateContainer(1, 16.6);
 
 console.log(performance.now() - startTime);

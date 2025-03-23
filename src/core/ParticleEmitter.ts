@@ -10,18 +10,18 @@ import {
 } from '../types';
 import {ConfigManager} from './ConfigManager';
 import {Ticker} from '../utils/Ticker';
-import {Particle} from './Particle';
 import {realRandom} from '../utils/random/RealRandom';
 import {isRangeValue} from '../typeguards';
 
 export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
+  public readonly config: ConfigManager;
+
   // timer time
   private currentTime: number;
   // the time when it will be necessary to freeze the particle
   private nextSpawnTime: number | null;
 
   private readonly container: IParticleContainer;
-  private readonly config: ConfigManager;
   private readonly ticker: ITicker;
 
   constructor(
@@ -31,9 +31,7 @@ export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
   ) {
     this.ticker = Ticker.getInstance();
     this.config = new ConfigManager(initialConfig, viewFactory);
-    this.container = new ParticleContainer(
-      () => new Particle(viewContainer, this.config.view, this.config.particleConfig),
-    );
+    this.container = new ParticleContainer(viewContainer, this.config);
 
     this.ticker.setCallback(this.handleUpdate);
 
@@ -130,7 +128,7 @@ export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
   }
 
   public getParticles(): IParticle[] {
-    return this.container.getParticles();
+    return this.container.getParticlesArray();
   }
 
   // updating the container and creating new particles according to the passed configuration

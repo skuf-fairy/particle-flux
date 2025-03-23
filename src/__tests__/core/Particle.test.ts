@@ -3,28 +3,50 @@ import {TEST_VIEW_FACTORY} from '../constants';
 import {Particle} from '../../core/Particle';
 import {TestViewContainer} from '../TestViewContainer';
 import {ParticleConfig} from '../../types';
+import {TestViewParticle} from '../TestViewParticle';
 
 describe('Particle', () => {
   describe('Creating a particle', () => {
+    const viewContainer = new TestViewContainer();
+
+    const particle = new Particle(viewContainer);
+
+    it('The created particle is not active yet, it must be in the default state.', () => {
+      expect(particle.view).toEqual(null);
+      expect(particle.direction.x).toEqual(0);
+      expect(particle.direction.y).toEqual(0);
+      expect(particle.speed).toEqual(0);
+      expect(particle.next).toEqual(null);
+      expect(particle.isInUse()).toEqual(false);
+    });
+  });
+
+  describe('Инициализация частицы', () => {
     const particleConfig: ParticleConfig = {
       lifeTime: {
         value: 10,
       },
       alpha: {
-        start: 0,
+        start: 0.2,
         end: 1,
+      },
+      speed: {
+        value: 1,
       },
     };
     const viewContainer = new TestViewContainer();
 
-    const particle = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+    const particle = new Particle(viewContainer);
+    particle.use(TEST_VIEW_FACTORY, particleConfig);
 
-    it('Correct initialization', () => {
-      expect(particle.view.alpha).toEqual(0);
+    it('The particle has been initialized correctly and is in a state of use.', () => {
+      expect(particle.view).instanceOf(TestViewParticle);
       expect(particle.direction.x).toEqual(0);
       expect(particle.direction.y).toEqual(0);
-      expect(particle.speed).toEqual(0);
+      expect(particle.speed).toEqual(1);
       expect(particle.next).toEqual(null);
+      expect(particle.view?.alpha).toEqual(0.2);
+      expect(particle.isInUse()).toEqual(true);
     });
   });
 
@@ -40,11 +62,12 @@ describe('Particle', () => {
     };
     const viewContainer = new TestViewContainer();
 
-    const particle = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+    const particle = new Particle(viewContainer);
+    particle.use(TEST_VIEW_FACTORY, particleConfig);
 
     it('After updating the alpha particle, it changed correctly', () => {
       particle.update(1, 5);
-      expect(particle.view.alpha).toEqual(0.5);
+      expect(particle.view?.alpha).toEqual(0.5);
     });
   });
 
@@ -63,14 +86,17 @@ describe('Particle', () => {
       };
       const viewContainer = new TestViewContainer();
 
-      const particle1 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
-      const particle2 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+      const particle1 = new Particle(viewContainer);
+      const particle2 = new Particle(viewContainer);
+
+      particle1.use(TEST_VIEW_FACTORY, particleConfig);
+      particle2.use(TEST_VIEW_FACTORY, particleConfig);
 
       particle1.update(1, 5);
       particle2.update(1 / 2, 5 / 2);
       particle2.update(1 / 2, 5 / 2);
 
-      expect(particle1.view.position).toEqual(particle2.view.position);
+      expect(particle1.view?.position).toEqual(particle2.view?.position);
     });
 
     it('Immutability for gravity', () => {
@@ -90,14 +116,17 @@ describe('Particle', () => {
       };
       const viewContainer = new TestViewContainer();
 
-      const particle1 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
-      const particle2 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+      const particle1 = new Particle(viewContainer);
+      const particle2 = new Particle(viewContainer);
+
+      particle1.use(TEST_VIEW_FACTORY, particleConfig);
+      particle2.use(TEST_VIEW_FACTORY, particleConfig);
 
       particle1.update(1, 5);
       particle2.update(1 / 2, 5 / 2);
       particle2.update(1 / 2, 5 / 2);
 
-      expect(particle1.view.position).toEqual(particle2.view.position);
+      expect(particle1.view?.position).toEqual(particle2.view?.position);
     });
 
     it('Immutability for path', () => {
@@ -114,18 +143,21 @@ describe('Particle', () => {
       };
       const viewContainer = new TestViewContainer();
 
-      const particle1 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
-      const particle2 = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+      const particle1 = new Particle(viewContainer);
+      const particle2 = new Particle(viewContainer);
+
+      particle1.use(TEST_VIEW_FACTORY, particleConfig);
+      particle2.use(TEST_VIEW_FACTORY, particleConfig);
 
       particle1.update(1, 5);
       particle2.update(1 / 2, 5 / 2);
       particle2.update(1 / 2, 5 / 2);
 
-      expect(particle1.view.position).toEqual(particle2.view.position);
+      expect(particle1.view?.position).toEqual(particle2.view?.position);
     });
   });
 
-  describe('Particle destructurization', () => {
+  describe('Dead of particle', () => {
     const particleConfig: ParticleConfig = {
       lifeTime: {
         value: 10,
@@ -137,11 +169,13 @@ describe('Particle', () => {
     };
     const viewContainer = new TestViewContainer();
 
-    const particle = new Particle(viewContainer, TEST_VIEW_FACTORY, particleConfig);
+    const particle = new Particle(viewContainer);
+    particle.use(TEST_VIEW_FACTORY, particleConfig);
     particle.update(1, 100);
 
-    it('The particle is subject to destructuring, so the lifetime is over.', () => {
-      expect(particle.shouldDestroy).toEqual(true);
+    it('The particle is no longer in use, the display has been removed', () => {
+      expect(particle.isInUse()).toEqual(false);
+      expect(particle.view).toEqual(null);
     });
   });
 });

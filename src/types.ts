@@ -32,21 +32,22 @@ export interface ViewContainer<U extends ViewParticle> {
 export interface IParticleContainer {
   addParticle(): void;
   getParticlesCount(): number;
-  getParticles(): IParticle[];
+  getParticlesArray(): IParticle[];
   clear(): void;
   update(elapsedDelta: number, deltaMS: number): void;
 }
 
 // particle
 export interface IParticle {
+  use(viewRenderFn: ViewRenderFn | ViewRenderFn[], config: ParticleConfig): void;
   update(elapsedDelta: number, deltaMS: number): void;
-  destroy(): void;
-  shouldDestroy: boolean;
+  noUse(): void;
+  isInUse(): boolean;
   next: IParticle | null;
 
   speed: number;
   direction: Point2d;
-  view: ViewParticle;
+  view: ViewParticle | null;
 }
 
 export interface ITicker {

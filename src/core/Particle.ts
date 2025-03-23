@@ -31,14 +31,14 @@ export type UpdateFunction<V> = (lifeTimeNormalizedProgress: number, elapsedDelt
  */
 export class Particle implements IParticle {
   // particle display
-  public view: ViewParticle;
+  public view: ViewParticle | null;
   // particle velocity
   public speed: number;
   // the direction of movement in two-dimensional space
   public direction: Point2d;
-  // its need to remove the particle from the container after updating the container
-  public shouldDestroy: boolean;
   public next: IParticle | null;
+
+  private inUse: boolean;
 
   private lifeTimeBehavior: (deltaMS: number) => number;
   private speedBehavior?: UpdateFunction<number>;
@@ -52,24 +52,27 @@ export class Particle implements IParticle {
   private deltaPath: Point2d;
   private initialPosition: Point2d;
 
-  constructor(
-    private readonly viewContainer: ViewContainer<ViewParticle>,
-    private readonly viewRenderFn: ViewRenderFn | ViewRenderFn[],
-    private readonly config: ParticleConfig,
-  ) {
+  constructor(private readonly viewContainer: ViewContainer<ViewParticle>) {
     this.speed = 0;
-
-    this.shouldDestroy = false;
+    this.deltaPath = {x: 0, y: 0};
+    this.initialPosition = {x: 0, y: 0};
+    this.direction = {x: 0, y: 0};
 
     this.next = null;
 
-    this.view = createView(this.viewRenderFn);
+    this.inUse = false;
 
-    viewContainer.addChild(this.view);
+    this.view = null;
+  }
+
+  public use(viewRenderFn: ViewRenderFn | ViewRenderFn[], config: ParticleConfig): void {
+    this.inUse = true;
+
+    this.view = createView(viewRenderFn);
+
+    this.viewContainer.addChild(this.view);
 
     this.lifeTimeBehavior = getLifeTimeBehavior(config.lifeTime || DEFAULT_LIFE_TIME_CONFIG);
-
-    this.deltaPath = {x: 0, y: 0};
 
     this.initialPosition = config.spawnShape
       ? getSpawnPosition(config.spawnShape, config.spawnPosition)
@@ -156,22 +159,24 @@ export class Particle implements IParticle {
       this.gravityBehavior = getScalarBehavior(config.gravity);
     }
 
-    if (this.config.path) {
-      this.pathFunc = parsePath(this.config.path.path);
+    if (config.path) {
+      this.pathFunc = parsePath(config.path.path);
     }
 
     this.update(0, 0);
   }
 
   public update(elapsedDelta: number, deltaMS: number): void {
+    if (!this.inUse || this.view === null) return;
+
     if (this.view.destroyed) {
-      this.shouldDestroy = true;
+      this.noUse();
       return;
     }
 
     const lifeTimeNormalizedProgress = this.lifeTimeBehavior(deltaMS);
     if (isDead(lifeTimeNormalizedProgress)) {
-      this.shouldDestroy = true;
+      this.noUse();
       return;
     }
 
@@ -217,8 +222,16 @@ export class Particle implements IParticle {
     }
   }
 
-  public destroy(): void {
+  public noUse(): void {
+    if (this.view === null) return;
+
     this.viewContainer.removeChild(this.view);
+    this.view = null;
+    this.inUse = false;
+  }
+
+  public isInUse(): boolean {
+    return this.inUse;
   }
 }
 
