@@ -92,6 +92,11 @@ export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
     this.resetTime();
   }
 
+  public restart(): void {
+    this.stopEmit();
+    this.startEmit();
+  }
+
   // cleaning the container
   public clean(): void {
     this.container.clear();
