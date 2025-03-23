@@ -1,22 +1,40 @@
-import {realRandom} from '../utils/random/RealRandom';
-import {IParticleContainer, ITicker} from '../types';
-import {isRangeValue} from '../typeguards';
+import {ParticleContainer} from './ParticleContainer';
+import {
+  IParticle,
+  IParticleContainer,
+  ITicker,
+  ParticleFluxConfig,
+  ViewContainer,
+  ViewParticle,
+  ViewRenderFn,
+} from '../types';
 import {ConfigManager} from './ConfigManager';
+import {Ticker} from '../utils/Ticker';
+import {Particle} from './Particle';
+import {realRandom} from '../utils/random/RealRandom';
+import {isRangeValue} from '../typeguards';
 
-/**
- * Updates the container by creating particles according to the passed configuration
- */
-export class ParticleEmitter {
+export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
   // timer time
   private currentTime: number;
   // the time when it will be necessary to freeze the particle
   private nextSpawnTime: number | null;
 
+  private readonly container: IParticleContainer;
+  private readonly config: ConfigManager;
+  private readonly ticker: ITicker;
+
   constructor(
-    private readonly container: IParticleContainer,
-    private readonly config: ConfigManager,
-    private readonly ticker: ITicker,
+    viewContainer: ViewContainer<V>,
+    viewFactory: ViewRenderFn[] | ViewRenderFn,
+    initialConfig: ParticleFluxConfig,
   ) {
+    this.ticker = Ticker.getInstance();
+    this.config = new ConfigManager(initialConfig, viewFactory);
+    this.container = new ParticleContainer(
+      () => new Particle(viewContainer, this.config.view, this.config.particleConfig),
+    );
+
     this.ticker.setCallback(this.handleUpdate);
 
     this.currentTime = 0;
@@ -95,12 +113,24 @@ export class ParticleEmitter {
    * true if the emitter is running and compare the particles
    * @returns is the emitter active
    */
-  public isActive(): boolean {
+  public isEmitActive(): boolean {
     return this.ticker.started;
   }
 
   public update(elapsedDelta: number, deltaMS: number): void {
     this.handleUpdate(elapsedDelta, deltaMS);
+  }
+
+  public updateContainer(elapsedDelta: number, deltaMS: number): void {
+    this.container.update(elapsedDelta, deltaMS);
+  }
+
+  public getParticlesCount(): number {
+    return this.container.getParticlesCount();
+  }
+
+  public getParticles(): IParticle[] {
+    return this.container.getParticles();
   }
 
   // updating the container and creating new particles according to the passed configuration

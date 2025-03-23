@@ -156,7 +156,6 @@ export class Particle implements IParticle {
       this.gravityBehavior = getScalarBehavior(config.gravity);
     }
 
-    // todo error
     if (this.config.path) {
       this.pathFunc = parsePath(this.config.path.path);
     }

@@ -16,7 +16,6 @@ function getCurrentScriptItem<V>(script: TimeScriptConfig<V>, time: number): V {
 
 export function getScriptBehavior<V>(config: ScriptBehaviorConfig<V>): UpdateFunction<V> {
   if (config.script.length === 0) {
-    // todo making mistakes
     throw new Error('Script config must contain at least 1 item');
   }
 

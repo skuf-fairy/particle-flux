@@ -66,7 +66,7 @@ export function parsePath(pathString: string): PathFunction {
   const matches = pathString.match(WHITELIST);
 
   if (matches === null) {
-    throw new Error('path is not valid function');
+    throw new Error('Path string is not valid function');
   }
 
   for (let i = matches.length - 1; i >= 0; --i) {

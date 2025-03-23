@@ -1,5 +1,5 @@
 // core
-export {ParticleFlux} from './core/ParticleFlux';
+export {ParticleEmitter} from './core/ParticleEmitter';
 export {
   ParticleFluxConfig,
   ParticleConfig,

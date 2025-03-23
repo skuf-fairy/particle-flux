@@ -1,4 +1,4 @@
-import {ParticleFlux} from '../core/ParticleFlux';
+import {ParticleEmitter} from '../core/ParticleEmitter';
 import {Point2d, ViewContainer, ViewParticle} from '../types';
 
 class TestViewParticle implements ViewParticle {
@@ -28,7 +28,7 @@ class TestViewContainer implements ViewContainer<ViewParticle> {
   }
 }
 
-const particleFlux = new ParticleFlux(new TestViewContainer(), () => new TestViewParticle(), {
+const particleFlux = new ParticleEmitter(new TestViewContainer(), () => new TestViewParticle(), {
   emitterConfig: {
     autoStart: false,
   },
