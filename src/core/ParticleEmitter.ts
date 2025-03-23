@@ -1,13 +1,5 @@
 import {ParticleContainer} from './ParticleContainer';
-import {
-  IParticle,
-  IParticleContainer,
-  ITicker,
-  ParticleFluxConfig,
-  ViewContainer,
-  ViewParticle,
-  ViewRenderFn,
-} from '../types';
+import {IParticle, ITicker, ParticleFluxConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {Ticker} from '../utils/Ticker';
 import {realRandom} from '../utils/random/RealRandom';
@@ -21,7 +13,7 @@ export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
   // the time when it will be necessary to freeze the particle
   private nextSpawnTime: number | null;
 
-  private readonly container: IParticleContainer;
+  private readonly container: ParticleContainer;
   private readonly ticker: ITicker;
 
   constructor(
@@ -129,6 +121,14 @@ export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
 
   public getParticles(): IParticle[] {
     return this.container.getParticlesArray();
+  }
+
+  public fillPool(particlesCount: number): void {
+    this.container.fillPool(particlesCount);
+  }
+
+  public clearPool(): void {
+    this.container.clearPool();
   }
 
   // updating the container and creating new particles according to the passed configuration
