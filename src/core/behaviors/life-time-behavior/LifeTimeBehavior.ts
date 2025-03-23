@@ -8,6 +8,8 @@ const getRemainingLifeTime = (remainingLifeTime: number, deltaMS: number): numbe
 };
 
 const getLifeTimeNormalizedProgress = (remainingLifeTime: number, lifeTime: number): number => {
+  if (lifeTime === 0 || lifeTime === Infinity || lifeTime === Number.MAX_SAFE_INTEGER) return 0;
+
   return 1 - NumberUtils.roundWith2Precision(remainingLifeTime / lifeTime);
 };
 
