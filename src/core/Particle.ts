@@ -215,18 +215,14 @@ export class Particle implements IParticle {
       this.deltaPath.y = this.pathFunc(this.deltaPath.x);
       const delta = Vector2Utils.rotate(this.deltaPath, -Math.PI / 2);
 
-      this.view.position = {
-        x: NumberUtils.roundWith2Precision(this.initialPosition.x + delta.x),
-        y: NumberUtils.roundWith2Precision(this.initialPosition.y + delta.y),
-      };
+      this.view.position.x = this.initialPosition.x + delta.x;
+      this.view.position.y = this.initialPosition.y + delta.y;
     } else {
       // todo наверное лучше накопление
       const gravityShift = this.gravityBehavior ? this.gravityBehavior(lifeTimeNormalizedProgress, elapsedDelta) : 0;
 
-      this.view.position = {
-        x: NumberUtils.roundWith2Precision(this.view.position.x + this.direction.x * speed),
-        y: NumberUtils.roundWith2Precision(this.view.position.y + (this.direction.y + gravityShift) * speed),
-      };
+      this.view.position.x += this.direction.x * speed;
+      this.view.position.y += (this.direction.y + gravityShift) * speed;
     }
   }
 

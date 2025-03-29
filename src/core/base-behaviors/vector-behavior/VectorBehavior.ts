@@ -55,12 +55,8 @@ export function getVectorBehavior(config: VectorBehaviorConfig): UpdateFunction<
   const multiplierY = getInitialMultiplier(config.y);
 
   return (lifeTimeNormalizedProgress: number): Point2d => {
-    value.x = NumberUtils.roundWith2Precision(
-      NumberUtils.lerp(startValue.x, endValue.x, easingX(lifeTimeNormalizedProgress)) * multiplierX,
-    );
-    value.y = NumberUtils.roundWith2Precision(
-      NumberUtils.lerp(startValue.y, endValue.y, easingY(lifeTimeNormalizedProgress)) * multiplierY,
-    );
+    value.x = NumberUtils.lerp(startValue.x, endValue.x, easingX(lifeTimeNormalizedProgress)) * multiplierX;
+    value.y = NumberUtils.lerp(startValue.y, endValue.y, easingY(lifeTimeNormalizedProgress)) * multiplierY;
 
     return value;
   };

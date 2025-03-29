@@ -39,7 +39,5 @@ export function getScalarBehavior(config: ScalarBehaviorConfig): UpdateFunction<
   }
 
   return (lifeTimeNormalizedProgress: number): number =>
-    NumberUtils.roundWith2Precision(
-      NumberUtils.lerp(startValue, endValue, easing(lifeTimeNormalizedProgress)) * multiplier,
-    );
+    NumberUtils.lerp(startValue, endValue, easing(lifeTimeNormalizedProgress)) * multiplier;
 }

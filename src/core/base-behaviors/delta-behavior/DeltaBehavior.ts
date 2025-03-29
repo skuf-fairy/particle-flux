@@ -23,7 +23,7 @@ export function getDeltaBehavior(config: DeltaBehaviorConfig): UpdateFunction<nu
 
   const update = (_: number, elapsedDelta: number): number => {
     value += config.delta * elapsedDelta;
-    return NumberUtils.roundWith2Precision(value);
+    return value;
   };
 
   return update;
