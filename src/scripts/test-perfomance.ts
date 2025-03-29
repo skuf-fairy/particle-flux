@@ -49,10 +49,14 @@ const emitter = new ParticleEmitter(new TestViewContainer(), () => new TestViewP
   },
 });
 
-emitter.emitOnce(50000);
+emitter.emitOnce(100000);
 
-const startTime = performance.now();
+const result: number[] = [];
+for (let i = 0; i < 100; i++) {
+  const startTime = performance.now();
+  emitter.updateContainer(1, 16.6);
+  result.push(performance.now() - startTime);
+}
 
-emitter.updateContainer(1, 16.6);
-
-console.log(performance.now() - startTime);
+console.log(result);
+console.log(result.reduce((sum, v) => sum + v, 0) / result.length);
