@@ -41,13 +41,13 @@ export class Particle implements IParticle {
   private inUse: boolean;
 
   private lifeTimeBehavior: (deltaMS: number) => number;
-  private speedBehavior?: UpdateFunction<number>;
-  private alphaBehavior?: UpdateFunction<number>;
-  private rotationBehavior?: UpdateFunction<number>;
-  private scaleBehavior?: UpdateFunction<Point2d>;
-  private colorBehavior?: UpdateFunction<string>;
-  private gravityBehavior?: UpdateFunction<number>;
-  private pathFunc?: PathFunction;
+  private speedBehavior: UpdateFunction<number> | null;
+  private alphaBehavior: UpdateFunction<number> | null;
+  private rotationBehavior: UpdateFunction<number> | null;
+  private scaleBehavior: UpdateFunction<Point2d> | null;
+  private colorBehavior: UpdateFunction<string> | null;
+  private gravityBehavior: UpdateFunction<number> | null;
+  private pathFunc: PathFunction | null;
 
   private deltaPath: Point2d;
   private initialPosition: Point2d;
@@ -63,6 +63,14 @@ export class Particle implements IParticle {
     this.inUse = false;
 
     this.view = null;
+
+    this.speedBehavior = null;
+    this.alphaBehavior = null;
+    this.rotationBehavior = null;
+    this.scaleBehavior = null;
+    this.colorBehavior = null;
+    this.gravityBehavior = null;
+    this.pathFunc = null;
   }
 
   public use(viewRenderFn: ViewRenderFn | ViewRenderFn[], config: ParticleConfig): void {
@@ -180,29 +188,29 @@ export class Particle implements IParticle {
       return;
     }
 
-    if (this.speedBehavior) {
+    if (this.speedBehavior !== null) {
       this.speed = this.speedBehavior(lifeTimeNormalizedProgress, elapsedDelta);
     }
 
-    if (this.alphaBehavior) {
+    if (this.alphaBehavior !== null) {
       this.view.alpha = this.alphaBehavior(lifeTimeNormalizedProgress, elapsedDelta);
     }
 
-    if (this.rotationBehavior) {
+    if (this.rotationBehavior !== null) {
       this.view.angle = this.rotationBehavior(lifeTimeNormalizedProgress, elapsedDelta);
     }
 
-    if (this.scaleBehavior) {
+    if (this.scaleBehavior !== null) {
       this.view.scale = this.scaleBehavior(lifeTimeNormalizedProgress, elapsedDelta);
     }
 
-    if (this.colorBehavior) {
+    if (this.colorBehavior !== null) {
       this.view.tint = this.colorBehavior(lifeTimeNormalizedProgress, elapsedDelta);
     }
 
     const speed = this.speed * elapsedDelta;
 
-    if (this.pathFunc) {
+    if (this.pathFunc !== null) {
       this.deltaPath.x = this.deltaPath.x + speed;
       this.deltaPath.y = this.pathFunc(this.deltaPath.x);
       const delta = Vector2Utils.rotate(this.deltaPath, -Math.PI / 2);

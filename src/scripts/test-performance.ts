@@ -1,5 +1,6 @@
+import {ViewParticle, Point2d, ViewContainer} from '../types';
 import {ParticleEmitter} from '../core/ParticleEmitter';
-import {Point2d, ViewContainer, ViewParticle} from '../types';
+import {measureFuncExecuteTime} from './measureFuncExecuteTime';
 
 class TestViewParticle implements ViewParticle {
   position: Point2d = {x: 0, y: 0};
@@ -28,35 +29,31 @@ class TestViewContainer implements ViewContainer<ViewParticle> {
   }
 }
 
-const emitter = new ParticleEmitter(new TestViewContainer(), () => new TestViewParticle(), {
-  emitterConfig: {
-    autoStart: false,
-  },
-  particleConfig: {
-    lifeTime: {
-      value: 600000,
+export function testParticleFluxPerformance() {
+  const emitter = new ParticleEmitter(new TestViewContainer(), () => new TestViewParticle(), {
+    emitterConfig: {
+      autoStart: false,
     },
-    speed: {
-      value: 1,
+    particleConfig: {
+      lifeTime: {
+        value: 600000,
+      },
+      speed: {
+        value: 1,
+      },
+      direction: {
+        minAngle: 0,
+        maxAngle: 360,
+      },
+      alpha: {
+        value: 0.5,
+      },
     },
-    direction: {
-      minAngle: 0,
-      maxAngle: 360,
-    },
-    alpha: {
-      value: 0.5,
-    },
-  },
-});
+  });
 
-emitter.emitOnce(100000);
+  emitter.emitOnce(100000);
 
-const result: number[] = [];
-for (let i = 0; i < 100; i++) {
-  const startTime = performance.now();
-  emitter.updateContainer(1, 16.6);
-  result.push(performance.now() - startTime);
+  return () => emitter.updateContainer(1, 1000 / 60);
 }
 
-console.log(result);
-console.log(result.reduce((sum, v) => sum + v, 0) / result.length);
+console.log(measureFuncExecuteTime(testParticleFluxPerformance(), 200));
