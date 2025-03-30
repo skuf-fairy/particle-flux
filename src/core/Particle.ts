@@ -22,7 +22,6 @@ import {parsePath} from '../utils/parsePath';
 import {getSpawnPosition} from './spawn-shapes/getSpawnPosition';
 import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
 import {PathFunction} from './path/path.types';
-import {NumberUtils} from '../utils/NumberUtils';
 
 export type UpdateFunction<V> = (lifeTimeNormalizedProgress: number, elapsedDelta: number) => V;
 
@@ -49,7 +48,6 @@ export class Particle implements IParticle {
   private colorBehavior: UpdateFunction<string> | null;
   private gravityBehavior: UpdateFunction<number> | null;
   private pathFunc: PathFunction | null;
-  private lifeTimeNormalizedProgress: number;
 
   private deltaPath: Point2d;
   private initialPosition: Point2d;
@@ -74,8 +72,6 @@ export class Particle implements IParticle {
     this.colorBehavior = null;
     this.gravityBehavior = null;
     this.pathFunc = null;
-
-    this.lifeTimeNormalizedProgress = 0;
   }
 
   public use(viewRenderFn: ViewRenderFn | ViewRenderFn[], config: ParticleConfig): void {
@@ -188,20 +184,11 @@ export class Particle implements IParticle {
       return;
     }
 
-    const lifeTimeNormalizedProgress = NumberUtils.roundWith2Precision(this.lifeTimeBehavior(deltaMS));
+    const lifeTimeNormalizedProgress = this.lifeTimeBehavior(deltaMS);
     if (isDead(lifeTimeNormalizedProgress)) {
-      this.lifeTimeNormalizedProgress = 1;
       this.noUse();
       return;
     }
-
-    if (lifeTimeNormalizedProgress !== 0 && lifeTimeNormalizedProgress === this.lifeTimeNormalizedProgress) {
-      this.lifeTimeNormalizedProgress = lifeTimeNormalizedProgress;
-
-      return;
-    }
-
-    this.lifeTimeNormalizedProgress = lifeTimeNormalizedProgress;
 
     if (this.speedBehavior !== null) {
       this.speed = this.speedBehavior(lifeTimeNormalizedProgress, elapsedDelta);
