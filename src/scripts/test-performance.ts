@@ -44,9 +44,9 @@ export function testParticleFluxPerformance() {
         minAngle: 0,
         maxAngle: 360,
       },
-      alpha: {
-        value: 0.5,
-      },
+      // alpha: {
+      //   value: 0.5,
+      // },
     },
   });
 
