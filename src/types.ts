@@ -15,7 +15,9 @@ export type GlobalWindow = Window & typeof globalThis;
 
 // the particle parameters that are displayed on the screen
 export interface ViewParticle {
-  position: Point2d;
+  // position: Point2d;x
+  x: number;
+  y: number;
   scale: Point2d;
   alpha: number;
   tint: string | number;

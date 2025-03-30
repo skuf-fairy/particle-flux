@@ -1,4 +1,3 @@
-import {NumberUtils} from '../utils/NumberUtils';
 import {IParticle, ParticleConfig, Point2d, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
 import {getLifeTimeBehavior} from './behaviors/life-time-behavior/LifeTimeBehavior';
 import {getScalarBehavior} from './base-behaviors/scalar-behavior/ScalarBehavior';
@@ -86,7 +85,8 @@ export class Particle implements IParticle {
       ? getSpawnPosition(config.spawnShape, config.spawnPosition)
       : config.spawnPosition || {x: 0, y: 0};
 
-    this.view.position = {...this.initialPosition};
+    this.view.x = this.initialPosition.x;
+    this.view.y = this.initialPosition.y;
 
     if (config.direction) {
       this.direction = getDirection(config.direction);
@@ -215,14 +215,14 @@ export class Particle implements IParticle {
       this.deltaPath.y = this.pathFunc(this.deltaPath.x);
       const delta = Vector2Utils.rotate(this.deltaPath, -Math.PI / 2);
 
-      this.view.position.x = this.initialPosition.x + delta.x;
-      this.view.position.y = this.initialPosition.y + delta.y;
+      this.view.x = this.initialPosition.x + delta.x;
+      this.view.y = this.initialPosition.y + delta.y;
     } else {
       // todo наверное лучше накопление
       const gravityShift = this.gravityBehavior ? this.gravityBehavior(lifeTimeNormalizedProgress, elapsedDelta) : 0;
 
-      this.view.position.x += this.direction.x * speed;
-      this.view.position.y += (this.direction.y + gravityShift) * speed;
+      this.view.x += this.direction.x * speed;
+      this.view.y += (this.direction.y + gravityShift) * speed;
     }
   }
 

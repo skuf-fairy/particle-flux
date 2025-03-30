@@ -1,7 +1,6 @@
 import {LifeTimeBehaviorConfig} from './LifeTimeBehavior.types';
 import {realRandom} from '../../../utils/random/RealRandom';
 import {isLifeTimeStaticBehaviorConfig} from './LifeTimeBehavior.typeguards';
-import {NumberUtils} from '../../../utils/NumberUtils';
 
 const getRemainingLifeTime = (remainingLifeTime: number, deltaMS: number): number => {
   return Math.max(0, remainingLifeTime - deltaMS);

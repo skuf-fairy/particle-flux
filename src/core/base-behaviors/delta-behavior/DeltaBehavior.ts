@@ -1,7 +1,6 @@
 import {realRandom} from '../../../utils/random/RealRandom';
 import {DeltaBehaviorConfig} from './DeltaBehavior.types';
 import {isRangeValue} from '../../../typeguards';
-import {NumberUtils} from '../../../utils/NumberUtils';
 import {UpdateFunction} from '../../Particle';
 
 const getInitialMultiplier = (config: DeltaBehaviorConfig): number => {

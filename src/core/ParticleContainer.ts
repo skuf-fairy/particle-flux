@@ -7,16 +7,12 @@ import {Particle} from './Particle';
  */
 export class ParticleContainer implements IParticleContainer {
   public headParticle: IParticle | null;
-  public tailParticle: IParticle | null;
   public availableParticleHead: IParticle | null;
-  public availableParticleTail: IParticle | null;
   private containerParticlesCount: number;
 
   constructor(private readonly viewContainer: ViewContainer<ViewParticle>, private readonly config: ConfigManager) {
     this.headParticle = null;
-    this.tailParticle = null;
     this.availableParticleHead = null;
-    this.availableParticleTail = null;
     this.containerParticlesCount = 0;
   }
 
@@ -88,13 +84,10 @@ export class ParticleContainer implements IParticleContainer {
         pointer = pointer.next;
       }
     }
-
-    this.tailParticle = prevParticle;
   }
 
   public clear(): void {
     this.availableParticleHead = this.headParticle;
-    this.availableParticleTail = this.tailParticle;
 
     let particle: IParticle | null = this.headParticle;
 
@@ -104,14 +97,12 @@ export class ParticleContainer implements IParticleContainer {
     }
 
     this.headParticle = null;
-    this.tailParticle = null;
 
     this.containerParticlesCount = 0;
   }
 
   public clearPool(): void {
     this.availableParticleHead = null;
-    this.availableParticleTail = null;
   }
 
   public addParticle(): IParticle {
@@ -134,19 +125,19 @@ export class ParticleContainer implements IParticleContainer {
 
   private addParticleInUsedParticles(particle: IParticle): void {
     if (this.headParticle === null) {
-      this.headParticle = this.tailParticle = particle;
+      this.headParticle = particle;
     } else {
-      this.tailParticle!.next = particle;
-      this.tailParticle = particle;
+      particle.next = this.headParticle;
+      this.headParticle = particle;
     }
   }
 
   private addParticleToPool(particle: IParticle): void {
     if (this.availableParticleHead === null) {
-      this.availableParticleHead = this.availableParticleTail = particle;
+      this.availableParticleHead = particle;
     } else {
-      this.availableParticleTail!.next = particle;
-      this.availableParticleTail = particle;
+      particle.next = this.availableParticleHead;
+      this.availableParticleHead = particle;
     }
   }
 

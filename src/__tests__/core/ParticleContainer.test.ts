@@ -18,7 +18,6 @@ describe('ParticleContainer', () => {
       expect(container.getParticlesArray()).toEqual([p]);
       expect(p.next).toEqual(null);
       expect(container.headParticle).toEqual(p);
-      expect(container.tailParticle).toEqual(p);
     });
   });
 
@@ -34,12 +33,11 @@ describe('ParticleContainer', () => {
 
     it('Container has every particle', () => {
       expect(container.getParticlesCount()).toEqual(3);
-      expect(container.getParticlesArray()).toEqual([p1, p2, p3]);
-      expect(p1.next).toEqual(p2);
-      expect(p2.next).toEqual(p3);
-      expect(p3.next).toEqual(null);
-      expect(container.headParticle).toEqual(p1);
-      expect(container.tailParticle).toEqual(p3);
+      expect(container.getParticlesArray()).toEqual([p3, p2, p1]);
+      expect(p1.next).toEqual(null);
+      expect(p2.next).toEqual(p1);
+      expect(p3.next).toEqual(p2);
+      expect(container.headParticle).toEqual(p3);
     });
 
     it('First particle was destroyed', () => {
@@ -48,12 +46,10 @@ describe('ParticleContainer', () => {
       container.update(1, 1);
 
       expect(container.getParticlesCount()).toEqual(2);
-      expect(container.getParticlesArray()).toEqual([p2, p3]);
-      expect(p2.next).toEqual(p3);
-      expect(container.headParticle).toEqual(p2);
-      expect(container.tailParticle).toEqual(p3);
+      expect(container.getParticlesArray()).toEqual([p3, p2]);
+      expect(p2.next).toEqual(null);
+      expect(container.headParticle).toEqual(p3);
       expect(container.availableParticleHead).toEqual(p1);
-      expect(container.availableParticleTail).toEqual(p1);
     });
 
     it('Second particle was destroyed', () => {
@@ -65,9 +61,7 @@ describe('ParticleContainer', () => {
       expect(container.getParticlesArray()).toEqual([p2]);
       expect(p2.next).toEqual(null);
       expect(container.headParticle).toEqual(p2);
-      expect(container.tailParticle).toEqual(p2);
-      expect(container.availableParticleHead).toEqual(p1);
-      expect(container.availableParticleTail).toEqual(p3);
+      expect(container.availableParticleHead).toEqual(p3);
     });
 
     it('Last particle was destroyed', () => {
@@ -78,9 +72,7 @@ describe('ParticleContainer', () => {
       expect(container.getParticlesCount()).toEqual(0);
       expect(container.getParticlesArray()).toEqual([]);
       expect(container.headParticle).toEqual(null);
-      expect(container.tailParticle).toEqual(null);
-      expect(container.availableParticleHead).toEqual(p1);
-      expect(container.availableParticleTail).toEqual(p2);
+      expect(container.availableParticleHead).toEqual(p2);
     });
 
     it('Добавляем частицу', () => {
@@ -89,10 +81,8 @@ describe('ParticleContainer', () => {
       expect(container.getParticlesCount()).toEqual(1);
       expect(container.getParticlesArray()).toEqual([newParticle]);
       expect(container.headParticle).toEqual(newParticle);
-      expect(container.tailParticle).toEqual(newParticle);
-      expect(container.headParticle).toEqual(p1);
+      expect(newParticle).toEqual(p2);
       expect(container.availableParticleHead).toEqual(p3);
-      expect(container.availableParticleTail).toEqual(p2);
     });
   });
 
@@ -112,12 +102,10 @@ describe('ParticleContainer', () => {
       container.update(1, 1);
 
       expect(container.getParticlesCount()).toEqual(2);
-      expect(container.getParticlesArray()).toEqual([p1, p3]);
-      expect(p1.next).toEqual(p3);
-      expect(container.headParticle).toEqual(p1);
-      expect(container.tailParticle).toEqual(p3);
+      expect(container.getParticlesArray()).toEqual([p3, p1]);
+      expect(p3.next).toEqual(p1);
+      expect(container.headParticle).toEqual(p3);
       expect(container.availableParticleHead).toEqual(p2);
-      expect(container.availableParticleTail).toEqual(p2);
     });
   });
 
@@ -137,12 +125,10 @@ describe('ParticleContainer', () => {
       container.update(1, 1);
 
       expect(container.getParticlesCount()).toEqual(2);
-      expect(container.getParticlesArray()).toEqual([p1, p2]);
-      expect(p1.next).toEqual(p2);
-      expect(container.headParticle).toEqual(p1);
-      expect(container.tailParticle).toEqual(p2);
+      expect(container.getParticlesArray()).toEqual([p2, p1]);
+      expect(p2.next).toEqual(p1);
+      expect(container.headParticle).toEqual(p2);
       expect(container.availableParticleHead).toEqual(p3);
-      expect(container.availableParticleTail).toEqual(p3);
     });
   });
 
@@ -161,9 +147,8 @@ describe('ParticleContainer', () => {
     it('The container is empty', () => {
       expect(container.getParticlesCount()).toEqual(0);
       expect(container.getParticlesArray()).toEqual([]);
-      expect(container.availableParticleHead).toEqual(p1);
+      expect(container.availableParticleHead).toEqual(p3);
       expect(container.availableParticleHead!.next).toEqual(p2);
-      expect(container.availableParticleTail).toEqual(p3);
     });
   });
 
@@ -188,7 +173,6 @@ describe('ParticleContainer', () => {
 
     it('Активных частиц еще нет', () => {
       expect(container.headParticle).toEqual(null);
-      expect(container.tailParticle).toEqual(null);
     });
   });
 });
