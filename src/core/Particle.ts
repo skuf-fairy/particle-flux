@@ -195,7 +195,7 @@ export class Particle implements IParticle {
       return;
     }
 
-    if (lifeTimeNormalizedProgress === this.lifeTimeNormalizedProgress) {
+    if (lifeTimeNormalizedProgress !== 0 && lifeTimeNormalizedProgress === this.lifeTimeNormalizedProgress) {
       this.lifeTimeNormalizedProgress = lifeTimeNormalizedProgress;
 
       return;
