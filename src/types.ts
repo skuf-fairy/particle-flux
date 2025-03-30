@@ -46,6 +46,7 @@ export interface IParticle {
   noUse(): void;
   isInUse(): boolean;
   next: IParticle | null;
+  prev: IParticle | null;
 
   speed: number;
   direction: Point2d;

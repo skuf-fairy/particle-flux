@@ -36,6 +36,7 @@ export class Particle implements IParticle {
   // the direction of movement in two-dimensional space
   public direction: Point2d;
   public next: IParticle | null;
+  public prev: IParticle | null;
 
   private inUse: boolean;
 
@@ -58,6 +59,7 @@ export class Particle implements IParticle {
     this.direction = {x: 0, y: 0};
 
     this.next = null;
+    this.prev = null;
 
     this.inUse = false;
 

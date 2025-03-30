@@ -55,31 +55,29 @@ export class ParticleContainer implements IParticleContainer {
     this.containerParticlesCount = 0;
 
     let pointer: IParticle | null = this.headParticle;
-    let prevParticle: IParticle | null = null;
 
     while (pointer !== null) {
       // if the particle has already been destroyed in any way, then add it to the array, but do not cause an update.
       if (!pointer.isInUse()) {
         if (pointer === this.headParticle) {
           this.headParticle = this.headParticle.next;
-        } else if (prevParticle === null) {
-          prevParticle = pointer.next;
+          if (this.headParticle !== null) {
+            this.headParticle.prev = null;
+          }
         } else {
-          prevParticle.next = pointer.next;
+          pointer.prev!.next = pointer.next;
         }
 
         // сохраняем частицу, которая будет добавлена в пул
         const temp = pointer;
         // двигаемся к следующей
         pointer = pointer.next;
-
-        // обнуляем следующую, тк эта будет добавлена последней в пул
+        // обнуляем следующую, тк эта будет добавлена в пул
         temp.next = null;
 
         this.addParticleToPool(temp);
       } else {
         pointer.update(elapsedDelta, deltaMS);
-        prevParticle = pointer;
         this.containerParticlesCount++;
         pointer = pointer.next;
       }
@@ -127,6 +125,7 @@ export class ParticleContainer implements IParticleContainer {
     if (this.headParticle === null) {
       this.headParticle = particle;
     } else {
+      this.headParticle.prev = particle;
       particle.next = this.headParticle;
       this.headParticle = particle;
     }
@@ -136,6 +135,7 @@ export class ParticleContainer implements IParticleContainer {
     if (this.availableParticleHead === null) {
       this.availableParticleHead = particle;
     } else {
+      this.availableParticleHead.prev = particle;
       particle.next = this.availableParticleHead;
       this.availableParticleHead = particle;
     }
@@ -146,7 +146,13 @@ export class ParticleContainer implements IParticleContainer {
 
     const particle = this.availableParticleHead;
     this.availableParticleHead = this.availableParticleHead.next;
+
+    if (this.availableParticleHead !== null) {
+      this.availableParticleHead.prev = null;
+    }
+
     particle.next = null;
+    particle.prev = null;
 
     return particle;
   }
