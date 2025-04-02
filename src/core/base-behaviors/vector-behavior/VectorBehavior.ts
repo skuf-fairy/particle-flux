@@ -7,7 +7,7 @@ import {realRandom} from '../../../utils/random/RealRandom';
 import {ScalarBehaviorConfig} from '../scalar-behavior/ScalarBehavior.types';
 import {isRangeValue} from '../../../typeguards';
 import {Point2d} from '../../../types';
-import {UpdateFunction} from '../../Particle';
+import {UpdateFunction} from '../../../types';
 
 const getInitialMultiplier = (config: ScalarBehaviorConfig): number => {
   if (config.multiplier) {

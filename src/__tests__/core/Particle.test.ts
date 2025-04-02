@@ -1,15 +1,15 @@
 import {describe, expect, it} from 'vitest';
 import {TEST_VIEW_FACTORY} from '../constants';
-import {Particle} from '../../core/Particle';
 import {TestViewContainer} from '../TestViewContainer';
 import {ParticleConfig} from '../../types';
 import {TestViewParticle} from '../TestViewParticle';
+import {createParticle, isParticleInUse, updateParticle, useParticle} from '../../core/Particle';
 
 describe('Particle', () => {
   describe('Creating a particle', () => {
     const viewContainer = new TestViewContainer();
 
-    const particle = new Particle(viewContainer);
+    const particle = createParticle(viewContainer);
 
     it('The created particle is not active yet, it must be in the default state.', () => {
       expect(particle.view).toEqual(null);
@@ -17,7 +17,7 @@ describe('Particle', () => {
       expect(particle.direction.y).toEqual(0);
       expect(particle.speed).toEqual(0);
       expect(particle.next).toEqual(null);
-      expect(particle.isInUse()).toEqual(false);
+      expect(isParticleInUse(particle)).toEqual(false);
     });
   });
 
@@ -36,8 +36,8 @@ describe('Particle', () => {
     };
     const viewContainer = new TestViewContainer();
 
-    const particle = new Particle(viewContainer);
-    particle.use(TEST_VIEW_FACTORY, particleConfig);
+    const particle = createParticle(viewContainer);
+    useParticle(particle, TEST_VIEW_FACTORY, particleConfig);
 
     it('The particle has been initialized correctly and is in a state of use.', () => {
       expect(particle.view).instanceOf(TestViewParticle);
@@ -46,7 +46,7 @@ describe('Particle', () => {
       expect(particle.speed).toEqual(1);
       expect(particle.next).toEqual(null);
       expect(particle.view?.alpha).toEqual(0.2);
-      expect(particle.isInUse()).toEqual(true);
+      expect(isParticleInUse(particle)).toEqual(true);
     });
   });
 
@@ -62,11 +62,11 @@ describe('Particle', () => {
     };
     const viewContainer = new TestViewContainer();
 
-    const particle = new Particle(viewContainer);
-    particle.use(TEST_VIEW_FACTORY, particleConfig);
+    const particle = createParticle(viewContainer);
+    useParticle(particle, TEST_VIEW_FACTORY, particleConfig);
 
     it('After updating the alpha particle, it changed correctly', () => {
-      particle.update(1, 5);
+      updateParticle(particle, 1, 5);
       expect(particle.view?.alpha).toEqual(0.5);
     });
   });
@@ -86,17 +86,18 @@ describe('Particle', () => {
       };
       const viewContainer = new TestViewContainer();
 
-      const particle1 = new Particle(viewContainer);
-      const particle2 = new Particle(viewContainer);
+      const particle1 = createParticle(viewContainer);
+      const particle2 = createParticle(viewContainer);
 
-      particle1.use(TEST_VIEW_FACTORY, particleConfig);
-      particle2.use(TEST_VIEW_FACTORY, particleConfig);
+      useParticle(particle1, TEST_VIEW_FACTORY, particleConfig);
+      useParticle(particle2, TEST_VIEW_FACTORY, particleConfig);
 
-      particle1.update(1, 5);
-      particle2.update(1 / 2, 5 / 2);
-      particle2.update(1 / 2, 5 / 2);
+      updateParticle(particle1, 1, 5);
+      updateParticle(particle2, 1 / 2, 5 / 2);
+      updateParticle(particle2, 1 / 2, 5 / 2);
 
-      expect(particle1.view?.position).toEqual(particle2.view?.position);
+      expect(particle1.view?.x).toEqual(particle2.view?.x);
+      expect(particle1.view?.y).toEqual(particle2.view?.y);
     });
 
     it('Immutability for gravity', () => {
@@ -116,17 +117,18 @@ describe('Particle', () => {
       };
       const viewContainer = new TestViewContainer();
 
-      const particle1 = new Particle(viewContainer);
-      const particle2 = new Particle(viewContainer);
+      const particle1 = createParticle(viewContainer);
+      const particle2 = createParticle(viewContainer);
 
-      particle1.use(TEST_VIEW_FACTORY, particleConfig);
-      particle2.use(TEST_VIEW_FACTORY, particleConfig);
+      useParticle(particle1, TEST_VIEW_FACTORY, particleConfig);
+      useParticle(particle2, TEST_VIEW_FACTORY, particleConfig);
 
-      particle1.update(1, 5);
-      particle2.update(1 / 2, 5 / 2);
-      particle2.update(1 / 2, 5 / 2);
+      updateParticle(particle1, 1, 5);
+      updateParticle(particle2, 1 / 2, 5 / 2);
+      updateParticle(particle2, 1 / 2, 5 / 2);
 
-      expect(particle1.view?.position).toEqual(particle2.view?.position);
+      expect(particle1.view?.x).toEqual(particle2.view?.x);
+      expect(particle1.view?.y).toEqual(particle2.view?.y);
     });
 
     it('Immutability for path', () => {
@@ -143,17 +145,18 @@ describe('Particle', () => {
       };
       const viewContainer = new TestViewContainer();
 
-      const particle1 = new Particle(viewContainer);
-      const particle2 = new Particle(viewContainer);
+      const particle1 = createParticle(viewContainer);
+      const particle2 = createParticle(viewContainer);
 
-      particle1.use(TEST_VIEW_FACTORY, particleConfig);
-      particle2.use(TEST_VIEW_FACTORY, particleConfig);
+      useParticle(particle1, TEST_VIEW_FACTORY, particleConfig);
+      useParticle(particle2, TEST_VIEW_FACTORY, particleConfig);
 
-      particle1.update(1, 5);
-      particle2.update(1 / 2, 5 / 2);
-      particle2.update(1 / 2, 5 / 2);
+      updateParticle(particle1, 1, 5);
+      updateParticle(particle2, 1 / 2, 5 / 2);
+      updateParticle(particle2, 1 / 2, 5 / 2);
 
-      expect(particle1.view?.position).toEqual(particle2.view?.position);
+      expect(particle1.view?.x).toEqual(particle2.view?.x);
+      expect(particle1.view?.y).toEqual(particle2.view?.y);
     });
   });
 
@@ -169,12 +172,12 @@ describe('Particle', () => {
     };
     const viewContainer = new TestViewContainer();
 
-    const particle = new Particle(viewContainer);
-    particle.use(TEST_VIEW_FACTORY, particleConfig);
-    particle.update(1, 100);
+    const particle = createParticle(viewContainer);
+    useParticle(particle, TEST_VIEW_FACTORY, particleConfig);
+    updateParticle(particle, 1, 100);
 
     it('The particle is no longer in use, the display has been removed', () => {
-      expect(particle.isInUse()).toEqual(false);
+      expect(isParticleInUse(particle)).toEqual(false);
       expect(particle.view).toEqual(null);
     });
   });

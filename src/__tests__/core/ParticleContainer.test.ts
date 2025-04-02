@@ -3,6 +3,7 @@ import {ParticleContainer} from '../../core/ParticleContainer';
 import {TEST_CONFIG, TEST_VIEW_FACTORY} from '../constants';
 import {ConfigManager} from '../../core/ConfigManager';
 import {TestViewContainer} from '../TestViewContainer';
+import {isParticleInUse, noUseParticle} from '../../core/Particle';
 
 describe('ParticleContainer', () => {
   describe('Add in container', () => {
@@ -41,7 +42,7 @@ describe('ParticleContainer', () => {
     });
 
     it('First particle was destroyed', () => {
-      p1.noUse();
+      noUseParticle(p1);
 
       container.update(1, 1);
 
@@ -53,7 +54,7 @@ describe('ParticleContainer', () => {
     });
 
     it('Second particle was destroyed', () => {
-      p3.noUse();
+      noUseParticle(p3);
 
       container.update(1, 1);
 
@@ -65,7 +66,7 @@ describe('ParticleContainer', () => {
     });
 
     it('Last particle was destroyed', () => {
-      p2.noUse();
+      noUseParticle(p2);
 
       container.update(1, 1);
 
@@ -97,7 +98,7 @@ describe('ParticleContainer', () => {
     const p3 = container.addParticle();
 
     it('Middle particle was destroyed', () => {
-      p2.noUse();
+      noUseParticle(p2);
 
       container.update(1, 1);
 
@@ -120,7 +121,7 @@ describe('ParticleContainer', () => {
     const p3 = container.addParticle();
 
     it('Last particle was destroyed', () => {
-      p3.noUse();
+      noUseParticle(p3);
 
       container.update(1, 1);
 
@@ -167,7 +168,7 @@ describe('ParticleContainer', () => {
 
     it('Частицы из пула не используются', () => {
       particles.forEach((p) => {
-        expect(p.isInUse()).toEqual(false);
+        expect(isParticleInUse(p)).toEqual(false);
       });
     });
 

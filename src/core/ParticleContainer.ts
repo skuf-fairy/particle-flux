@@ -1,6 +1,6 @@
-import {IParticle, IParticleContainer, ViewContainer, ViewParticle} from '../types';
+import {IParticleContainer, ViewContainer, ViewParticle, IParticle} from '../types';
 import {ConfigManager} from './ConfigManager';
-import {Particle} from './Particle';
+import {createParticle, useParticle, noUseParticle, updateParticle, isParticleInUse} from './Particle';
 
 /**
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
@@ -58,7 +58,7 @@ export class ParticleContainer implements IParticleContainer {
 
     while (pointer !== null) {
       // if the particle has already been destroyed in any way, then add it to the array, but do not cause an update.
-      if (!pointer.isInUse()) {
+      if (!isParticleInUse(pointer)) {
         if (pointer === this.headParticle) {
           this.headParticle = this.headParticle.next;
           if (this.headParticle !== null) {
@@ -77,7 +77,7 @@ export class ParticleContainer implements IParticleContainer {
 
         this.addParticleToPool(temp);
       } else {
-        pointer.update(elapsedDelta, deltaMS);
+        updateParticle(pointer, elapsedDelta, deltaMS);
         this.containerParticlesCount++;
         pointer = pointer.next;
       }
@@ -90,7 +90,7 @@ export class ParticleContainer implements IParticleContainer {
     let particle: IParticle | null = this.headParticle;
 
     while (particle !== null) {
-      particle.noUse();
+      noUseParticle(particle);
       particle = particle.next;
     }
 
@@ -104,9 +104,9 @@ export class ParticleContainer implements IParticleContainer {
   }
 
   public addParticle(): IParticle {
-    let particle: IParticle = this.getParticleFromPool() || new Particle(this.viewContainer);
+    let particle: IParticle = this.getParticleFromPool() || createParticle(this.viewContainer);
 
-    particle.use(this.config.view, this.config.particleConfig);
+    useParticle(particle, this.config.view, this.config.particleConfig);
 
     this.addParticleInUsedParticles(particle);
 
@@ -117,7 +117,7 @@ export class ParticleContainer implements IParticleContainer {
 
   public fillPool(count: number): void {
     for (let i = 0; i < count; i++) {
-      this.addParticleToPool(new Particle(this.viewContainer));
+      this.addParticleToPool(createParticle(this.viewContainer));
     }
   }
 

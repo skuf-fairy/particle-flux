@@ -9,13 +9,12 @@ import {SpawnShapeBehavior} from './core/spawn-shapes/spawn-shapes.types';
 import {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/SpeedBehavior.types';
 import {TickerCallback} from './utils/Ticker';
 import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
-import {PathConfig} from './core/path/path.types';
+import {PathConfig, PathFunction} from './core/path/path.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 
 // the particle parameters that are displayed on the screen
 export interface ViewParticle {
-  // position: Point2d;x
   x: number;
   y: number;
   scale: Point2d;
@@ -39,18 +38,28 @@ export interface IParticleContainer {
   update(elapsedDelta: number, deltaMS: number): void;
 }
 
-// particle
-export interface IParticle {
-  use(viewRenderFn: ViewRenderFn | ViewRenderFn[], config: ParticleConfig): void;
-  update(elapsedDelta: number, deltaMS: number): void;
-  noUse(): void;
-  isInUse(): boolean;
-  next: IParticle | null;
-  prev: IParticle | null;
+export type UpdateFunction<V> = (lifeTimeNormalizedProgress: number, elapsedDelta: number) => V;
 
+export interface IParticle {
   speed: number;
+  deltaPath: Point2d;
+  initialPosition: Point2d;
   direction: Point2d;
   view: ViewParticle | null;
+  next: IParticle | null;
+  prev: IParticle | null;
+  inUse: boolean;
+
+  lifeTimeBehavior: (deltaMS: number) => number;
+  speedBehavior: UpdateFunction<number> | null;
+  alphaBehavior: UpdateFunction<number> | null;
+  rotationBehavior: UpdateFunction<number> | null;
+  scaleBehavior: UpdateFunction<Point2d> | null;
+  colorBehavior: UpdateFunction<string> | null;
+  gravityBehavior: UpdateFunction<number> | null;
+  pathFunc: PathFunction | null;
+
+  viewContainer: ViewContainer<ViewParticle>;
 }
 
 export interface ITicker {

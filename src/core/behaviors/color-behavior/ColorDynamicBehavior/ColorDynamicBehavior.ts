@@ -2,7 +2,7 @@ import {ColorDynamicBehaviorConfig} from '../ColorBehavior.types';
 import {NumberUtils} from '../../../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../../../utils/easing/easing-functions';
 import {EasingName} from '../../../../utils/easing/easing.types';
-import {UpdateFunction} from '../../../Particle';
+import {UpdateFunction} from '../../../../types';
 
 export function getColorDynamicBehavior(config: ColorDynamicBehaviorConfig): UpdateFunction<string> {
   const startColor = config.start;

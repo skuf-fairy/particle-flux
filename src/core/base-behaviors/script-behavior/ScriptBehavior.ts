@@ -1,7 +1,7 @@
 import {ScriptBehaviorConfig, TimeScriptConfig} from './ScriptBehavior.types';
 import {ArrayUtils} from '../../../utils/ArrayUtils';
 import {NumberUtils} from '../../../utils/NumberUtils';
-import {UpdateFunction} from '../../Particle';
+import {UpdateFunction} from '../../../types';
 
 function getCurrentScriptItem<V>(script: TimeScriptConfig<V>, time: number): V {
   for (let i = 1; i < script.length; i++) {
