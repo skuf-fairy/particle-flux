@@ -2,10 +2,10 @@ import {NumberUtils} from '../../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
 import {EasingFunction, EasingName} from '../../../utils/easing/easing.types';
 import {isScalarDynamicBehavior, isScalarStaticBehavior} from './ScalarBehavior.typeguards';
-import {ScalarBehaviorConfig} from './ScalarBehavior.types';
+import {ScalarBehaviorConfig, ScalarBehaviorState} from './ScalarBehavior.types';
 import {realRandom} from '../../../utils/random/RealRandom';
 import {isRangeValue} from '../../../typeguards';
-import {UpdateFunction} from '../../../types';
+import {BehaviorStateType} from '../base-behaviors.types';
 
 const getInitialMultiplier = (config: ScalarBehaviorConfig): number => {
   const multiplier = config.multiplier;
@@ -21,23 +21,26 @@ const getInitialMultiplier = (config: ScalarBehaviorConfig): number => {
   return 1;
 };
 
-export function getScalarBehavior(config: ScalarBehaviorConfig): UpdateFunction<number> {
+export function getScalarBehaviorState(config: ScalarBehaviorConfig): ScalarBehaviorState {
   let startValue: number = 0;
   let endValue: number = 0;
   let easing: EasingFunction = EASING_FUNCTIONS[EasingName.linear];
   let multiplier: number = getInitialMultiplier(config);
 
   if (isScalarStaticBehavior(config)) {
-    startValue = config.value;
-    endValue = config.value;
+    startValue = config.value * multiplier;
+    endValue = config.value * multiplier;
   }
 
   if (isScalarDynamicBehavior(config)) {
-    startValue = config.start;
-    endValue = config.end;
+    startValue = config.start * multiplier;
+    endValue = config.end * multiplier;
     easing = EASING_FUNCTIONS[config.easing || EasingName.linear];
   }
 
-  return (lifeTimeNormalizedProgress: number): number =>
-    NumberUtils.lerp(startValue, endValue, easing(lifeTimeNormalizedProgress)) * multiplier;
+  return {startValue, endValue, easing, type: BehaviorStateType.Scalar};
+}
+
+export function updateScalarBehaviorState(state: ScalarBehaviorState, lifeTimeNormalizedProgress: number): number {
+  return NumberUtils.lerp(state.startValue, state.endValue, state.easing(lifeTimeNormalizedProgress));
 }

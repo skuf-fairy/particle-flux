@@ -1,8 +1,11 @@
 import {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/AlphaBehavior.types';
-import {ColorBehaviorConfig} from './core/behaviors/color-behavior/ColorBehavior.types';
+import {ColorBehaviorConfig, ColorDynamicBehaviorState} from './core/behaviors/color-behavior/ColorBehavior.types';
 import {DirectionConfig} from './core/direction/direction.types';
 import {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/GravityBehavior.types';
-import {LifeTimeBehaviorConfig} from './core/behaviors/life-time-behavior/LifeTimeBehavior.types';
+import {
+  LifeTimeBehaviorConfig,
+  LifeTimeBehaviorState,
+} from './core/behaviors/life-time-behavior/LifeTimeBehavior.types';
 import {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/RotationBehavior.types';
 import {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/ScaleBehavior.types';
 import {SpawnShapeBehavior} from './core/spawn-shapes/spawn-shapes.types';
@@ -10,6 +13,10 @@ import {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/SpeedBehavior
 import {TickerCallback} from './utils/Ticker';
 import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 import {PathConfig, PathFunction} from './core/path/path.types';
+import {ScalarBehaviorState} from './core/base-behaviors/scalar-behavior/ScalarBehavior.types';
+import {ScriptBehaviorState} from './core/base-behaviors/script-behavior/ScriptBehavior.types';
+import {VectorBehaviorState} from './core/base-behaviors/vector-behavior/VectorBehavior.types';
+import {DeltaBehaviorState} from './core/base-behaviors/delta-behavior/DeltaBehavior.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 
@@ -38,8 +45,6 @@ export interface IParticleContainer {
   update(elapsedDelta: number, deltaMS: number): void;
 }
 
-export type UpdateFunction<V> = (lifeTimeNormalizedProgress: number, elapsedDelta: number) => V;
-
 export interface IParticle {
   speed: number;
   deltaPath: Point2d;
@@ -50,13 +55,13 @@ export interface IParticle {
   prev: IParticle | null;
   inUse: boolean;
 
-  lifeTimeBehavior: (deltaMS: number) => number;
-  speedBehavior: UpdateFunction<number> | null;
-  alphaBehavior: UpdateFunction<number> | null;
-  rotationBehavior: UpdateFunction<number> | null;
-  scaleBehavior: UpdateFunction<Point2d> | null;
-  colorBehavior: UpdateFunction<string> | null;
-  gravityBehavior: UpdateFunction<number> | null;
+  lifeTimeBehavior: LifeTimeBehaviorState;
+  speedBehavior: ScalarBehaviorState | ScriptBehaviorState<number> | null;
+  alphaBehavior: ScalarBehaviorState | ScriptBehaviorState<number> | null;
+  rotationBehavior: ScalarBehaviorState | DeltaBehaviorState | ScriptBehaviorState<number> | null;
+  scaleBehavior: ScalarBehaviorState | ScriptBehaviorState<Point2d> | VectorBehaviorState | null;
+  colorBehavior: ColorDynamicBehaviorState | ScriptBehaviorState<string> | null;
+  gravityBehavior: ScalarBehaviorState | null;
   pathFunc: PathFunction | null;
 
   viewContainer: ViewContainer<ViewParticle>;

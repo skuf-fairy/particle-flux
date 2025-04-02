@@ -1,32 +1,30 @@
-import {LifeTimeBehaviorConfig} from './LifeTimeBehavior.types';
+import {LifeTimeBehaviorConfig, LifeTimeBehaviorState} from './LifeTimeBehavior.types';
 import {realRandom} from '../../../utils/random/RealRandom';
 import {isLifeTimeStaticBehaviorConfig} from './LifeTimeBehavior.typeguards';
 
-const getRemainingLifeTime = (remainingLifeTime: number, deltaMS: number): number => {
-  return Math.max(0, remainingLifeTime - deltaMS);
-};
-
-const getLifeTimeNormalizedProgress = (remainingLifeTime: number, lifeTime: number): number => {
+export const getLifeTimeNormalizedProgress = (age: number, lifeTime: number): number => {
   if (lifeTime === 0 || lifeTime === Infinity || lifeTime === Number.MAX_SAFE_INTEGER) return 0;
 
-  return 1 - remainingLifeTime / lifeTime;
+  return age / lifeTime;
 };
 
-export function getLifeTimeBehavior(config: LifeTimeBehaviorConfig): (deltaMS: number) => number {
-  // remaining lifetime in milliseconds
+export function getLifeTimeBehaviorState(config: LifeTimeBehaviorConfig): LifeTimeBehaviorState {
   let remainingLifeTime: number;
-  // the lifetime of the particle in milliseconds after which it will be destroyed
-  let lifeTime: number;
 
   if (isLifeTimeStaticBehaviorConfig(config)) {
-    remainingLifeTime = lifeTime = config.value;
+    remainingLifeTime = config.value;
   } else {
-    remainingLifeTime = lifeTime = realRandom.generateIntegerNumber(config.min, config.max);
+    remainingLifeTime = realRandom.generateIntegerNumber(config.min, config.max);
   }
 
-  return (deltaMS: number): number => {
-    remainingLifeTime = getRemainingLifeTime(remainingLifeTime, deltaMS);
-
-    return getLifeTimeNormalizedProgress(remainingLifeTime, lifeTime);
+  return {
+    age: 0,
+    lifeTime: remainingLifeTime,
   };
+}
+
+export function updateLifeTimeBehaviorState(state: LifeTimeBehaviorState, deltaMS: number): LifeTimeBehaviorState {
+  state.age = Math.min(state.lifeTime, state.age + deltaMS);
+
+  return state;
 }

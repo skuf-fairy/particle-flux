@@ -1,5 +1,6 @@
 import {Multiplier} from '../../../types';
-import {EasingName} from '../../../utils/easing/easing.types';
+import {EasingFunction, EasingName} from '../../../utils/easing/easing.types';
+import {BehaviorStateType} from '../base-behaviors.types';
 
 export interface ScalarDynamicBehaviorConfig {
   start: number;
@@ -14,3 +15,10 @@ export interface ScalarStaticBehaviorConfig {
 }
 
 export type ScalarBehaviorConfig = ScalarDynamicBehaviorConfig | ScalarStaticBehaviorConfig;
+
+export interface ScalarBehaviorState {
+  startValue: number;
+  endValue: number;
+  easing: EasingFunction;
+  type: BehaviorStateType.Scalar;
+}

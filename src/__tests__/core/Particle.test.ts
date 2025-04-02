@@ -45,6 +45,7 @@ describe('Particle', () => {
       expect(particle.direction.y).toEqual(0);
       expect(particle.speed).toEqual(1);
       expect(particle.next).toEqual(null);
+      console.log(particle.alphaBehavior, particle.lifeTimeBehavior);
       expect(particle.view?.alpha).toEqual(0.2);
       expect(isParticleInUse(particle)).toEqual(true);
     });

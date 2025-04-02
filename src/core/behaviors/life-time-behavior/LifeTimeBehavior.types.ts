@@ -8,3 +8,8 @@ export interface LifeTimeStaticBehaviorConfig {
 }
 
 export type LifeTimeBehaviorConfig = LifeTimeRangeBehaviorConfig | LifeTimeStaticBehaviorConfig;
+
+export interface LifeTimeBehaviorState {
+  age: number;
+  lifeTime: number;
+}

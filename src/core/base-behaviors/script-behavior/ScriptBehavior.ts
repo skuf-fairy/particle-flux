@@ -1,7 +1,7 @@
-import {ScriptBehaviorConfig, TimeScriptConfig} from './ScriptBehavior.types';
+import {ScriptBehaviorConfig, ScriptBehaviorState, TimeScriptConfig} from './ScriptBehavior.types';
 import {ArrayUtils} from '../../../utils/ArrayUtils';
 import {NumberUtils} from '../../../utils/NumberUtils';
-import {UpdateFunction} from '../../../types';
+import {BehaviorStateType} from '../base-behaviors.types';
 
 function getCurrentScriptItem<V>(script: TimeScriptConfig<V>, time: number): V {
   for (let i = 1; i < script.length; i++) {
@@ -14,12 +14,14 @@ function getCurrentScriptItem<V>(script: TimeScriptConfig<V>, time: number): V {
   return ArrayUtils.last(script)!.value;
 }
 
-export function getScriptBehavior<V>(config: ScriptBehaviorConfig<V>): UpdateFunction<V> {
+export function getScriptBehaviorState<V>(config: ScriptBehaviorConfig<V>): ScriptBehaviorState<V> {
   if (config.script.length === 0) {
     throw new Error('Script config must contain at least 1 item');
   }
 
-  const script: TimeScriptConfig<V> = config.script.slice().sort((a, b) => a.time - b.time);
+  return {script: config.script.slice().sort((a, b) => a.time - b.time), type: BehaviorStateType.Script};
+}
 
-  return (lifeTimeNormalizedProgress: number): V => getCurrentScriptItem<V>(script, lifeTimeNormalizedProgress);
+export function updateScriptBehaviorState<V>(state: ScriptBehaviorState<V>, lifeTimeNormalizedProgress: number): V {
+  return getCurrentScriptItem<V>(state.script, lifeTimeNormalizedProgress);
 }

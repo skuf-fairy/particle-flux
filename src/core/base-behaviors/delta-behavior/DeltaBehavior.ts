@@ -1,7 +1,7 @@
 import {realRandom} from '../../../utils/random/RealRandom';
-import {DeltaBehaviorConfig} from './DeltaBehavior.types';
+import {DeltaBehaviorConfig, DeltaBehaviorState} from './DeltaBehavior.types';
 import {isRangeValue} from '../../../typeguards';
-import {UpdateFunction} from '../../../types';
+import {BehaviorStateType} from '../base-behaviors.types';
 
 const getInitialMultiplier = (config: DeltaBehaviorConfig): number => {
   const multiplier = config.multiplier;
@@ -17,13 +17,14 @@ const getInitialMultiplier = (config: DeltaBehaviorConfig): number => {
   return 1;
 };
 
-export function getDeltaBehavior(config: DeltaBehaviorConfig): UpdateFunction<number> {
-  let value = config.value * getInitialMultiplier(config);
-
-  const update = (_: number, elapsedDelta: number): number => {
-    value += config.delta * elapsedDelta;
-    return value;
+export function getDeltaBehaviorState(config: DeltaBehaviorConfig): DeltaBehaviorState {
+  return {
+    value: config.value * getInitialMultiplier(config),
+    delta: config.delta,
+    type: BehaviorStateType.Delta,
   };
+}
 
-  return update;
+export function updateDeltaBehaviorState(state: DeltaBehaviorState, elapsedDelta: number): number {
+  return state.value + state.delta * elapsedDelta;
 }
