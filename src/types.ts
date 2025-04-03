@@ -55,7 +55,8 @@ export interface IParticle {
   prev: IParticle | null;
   inUse: boolean;
 
-  lifeTimeBehavior: LifeTimeBehaviorState;
+  age: number;
+  lifeTime: number;
   speedBehavior: ScalarBehaviorState | ScriptBehaviorState<number> | null;
   alphaBehavior: ScalarBehaviorState | ScriptBehaviorState<number> | null;
   rotationBehavior: ScalarBehaviorState | DeltaBehaviorState | ScriptBehaviorState<number> | null;

@@ -23,8 +23,8 @@ export function getLifeTimeBehaviorState(config: LifeTimeBehaviorConfig): LifeTi
   };
 }
 
-export function updateLifeTimeBehaviorState(state: LifeTimeBehaviorState, deltaMS: number): LifeTimeBehaviorState {
+export function updateLifeTimeBehaviorState(state: LifeTimeBehaviorState, deltaMS: number): void {
   state.age = Math.min(state.lifeTime, state.age + deltaMS);
 
-  return state;
+  // return state;
 }
