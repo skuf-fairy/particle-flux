@@ -2,10 +2,7 @@ import {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/AlphaBehavior
 import {ColorBehaviorConfig, ColorDynamicBehaviorState} from './core/behaviors/color-behavior/ColorBehavior.types';
 import {DirectionConfig} from './core/direction/direction.types';
 import {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/GravityBehavior.types';
-import {
-  LifeTimeBehaviorConfig,
-  LifeTimeBehaviorState,
-} from './core/behaviors/life-time-behavior/LifeTimeBehavior.types';
+import {LifeTimeBehaviorConfig} from './core/behaviors/life-time-behavior/LifeTimeBehavior.types';
 import {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/RotationBehavior.types';
 import {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/ScaleBehavior.types';
 import {SpawnShapeBehavior} from './core/spawn-shapes/spawn-shapes.types';

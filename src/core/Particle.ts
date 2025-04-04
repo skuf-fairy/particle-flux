@@ -1,5 +1,9 @@
 import {IParticle, ParticleConfig, Point2d, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
-import {isScalarBehaviorConfig} from './base-behaviors/scalar-behavior/ScalarBehavior.typeguards';
+import {
+  isScalarBehaviorConfig,
+  isScalarDynamicBehavior,
+  isScalarStaticBehavior,
+} from './base-behaviors/scalar-behavior/ScalarBehavior.typeguards';
 import {isScriptBehaviorConfig} from './base-behaviors/script-behavior/ScriptBehavior.typeguards';
 import {getDirection} from './direction/getDirection';
 import {realRandom} from '../utils/random/RealRandom';
@@ -15,11 +19,7 @@ import {
 import {parsePath} from '../utils/parsePath';
 import {getSpawnPosition} from './spawn-shapes/getSpawnPosition';
 import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
-import {
-  getLifeTimeBehaviorState,
-  getLifeTimeNormalizedProgress,
-  updateLifeTimeBehaviorState,
-} from './behaviors/life-time-behavior/LifeTimeBehavior';
+import {getLifeTimeBehaviorState, getLifeTimeNormalizedProgress} from './behaviors/life-time-behavior/LifeTimeBehavior';
 import {getScriptBehaviorState, updateScriptBehaviorState} from './base-behaviors/script-behavior/ScriptBehavior';
 import {getScalarBehaviorState, updateScalarBehaviorState} from './base-behaviors/scalar-behavior/ScalarBehavior';
 import {getDeltaBehaviorState, updateDeltaBehaviorState} from './base-behaviors/delta-behavior/DeltaBehavior';
@@ -35,6 +35,7 @@ import {
   isScriptBehaviorState,
   isVectorBehaviorState,
 } from './base-behaviors/base-behaviors.typeguards';
+import {BehaviorStateType} from './base-behaviors/base-behaviors.types';
 
 export const createParticle = (viewContainer: ViewContainer<ViewParticle>): IParticle => ({
   speed: 0,
@@ -68,7 +69,8 @@ export function useParticle(
 
   particle.viewContainer.addChild(particle.view);
 
-  particle.lifeTime = getLifeTimeBehaviorState(config.lifeTime || DEFAULT_LIFE_TIME_CONFIG).lifeTime;
+  particle.lifeTime = getLifeTimeBehaviorState(config.lifeTime || DEFAULT_LIFE_TIME_CONFIG);
+  particle.age = 0;
 
   particle.initialPosition = config.spawnShape
     ? getSpawnPosition(config.spawnShape, config.spawnPosition)
@@ -87,7 +89,9 @@ export function useParticle(
   }
 
   if (config.speed) {
-    if (isScriptBehaviorConfig(config.speed)) {
+    if (isScalarStaticBehavior(config.speed)) {
+      particle.speed = config.speed.value;
+    } else if (isScriptBehaviorConfig(config.speed)) {
       particle.speedBehavior = getScriptBehaviorState(config.speed);
     } else if (isScalarBehaviorConfig(config.speed)) {
       particle.speedBehavior = getScalarBehaviorState(config.speed);
@@ -95,7 +99,9 @@ export function useParticle(
   }
 
   if (config.alpha) {
-    if (isScriptBehaviorConfig(config.alpha)) {
+    if (isScalarStaticBehavior(config.alpha)) {
+      particle.view.alpha = config.alpha.value;
+    } else if (isScriptBehaviorConfig(config.alpha)) {
       particle.alphaBehavior = getScriptBehaviorState(config.alpha);
     } else if (isScalarBehaviorConfig(config.alpha)) {
       particle.alphaBehavior = getScalarBehaviorState(config.alpha);
@@ -103,7 +109,9 @@ export function useParticle(
   }
 
   if (config.rotation) {
-    if (isDeltaBehaviorConfig(config.rotation)) {
+    if (isScalarStaticBehavior(config.rotation)) {
+      particle.view.angle = config.rotation.value;
+    } else if (isDeltaBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getDeltaBehaviorState(config.rotation);
     } else if (isScalarBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getScalarBehaviorState(config.rotation);
@@ -113,7 +121,9 @@ export function useParticle(
   }
 
   if (config.scale) {
-    if (isScalarBehaviorConfig(config.scale)) {
+    if (isScalarStaticBehavior(config.scale)) {
+      particle.view.scale.x = particle.view.scale.y = config.scale.value;
+    } else if (isScalarBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getScalarBehaviorState(config.scale);
     } else if (isScriptBehaviorConfig<Point2d>(config.scale)) {
       particle.scaleBehavior = getScriptBehaviorState<Point2d>(config.scale);
@@ -131,7 +141,16 @@ export function useParticle(
   }
 
   if (config.gravity) {
-    particle.gravityBehavior = getScalarBehaviorState(config.gravity);
+    if (isScalarStaticBehavior(config.gravity)) {
+      particle.gravityBehavior = {
+        startValue: config.gravity.value,
+        endValue: config.gravity.value,
+        easing: (x) => x,
+        type: BehaviorStateType.Scalar,
+      };
+    } else if (isScalarDynamicBehavior(config.gravity)) {
+      particle.gravityBehavior = getScalarBehaviorState(config.gravity);
+    }
   }
 
   if (config.path) {

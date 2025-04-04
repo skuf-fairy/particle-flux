@@ -1,4 +1,4 @@
-import {LifeTimeBehaviorConfig, LifeTimeBehaviorState} from './LifeTimeBehavior.types';
+import {LifeTimeBehaviorConfig} from './LifeTimeBehavior.types';
 import {realRandom} from '../../../utils/random/RealRandom';
 import {isLifeTimeStaticBehaviorConfig} from './LifeTimeBehavior.typeguards';
 
@@ -8,7 +8,7 @@ export const getLifeTimeNormalizedProgress = (age: number, lifeTime: number): nu
   return age / lifeTime;
 };
 
-export function getLifeTimeBehaviorState(config: LifeTimeBehaviorConfig): LifeTimeBehaviorState {
+export function getLifeTimeBehaviorState(config: LifeTimeBehaviorConfig): number {
   let remainingLifeTime: number;
 
   if (isLifeTimeStaticBehaviorConfig(config)) {
@@ -17,14 +17,5 @@ export function getLifeTimeBehaviorState(config: LifeTimeBehaviorConfig): LifeTi
     remainingLifeTime = realRandom.generateIntegerNumber(config.min, config.max);
   }
 
-  return {
-    age: 0,
-    lifeTime: remainingLifeTime,
-  };
-}
-
-export function updateLifeTimeBehaviorState(state: LifeTimeBehaviorState, deltaMS: number): void {
-  state.age = Math.min(state.lifeTime, state.age + deltaMS);
-
-  // return state;
+  return remainingLifeTime;
 }
