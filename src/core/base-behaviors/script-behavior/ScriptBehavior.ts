@@ -22,6 +22,6 @@ export function getScriptBehaviorState<V>(config: ScriptBehaviorConfig<V>): Scri
   return {script: config.script.slice().sort((a, b) => a.time - b.time), type: BehaviorStateType.Script};
 }
 
-export function updateScriptBehaviorState<V>(state: ScriptBehaviorState<V>, lifeTimeNormalizedProgress: number): V {
+export function getScriptBehaviorValue<V>(state: ScriptBehaviorState<V>, lifeTimeNormalizedProgress: number): V {
   return getCurrentScriptItem<V>(state.script, lifeTimeNormalizedProgress);
 }

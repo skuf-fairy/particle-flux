@@ -14,14 +14,17 @@ import {
   isColorDynamicBehaviorConfig,
   isColorDynamicBehaviorState,
   isColorScriptBehaviorConfig,
-  isColorStaticBehaviorConfig,
 } from '../core/behaviors/color-behavior/ColorBehavior.typeguards';
 import {parsePath} from '../utils/parsePath';
 import {getSpawnPosition} from './spawn-shapes/getSpawnPosition';
 import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
 import {getLifeTimeBehaviorState, getLifeTimeNormalizedProgress} from './behaviors/life-time-behavior/LifeTimeBehavior';
-import {getScriptBehaviorState, updateScriptBehaviorState} from './base-behaviors/script-behavior/ScriptBehavior';
-import {getScalarBehaviorState, updateScalarBehaviorState} from './base-behaviors/scalar-behavior/ScalarBehavior';
+import {getScriptBehaviorState, getScriptBehaviorValue} from './base-behaviors/script-behavior/ScriptBehavior';
+import {
+  getScalarBehaviorState,
+  getScalarBehaviorValue,
+  getStaticBehaviorValue,
+} from './base-behaviors/scalar-behavior/ScalarBehavior';
 import {getDeltaBehaviorState, updateDeltaBehaviorState} from './base-behaviors/delta-behavior/DeltaBehavior';
 import {getVectorBehaviorState, updateVectorBehaviorState} from './base-behaviors/vector-behavior/VectorBehavior';
 
@@ -35,7 +38,6 @@ import {
   isScriptBehaviorState,
   isVectorBehaviorState,
 } from './base-behaviors/base-behaviors.typeguards';
-import {BehaviorStateType} from './base-behaviors/base-behaviors.types';
 
 export const createParticle = (viewContainer: ViewContainer<ViewParticle>): IParticle => ({
   speed: 0,
@@ -53,7 +55,7 @@ export const createParticle = (viewContainer: ViewContainer<ViewParticle>): IPar
   rotationBehavior: null,
   scaleBehavior: null,
   colorBehavior: null,
-  gravityBehavior: null,
+  gravityBehavior: 0,
   pathFunc: null,
   viewContainer,
 });
@@ -90,27 +92,31 @@ export function useParticle(
 
   if (config.speed) {
     if (isScalarStaticBehavior(config.speed)) {
-      particle.speed = config.speed.value;
+      particle.speed = getStaticBehaviorValue(config.speed);
     } else if (isScriptBehaviorConfig(config.speed)) {
       particle.speedBehavior = getScriptBehaviorState(config.speed);
     } else if (isScalarBehaviorConfig(config.speed)) {
       particle.speedBehavior = getScalarBehaviorState(config.speed);
     }
+  } else {
+    particle.speedBehavior = null;
   }
 
   if (config.alpha) {
     if (isScalarStaticBehavior(config.alpha)) {
-      particle.view.alpha = config.alpha.value;
+      particle.view.alpha = getStaticBehaviorValue(config.alpha);
     } else if (isScriptBehaviorConfig(config.alpha)) {
       particle.alphaBehavior = getScriptBehaviorState(config.alpha);
     } else if (isScalarBehaviorConfig(config.alpha)) {
       particle.alphaBehavior = getScalarBehaviorState(config.alpha);
     }
+  } else {
+    particle.alphaBehavior = null;
   }
 
   if (config.rotation) {
     if (isScalarStaticBehavior(config.rotation)) {
-      particle.view.angle = config.rotation.value;
+      particle.view.angle = getStaticBehaviorValue(config.rotation);
     } else if (isDeltaBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getDeltaBehaviorState(config.rotation);
     } else if (isScalarBehaviorConfig(config.rotation)) {
@@ -118,11 +124,13 @@ export function useParticle(
     } else if (isScriptBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getScriptBehaviorState(config.rotation);
     }
+  } else {
+    particle.rotationBehavior = null;
   }
 
   if (config.scale) {
     if (isScalarStaticBehavior(config.scale)) {
-      particle.view.scale.x = particle.view.scale.y = config.scale.value;
+      particle.view.scale.x = particle.view.scale.y = getStaticBehaviorValue(config.scale);
     } else if (isScalarBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getScalarBehaviorState(config.scale);
     } else if (isScriptBehaviorConfig<Point2d>(config.scale)) {
@@ -130,6 +138,8 @@ export function useParticle(
     } else if (isVectorBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getVectorBehaviorState(config.scale);
     }
+  } else {
+    particle.scaleBehavior = null;
   }
 
   if (config.color) {
@@ -138,23 +148,24 @@ export function useParticle(
     } else if (isColorDynamicBehaviorConfig(config.color)) {
       particle.colorBehavior = getColorDynamicBehaviorState(config.color);
     }
+  } else {
+    particle.colorBehavior = null;
   }
 
   if (config.gravity) {
     if (isScalarStaticBehavior(config.gravity)) {
-      particle.gravityBehavior = {
-        startValue: config.gravity.value,
-        endValue: config.gravity.value,
-        easing: (x) => x,
-        type: BehaviorStateType.Scalar,
-      };
+      particle.gravityBehavior = getStaticBehaviorValue(config.gravity);
     } else if (isScalarDynamicBehavior(config.gravity)) {
       particle.gravityBehavior = getScalarBehaviorState(config.gravity);
     }
+  } else {
+    particle.gravityBehavior = 0;
   }
 
   if (config.path) {
     particle.pathFunc = parsePath(config.path.path);
+  } else {
+    particle.pathFunc = null;
   }
 
   updateParticle(particle, 0, 0);
@@ -181,17 +192,17 @@ export function updateParticle(particle: IParticle, elapsedDelta: number, deltaM
 
   if (particle.speedBehavior !== null) {
     if (isScalarBehaviorState(particle.speedBehavior)) {
-      particle.speed = updateScalarBehaviorState(particle.speedBehavior, lifeTimeNormalizedProgress);
+      particle.speed = getScalarBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
     } else if (isScriptBehaviorState(particle.speedBehavior)) {
-      particle.speed = updateScriptBehaviorState(particle.speedBehavior, lifeTimeNormalizedProgress);
+      particle.speed = getScriptBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
     }
   }
 
   if (particle.alphaBehavior !== null) {
     if (isScalarBehaviorState(particle.alphaBehavior)) {
-      view.alpha = updateScalarBehaviorState(particle.alphaBehavior, lifeTimeNormalizedProgress);
+      view.alpha = getScalarBehaviorValue(particle.alphaBehavior, lifeTimeNormalizedProgress);
     } else if (isScriptBehaviorState(particle.alphaBehavior)) {
-      view.alpha = updateScriptBehaviorState(particle.alphaBehavior, lifeTimeNormalizedProgress);
+      view.alpha = getScriptBehaviorValue(particle.alphaBehavior, lifeTimeNormalizedProgress);
     }
   }
 
@@ -199,17 +210,17 @@ export function updateParticle(particle: IParticle, elapsedDelta: number, deltaM
     if (isDeltaBehaviorState(particle.rotationBehavior)) {
       view.angle = updateDeltaBehaviorState(particle.rotationBehavior, elapsedDelta);
     } else if (isScriptBehaviorState(particle.rotationBehavior)) {
-      view.angle = updateScriptBehaviorState(particle.rotationBehavior, lifeTimeNormalizedProgress);
+      view.angle = getScriptBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
     } else if (isScalarBehaviorState(particle.rotationBehavior)) {
-      view.angle = updateScalarBehaviorState(particle.rotationBehavior, lifeTimeNormalizedProgress);
+      view.angle = getScalarBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
     }
   }
 
   if (particle.scaleBehavior !== null) {
     if (isScalarBehaviorState(particle.scaleBehavior)) {
-      view.scale.x = view.scale.y = updateScalarBehaviorState(particle.scaleBehavior, lifeTimeNormalizedProgress);
+      view.scale.x = view.scale.y = getScalarBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
     } else if (isScriptBehaviorState(particle.scaleBehavior)) {
-      view.scale = updateScriptBehaviorState(particle.scaleBehavior, lifeTimeNormalizedProgress);
+      view.scale = getScriptBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
     } else if (isVectorBehaviorState(particle.scaleBehavior)) {
       view.scale = updateVectorBehaviorState(particle.scaleBehavior, elapsedDelta);
     }
@@ -219,7 +230,7 @@ export function updateParticle(particle: IParticle, elapsedDelta: number, deltaM
     if (isColorDynamicBehaviorState(particle.colorBehavior)) {
       view.tint = updateColorDynamicState(particle.colorBehavior, lifeTimeNormalizedProgress);
     } else if (isScriptBehaviorState(particle.colorBehavior)) {
-      view.tint = updateScriptBehaviorState<string>(particle.colorBehavior, lifeTimeNormalizedProgress);
+      view.tint = getScriptBehaviorValue<string>(particle.colorBehavior, lifeTimeNormalizedProgress);
     }
   }
 
@@ -234,9 +245,10 @@ export function updateParticle(particle: IParticle, elapsedDelta: number, deltaM
     view.y = particle.initialPosition.y + delta.y;
   } else {
     // todo наверное лучше накопление
-    const gravityShift = particle.gravityBehavior
-      ? updateScalarBehaviorState(particle.gravityBehavior, lifeTimeNormalizedProgress)
-      : 0;
+    const gravityShift =
+      typeof particle.gravityBehavior === 'number'
+        ? particle.gravityBehavior
+        : getScalarBehaviorValue(particle.gravityBehavior, lifeTimeNormalizedProgress);
 
     view.x += particle.direction.x * speed;
     view.y += (particle.direction.y + gravityShift) * speed;

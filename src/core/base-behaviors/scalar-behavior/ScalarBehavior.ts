@@ -1,26 +1,14 @@
 import {NumberUtils} from '../../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
-import {ScalarBehaviorConfig, ScalarBehaviorState, ScalarDynamicBehaviorConfig} from './ScalarBehavior.types';
-import {realRandom} from '../../../utils/random/RealRandom';
-import {isRangeValue} from '../../../typeguards';
+import {ScalarBehaviorState, ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from './ScalarBehavior.types';
 import {BehaviorStateType} from '../base-behaviors.types';
+import {getMultiplierValue} from '../../../utils/multiplier';
 
-const getInitialMultiplier = (config: ScalarBehaviorConfig): number => {
-  const multiplier = config.multiplier;
-
-  if (multiplier) {
-    if (isRangeValue(multiplier)) {
-      return realRandom.generateFloatNumber(multiplier.min, multiplier.max);
-    } else {
-      return multiplier;
-    }
-  }
-
-  return 1;
-};
+// eslint-disable-next-line @typescript-eslint/unbound-method
+const lerp = NumberUtils.lerp;
 
 export function getScalarBehaviorState(config: ScalarDynamicBehaviorConfig): ScalarBehaviorState {
-  const multiplier: number = getInitialMultiplier(config);
+  const multiplier: number = config.multiplier ? getMultiplierValue(config.multiplier) : 1;
 
   return {
     startValue: config.start * multiplier,
@@ -30,8 +18,12 @@ export function getScalarBehaviorState(config: ScalarDynamicBehaviorConfig): Sca
   };
 }
 
-export function updateScalarBehaviorState(state: ScalarBehaviorState, lifeTimeNormalizedProgress: number): number {
+export function getStaticBehaviorValue(config: ScalarStaticBehaviorConfig): number {
+  return config.value * (config.multiplier ? getMultiplierValue(config.multiplier) : 1);
+}
+
+export function getScalarBehaviorValue(state: ScalarBehaviorState, lifeTimeNormalizedProgress: number): number {
   return state.easing !== null
-    ? NumberUtils.lerp(state.startValue, state.endValue, state.easing(lifeTimeNormalizedProgress))
-    : NumberUtils.lerp(state.startValue, state.endValue, lifeTimeNormalizedProgress);
+    ? lerp(state.startValue, state.endValue, state.easing(lifeTimeNormalizedProgress))
+    : lerp(state.startValue, state.endValue, lifeTimeNormalizedProgress);
 }

@@ -59,7 +59,7 @@ export interface IParticle {
   rotationBehavior: ScalarBehaviorState | DeltaBehaviorState | ScriptBehaviorState<number> | null;
   scaleBehavior: ScalarBehaviorState | ScriptBehaviorState<Point2d> | VectorBehaviorState | null;
   colorBehavior: ColorDynamicBehaviorState | ScriptBehaviorState<string> | null;
-  gravityBehavior: ScalarBehaviorState | null;
+  gravityBehavior: ScalarBehaviorState | number;
   pathFunc: PathFunction | null;
 
   viewContainer: ViewContainer<ViewParticle>;
