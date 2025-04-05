@@ -78,6 +78,10 @@ export class ParticleContainer implements IParticleContainer {
           }
         } else if (pointer.prev !== null) {
           pointer.prev.next = pointer.next;
+
+          if (pointer.next !== null) {
+            pointer.next.prev = pointer.prev;
+          }
         }
 
         // сохраняем частицу, которая будет добавлена в пул

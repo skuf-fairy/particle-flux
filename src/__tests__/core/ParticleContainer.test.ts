@@ -38,8 +38,11 @@ describe('ParticleContainer', () => {
       expect(container.getParticlesCount()).toEqual(3);
       expect(container.getParticlesArray()).toEqual([p3, p2, p1]);
       expect(p1.next).toEqual(null);
+      expect(p1.prev).toEqual(p2);
       expect(p2.next).toEqual(p1);
+      expect(p2.prev).toEqual(p3);
       expect(p3.next).toEqual(p2);
+      expect(p3.prev).toEqual(null);
       expect(container.headParticle).toEqual(p3);
     });
 
@@ -107,6 +110,9 @@ describe('ParticleContainer', () => {
       expect(container.getParticlesCount()).toEqual(2);
       expect(container.getParticlesArray()).toEqual([p3, p1]);
       expect(p3.next).toEqual(p1);
+      expect(p3.prev).toEqual(null);
+      expect(p1.next).toEqual(null);
+      expect(p1.prev).toEqual(p3);
       expect(container.headParticle).toEqual(p3);
       expect(container.availableParticleHead).toEqual(p2);
     });
