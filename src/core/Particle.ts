@@ -57,6 +57,8 @@ export const createParticle = (viewContainer: ViewContainer<ViewParticle>): IPar
   colorBehavior: null,
   gravityBehavior: 0,
   pathFunc: null,
+  usePathFunc: false,
+  useGravity: false,
   viewContainer,
 });
 
@@ -155,17 +157,22 @@ export function useParticle(
   if (config.gravity) {
     if (isScalarStaticBehavior(config.gravity)) {
       particle.gravityBehavior = getStaticBehaviorValue(config.gravity);
+      particle.useGravity = true;
     } else if (isScalarDynamicBehavior(config.gravity)) {
       particle.gravityBehavior = getScalarBehaviorState(config.gravity);
+      particle.useGravity = true;
     }
   } else {
     particle.gravityBehavior = 0;
+    particle.useGravity = false;
   }
 
   if (config.path) {
     particle.pathFunc = parsePath(config.path.path);
+    particle.usePathFunc = true;
   } else {
     particle.pathFunc = null;
+    particle.usePathFunc = false;
   }
 
   updateParticle(particle, 0, 0);
@@ -236,13 +243,16 @@ export function updateParticle(particle: IParticle, elapsedDelta: number, deltaM
 
   const speed = particle.speed * elapsedDelta;
 
-  if (particle.pathFunc !== null) {
+  if (particle.usePathFunc) {
     particle.deltaPath.x = particle.deltaPath.x + speed;
-    particle.deltaPath.y = particle.pathFunc(particle.deltaPath.x);
+    particle.deltaPath.y = particle.pathFunc!(particle.deltaPath.x);
     const delta = Vector2Utils.rotate(particle.deltaPath, -Math.PI / 2);
 
     view.x = particle.initialPosition.x + delta.x;
     view.y = particle.initialPosition.y + delta.y;
+  } else if (!particle.useGravity) {
+    view.x += particle.direction.x * speed;
+    view.y += particle.direction.y * speed;
   } else {
     // todo наверное лучше накопление
     const gravityShift =

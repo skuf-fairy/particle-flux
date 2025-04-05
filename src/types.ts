@@ -62,6 +62,9 @@ export interface IParticle {
   gravityBehavior: ScalarBehaviorState | number;
   pathFunc: PathFunction | null;
 
+  usePathFunc: boolean;
+  useGravity: boolean;
+
   viewContainer: ViewContainer<ViewParticle>;
 }
 
