@@ -180,18 +180,18 @@ export function updateParticle(particle: IParticle, elapsedDelta: number, deltaM
   const lifeTimeNormalizedProgress = getLifeTimeNormalizedProgress(particle.age, particle.lifeTime);
 
   if (particle.speedBehavior !== null) {
-    if (isScriptBehaviorState(particle.speedBehavior)) {
-      particle.speed = updateScriptBehaviorState(particle.speedBehavior, lifeTimeNormalizedProgress);
-    } else if (isScalarBehaviorState(particle.speedBehavior)) {
+    if (isScalarBehaviorState(particle.speedBehavior)) {
       particle.speed = updateScalarBehaviorState(particle.speedBehavior, lifeTimeNormalizedProgress);
+    } else if (isScriptBehaviorState(particle.speedBehavior)) {
+      particle.speed = updateScriptBehaviorState(particle.speedBehavior, lifeTimeNormalizedProgress);
     }
   }
 
   if (particle.alphaBehavior !== null) {
-    if (isScriptBehaviorState(particle.alphaBehavior)) {
-      view.alpha = updateScriptBehaviorState(particle.alphaBehavior, lifeTimeNormalizedProgress);
-    } else if (isScalarBehaviorState(particle.alphaBehavior)) {
+    if (isScalarBehaviorState(particle.alphaBehavior)) {
       view.alpha = updateScalarBehaviorState(particle.alphaBehavior, lifeTimeNormalizedProgress);
+    } else if (isScriptBehaviorState(particle.alphaBehavior)) {
+      view.alpha = updateScriptBehaviorState(particle.alphaBehavior, lifeTimeNormalizedProgress);
     }
   }
 
@@ -206,10 +206,10 @@ export function updateParticle(particle: IParticle, elapsedDelta: number, deltaM
   }
 
   if (particle.scaleBehavior !== null) {
-    if (isScriptBehaviorState(particle.scaleBehavior)) {
-      view.scale = updateScriptBehaviorState(particle.scaleBehavior, lifeTimeNormalizedProgress);
-    } else if (isScalarBehaviorState(particle.scaleBehavior)) {
+    if (isScalarBehaviorState(particle.scaleBehavior)) {
       view.scale.x = view.scale.y = updateScalarBehaviorState(particle.scaleBehavior, lifeTimeNormalizedProgress);
+    } else if (isScriptBehaviorState(particle.scaleBehavior)) {
+      view.scale = updateScriptBehaviorState(particle.scaleBehavior, lifeTimeNormalizedProgress);
     } else if (isVectorBehaviorState(particle.scaleBehavior)) {
       view.scale = updateVectorBehaviorState(particle.scaleBehavior, elapsedDelta);
     }

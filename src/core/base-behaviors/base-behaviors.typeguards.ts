@@ -17,5 +17,5 @@ export function isScriptBehaviorState<T>(state: AnyBehaviorState): state is Scri
 }
 
 export function isDeltaBehaviorState(state: AnyBehaviorState): state is DeltaBehaviorState {
-  return state.type === BehaviorStateType.Scalar;
+  return state.type === BehaviorStateType.Delta;
 }

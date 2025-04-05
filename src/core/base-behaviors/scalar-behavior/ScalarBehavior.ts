@@ -1,7 +1,5 @@
 import {NumberUtils} from '../../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
-import {EasingFunction, EasingName} from '../../../utils/easing/easing.types';
-import {isScalarDynamicBehavior, isScalarStaticBehavior} from './ScalarBehavior.typeguards';
 import {ScalarBehaviorConfig, ScalarBehaviorState, ScalarDynamicBehaviorConfig} from './ScalarBehavior.types';
 import {realRandom} from '../../../utils/random/RealRandom';
 import {isRangeValue} from '../../../typeguards';
@@ -22,25 +20,18 @@ const getInitialMultiplier = (config: ScalarBehaviorConfig): number => {
 };
 
 export function getScalarBehaviorState(config: ScalarDynamicBehaviorConfig): ScalarBehaviorState {
-  let startValue: number = 0;
-  let endValue: number = 0;
-  let easing: EasingFunction = EASING_FUNCTIONS[EasingName.linear];
-  let multiplier: number = getInitialMultiplier(config);
+  const multiplier: number = getInitialMultiplier(config);
 
-  if (isScalarStaticBehavior(config)) {
-    startValue = config.value * multiplier;
-    endValue = config.value * multiplier;
-  }
-
-  if (isScalarDynamicBehavior(config)) {
-    startValue = config.start * multiplier;
-    endValue = config.end * multiplier;
-    easing = EASING_FUNCTIONS[config.easing || EasingName.linear];
-  }
-
-  return {startValue, endValue, easing, type: BehaviorStateType.Scalar};
+  return {
+    startValue: config.start * multiplier,
+    endValue: config.end * multiplier,
+    easing: config.easing ? EASING_FUNCTIONS[config.easing] : null,
+    type: BehaviorStateType.Scalar,
+  };
 }
 
 export function updateScalarBehaviorState(state: ScalarBehaviorState, lifeTimeNormalizedProgress: number): number {
-  return NumberUtils.lerp(state.startValue, state.endValue, state.easing(lifeTimeNormalizedProgress));
+  return state.easing !== null
+    ? NumberUtils.lerp(state.startValue, state.endValue, state.easing(lifeTimeNormalizedProgress))
+    : NumberUtils.lerp(state.startValue, state.endValue, lifeTimeNormalizedProgress);
 }
