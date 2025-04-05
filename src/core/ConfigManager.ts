@@ -12,12 +12,15 @@ import {ColorBehaviorConfig} from './behaviors/color-behavior/ColorBehavior.type
 import {cloneDeep} from '../utils/cloneDeep';
 import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
 import {PathConfig} from './path/path.types';
+import {EventEmitter} from '../utils/EventEmitter';
 
 export class ConfigManager {
   private config: ParticleFullConfig;
+  private eventEmitter: EventEmitter;
 
   constructor(initialConfig: ParticleFullConfig, private viewFactory: ViewRenderFn[] | ViewRenderFn) {
     this.config = cloneDeep(initialConfig);
+    this.eventEmitter = new EventEmitter();
   }
 
   set fullConfig(config: ParticleFullConfig) {
@@ -46,6 +49,7 @@ export class ConfigManager {
 
   set view(viewFactory: ViewRenderFn[] | ViewRenderFn) {
     this.viewFactory = viewFactory;
+    this.eventEmitter.emit('viewChanged', viewFactory);
   }
 
   // emitter config
@@ -196,5 +200,9 @@ export class ConfigManager {
 
   get color(): ColorBehaviorConfig | undefined {
     return this.config.particleConfig.color;
+  }
+
+  public subscribeToViewChange(callback: (view: ViewRenderFn[] | ViewRenderFn) => void): void {
+    this.eventEmitter.on('viewChanged', callback);
   }
 }

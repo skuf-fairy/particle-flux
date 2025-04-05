@@ -102,6 +102,11 @@ export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
     this.container.clear();
   }
 
+  public destroy(): void {
+    this.container.clearViewContainer();
+    this.ticker.stop();
+  }
+
   /**
    * true if the emitter is running and compare the particles
    * @returns is the emitter active

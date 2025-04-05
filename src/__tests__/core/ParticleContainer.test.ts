@@ -4,6 +4,8 @@ import {TEST_CONFIG, TEST_VIEW_FACTORY} from '../constants';
 import {ConfigManager} from '../../core/ConfigManager';
 import {TestViewContainer} from '../TestViewContainer';
 import {isParticleInUse, noUseParticle} from '../../core/Particle';
+import {ViewParticle} from '../../types';
+import {TestViewParticle} from '../TestViewParticle';
 
 describe('ParticleContainer', () => {
   describe('Add in container', () => {
@@ -145,10 +147,11 @@ describe('ParticleContainer', () => {
 
     container.clear();
 
-    it('The container is empty', () => {
+    it('Нет активных частиц. Активные добавились в пул', () => {
       expect(container.getParticlesCount()).toEqual(0);
       expect(container.getParticlesArray()).toEqual([]);
-      expect(container.availableParticleHead).toEqual(p3);
+      expect(container.headParticle).toEqual(null);
+      expect(container.availableParticleHead).toEqual(p1);
       expect(container.availableParticleHead!.next).toEqual(p2);
     });
   });
@@ -174,6 +177,27 @@ describe('ParticleContainer', () => {
 
     it('Активных частиц еще нет', () => {
       expect(container.headParticle).toEqual(null);
+    });
+  });
+
+  describe('Изменение рендер функции в конфиге', () => {
+    const initialConfig = TEST_CONFIG();
+    const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
+    const viewContainer = new TestViewContainer();
+    const container = new ParticleContainer(viewContainer, configManager);
+
+    const p1 = container.addParticle();
+    const p2 = container.addParticle();
+
+    it('Изменяем рендер функцию в конфиге', () => {
+      noUseParticle(p1);
+      const p3 = container.addParticle();
+      container.update(1, 1);
+      configManager.view = (): ViewParticle => new TestViewParticle();
+
+      expect(container.availableParticleHead).toEqual(null);
+      expect(container.getParticlesCount()).toEqual(2);
+      expect(container.getParticlesArray()).toEqual([p3, p2]);
     });
   });
 });

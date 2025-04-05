@@ -1,6 +1,14 @@
 import {IParticleContainer, ViewContainer, ViewParticle, IParticle} from '../types';
 import {ConfigManager} from './ConfigManager';
-import {createParticle, useParticle, noUseParticle, updateParticle, isParticleInUse} from './Particle';
+import {
+  createParticle,
+  useParticle,
+  noUseParticle,
+  updateParticle,
+  isParticleInUse,
+  createView,
+  removeParticle,
+} from './Particle';
 
 /**
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
@@ -14,6 +22,10 @@ export class ParticleContainer implements IParticleContainer {
     this.headParticle = null;
     this.availableParticleHead = null;
     this.containerParticlesCount = 0;
+
+    this.config.subscribeToViewChange(() => {
+      this.clearPool();
+    });
   }
 
   // returns active particles
@@ -74,6 +86,7 @@ export class ParticleContainer implements IParticleContainer {
         pointer = pointer.next;
         // обнуляем следующую, тк эта будет добавлена в пул
         temp.next = null;
+        temp.prev = null;
 
         this.addParticleToPool(temp);
       } else {
@@ -85,13 +98,19 @@ export class ParticleContainer implements IParticleContainer {
   }
 
   public clear(): void {
-    this.availableParticleHead = this.headParticle;
-
     let particle: IParticle | null = this.headParticle;
 
     while (particle !== null) {
       noUseParticle(particle);
+      // сохраняем частицу, которая будет добавлена в пул
+      const temp = particle;
+      // двигаемся к следующей
       particle = particle.next;
+      // обнуляем следующую, тк эта будет добавлена в пул
+      temp.next = null;
+      temp.prev = null;
+
+      this.addParticleToPool(temp);
     }
 
     this.headParticle = null;
@@ -99,14 +118,38 @@ export class ParticleContainer implements IParticleContainer {
     this.containerParticlesCount = 0;
   }
 
+  public clearViewContainer(): void {
+    let particle: IParticle | null = this.headParticle;
+
+    while (particle !== null) {
+      removeParticle(this.viewContainer, particle);
+      particle = particle.next;
+    }
+
+    this.headParticle = null;
+
+    this.clearPool();
+
+    this.containerParticlesCount = 0;
+  }
+
   public clearPool(): void {
+    let particle: IParticle | null = this.availableParticleHead;
+
+    while (particle !== null) {
+      removeParticle(this.viewContainer, particle);
+
+      particle = particle.next;
+    }
+
     this.availableParticleHead = null;
   }
 
   public addParticle(): IParticle {
-    let particle: IParticle = this.getParticleFromPool() || createParticle(this.viewContainer);
+    const particle: IParticle =
+      this.getParticleFromPool() || createParticle(this.viewContainer, createView(this.config.view));
 
-    useParticle(particle, this.config.view, this.config.particleConfig);
+    useParticle(particle, this.config.particleConfig);
 
     this.addParticleInUsedParticles(particle);
 
@@ -117,7 +160,7 @@ export class ParticleContainer implements IParticleContainer {
 
   public fillPool(count: number): void {
     for (let i = 0; i < count; i++) {
-      this.addParticleToPool(createParticle(this.viewContainer));
+      this.addParticleToPool(createParticle(this.viewContainer, createView(this.config.view)));
     }
   }
 

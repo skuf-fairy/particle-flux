@@ -26,6 +26,7 @@ export interface ViewParticle {
   tint: string | number;
   angle: number;
   destroyed: boolean;
+  visible: boolean;
 }
 
 // an external display container to which the particles are added
@@ -47,7 +48,7 @@ export interface IParticle {
   deltaPath: Point2d;
   initialPosition: Point2d;
   direction: Point2d;
-  view: ViewParticle | null;
+  view: ViewParticle;
   next: IParticle | null;
   prev: IParticle | null;
   inUse: boolean;
@@ -64,8 +65,6 @@ export interface IParticle {
 
   usePathFunc: boolean;
   useGravity: boolean;
-
-  viewContainer: ViewContainer<ViewParticle>;
 }
 
 export interface ITicker {

@@ -10,6 +10,7 @@ class TestViewParticle implements ViewParticle {
   tint: string | number = 0xffffff;
   angle: number = 0;
   destroyed: boolean = false;
+  visible: boolean = true;
 }
 
 class TestViewContainer implements ViewContainer<ViewParticle> {

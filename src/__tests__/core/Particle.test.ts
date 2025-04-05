@@ -3,16 +3,17 @@ import {TEST_VIEW_FACTORY} from '../constants';
 import {TestViewContainer} from '../TestViewContainer';
 import {ParticleConfig} from '../../types';
 import {TestViewParticle} from '../TestViewParticle';
-import {createParticle, isParticleInUse, updateParticle, useParticle} from '../../core/Particle';
+import {createParticle, createView, isParticleInUse, updateParticle, useParticle} from '../../core/Particle';
 
 describe('Particle', () => {
   describe('Creating a particle', () => {
     const viewContainer = new TestViewContainer();
 
-    const particle = createParticle(viewContainer);
+    const particle = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
 
     it('The created particle is not active yet, it must be in the default state.', () => {
-      expect(particle.view).toEqual(null);
+      expect(particle.view).instanceOf(TestViewParticle);
+      expect(particle.inUse).toEqual(false);
       expect(particle.direction.x).toEqual(0);
       expect(particle.direction.y).toEqual(0);
       expect(particle.speed).toEqual(0);
@@ -36,11 +37,12 @@ describe('Particle', () => {
     };
     const viewContainer = new TestViewContainer();
 
-    const particle = createParticle(viewContainer);
-    useParticle(particle, TEST_VIEW_FACTORY, particleConfig);
+    const particle = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+    useParticle(particle, particleConfig);
 
     it('The particle has been initialized correctly and is in a state of use.', () => {
       expect(particle.view).instanceOf(TestViewParticle);
+      expect(particle.inUse).toEqual(true);
       expect(particle.direction.x).toEqual(0);
       expect(particle.direction.y).toEqual(0);
       expect(particle.speed).toEqual(1);
@@ -62,8 +64,8 @@ describe('Particle', () => {
     };
     const viewContainer = new TestViewContainer();
 
-    const particle = createParticle(viewContainer);
-    useParticle(particle, TEST_VIEW_FACTORY, particleConfig);
+    const particle = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+    useParticle(particle, particleConfig);
 
     it('After updating the alpha particle, it changed correctly', () => {
       updateParticle(particle, 1, 5);
@@ -86,11 +88,11 @@ describe('Particle', () => {
       };
       const viewContainer = new TestViewContainer();
 
-      const particle1 = createParticle(viewContainer);
-      const particle2 = createParticle(viewContainer);
+      const particle1 = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+      const particle2 = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
 
-      useParticle(particle1, TEST_VIEW_FACTORY, particleConfig);
-      useParticle(particle2, TEST_VIEW_FACTORY, particleConfig);
+      useParticle(particle1, particleConfig);
+      useParticle(particle2, particleConfig);
 
       updateParticle(particle1, 1, 5);
       updateParticle(particle2, 1 / 2, 5 / 2);
@@ -117,11 +119,11 @@ describe('Particle', () => {
       };
       const viewContainer = new TestViewContainer();
 
-      const particle1 = createParticle(viewContainer);
-      const particle2 = createParticle(viewContainer);
+      const particle1 = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+      const particle2 = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
 
-      useParticle(particle1, TEST_VIEW_FACTORY, particleConfig);
-      useParticle(particle2, TEST_VIEW_FACTORY, particleConfig);
+      useParticle(particle1, particleConfig);
+      useParticle(particle2, particleConfig);
 
       updateParticle(particle1, 1, 5);
       updateParticle(particle2, 1 / 2, 5 / 2);
@@ -145,11 +147,11 @@ describe('Particle', () => {
       };
       const viewContainer = new TestViewContainer();
 
-      const particle1 = createParticle(viewContainer);
-      const particle2 = createParticle(viewContainer);
+      const particle1 = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+      const particle2 = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
 
-      useParticle(particle1, TEST_VIEW_FACTORY, particleConfig);
-      useParticle(particle2, TEST_VIEW_FACTORY, particleConfig);
+      useParticle(particle1, particleConfig);
+      useParticle(particle2, particleConfig);
 
       updateParticle(particle1, 1, 5);
       updateParticle(particle2, 1 / 2, 5 / 2);
@@ -172,13 +174,14 @@ describe('Particle', () => {
     };
     const viewContainer = new TestViewContainer();
 
-    const particle = createParticle(viewContainer);
-    useParticle(particle, TEST_VIEW_FACTORY, particleConfig);
+    const particle = createParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+    useParticle(particle, particleConfig);
     updateParticle(particle, 1, 100);
 
     it('The particle is no longer in use, the display has been removed', () => {
       expect(isParticleInUse(particle)).toEqual(false);
-      expect(particle.view).toEqual(null);
+      expect(particle.view.visible).toEqual(false);
+      expect(particle.view).instanceOf(TestViewParticle);
     });
   });
 });

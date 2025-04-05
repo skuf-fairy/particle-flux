@@ -39,39 +39,40 @@ import {
   isVectorBehaviorState,
 } from './base-behaviors/base-behaviors.typeguards';
 
-export const createParticle = (viewContainer: ViewContainer<ViewParticle>): IParticle => ({
-  speed: 0,
-  deltaPath: {x: 0, y: 0},
-  initialPosition: {x: 0, y: 0},
-  direction: {x: 0, y: 0},
-  view: null,
-  next: null,
-  prev: null,
-  inUse: false,
-  age: 0,
-  lifeTime: 0,
-  speedBehavior: null,
-  alphaBehavior: null,
-  rotationBehavior: null,
-  scaleBehavior: null,
-  colorBehavior: null,
-  gravityBehavior: 0,
-  pathFunc: null,
-  usePathFunc: false,
-  useGravity: false,
-  viewContainer,
-});
+export function createParticle(viewContainer: ViewContainer<ViewParticle>, view: ViewParticle): IParticle {
+  viewContainer.addChild(view);
 
-export function useParticle(
-  particle: IParticle,
-  viewRenderFn: ViewRenderFn | ViewRenderFn[],
-  config: ParticleConfig,
-): void {
+  return {
+    speed: 0,
+    deltaPath: {x: 0, y: 0},
+    initialPosition: {x: 0, y: 0},
+    direction: {x: 0, y: 0},
+    view,
+    next: null,
+    prev: null,
+    inUse: false,
+    age: 0,
+    lifeTime: 0,
+    speedBehavior: null,
+    alphaBehavior: null,
+    rotationBehavior: null,
+    scaleBehavior: null,
+    colorBehavior: null,
+    gravityBehavior: 0,
+    pathFunc: null,
+    usePathFunc: false,
+    useGravity: false,
+  };
+}
+
+export function removeParticle(viewContainer: ViewContainer<ViewParticle>, particle: IParticle): void {
+  viewContainer.removeChild(particle.view);
+}
+
+export function useParticle(particle: IParticle, config: ParticleConfig): void {
   particle.inUse = true;
 
-  particle.view = createView(viewRenderFn);
-
-  particle.viewContainer.addChild(particle.view);
+  particle.view.visible = true;
 
   particle.lifeTime = getLifeTimeBehaviorState(config.lifeTime || DEFAULT_LIFE_TIME_CONFIG);
   particle.age = 0;
@@ -181,7 +182,7 @@ export function useParticle(
 export function updateParticle(particle: IParticle, elapsedDelta: number, deltaMS: number): void {
   const view = particle.view;
 
-  if (!particle.inUse || view === null) return;
+  if (!particle.inUse) return;
 
   if (view.destroyed) {
     noUseParticle(particle);
@@ -266,10 +267,7 @@ export function updateParticle(particle: IParticle, elapsedDelta: number, deltaM
 }
 
 export function noUseParticle(particle: IParticle): void {
-  if (particle.view === null) return;
-
-  particle.viewContainer.removeChild(particle.view);
-  particle.view = null;
+  particle.view.visible = false;
   particle.inUse = false;
 }
 
@@ -277,7 +275,7 @@ export function isParticleInUse(particle: IParticle): boolean {
   return particle.inUse;
 }
 
-function createView(viewFactory: ViewRenderFn | ViewRenderFn[]): ViewParticle {
+export function createView(viewFactory: ViewRenderFn | ViewRenderFn[]): ViewParticle {
   return Array.isArray(viewFactory) ? realRandom.choice(viewFactory)() : viewFactory();
 }
 
