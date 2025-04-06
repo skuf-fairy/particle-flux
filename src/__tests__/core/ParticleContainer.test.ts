@@ -4,140 +4,124 @@ import {TEST_CONFIG, TEST_VIEW_FACTORY} from '../constants';
 import {ConfigManager} from '../../core/ConfigManager';
 import {TestViewContainer} from '../TestViewContainer';
 import {isParticleInUse, noUseParticle} from '../../core/Particle';
-import {ViewParticle} from '../../types';
+import {IParticle, ViewParticle} from '../../types';
 import {TestViewParticle} from '../TestViewParticle';
+import {STANDARD_DELTA_MS} from '../../utils/Ticker';
+
+const testParticleLinkedList = (particleArray: IParticle[], container: ParticleContainer) => {
+  it('Контейнер содержит правильное количество активных частиц', () => {
+    expect(container.getParticlesCount()).toEqual(particleArray.length);
+    // Проверяем, что массивы идентичны по ссылкам и порядку
+    expect(container.getParticlesArray()).toEqual(particleArray); // Проверяет порядок и значения
+    container.getParticlesArray().forEach((item, index) => {
+      expect(item).toBe(particleArray[index]); // Проверяет ссылки
+    });
+  });
+
+  if (particleArray.length === 1) {
+    const p = particleArray[0];
+
+    it('Первая частица не должна иметь ссылки на какие-либо частицы, если она единственная в контейнере', () => {
+      expect(p.next).toEqual(null);
+      expect(p.prev).toEqual(null);
+    });
+
+    return;
+  }
+
+  particleArray.forEach((p, i) => {
+    if (i === 0) {
+      it('Первая частица должна иметь следующую частицу и не иметь предыдущей', () => {
+        expect(p.next).toBe(particleArray[i + 1]);
+        expect(p.prev).toEqual(null);
+      });
+      it('Указатель на первую частицу в контейнере должен указывать на первую частицу', () => {
+        expect(container.particleHead).toEqual(p);
+      });
+    } else if (i === particleArray.length - 1) {
+      it('Последняя частица не должна иметь ссылки на следующую частицу и иметь ссылку на предыдущую', () => {
+        expect(p.next).toEqual(null);
+        expect(p.prev).toBe(particleArray[i - 1]);
+      });
+    } else {
+      it('Частицы между первой и последней должны иметь ссылки на предыдущую и следующую частицы', () => {
+        expect(p.next).toBe(particleArray[i + 1]);
+        expect(p.prev).toBe(particleArray[i - 1]);
+      });
+    }
+  });
+};
 
 describe('ParticleContainer', () => {
+  const initialConfig = TEST_CONFIG();
+  const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
+
   describe('Add in container', () => {
-    const initialConfig = TEST_CONFIG();
-    const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
-    const viewContainer = new TestViewContainer();
-    const container = new ParticleContainer(viewContainer, configManager);
+    describe('Добавили 1 частицу в контейнер', () => {
+      const viewContainer = new TestViewContainer();
+      const container = new ParticleContainer(viewContainer, configManager);
 
-    const p = container.addParticle();
+      const particleArray: IParticle[] = [];
 
-    it('Container has the particle', () => {
-      expect(container.getParticlesCount()).toEqual(1);
-      expect(container.getParticlesArray()).toEqual([p]);
-      expect(p.next).toEqual(null);
-      expect(container.headParticle).toEqual(p);
+      particleArray.unshift(container.addParticle());
+      testParticleLinkedList(particleArray, container);
+
+      it('Пул частиц должен быть пустой', () => {
+        expect(container.availableParticleHead).toEqual(null);
+      });
+    });
+
+    describe('Добавили много частиц в контейнер', () => {
+      const viewContainer = new TestViewContainer();
+      const container = new ParticleContainer(viewContainer, configManager);
+
+      const particleArray: IParticle[] = [];
+
+      for (let i = 0; i < 5; i++) {
+        particleArray.unshift(container.addParticle());
+      }
+
+      testParticleLinkedList(particleArray, container);
+
+      it('Пул частиц должен быть пустой', () => {
+        expect(container.availableParticleHead).toEqual(null);
+      });
     });
   });
 
-  describe('Linked list of particles is valid', () => {
-    const initialConfig = TEST_CONFIG();
-    const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
+  describe('Перемещение неиспользуемых частиц в пул неактивных', () => {
     const viewContainer = new TestViewContainer();
     const container = new ParticleContainer(viewContainer, configManager);
 
-    const p1 = container.addParticle();
-    const p2 = container.addParticle();
-    const p3 = container.addParticle();
+    const particleArray: IParticle[] = [];
 
-    it('Container has every particle', () => {
-      expect(container.getParticlesCount()).toEqual(3);
-      expect(container.getParticlesArray()).toEqual([p3, p2, p1]);
-      expect(p1.next).toEqual(null);
-      expect(p1.prev).toEqual(p2);
-      expect(p2.next).toEqual(p1);
-      expect(p2.prev).toEqual(p3);
-      expect(p3.next).toEqual(p2);
-      expect(p3.prev).toEqual(null);
-      expect(container.headParticle).toEqual(p3);
+    for (let i = 0; i < 10; i++) {
+      particleArray.unshift(container.addParticle());
+    }
+
+    const firstParticle = particleArray.splice(particleArray.length - 1, 1)[0];
+    const middleParticle = particleArray.splice(Math.floor(particleArray.length / 2), 1)[0];
+    const lastParticle = particleArray.splice(0, 1)[0];
+
+    noUseParticle(firstParticle);
+    noUseParticle(middleParticle);
+    noUseParticle(lastParticle);
+    container.update(1, STANDARD_DELTA_MS);
+
+    testParticleLinkedList(particleArray, container);
+
+    it('Живые частицы должны быть в контейнере в правильном количестве', () => {
+      expect(container.getParticlesCount()).toEqual(particleArray.length);
+      expect(container.getParticlesArray()).toEqual(particleArray);
     });
 
-    it('First particle was destroyed', () => {
-      noUseParticle(p1);
-
-      container.update(1, 1);
-
-      expect(container.getParticlesCount()).toEqual(2);
-      expect(container.getParticlesArray()).toEqual([p3, p2]);
-      expect(p2.next).toEqual(null);
-      expect(container.headParticle).toEqual(p3);
-      expect(container.availableParticleHead).toEqual(p1);
+    it('Указатель на первую живую частицу должен сместиться', () => {
+      expect(container.particleHead).toEqual(particleArray[0]);
     });
 
-    it('Second particle was destroyed', () => {
-      noUseParticle(p3);
-
-      container.update(1, 1);
-
-      expect(container.getParticlesCount()).toEqual(1);
-      expect(container.getParticlesArray()).toEqual([p2]);
-      expect(p2.next).toEqual(null);
-      expect(container.headParticle).toEqual(p2);
-      expect(container.availableParticleHead).toEqual(p3);
-    });
-
-    it('Last particle was destroyed', () => {
-      noUseParticle(p2);
-
-      container.update(1, 1);
-
-      expect(container.getParticlesCount()).toEqual(0);
-      expect(container.getParticlesArray()).toEqual([]);
-      expect(container.headParticle).toEqual(null);
-      expect(container.availableParticleHead).toEqual(p2);
-    });
-
-    it('Добавляем частицу', () => {
-      const newParticle = container.addParticle();
-
-      expect(container.getParticlesCount()).toEqual(1);
-      expect(container.getParticlesArray()).toEqual([newParticle]);
-      expect(container.headParticle).toEqual(newParticle);
-      expect(newParticle).toEqual(p2);
-      expect(container.availableParticleHead).toEqual(p3);
-    });
-  });
-
-  describe('Middle particle of linked list was destroyed', () => {
-    const initialConfig = TEST_CONFIG();
-    const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
-    const viewContainer = new TestViewContainer();
-    const container = new ParticleContainer(viewContainer, configManager);
-
-    const p1 = container.addParticle();
-    const p2 = container.addParticle();
-    const p3 = container.addParticle();
-
-    it('Middle particle was destroyed', () => {
-      noUseParticle(p2);
-
-      container.update(1, 1);
-
-      expect(container.getParticlesCount()).toEqual(2);
-      expect(container.getParticlesArray()).toEqual([p3, p1]);
-      expect(p3.next).toEqual(p1);
-      expect(p3.prev).toEqual(null);
-      expect(p1.next).toEqual(null);
-      expect(p1.prev).toEqual(p3);
-      expect(container.headParticle).toEqual(p3);
-      expect(container.availableParticleHead).toEqual(p2);
-    });
-  });
-
-  describe('Last particle of linked list was destroyed', () => {
-    const initialConfig = TEST_CONFIG();
-    const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
-    const viewContainer = new TestViewContainer();
-    const container = new ParticleContainer(viewContainer, configManager);
-
-    const p1 = container.addParticle();
-    const p2 = container.addParticle();
-    const p3 = container.addParticle();
-
-    it('Last particle was destroyed', () => {
-      noUseParticle(p3);
-
-      container.update(1, 1);
-
-      expect(container.getParticlesCount()).toEqual(2);
-      expect(container.getParticlesArray()).toEqual([p2, p1]);
-      expect(p2.next).toEqual(p1);
-      expect(container.headParticle).toEqual(p2);
-      expect(container.availableParticleHead).toEqual(p3);
+    it('Удаленные частицы должны переместиться в пул', () => {
+      expect(container.availableParticleHead).toBe(firstParticle);
+      expect(container.getPoolParticlesArray()).toEqual([firstParticle, middleParticle, lastParticle]);
     });
   });
 
@@ -147,18 +131,50 @@ describe('ParticleContainer', () => {
     const viewContainer = new TestViewContainer();
     const container = new ParticleContainer(viewContainer, configManager);
 
-    const p1 = container.addParticle();
-    const p2 = container.addParticle();
-    const p3 = container.addParticle();
+    const particleArray: IParticle[] = [];
+
+    for (let i = 0; i < 5; i++) {
+      particleArray.unshift(container.addParticle());
+    }
 
     container.clear();
 
     it('Нет активных частиц. Активные добавились в пул', () => {
       expect(container.getParticlesCount()).toEqual(0);
       expect(container.getParticlesArray()).toEqual([]);
-      expect(container.headParticle).toEqual(null);
-      expect(container.availableParticleHead).toEqual(p1);
-      expect(container.availableParticleHead!.next).toEqual(p2);
+      expect(container.particleHead).toEqual(null);
+      expect(container.getPoolParticlesArray()).toEqual(particleArray.reverse());
+    });
+  });
+
+  describe('Очистка от уничтоженных частиц', () => {
+    const initialConfig = TEST_CONFIG();
+    const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
+    const viewContainer = new TestViewContainer();
+    const container = new ParticleContainer(viewContainer, configManager);
+
+    const particleArray: IParticle[] = [];
+
+    for (let i = 0; i < 10; i++) {
+      particleArray.unshift(container.addParticle());
+    }
+
+    const destroyedParticle = particleArray.splice(2, 1)[0];
+    destroyedParticle.view.destroyed = true;
+    const unusedParticle = particleArray.splice(3, 1)[0];
+    noUseParticle(unusedParticle);
+
+    container.update(1, STANDARD_DELTA_MS);
+
+    testParticleLinkedList(particleArray, container);
+
+    it('Уничтоженных частиц нет ни в пуле, ни среди активных частиц', () => {
+      expect(container.getParticlesArray()).not.contain(destroyedParticle);
+      expect(container.getPoolParticlesArray()).not.contain(destroyedParticle);
+    });
+
+    it('Неиспользуемые частицы есть в пуле', () => {
+      expect(container.getPoolParticlesArray()).contain(unusedParticle);
     });
   });
 
@@ -178,11 +194,37 @@ describe('ParticleContainer', () => {
     it('Частицы из пула не используются', () => {
       particles.forEach((p) => {
         expect(isParticleInUse(p)).toEqual(false);
+        expect(p.view.visible).toEqual(false);
       });
     });
 
     it('Активных частиц еще нет', () => {
-      expect(container.headParticle).toEqual(null);
+      expect(container.particleHead).toEqual(null);
+    });
+  });
+
+  describe('Использование пула при создании новых частиц', () => {
+    const initialConfig = TEST_CONFIG();
+    const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
+    const viewContainer = new TestViewContainer();
+    const container = new ParticleContainer(viewContainer, configManager);
+
+    container.fillPool(5);
+    const poolParticles = container.getPoolParticlesArray();
+    const firstUnusedParticle = poolParticles[0];
+    poolParticles.shift();
+
+    const usedParticle = container.addParticle();
+
+    container.update(1, STANDARD_DELTA_MS);
+
+    it('Пул частиц должен уменьшиться на используемую частицу', () => {
+      expect(container.getPoolParticlesArray()).toEqual(poolParticles);
+    });
+
+    it('Частица из пула должна быть первой в используемых частицах', () => {
+      expect(container.particleHead).toBe(usedParticle);
+      expect(firstUnusedParticle).toBe(usedParticle);
     });
   });
 
@@ -192,18 +234,24 @@ describe('ParticleContainer', () => {
     const viewContainer = new TestViewContainer();
     const container = new ParticleContainer(viewContainer, configManager);
 
-    const p1 = container.addParticle();
-    const p2 = container.addParticle();
+    const particleArray: IParticle[] = [];
 
-    it('Изменяем рендер функцию в конфиге', () => {
-      noUseParticle(p1);
-      const p3 = container.addParticle();
-      container.update(1, 1);
-      configManager.view = (): ViewParticle => new TestViewParticle();
+    container.fillPool(10);
 
+    for (let i = 0; i < 5; i++) {
+      particleArray.unshift(container.addParticle());
+    }
+
+    container.update(1, STANDARD_DELTA_MS);
+    configManager.view = (): ViewParticle => new TestViewParticle();
+
+    it('При смене рендер функции, пул частиц должен очиститься, так как старые инстансы отображений нельзя теперь переиспользовать', () => {
       expect(container.availableParticleHead).toEqual(null);
-      expect(container.getParticlesCount()).toEqual(2);
-      expect(container.getParticlesArray()).toEqual([p3, p2]);
+    });
+
+    it('Активные частицы должны быть в таком же состоянии', () => {
+      expect(container.getParticlesCount()).toEqual(5);
+      expect(container.getParticlesArray()).toEqual(particleArray);
     });
   });
 });

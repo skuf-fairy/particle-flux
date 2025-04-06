@@ -1,21 +1,21 @@
-import {AnyBehaviorState, BehaviorStateType} from './base-behaviors.types';
-import {DeltaBehaviorState} from './delta-behavior/DeltaBehavior.types';
-import {ScalarBehaviorState} from './scalar-behavior/ScalarBehavior.types';
-import {ScriptBehaviorState} from './script-behavior/ScriptBehavior.types';
-import {VectorBehaviorState} from './vector-behavior/VectorBehavior.types';
+import {AnyBaseBehavior, BaseBehaviorType} from './base-behaviors.types';
+import {DeltaBehavior} from './delta-behavior/DeltaBehavior.types';
+import {ScalarBehavior} from './scalar-behavior/ScalarBehavior.types';
+import {ScriptBehavior} from './script-behavior/ScriptBehavior.types';
+import {VectorBehavior} from './vector-behavior/VectorBehavior.types';
 
-export function isScalarBehaviorState(state: AnyBehaviorState): state is ScalarBehaviorState {
-  return state.type === BehaviorStateType.Scalar;
+export function isScalarBehavior(behavior: AnyBaseBehavior): behavior is ScalarBehavior {
+  return behavior.type === BaseBehaviorType.Scalar;
 }
 
-export function isVectorBehaviorState(state: AnyBehaviorState): state is VectorBehaviorState {
-  return state.type === BehaviorStateType.Vector;
+export function isVectorBehavior(behavior: AnyBaseBehavior): behavior is VectorBehavior {
+  return behavior.type === BaseBehaviorType.Vector;
 }
 
-export function isScriptBehaviorState<T>(state: AnyBehaviorState): state is ScriptBehaviorState<T> {
-  return state.type === BehaviorStateType.Script;
+export function isScriptBehavior<T>(behavior: AnyBaseBehavior): behavior is ScriptBehavior<T> {
+  return behavior.type === BaseBehaviorType.Script;
 }
 
-export function isDeltaBehaviorState(state: AnyBehaviorState): state is DeltaBehaviorState {
-  return state.type === BehaviorStateType.Delta;
+export function isDeltaBehavior(behavior: AnyBaseBehavior): behavior is DeltaBehavior {
+  return behavior.type === BaseBehaviorType.Delta;
 }

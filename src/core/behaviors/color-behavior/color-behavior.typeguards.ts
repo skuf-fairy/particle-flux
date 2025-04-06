@@ -1,12 +1,12 @@
 import {ScriptBehaviorConfig} from '../../base-behaviors/script-behavior/ScriptBehavior.types';
 import {
-  AnyColorBehaviorState,
+  AnyColorBehavior,
   ColorBehaviorConfig,
-  ColorBehaviorStateType,
+  ColorBehaviorType,
+  ColorDynamicBehavior,
   ColorDynamicBehaviorConfig,
-  ColorDynamicBehaviorState,
   ColorStaticBehaviorConfig,
-} from './ColorBehavior.types';
+} from './color-behavior.types';
 
 export function isColorStaticBehaviorConfig(config: ColorBehaviorConfig): config is ColorStaticBehaviorConfig {
   return 'value' in config;
@@ -20,6 +20,6 @@ export function isColorScriptBehaviorConfig(config: ColorBehaviorConfig): config
   return 'script' in config;
 }
 
-export function isColorDynamicBehaviorState(state: AnyColorBehaviorState): state is ColorDynamicBehaviorState {
-  return state.type === ColorBehaviorStateType.Dynamic;
+export function isColorDynamicBehavior(behavior: AnyColorBehavior): behavior is ColorDynamicBehavior {
+  return behavior.type === ColorBehaviorType.Dynamic;
 }

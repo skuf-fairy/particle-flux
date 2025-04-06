@@ -1,19 +1,19 @@
-import {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/AlphaBehavior.types';
-import {ColorBehaviorConfig, ColorDynamicBehaviorState} from './core/behaviors/color-behavior/ColorBehavior.types';
+import {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/alpha-behavior.types';
+import {ColorBehaviorConfig, ColorDynamicBehavior} from './core/behaviors/color-behavior/color-behavior.types';
 import {DirectionConfig} from './core/direction/direction.types';
-import {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/GravityBehavior.types';
-import {LifeTimeBehaviorConfig} from './core/behaviors/life-time-behavior/LifeTimeBehavior.types';
-import {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/RotationBehavior.types';
-import {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/ScaleBehavior.types';
+import {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/gravity-behavior.types';
+import {LifeTimeBehaviorConfig} from './core/behaviors/life-time-behavior/life-time-behavior.types';
+import {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/rotation-behavior.types';
+import {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/scale-behavior.types';
 import {SpawnShapeBehavior} from './core/spawn-shapes/spawn-shapes.types';
-import {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/SpeedBehavior.types';
+import {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/speed-behavior.types';
 import {TickerCallback} from './utils/Ticker';
 import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 import {PathConfig, PathFunction} from './core/path/path.types';
-import {ScalarBehaviorState} from './core/base-behaviors/scalar-behavior/ScalarBehavior.types';
-import {ScriptBehaviorState} from './core/base-behaviors/script-behavior/ScriptBehavior.types';
-import {VectorBehaviorState} from './core/base-behaviors/vector-behavior/VectorBehavior.types';
-import {DeltaBehaviorState} from './core/base-behaviors/delta-behavior/DeltaBehavior.types';
+import {ScalarBehavior} from './core/base-behaviors/scalar-behavior/ScalarBehavior.types';
+import {ScriptBehavior} from './core/base-behaviors/script-behavior/ScriptBehavior.types';
+import {VectorBehavior} from './core/base-behaviors/vector-behavior/VectorBehavior.types';
+import {DeltaBehavior} from './core/base-behaviors/delta-behavior/DeltaBehavior.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 
@@ -44,27 +44,29 @@ export interface IParticleContainer {
 }
 
 export interface IParticle {
-  speed: number;
-  deltaPath: Point2d;
-  initialPosition: Point2d;
-  direction: Point2d;
   view: ViewParticle;
   next: IParticle | null;
   prev: IParticle | null;
   inUse: boolean;
 
+  // todo may be normalized
   age: number;
   lifeTime: number;
-  speedBehavior: ScalarBehaviorState | ScriptBehaviorState<number> | null;
-  alphaBehavior: ScalarBehaviorState | ScriptBehaviorState<number> | null;
-  rotationBehavior: ScalarBehaviorState | DeltaBehaviorState | ScriptBehaviorState<number> | null;
-  scaleBehavior: ScalarBehaviorState | ScriptBehaviorState<Point2d> | VectorBehaviorState | null;
-  colorBehavior: ColorDynamicBehaviorState | ScriptBehaviorState<string> | null;
-  gravityBehavior: ScalarBehaviorState | number;
-  pathFunc: PathFunction | null;
 
+  speed: number;
+  deltaPath: Point2d;
+  initialPosition: Point2d;
+  direction: Point2d;
+  speedBehavior: ScalarBehavior | ScriptBehavior<number> | null;
+  pathFunc: PathFunction | null;
   usePathFunc: boolean;
   useGravity: boolean;
+  gravityBehavior: ScalarBehavior | number;
+
+  alphaBehavior: ScalarBehavior | ScriptBehavior<number> | null;
+  rotationBehavior: ScalarBehavior | DeltaBehavior | ScriptBehavior<number> | null;
+  scaleBehavior: ScalarBehavior | ScriptBehavior<Point2d> | VectorBehavior | null;
+  colorBehavior: ColorDynamicBehavior | ScriptBehavior<string> | null;
 }
 
 export interface ITicker {

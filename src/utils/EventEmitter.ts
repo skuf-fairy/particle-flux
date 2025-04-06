@@ -1,4 +1,4 @@
-export type EventCallback = (...args: any[]) => void;
+export type EventCallback = <D>(data: D) => void;
 
 export class EventEmitter {
   private events: Map<string, EventCallback[]> = new Map();
@@ -20,18 +20,10 @@ export class EventEmitter {
     );
   }
 
-  public emit(event: string, ...args: any[]): void {
+  public emit<D>(event: string, data: D): void {
     const callbacks = this.events.get(event);
     if (!callbacks) return;
 
-    callbacks.forEach((callback) => callback(...args));
-  }
-
-  public once(event: string, callback: EventCallback): void {
-    const wrapper = (...args: any[]) => {
-      callback(...args);
-      this.off(event, wrapper);
-    };
-    this.on(event, wrapper);
+    callbacks.forEach((callback) => callback(data));
   }
 }

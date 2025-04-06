@@ -1,25 +1,27 @@
 import {IParticleContainer, ViewContainer, ViewParticle, IParticle} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {
-  createParticle,
+  createUnusedParticle,
   useParticle,
   noUseParticle,
   updateParticle,
   isParticleInUse,
   createView,
   removeParticle,
+  isParticleDead,
+  wasParticleRemoved,
 } from './Particle';
 
 /**
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
  */
 export class ParticleContainer implements IParticleContainer {
-  public headParticle: IParticle | null;
+  public particleHead: IParticle | null;
   public availableParticleHead: IParticle | null;
   private containerParticlesCount: number;
 
   constructor(private readonly viewContainer: ViewContainer<ViewParticle>, private readonly config: ConfigManager) {
-    this.headParticle = null;
+    this.particleHead = null;
     this.availableParticleHead = null;
     this.containerParticlesCount = 0;
 
@@ -32,7 +34,7 @@ export class ParticleContainer implements IParticleContainer {
   public getParticlesArray(): IParticle[] {
     const particleList: IParticle[] = [];
 
-    let particle: IParticle | null = this.headParticle;
+    let particle: IParticle | null = this.particleHead;
 
     while (particle !== null) {
       particleList.push(particle);
@@ -66,33 +68,15 @@ export class ParticleContainer implements IParticleContainer {
   public update(elapsedDelta: number, deltaMS: number): void {
     this.containerParticlesCount = 0;
 
-    let pointer: IParticle | null = this.headParticle;
+    let pointer: IParticle | null = this.particleHead;
 
     while (pointer !== null) {
-      // if the particle has already been destroyed in any way, then add it to the array, but do not cause an update.
-      if (!isParticleInUse(pointer)) {
-        if (pointer === this.headParticle) {
-          this.headParticle = this.headParticle.next;
-          if (this.headParticle !== null) {
-            this.headParticle.prev = null;
-          }
-        } else if (pointer.prev !== null) {
-          pointer.prev.next = pointer.next;
-
-          if (pointer.next !== null) {
-            pointer.next.prev = pointer.prev;
-          }
-        }
-
-        // сохраняем частицу, которая будет добавлена в пул
-        const temp = pointer;
-        // двигаемся к следующей
-        pointer = pointer.next;
-        // обнуляем следующую, тк эта будет добавлена в пул
-        temp.next = null;
-        temp.prev = null;
-
-        this.addParticleToPool(temp);
+      if (wasParticleRemoved(pointer)) {
+        removeParticle(this.viewContainer, pointer);
+        pointer = this.removeActiveParticle(pointer, false);
+      } else if (isParticleDead(pointer) || !isParticleInUse(pointer)) {
+        noUseParticle(pointer);
+        pointer = this.removeActiveParticle(pointer, true);
       } else {
         updateParticle(pointer, elapsedDelta, deltaMS);
         this.containerParticlesCount++;
@@ -102,7 +86,7 @@ export class ParticleContainer implements IParticleContainer {
   }
 
   public clear(): void {
-    let particle: IParticle | null = this.headParticle;
+    let particle: IParticle | null = this.particleHead;
 
     while (particle !== null) {
       noUseParticle(particle);
@@ -117,20 +101,20 @@ export class ParticleContainer implements IParticleContainer {
       this.addParticleToPool(temp);
     }
 
-    this.headParticle = null;
+    this.particleHead = null;
 
     this.containerParticlesCount = 0;
   }
 
   public clearViewContainer(): void {
-    let particle: IParticle | null = this.headParticle;
+    let particle: IParticle | null = this.particleHead;
 
     while (particle !== null) {
       removeParticle(this.viewContainer, particle);
       particle = particle.next;
     }
 
-    this.headParticle = null;
+    this.particleHead = null;
 
     this.clearPool();
 
@@ -151,7 +135,7 @@ export class ParticleContainer implements IParticleContainer {
 
   public addParticle(): IParticle {
     const particle: IParticle =
-      this.getParticleFromPool() || createParticle(this.viewContainer, createView(this.config.view));
+      this.getParticleFromPool() || createUnusedParticle(this.viewContainer, createView(this.config.view));
 
     useParticle(particle, this.config.particleConfig);
 
@@ -164,17 +148,47 @@ export class ParticleContainer implements IParticleContainer {
 
   public fillPool(count: number): void {
     for (let i = 0; i < count; i++) {
-      this.addParticleToPool(createParticle(this.viewContainer, createView(this.config.view)));
+      this.addParticleToPool(createUnusedParticle(this.viewContainer, createView(this.config.view)));
     }
   }
 
-  private addParticleInUsedParticles(particle: IParticle): void {
-    if (this.headParticle === null) {
-      this.headParticle = particle;
+  private removeActiveParticle(particle: IParticle, isMoveInPool: boolean): IParticle | null {
+    if (particle === this.particleHead) {
+      this.particleHead = this.particleHead.next;
+      if (this.particleHead !== null) {
+        this.particleHead.prev = null;
+      }
+    } else if (particle.prev !== null) {
+      particle.prev.next = particle.next;
+
+      if (particle.next !== null) {
+        particle.next.prev = particle.prev;
+      }
+    }
+
+    let next: IParticle | null = null;
+    if (isMoveInPool) {
+      // сохраняем частицу, которая будет добавлена в пул
+      const temp = particle;
+      next = particle.next;
+      // обнуляем следующую, тк эта будет добавлена в пул
+      temp.next = null;
+      temp.prev = null;
+      this.addParticleToPool(temp);
     } else {
-      this.headParticle.prev = particle;
-      particle.next = this.headParticle;
-      this.headParticle = particle;
+      next = particle.next;
+    }
+
+    return next;
+  }
+
+  private addParticleInUsedParticles(particle: IParticle): void {
+    if (this.particleHead === null) {
+      this.particleHead = particle;
+    } else {
+      this.particleHead.prev = particle;
+      particle.next = this.particleHead;
+      this.particleHead = particle;
     }
   }
 

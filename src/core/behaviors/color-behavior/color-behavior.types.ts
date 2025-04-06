@@ -1,4 +1,4 @@
-import {ScriptBehaviorConfig, ScriptBehaviorState} from '../../base-behaviors/script-behavior/ScriptBehavior.types';
+import {ScriptBehaviorConfig, ScriptBehavior} from '../../base-behaviors/script-behavior/ScriptBehavior.types';
 import {EasingFunction, EasingName} from '../../../utils/easing/easing.types';
 
 export interface ColorDynamicBehaviorConfig {
@@ -13,15 +13,15 @@ export interface ColorStaticBehaviorConfig {
 
 export type ColorBehaviorConfig = ColorStaticBehaviorConfig | ColorDynamicBehaviorConfig | ScriptBehaviorConfig<string>;
 
-export interface ColorDynamicBehaviorState {
+export interface ColorDynamicBehavior {
   startColor: string;
   endColor: string;
-  easing: EasingFunction;
-  type: ColorBehaviorStateType.Dynamic;
+  easing: EasingFunction | null;
+  type: ColorBehaviorType.Dynamic;
 }
 
-export enum ColorBehaviorStateType {
+export enum ColorBehaviorType {
   Dynamic = 'Dynamic',
 }
 
-export type AnyColorBehaviorState = ColorDynamicBehaviorState | ScriptBehaviorState<string>;
+export type AnyColorBehavior = ColorDynamicBehavior | ScriptBehavior<string>;

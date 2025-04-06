@@ -2,7 +2,7 @@ import {
   LifeTimeBehaviorConfig,
   LifeTimeStaticBehaviorConfig,
   LifeTimeRangeBehaviorConfig,
-} from './LifeTimeBehavior.types';
+} from './life-time-behavior.types';
 
 export function isLifeTimeStaticBehaviorConfig(config: LifeTimeBehaviorConfig): config is LifeTimeStaticBehaviorConfig {
   return 'value' in config;

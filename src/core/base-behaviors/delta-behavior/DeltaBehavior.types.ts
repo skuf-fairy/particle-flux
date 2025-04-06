@@ -1,5 +1,5 @@
 import {Multiplier} from '../../../types';
-import {BehaviorStateType} from '../base-behaviors.types';
+import {BaseBehaviorType} from '../base-behaviors.types';
 
 export interface DeltaBehaviorConfig {
   value: number;
@@ -7,8 +7,8 @@ export interface DeltaBehaviorConfig {
   multiplier?: Multiplier;
 }
 
-export interface DeltaBehaviorState {
+export interface DeltaBehavior {
   value: number;
   delta: number;
-  type: BehaviorStateType.Delta;
+  type: BaseBehaviorType.Delta;
 }

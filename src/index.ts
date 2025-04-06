@@ -14,6 +14,7 @@ export {
 } from './types';
 
 export {isRangeValue} from './typeguards';
+export {isParticleDead, isParticleInUse, noUseParticle} from './core/Particle';
 
 // behaviors
 
@@ -36,33 +37,33 @@ export {ScriptBehaviorConfig, TimeScriptConfig} from './core/base-behaviors/scri
 export {VectorBehaviorConfig} from './core/base-behaviors/vector-behavior/VectorBehavior.types';
 export {DeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/DeltaBehavior.types';
 
-export {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/AlphaBehavior.types';
+export {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/alpha-behavior.types';
 export {
   ColorBehaviorConfig,
   ColorDynamicBehaviorConfig,
   ColorStaticBehaviorConfig,
-} from './core/behaviors/color-behavior/ColorBehavior.types';
+} from './core/behaviors/color-behavior/color-behavior.types';
 export {
   isColorStaticBehaviorConfig,
   isColorDynamicBehaviorConfig,
   isColorScriptBehaviorConfig,
-} from './core/behaviors/color-behavior/ColorBehavior.typeguards';
+} from './core/behaviors/color-behavior/color-behavior.typeguards';
 export {DirectionConfig, DirectionRangeConfig, StaticDirectionConfig} from './core/direction/direction.types';
 export {isStaticDirectionBehaviorConfig, isDirectionRangeBehaviorConfig} from './core/direction/direction.typeguards';
-export {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/GravityBehavior.types';
+export {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/gravity-behavior.types';
 export {
   LifeTimeBehaviorConfig,
   LifeTimeRangeBehaviorConfig,
   LifeTimeStaticBehaviorConfig,
-} from './core/behaviors/life-time-behavior/LifeTimeBehavior.types';
+} from './core/behaviors/life-time-behavior/life-time-behavior.types';
 export {
   isLifeTimeStaticBehaviorConfig,
   isLifeTimeRangeBehaviorConfig,
-} from './core/behaviors/life-time-behavior/LifeTimeBehavior.typeguards';
+} from './core/behaviors/life-time-behavior/life-time-behavior.typeguards';
 export {PathConfig} from './core/path/path.types';
-export {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/ScaleBehavior.types';
-export {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/SpeedBehavior.types';
-export {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/RotationBehavior.types';
+export {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/scale-behavior.types';
+export {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/speed-behavior.types';
+export {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/rotation-behavior.types';
 export {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 
 export {

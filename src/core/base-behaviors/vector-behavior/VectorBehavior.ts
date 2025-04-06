@@ -2,31 +2,20 @@ import {NumberUtils} from '../../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
 import {EasingName} from '../../../utils/easing/easing.types';
 import {isScalarStaticBehavior, isScalarDynamicBehavior} from '../scalar-behavior/ScalarBehavior.typeguards';
-import {VectorBehaviorConfig, VectorBehaviorState} from './VectorBehavior.types';
-import {realRandom} from '../../../utils/random/RealRandom';
-import {ScalarBehaviorConfig} from '../scalar-behavior/ScalarBehavior.types';
-import {isRangeValue} from '../../../typeguards';
-import {BehaviorStateType} from '../base-behaviors.types';
+import {VectorBehaviorConfig, VectorBehavior} from './VectorBehavior.types';
+import {BaseBehaviorType} from '../base-behaviors.types';
 import {Point2d} from '../../../types';
+import {getMultiplierValue} from '../../../utils/multiplier';
 
-const getInitialMultiplier = (config: ScalarBehaviorConfig): number => {
-  if (config.multiplier) {
-    if (isRangeValue(config.multiplier)) {
-      return realRandom.generateFloatNumber(config.multiplier.min, config.multiplier.max);
-    } else {
-      return config.multiplier;
-    }
-  }
+// eslint-disable-next-line @typescript-eslint/unbound-method
+const lerp = NumberUtils.lerp;
 
-  return 1;
-};
-
-export function getVectorBehaviorState(config: VectorBehaviorConfig): VectorBehaviorState {
+export function getVectorBehavior(config: VectorBehaviorConfig): VectorBehavior {
   let startValue = {x: 0, y: 0};
   let endValue = {x: 0, y: 0};
 
-  const multiplierX = getInitialMultiplier(config.x);
-  const multiplierY = getInitialMultiplier(config.y);
+  const multiplierX = getMultiplierValue(config.x.multiplier || 1);
+  const multiplierY = getMultiplierValue(config.y.multiplier || 1);
 
   let easingX = EASING_FUNCTIONS[EasingName.linear];
   let easingY = EASING_FUNCTIONS[EasingName.linear];
@@ -58,12 +47,12 @@ export function getVectorBehaviorState(config: VectorBehaviorConfig): VectorBeha
     easingX,
     easingY,
     value: {...startValue},
-    type: BehaviorStateType.Vector,
+    type: BaseBehaviorType.Vector,
   };
 }
 
-export function updateVectorBehaviorState(state: VectorBehaviorState, lifeTimeNormalizedProgress: number): Point2d {
-  state.value.y = NumberUtils.lerp(state.startValue.x, state.endValue.x, state.easingX(lifeTimeNormalizedProgress));
-  state.value.x = NumberUtils.lerp(state.startValue.y, state.endValue.y, state.easingY(lifeTimeNormalizedProgress));
-  return state.value;
+export function getVectorBehaviorValue(behavior: VectorBehavior, lifeTimeNormalizedProgress: number): Point2d {
+  behavior.value.y = lerp(behavior.startValue.x, behavior.endValue.x, behavior.easingX(lifeTimeNormalizedProgress));
+  behavior.value.x = lerp(behavior.startValue.y, behavior.endValue.y, behavior.easingY(lifeTimeNormalizedProgress));
+  return behavior.value;
 }

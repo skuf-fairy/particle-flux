@@ -1,30 +1,15 @@
-import {realRandom} from '../../../utils/random/RealRandom';
-import {DeltaBehaviorConfig, DeltaBehaviorState} from './DeltaBehavior.types';
-import {isRangeValue} from '../../../typeguards';
-import {BehaviorStateType} from '../base-behaviors.types';
+import {DeltaBehaviorConfig, DeltaBehavior} from './DeltaBehavior.types';
+import {BaseBehaviorType} from '../base-behaviors.types';
+import {getMultiplierValue} from '../../../utils/multiplier';
 
-const getInitialMultiplier = (config: DeltaBehaviorConfig): number => {
-  const multiplier = config.multiplier;
-
-  if (multiplier) {
-    if (isRangeValue(multiplier)) {
-      return realRandom.generateFloatNumber(multiplier.min, multiplier.max);
-    } else {
-      return multiplier;
-    }
-  }
-
-  return 1;
-};
-
-export function getDeltaBehaviorState(config: DeltaBehaviorConfig): DeltaBehaviorState {
+export function getDeltaBehavior(config: DeltaBehaviorConfig): DeltaBehavior {
   return {
-    value: config.value * getInitialMultiplier(config),
+    value: config.value * getMultiplierValue(config.multiplier || 1),
     delta: config.delta,
-    type: BehaviorStateType.Delta,
+    type: BaseBehaviorType.Delta,
   };
 }
 
-export function updateDeltaBehaviorState(state: DeltaBehaviorState, elapsedDelta: number): number {
-  return state.value + state.delta * elapsedDelta;
+export function getDeltaBehaviorValue(behavior: DeltaBehavior, elapsedDelta: number): number {
+  return behavior.value + behavior.delta * elapsedDelta;
 }

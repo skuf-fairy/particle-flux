@@ -1,4 +1,4 @@
-import {BehaviorStateType} from '../base-behaviors.types';
+import {BaseBehaviorType} from '../base-behaviors.types';
 
 export type TimeScriptConfig<V> = {time: number; value: V}[];
 
@@ -6,7 +6,7 @@ export interface ScriptBehaviorConfig<V> {
   script: TimeScriptConfig<V>;
 }
 
-export interface ScriptBehaviorState<V> {
+export interface ScriptBehavior<V> {
   script: TimeScriptConfig<V>;
-  type: BehaviorStateType.Script;
+  type: BaseBehaviorType.Script;
 }
