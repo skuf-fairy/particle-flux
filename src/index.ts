@@ -1,7 +1,7 @@
 // core
 export {ParticleEmitter} from './core/ParticleEmitter';
 export {
-  ParticleFullConfig,
+  ParticleEmitterConfig,
   ParticleConfig,
   EmitterConfig,
   ViewContainer,

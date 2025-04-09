@@ -122,7 +122,7 @@ export interface ParticleConfig {
 }
 
 // full configuration for creating particles
-export interface ParticleFullConfig {
+export interface ParticleEmitterConfig {
   emitterConfig: EmitterConfig;
   particleConfig: ParticleConfig;
 }
