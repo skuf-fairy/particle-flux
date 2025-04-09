@@ -1,3 +1,3 @@
-import {ScalarBehaviorConfig} from '../../base-behaviors/scalar-behavior/ScalarBehavior.types';
+import {ScalarBehaviorConfig} from '../../base-behaviors/scalar-behavior/scalar-behavior.types';
 
 export type GravityBehaviorConfig = ScalarBehaviorConfig;

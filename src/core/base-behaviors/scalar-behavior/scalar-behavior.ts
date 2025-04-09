@@ -1,6 +1,6 @@
 import {NumberUtils} from '../../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
-import {ScalarBehavior, ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from './ScalarBehavior.types';
+import {ScalarBehavior, ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from './scalar-behavior.types';
 import {BaseBehaviorType} from '../base-behaviors.types';
 import {getMultiplierValue} from '../../../utils/multiplier';
 

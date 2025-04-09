@@ -18,24 +18,24 @@ export {isParticleDead, isParticleInUse, noUseParticle} from './core/Particle';
 
 // behaviors
 
-export {isScriptBehaviorConfig} from './core/base-behaviors/script-behavior/ScriptBehavior.typeguards';
-export {isVectorBehaviorConfig} from './core/base-behaviors/vector-behavior/VectorBehavior.typeguards';
+export {isScriptBehaviorConfig} from './core/base-behaviors/script-behavior/script-behavior.typeguards';
+export {isVectorBehaviorConfig} from './core/base-behaviors/vector-behavior/vector-behavior.typeguards';
 export {
   isScalarDynamicBehavior,
   isScalarStaticBehavior,
   isScalarBehaviorConfig,
-} from './core/base-behaviors/scalar-behavior/ScalarBehavior.typeguards';
-export {isDeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/DeltaBehavior.typeguards';
+} from './core/base-behaviors/scalar-behavior/scalar-behavior.typeguards';
+export {isDeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/delta-behavior.typeguards';
 
 // configs
 export {
   ScalarBehaviorConfig,
   ScalarDynamicBehaviorConfig,
   ScalarStaticBehaviorConfig,
-} from './core/base-behaviors/scalar-behavior/ScalarBehavior.types';
-export {ScriptBehaviorConfig, TimeScriptConfig} from './core/base-behaviors/script-behavior/ScriptBehavior.types';
-export {VectorBehaviorConfig} from './core/base-behaviors/vector-behavior/VectorBehavior.types';
-export {DeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/DeltaBehavior.types';
+} from './core/base-behaviors/scalar-behavior/scalar-behavior.types';
+export {ScriptBehaviorConfig, TimeScriptConfig} from './core/base-behaviors/script-behavior/script-behavior.types';
+export {VectorBehaviorConfig} from './core/base-behaviors/vector-behavior/vector-behavior.types';
+export {DeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/delta-behavior.types';
 
 export {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/alpha-behavior.types';
 export {

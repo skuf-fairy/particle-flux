@@ -3,13 +3,13 @@ import {
   isScalarBehaviorConfig,
   isScalarDynamicBehavior,
   isScalarStaticBehavior,
-} from './base-behaviors/scalar-behavior/ScalarBehavior.typeguards';
-import {isScriptBehaviorConfig} from './base-behaviors/script-behavior/ScriptBehavior.typeguards';
+} from './base-behaviors/scalar-behavior/scalar-behavior.typeguards';
+import {isScriptBehaviorConfig} from './base-behaviors/script-behavior/script-behavior.typeguards';
 import {getDirection} from './direction/getDirection';
 import {realRandom} from '../utils/random/RealRandom';
 import {Vector2Utils} from '../utils/Vector2Utils';
-import {isDeltaBehaviorConfig} from './base-behaviors/delta-behavior/DeltaBehavior.typeguards';
-import {isVectorBehaviorConfig} from './base-behaviors/vector-behavior/VectorBehavior.typeguards';
+import {isDeltaBehaviorConfig} from './base-behaviors/delta-behavior/delta-behavior.typeguards';
+import {isVectorBehaviorConfig} from './base-behaviors/vector-behavior/vector-behavior.typeguards';
 import {
   isColorDynamicBehaviorConfig,
   isColorDynamicBehavior,
@@ -20,14 +20,14 @@ import {parsePath} from '../utils/parsePath';
 import {getSpawnPosition} from './spawn-shapes/getSpawnPosition';
 import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
 import {getLifeTimeBehavior, getLifeTimeNormalizedProgress} from './behaviors/life-time-behavior/life-time-behavior';
-import {getScriptBehavior, getScriptBehaviorValue} from './base-behaviors/script-behavior/ScriptBehavior';
+import {getScriptBehavior, getScriptBehaviorValue} from './base-behaviors/script-behavior/script-behavior';
 import {
   getScalarBehavior,
   getScalarBehaviorValue,
   getStaticBehaviorValue,
-} from './base-behaviors/scalar-behavior/ScalarBehavior';
-import {getDeltaBehavior, getDeltaBehaviorValue} from './base-behaviors/delta-behavior/DeltaBehavior';
-import {getVectorBehavior, getVectorBehaviorValue} from './base-behaviors/vector-behavior/VectorBehavior';
+} from './base-behaviors/scalar-behavior/scalar-behavior';
+import {getDeltaBehavior, getDeltaBehaviorValue} from './base-behaviors/delta-behavior/delta-behavior';
+import {getVectorBehavior, getVectorBehaviorValue} from './base-behaviors/vector-behavior/vector-behavior';
 
 import {
   getColorStaticBehaviorValue,

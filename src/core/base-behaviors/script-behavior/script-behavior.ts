@@ -1,4 +1,4 @@
-import {ScriptBehaviorConfig, ScriptBehavior, TimeScriptConfig} from './ScriptBehavior.types';
+import {ScriptBehaviorConfig, ScriptBehavior, TimeScriptConfig} from './script-behavior.types';
 import {ArrayUtils} from '../../../utils/ArrayUtils';
 import {NumberUtils} from '../../../utils/NumberUtils';
 import {BaseBehaviorType} from '../base-behaviors.types';

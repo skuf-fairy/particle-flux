@@ -1,4 +1,4 @@
-import {DeltaBehaviorConfig, DeltaBehavior} from './DeltaBehavior.types';
+import {DeltaBehaviorConfig, DeltaBehavior} from './delta-behavior.types';
 import {BaseBehaviorType} from '../base-behaviors.types';
 import {getMultiplierValue} from '../../../utils/multiplier';
 

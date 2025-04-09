@@ -1,7 +1,7 @@
-import {DeltaBehavior} from './delta-behavior/DeltaBehavior.types';
-import {ScalarBehaviorConfig, ScalarBehavior} from './scalar-behavior/ScalarBehavior.types';
-import {ScriptBehaviorConfig, ScriptBehavior} from './script-behavior/ScriptBehavior.types';
-import {VectorBehaviorConfig, VectorBehavior} from './vector-behavior/VectorBehavior.types';
+import {DeltaBehavior} from './delta-behavior/delta-behavior.types';
+import {ScalarBehaviorConfig, ScalarBehavior} from './scalar-behavior/scalar-behavior.types';
+import {ScriptBehaviorConfig, ScriptBehavior} from './script-behavior/script-behavior.types';
+import {VectorBehaviorConfig, VectorBehavior} from './vector-behavior/vector-behavior.types';
 
 export type AnyBaseBehaviorConfig = ScalarBehaviorConfig | VectorBehaviorConfig | ScriptBehaviorConfig<any>;
 

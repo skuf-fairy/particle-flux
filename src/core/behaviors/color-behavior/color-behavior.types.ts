@@ -1,4 +1,4 @@
-import {ScriptBehaviorConfig, ScriptBehavior} from '../../base-behaviors/script-behavior/ScriptBehavior.types';
+import {ScriptBehaviorConfig, ScriptBehavior} from '../../base-behaviors/script-behavior/script-behavior.types';
 import {EasingFunction, EasingName} from '../../../utils/easing/easing.types';
 
 export interface ColorDynamicBehaviorConfig {

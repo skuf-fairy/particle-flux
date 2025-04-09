@@ -1,5 +1,5 @@
 import {EasingFunction} from '../../../utils/easing/easing.types';
-import {ScalarBehaviorConfig} from '../scalar-behavior/ScalarBehavior.types';
+import {ScalarBehaviorConfig} from '../scalar-behavior/scalar-behavior.types';
 import {Point2d} from '../../../types';
 import {BaseBehaviorType} from '../base-behaviors.types';
 

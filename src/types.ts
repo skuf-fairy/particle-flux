@@ -10,10 +10,10 @@ import {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/speed-behavio
 import {TickerCallback} from './utils/Ticker';
 import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 import {PathConfig, PathFunction} from './core/path/path.types';
-import {ScalarBehavior} from './core/base-behaviors/scalar-behavior/ScalarBehavior.types';
-import {ScriptBehavior} from './core/base-behaviors/script-behavior/ScriptBehavior.types';
-import {VectorBehavior} from './core/base-behaviors/vector-behavior/VectorBehavior.types';
-import {DeltaBehavior} from './core/base-behaviors/delta-behavior/DeltaBehavior.types';
+import {ScalarBehavior} from './core/base-behaviors/scalar-behavior/scalar-behavior.types';
+import {ScriptBehavior} from './core/base-behaviors/script-behavior/script-behavior.types';
+import {VectorBehavior} from './core/base-behaviors/vector-behavior/vector-behavior.types';
+import {DeltaBehavior} from './core/base-behaviors/delta-behavior/delta-behavior.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 

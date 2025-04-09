@@ -1,4 +1,4 @@
-import {ScriptBehaviorConfig} from '../../base-behaviors/script-behavior/ScriptBehavior.types';
+import {ScriptBehaviorConfig} from '../../base-behaviors/script-behavior/script-behavior.types';
 import {
   AnyColorBehavior,
   ColorBehaviorConfig,

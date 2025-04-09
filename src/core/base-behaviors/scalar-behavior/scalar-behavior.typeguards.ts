@@ -1,6 +1,6 @@
 import {AnyBaseBehaviorConfig} from '../base-behaviors.types';
-import {isDeltaBehaviorConfig} from '../delta-behavior/DeltaBehavior.typeguards';
-import {ScalarBehaviorConfig, ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from './ScalarBehavior.types';
+import {isDeltaBehaviorConfig} from '../delta-behavior/delta-behavior.typeguards';
+import {ScalarBehaviorConfig, ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from './scalar-behavior.types';
 
 export function isScalarDynamicBehavior(config: AnyBaseBehaviorConfig): config is ScalarDynamicBehaviorConfig {
   return 'start' in config && 'end' in config;
