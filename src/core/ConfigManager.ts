@@ -23,6 +23,10 @@ export class ConfigManager {
     this.eventEmitter = new EventEmitter();
   }
 
+  set fullConfig(config: ParticleFullConfig) {
+    this.config = cloneDeep(config);
+  }
+
   set emitterConfig(config: EmitterConfig) {
     this.config.emitterConfig = cloneDeep(config);
   }
