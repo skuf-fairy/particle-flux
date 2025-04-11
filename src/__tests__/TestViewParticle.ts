@@ -9,4 +9,6 @@ export class TestViewParticle implements ViewParticle {
   angle: number = 0;
   destroyed: boolean = false;
   visible: boolean = true;
+  width: number = 1;
+  height: number = 1;
 }

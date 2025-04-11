@@ -1,9 +1,11 @@
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import {TEST_VIEW_FACTORY} from '../constants';
 import {TestViewContainer} from '../TestViewContainer';
 import {IParticle, ParticleConfig} from '../../types';
 import {TestViewParticle} from '../TestViewParticle';
 import {createUnusedParticle, createView, isParticleInUse, updateParticle, useParticle} from '../../core/Particle';
+import {STANDARD_DELTA_MS} from '../../utils/Ticker';
+import {SpawnShapeType} from '../../core/spawn-shapes/spawn-shapes.types';
 
 const TEST_PARTICLE_CONFIG: ParticleConfig = {
   lifeTime: {
@@ -174,6 +176,43 @@ describe('Particle', () => {
 
       expect(particle1.view?.x).toEqual(particle2.view?.x);
       expect(particle1.view?.y).toEqual(particle2.view?.y);
+    });
+  });
+
+  describe('Корректная установка начальных значений', () => {
+    const particleConfig: ParticleConfig = {
+      lifeTime: {
+        value: 10,
+      },
+      direction: {
+        minAngle: 0,
+        maxAngle: 360,
+      },
+      spawnShape: {
+        type: SpawnShapeType.Rectangle,
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      },
+    };
+    const viewContainer = new TestViewContainer();
+    const view = createView(TEST_VIEW_FACTORY);
+    const initialAlpha = view.alpha;
+
+    const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+
+    useParticle(particle, particleConfig);
+    const initX = particle.view.x;
+    const initY = particle.view.y;
+
+    updateParticle(particle, 1, STANDARD_DELTA_MS);
+
+    it('После обновления значения частицы не из конфига не изменились', () => {
+      expect(view.alpha).toEqual(initialAlpha);
+      // позиция не должна изменяться, так как скорость 0
+      expect(particle.view.x).toEqual(initX);
+      expect(particle.view.y).toEqual(initY);
     });
   });
 });

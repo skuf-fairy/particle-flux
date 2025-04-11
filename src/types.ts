@@ -27,6 +27,8 @@ export interface ViewParticle {
   angle: number;
   destroyed: boolean;
   visible: boolean;
+  width: number;
+  height: number;
 }
 
 // an external display container to which the particles are added

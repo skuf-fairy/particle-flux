@@ -1,9 +1,9 @@
 import {SpawnShapeType} from '../core/spawn-shapes/spawn-shapes.types';
-import {ParticleFullConfig, ViewParticle, ViewRenderFn} from '../types';
+import {ParticleEmitterConfig, ViewParticle, ViewRenderFn} from '../types';
 import {TestViewParticle} from './TestViewParticle';
 
 // todo fixtures?
-export const TEST_CONFIG = (): ParticleFullConfig => ({
+export const TEST_CONFIG = (): ParticleEmitterConfig => ({
   emitterConfig: {
     spawnInterval: 100,
     spawnTime: 10000,
