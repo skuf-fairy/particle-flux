@@ -1,24 +1,24 @@
 import {ParticleContainer} from './ParticleContainer';
-import {IParticle, ITicker, ParticleEmitterConfig, ViewContainer, ViewRenderFn} from '../types';
+import {IParticle, ITicker, ParticleEmitterConfig, ViewContainer, ViewFactory, ViewParticle} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {Ticker} from '../utils/Ticker';
 import {realRandom} from '../utils/random/RealRandom';
 import {isRangeValue} from '../typeguards';
 
-export class ParticleEmitter {
-  public readonly config: ConfigManager;
+export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
+  public readonly config: ConfigManager<View>;
 
   // timer time
   private currentTime: number;
   // the time when it will be necessary to freeze the particle
   private nextSpawnTime: number | null;
 
-  private readonly container: ParticleContainer;
+  private readonly container: ParticleContainer<View>;
   private readonly ticker: ITicker;
 
   constructor(
-    viewContainer: ViewContainer,
-    viewFactory: ViewRenderFn[] | ViewRenderFn,
+    viewContainer: ViewContainer<View>,
+    viewFactory: ViewFactory<View>,
     initialConfig: ParticleEmitterConfig,
   ) {
     this.ticker = new Ticker(this.handleUpdate);
@@ -127,7 +127,7 @@ export class ParticleEmitter {
     return this.container.getParticlesCount();
   }
 
-  public getParticles(): IParticle[] {
+  public getParticles(): IParticle<View>[] {
     return this.container.getParticlesArray();
   }
 
@@ -169,10 +169,10 @@ export class ParticleEmitter {
   private emit(): void {
     if (this.config.spawnChance !== undefined) {
       if (realRandom.generateIntegerNumber(1, 100) <= this.config.spawnChance) {
-        this.container.addParticle();
+        this.container.createParticle();
       }
     } else {
-      this.container.addParticle();
+      this.container.createParticle();
     }
   }
 

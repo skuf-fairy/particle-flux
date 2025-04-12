@@ -1,4 +1,4 @@
-import {IParticleContainer, ViewContainer, IParticle} from '../types';
+import {IParticleContainer, ViewContainer, IParticle, ViewParticle} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {
   createUnusedParticle,
@@ -15,12 +15,12 @@ import {
 /**
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
  */
-export class ParticleContainer implements IParticleContainer {
-  public particleHead: IParticle | null;
-  public availableParticleHead: IParticle | null;
+export class ParticleContainer<View extends ViewParticle> implements IParticleContainer<View> {
+  public particleHead: IParticle<View> | null;
+  public availableParticleHead: IParticle<View> | null;
   private containerParticlesCount: number;
 
-  constructor(private readonly viewContainer: ViewContainer, private readonly config: ConfigManager) {
+  constructor(private readonly viewContainer: ViewContainer<View>, private readonly config: ConfigManager<View>) {
     this.particleHead = null;
     this.availableParticleHead = null;
     this.containerParticlesCount = 0;
@@ -31,10 +31,10 @@ export class ParticleContainer implements IParticleContainer {
   }
 
   // returns active particles
-  public getParticlesArray(): IParticle[] {
-    const particleList: IParticle[] = [];
+  public getParticlesArray(): IParticle<View>[] {
+    const particleList: IParticle<View>[] = [];
 
-    let particle: IParticle | null = this.particleHead;
+    let particle: IParticle<View> | null = this.particleHead;
 
     while (particle !== null) {
       particleList.push(particle);
@@ -45,10 +45,10 @@ export class ParticleContainer implements IParticleContainer {
     return particleList;
   }
 
-  public getPoolParticlesArray(): IParticle[] {
-    const particleList: IParticle[] = [];
+  public getPoolParticlesArray(): IParticle<View>[] {
+    const particleList: IParticle<View>[] = [];
 
-    let particle: IParticle | null = this.availableParticleHead;
+    let particle: IParticle<View> | null = this.availableParticleHead;
 
     while (particle !== null) {
       particleList.push(particle);
@@ -68,7 +68,7 @@ export class ParticleContainer implements IParticleContainer {
   public update(elapsedDelta: number, deltaMS: number): void {
     this.containerParticlesCount = 0;
 
-    let pointer: IParticle | null = this.particleHead;
+    let pointer: IParticle<View> | null = this.particleHead;
 
     while (pointer !== null) {
       if (wasParticleRemoved(pointer)) {
@@ -86,7 +86,7 @@ export class ParticleContainer implements IParticleContainer {
   }
 
   public clear(): void {
-    let particle: IParticle | null = this.particleHead;
+    let particle: IParticle<View> | null = this.particleHead;
 
     while (particle !== null) {
       noUseParticle(particle);
@@ -107,7 +107,7 @@ export class ParticleContainer implements IParticleContainer {
   }
 
   public clearViewContainer(): void {
-    let particle: IParticle | null = this.particleHead;
+    let particle: IParticle<View> | null = this.particleHead;
 
     while (particle !== null) {
       removeParticle(this.viewContainer, particle);
@@ -122,7 +122,7 @@ export class ParticleContainer implements IParticleContainer {
   }
 
   public clearPool(): void {
-    let particle: IParticle | null = this.availableParticleHead;
+    let particle: IParticle<View> | null = this.availableParticleHead;
 
     while (particle !== null) {
       removeParticle(this.viewContainer, particle);
@@ -133,8 +133,8 @@ export class ParticleContainer implements IParticleContainer {
     this.availableParticleHead = null;
   }
 
-  public addParticle(): IParticle {
-    const particle: IParticle =
+  public createParticle(): IParticle<View> {
+    const particle: IParticle<View> =
       this.getParticleFromPool() || createUnusedParticle(this.viewContainer, createView(this.config.view));
 
     useParticle(particle, this.config.particleConfig);
@@ -148,11 +148,11 @@ export class ParticleContainer implements IParticleContainer {
 
   public fillPool(count: number): void {
     for (let i = 0; i < count; i++) {
-      this.addParticleToPool(createUnusedParticle(this.viewContainer, createView(this.config.view)));
+      this.addParticleToPool(createUnusedParticle<View>(this.viewContainer, createView(this.config.view)));
     }
   }
 
-  private removeActiveParticle(particle: IParticle, isMoveInPool: boolean): IParticle | null {
+  private removeActiveParticle(particle: IParticle<View>, isMoveInPool: boolean): IParticle<View> | null {
     if (particle === this.particleHead) {
       this.particleHead = this.particleHead.next;
       if (this.particleHead !== null) {
@@ -166,7 +166,7 @@ export class ParticleContainer implements IParticleContainer {
       }
     }
 
-    let next: IParticle | null = null;
+    let next: IParticle<View> | null = null;
     if (isMoveInPool) {
       // сохраняем частицу, которая будет добавлена в пул
       const temp = particle;
@@ -182,7 +182,7 @@ export class ParticleContainer implements IParticleContainer {
     return next;
   }
 
-  private addParticleInUsedParticles(particle: IParticle): void {
+  private addParticleInUsedParticles(particle: IParticle<View>): void {
     if (this.particleHead === null) {
       this.particleHead = particle;
     } else {
@@ -192,7 +192,7 @@ export class ParticleContainer implements IParticleContainer {
     }
   }
 
-  private addParticleToPool(particle: IParticle): void {
+  private addParticleToPool(particle: IParticle<View>): void {
     if (this.availableParticleHead === null) {
       this.availableParticleHead = particle;
     } else {
@@ -202,7 +202,7 @@ export class ParticleContainer implements IParticleContainer {
     }
   }
 
-  private getParticleFromPool(): IParticle | null {
+  private getParticleFromPool(): IParticle<View> | null {
     if (this.availableParticleHead === null) return null;
 
     const particle = this.availableParticleHead;

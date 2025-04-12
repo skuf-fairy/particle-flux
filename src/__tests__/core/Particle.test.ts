@@ -21,7 +21,7 @@ const TEST_PARTICLE_CONFIG: ParticleConfig = {
   },
 };
 
-const testUnusedParticle = (particle: IParticle, viewContainer: TestViewContainer) => {
+const testUnusedParticle = (particle: IParticle<TestViewParticle>, viewContainer: TestViewContainer) => {
   it('Отображение страницы должно быть создано', () => {
     expect(particle.view).instanceOf(TestViewParticle);
   });
@@ -35,7 +35,7 @@ const testUnusedParticle = (particle: IParticle, viewContainer: TestViewContaine
   });
 };
 
-const testUsedParticle = (particle: IParticle, viewContainer: TestViewContainer) => {
+const testUsedParticle = (particle: IParticle<TestViewParticle>, viewContainer: TestViewContainer) => {
   it('Отображение страницы должно быть создано', () => {
     expect(particle.view).instanceOf(TestViewParticle);
   });

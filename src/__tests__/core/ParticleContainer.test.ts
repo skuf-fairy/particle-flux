@@ -8,7 +8,10 @@ import {IParticle, ViewParticle} from '../../types';
 import {TestViewParticle} from '../TestViewParticle';
 import {STANDARD_DELTA_MS} from '../../utils/Ticker';
 
-const testParticleLinkedList = (particleArray: IParticle[], container: ParticleContainer) => {
+const testParticleLinkedList = (
+  particleArray: IParticle<TestViewParticle>[],
+  container: ParticleContainer<TestViewParticle>,
+) => {
   it('Контейнер содержит правильное количество активных частиц', () => {
     expect(container.getParticlesCount()).toEqual(particleArray.length);
     // Проверяем, что массивы идентичны по ссылкам и порядку
@@ -61,9 +64,9 @@ describe('ParticleContainer', () => {
       const viewContainer = new TestViewContainer();
       const container = new ParticleContainer(viewContainer, configManager);
 
-      const particleArray: IParticle[] = [];
+      const particleArray: IParticle<TestViewParticle>[] = [];
 
-      particleArray.unshift(container.addParticle());
+      particleArray.unshift(container.createParticle());
       testParticleLinkedList(particleArray, container);
 
       it('Пул частиц должен быть пустой', () => {
@@ -75,10 +78,10 @@ describe('ParticleContainer', () => {
       const viewContainer = new TestViewContainer();
       const container = new ParticleContainer(viewContainer, configManager);
 
-      const particleArray: IParticle[] = [];
+      const particleArray: IParticle<TestViewParticle>[] = [];
 
       for (let i = 0; i < 5; i++) {
-        particleArray.unshift(container.addParticle());
+        particleArray.unshift(container.createParticle());
       }
 
       testParticleLinkedList(particleArray, container);
@@ -93,10 +96,10 @@ describe('ParticleContainer', () => {
     const viewContainer = new TestViewContainer();
     const container = new ParticleContainer(viewContainer, configManager);
 
-    const particleArray: IParticle[] = [];
+    const particleArray: IParticle<TestViewParticle>[] = [];
 
     for (let i = 0; i < 10; i++) {
-      particleArray.unshift(container.addParticle());
+      particleArray.unshift(container.createParticle());
     }
 
     const firstParticle = particleArray.splice(particleArray.length - 1, 1)[0];
@@ -131,10 +134,10 @@ describe('ParticleContainer', () => {
     const viewContainer = new TestViewContainer();
     const container = new ParticleContainer(viewContainer, configManager);
 
-    const particleArray: IParticle[] = [];
+    const particleArray: IParticle<TestViewParticle>[] = [];
 
     for (let i = 0; i < 5; i++) {
-      particleArray.unshift(container.addParticle());
+      particleArray.unshift(container.createParticle());
     }
 
     container.clear();
@@ -153,10 +156,10 @@ describe('ParticleContainer', () => {
     const viewContainer = new TestViewContainer();
     const container = new ParticleContainer(viewContainer, configManager);
 
-    const particleArray: IParticle[] = [];
+    const particleArray: IParticle<ViewParticle>[] = [];
 
     for (let i = 0; i < 10; i++) {
-      particleArray.unshift(container.addParticle());
+      particleArray.unshift(container.createParticle());
     }
 
     const destroyedParticle = particleArray.splice(2, 1)[0];
@@ -214,7 +217,7 @@ describe('ParticleContainer', () => {
     const firstUnusedParticle = poolParticles[0];
     poolParticles.shift();
 
-    const usedParticle = container.addParticle();
+    const usedParticle = container.createParticle();
 
     container.update(1, STANDARD_DELTA_MS);
 
@@ -234,12 +237,12 @@ describe('ParticleContainer', () => {
     const viewContainer = new TestViewContainer();
     const container = new ParticleContainer(viewContainer, configManager);
 
-    const particleArray: IParticle[] = [];
+    const particleArray: IParticle<TestViewParticle>[] = [];
 
     container.fillPool(10);
 
     for (let i = 0; i < 5; i++) {
-      particleArray.unshift(container.addParticle());
+      particleArray.unshift(container.createParticle());
     }
 
     container.update(1, STANDARD_DELTA_MS);

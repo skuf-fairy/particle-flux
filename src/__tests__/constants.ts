@@ -37,4 +37,4 @@ export const TEST_CONFIG = (): ParticleEmitterConfig => ({
   },
 });
 
-export const TEST_VIEW_FACTORY: ViewRenderFn = (): ViewParticle => new TestViewParticle();
+export const TEST_VIEW_FACTORY: ViewRenderFn<ViewParticle> = (): ViewParticle => new TestViewParticle();

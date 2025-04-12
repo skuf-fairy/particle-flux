@@ -1,4 +1,12 @@
-import {EmitterConfig, NumberValue, ParticleConfig, ParticleEmitterConfig, ViewRenderFn} from '../types';
+import {
+  EmitterConfig,
+  NumberValue,
+  ParticleConfig,
+  ParticleEmitterConfig,
+  ViewFactory,
+  ViewParticle,
+  ViewRenderFn,
+} from '../types';
 import {LifeTimeBehaviorConfig} from './behaviors/life-time-behavior/life-time-behavior.types';
 import {SpeedBehaviorConfig} from './behaviors/speed-behavior/speed-behavior.types';
 import {DirectionConfig} from './direction/direction.types';
@@ -14,11 +22,11 @@ import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
 import {PathConfig} from './path/path.types';
 import {EventEmitter} from '../utils/EventEmitter';
 
-export class ConfigManager {
+export class ConfigManager<View extends ViewParticle> {
   private config: ParticleEmitterConfig;
   private eventEmitter: EventEmitter;
 
-  constructor(initialConfig: ParticleEmitterConfig, private viewFactory: ViewRenderFn[] | ViewRenderFn) {
+  constructor(initialConfig: ParticleEmitterConfig, private viewFactory: ViewFactory<View>) {
     this.config = cloneDeep(initialConfig);
     this.eventEmitter = new EventEmitter();
   }
@@ -43,11 +51,11 @@ export class ConfigManager {
     return cloneDeep(this.config.particleConfig);
   }
 
-  get view(): ViewRenderFn[] | ViewRenderFn {
+  get view(): ViewRenderFn<View>[] | ViewRenderFn<View> {
     return this.viewFactory;
   }
 
-  set view(viewFactory: ViewRenderFn[] | ViewRenderFn) {
+  set view(viewFactory: ViewRenderFn<View>[] | ViewRenderFn<View>) {
     this.viewFactory = viewFactory;
     this.eventEmitter.emit('viewChanged', viewFactory);
   }

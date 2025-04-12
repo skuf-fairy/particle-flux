@@ -33,23 +33,23 @@ export interface ViewParticle {
 }
 
 // an external display container to which the particles are added
-export interface ViewContainer {
-  addChild(children: ViewParticle): void;
-  removeChild(children: ViewParticle): void;
+export interface ViewContainer<View extends ViewParticle> {
+  addChild(child: View): void;
+  removeChild(child: View): void;
 }
 
-export interface IParticleContainer {
-  addParticle(): void;
+export interface IParticleContainer<View extends ViewParticle> {
+  createParticle(): void;
   getParticlesCount(): number;
-  getParticlesArray(): IParticle[];
+  getParticlesArray(): IParticle<View>[];
   clear(): void;
   update(elapsedDelta: number, deltaMS: number): void;
 }
 
-export interface IParticle {
-  view: ViewParticle;
-  next: IParticle | null;
-  prev: IParticle | null;
+export interface IParticle<View extends ViewParticle> {
+  view: View;
+  next: IParticle<View> | null;
+  prev: IParticle<View> | null;
   inUse: boolean;
 
   // todo may be normalized
@@ -87,7 +87,8 @@ export interface Point2d {
   y: number;
 }
 
-export type ViewRenderFn = () => ViewParticle;
+export type ViewRenderFn<View extends ViewParticle> = () => View;
+export type ViewFactory<View extends ViewParticle> = ViewRenderFn<View>[] | ViewRenderFn<View>;
 
 export interface EmitterConfig {
   spawnInterval?: NumberValue;
