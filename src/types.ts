@@ -66,7 +66,7 @@ export interface IParticle<View extends ViewParticle> {
   pathFunc: PathFunction | null;
   usePathFunc: boolean;
   useGravity: boolean;
-  gravityBehavior: ScalarBehavior | number;
+  gravityBehavior: ScalarBehavior | ScriptBehavior<number> | DeltaBehavior | number;
 
   alphaBehavior: ScalarBehavior | ScriptBehavior<number> | null;
   rotationBehavior: ScalarBehavior | DeltaBehavior | ScriptBehavior<number> | null;

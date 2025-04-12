@@ -1,3 +1,4 @@
+import {GRAVITY_DEFAULT_MULTIPLIER} from '../../constants';
 import {ViewParticle, IParticle} from '../../types';
 import {Vector2Utils} from '../../utils/Vector2Utils';
 import {
@@ -46,12 +47,20 @@ export function updateParticle<View extends ViewParticle>(
     view.x += particle.direction.x * speed;
     view.y += particle.direction.y * speed;
   } else {
-    const gravityShift =
-      typeof particle.gravityBehavior === 'number'
-        ? particle.gravityBehavior
-        : getScalarBehaviorValue(particle.gravityBehavior, lifeTimeNormalizedProgress);
+    const gravityBehavior = particle.gravityBehavior;
 
-    particle.deltaDirection.y += gravityShift * elapsedDelta;
+    let gravityShift: number = 0;
+    if (typeof gravityBehavior === 'number') {
+      gravityShift = gravityBehavior;
+    } else if (isScalarBehavior(gravityBehavior)) {
+      gravityShift = getScalarBehaviorValue(gravityBehavior, lifeTimeNormalizedProgress);
+    } else if (isScriptBehavior(gravityBehavior)) {
+      gravityShift = getScriptBehaviorValue<number>(gravityBehavior, lifeTimeNormalizedProgress);
+    } else if (isDeltaBehavior(gravityBehavior)) {
+      gravityShift = getDeltaBehaviorValue(gravityBehavior, elapsedDelta);
+    }
+
+    particle.deltaDirection.y += gravityShift * GRAVITY_DEFAULT_MULTIPLIER * elapsedDelta;
     particle.direction.y += particle.deltaDirection.y;
     particle.view.angle = particle.directionRotation = Vector2Utils.pointToAngleInDegrees(particle.direction);
 
