@@ -16,6 +16,7 @@ describe('Обновление поворота отображения', () => {
     },
     direction: {
       angle: 90,
+      isFollow: true,
     },
     rotation: {
       value: 0,

@@ -11,7 +11,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   // timer time
   private currentTime: number;
   // the time when it will be necessary to freeze the particle
-  private nextSpawnTime: number | null;
+  private nextSpawnTime: number;
 
   private readonly container: ParticleContainer<View>;
   private readonly ticker: ITicker;
@@ -148,7 +148,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     this.container.update(elapsedDelta, deltaMS);
 
     // if the working time is over
-    if (this.config.spawnTime !== undefined && this.currentTime >= this.config.spawnTime) {
+    if (this.currentTime >= this.getSpawnTime()) {
       // if the operating time is up, then we monitor the container, when it is empty, then we need to stop the emitter.
       if (this.container.getParticlesCount() === 0) {
         this.stopEmit();
@@ -159,7 +159,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     }
 
     // Time to create another wave of particles
-    if (this.nextSpawnTime !== null && this.currentTime >= this.nextSpawnTime) {
+    if (this.currentTime >= this.nextSpawnTime) {
       this.emitWave();
       this.nextSpawnTime = this.getNextSpawnTime();
     }
@@ -176,13 +176,14 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     }
   }
 
-  private getNextSpawnTime(): number | null {
+  private getNextSpawnTime(): number {
     const spawnInterval = this.config.spawnInterval;
 
-    if (spawnInterval === undefined) return null;
+    if (spawnInterval === undefined) return Number.POSITIVE_INFINITY;
 
-    if (isRangeValue(spawnInterval))
+    if (isRangeValue(spawnInterval)) {
       return this.currentTime + realRandom.generateIntegerNumber(spawnInterval.min, spawnInterval.max);
+    }
 
     return this.currentTime + spawnInterval;
   }
@@ -191,7 +192,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   private resetTime(): void {
     this.currentTime = this.config.spawnTimeout !== undefined ? -this.config.spawnTimeout : 0;
     // The first wave creation should be at the start of the emitter operation, then the time of the next wave will be set.
-    this.nextSpawnTime = this.config.spawnInterval !== undefined ? 0 : null;
+    this.nextSpawnTime = this.config.spawnInterval !== undefined ? 0 : Number.POSITIVE_INFINITY;
   }
 
   private getAvailableForEmitParticlesCount(emitParticlesCount: number): number {
@@ -201,5 +202,9 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     return !maxParticles
       ? emitParticlesCount
       : Math.min(Math.max(0, maxParticles - particlesInContainer), emitParticlesCount);
+  }
+
+  private getSpawnTime(): number {
+    return Math.abs(this.config.spawnTime || Number.POSITIVE_INFINITY);
   }
 }
