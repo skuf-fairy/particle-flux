@@ -11,5 +11,6 @@ export function getDeltaBehavior(config: DeltaBehaviorConfig): DeltaBehavior {
 }
 
 export function getDeltaBehaviorValue(behavior: DeltaBehavior, elapsedDelta: number): number {
-  return behavior.value + behavior.delta * elapsedDelta;
+  behavior.value += behavior.delta * elapsedDelta;
+  return behavior.value;
 }
