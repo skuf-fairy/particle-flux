@@ -1,4 +1,4 @@
-import {describe, expect, it, vi} from 'vitest';
+import {describe, expect, it} from 'vitest';
 import {TEST_VIEW_FACTORY} from '../constants';
 import {TestViewContainer} from '../TestViewContainer';
 import {IParticle, ParticleConfig} from '../../types';
@@ -204,7 +204,7 @@ describe('Particle', () => {
     const view = createView(TEST_VIEW_FACTORY);
     const initialAlpha = view.alpha;
 
-    const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+    const particle = createUnusedParticle(viewContainer, view);
 
     useParticle(particle, particleConfig);
     const initX = particle.view.x;

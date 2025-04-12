@@ -35,6 +35,10 @@ export class ConfigManager<View extends ViewParticle> {
     this.config = cloneDeep(config);
   }
 
+  get fullConfig(): ParticleEmitterConfig {
+    return cloneDeep(this.config);
+  }
+
   set emitterConfig(config: EmitterConfig) {
     this.config.emitterConfig = cloneDeep(config);
   }

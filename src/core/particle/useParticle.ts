@@ -45,8 +45,7 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
   if (config.direction) {
     const direction = getDirection(config.direction);
     particle.direction = direction.vector;
-    particle.directionRotation = direction.angle;
-    particle.view.angle = particle.directionRotation;
+    particle.view.angle = particle.directionRotation = direction.angle;
   }
 
   if (config.speed) {
@@ -70,10 +69,10 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
   }
 
   if (config.rotation) {
-    if (isScalarStaticBehavior(config.rotation)) {
-      particle.view.angle += getStaticBehaviorValue(config.rotation);
-    } else if (isDeltaBehaviorConfig(config.rotation)) {
+    if (isDeltaBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getDeltaBehavior(config.rotation);
+    } else if (isScalarStaticBehavior(config.rotation)) {
+      particle.view.angle += getStaticBehaviorValue(config.rotation);
     } else if (isScalarBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getScalarBehavior(config.rotation);
     } else if (isScriptBehaviorConfig(config.rotation)) {
