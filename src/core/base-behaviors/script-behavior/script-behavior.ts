@@ -3,8 +3,8 @@ import {ArrayUtils} from '../../../utils/ArrayUtils';
 import {NumberUtils} from '../../../utils/NumberUtils';
 import {BaseBehaviorType} from '../base-behaviors.types';
 
-function getCurrentScriptItem<V>(script: TimeScriptConfig<V>, time: number): V {
-  for (let i = 1; i < script.length; i++) {
+function getCurrentScriptItem<V>(script: TimeScriptConfig<V>, lastValueIndex: number, time: number): V {
+  for (let i = lastValueIndex + 1; i < script.length; i++) {
     if (NumberUtils.inRange(script[i - 1].time, script[i].time, time)) {
       return script[i - 1].value;
     }
@@ -19,9 +19,13 @@ export function getScriptBehavior<V>(config: ScriptBehaviorConfig<V>): ScriptBeh
     throw new Error('Script config must contain at least 1 item');
   }
 
-  return {script: config.script.slice().sort((a, b) => a.time - b.time), type: BaseBehaviorType.Script};
+  return {
+    script: config.script.slice().sort((a, b) => a.time - b.time),
+    lastValueIndex: 0,
+    type: BaseBehaviorType.Script,
+  };
 }
 
 export function getScriptBehaviorValue<V>(behavior: ScriptBehavior<V>, lifeTimeNormalizedProgress: number): V {
-  return getCurrentScriptItem<V>(behavior.script, lifeTimeNormalizedProgress);
+  return getCurrentScriptItem<V>(behavior.script, behavior.lastValueIndex, lifeTimeNormalizedProgress);
 }

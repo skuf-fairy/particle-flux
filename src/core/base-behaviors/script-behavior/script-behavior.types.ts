@@ -8,5 +8,6 @@ export interface ScriptBehaviorConfig<V> {
 
 export interface ScriptBehavior<V> {
   script: TimeScriptConfig<V>;
+  lastValueIndex: number;
   type: BaseBehaviorType.Script;
 }
