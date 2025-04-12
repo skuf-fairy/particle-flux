@@ -62,6 +62,7 @@ export interface IParticle<View extends ViewParticle> {
   deltaDirection: Point2d;
   directionRotation: number;
   direction: Point2d;
+  isFollowDirection: boolean;
   speedBehavior: ScalarBehavior | ScriptBehavior<number> | null;
   pathFunc: PathFunction | null;
   usePathFunc: boolean;
