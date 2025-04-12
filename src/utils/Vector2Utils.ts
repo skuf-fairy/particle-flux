@@ -1,4 +1,5 @@
 import {Point2d} from '../types';
+import {NumberUtils} from './NumberUtils';
 
 export class Vector2Utils {
   public static distance(v1: Point2d, v2: Point2d): number {
@@ -23,16 +24,16 @@ export class Vector2Utils {
     };
   }
 
+  public static angleInDegreesToPoint(angleInDegrees: number): Point2d {
+    return Vector2Utils.angleInRadToPoint(NumberUtils.degreesToRadians(angleInDegrees));
+  }
+
   // Returns a vector with a direction that matches the passed angle.
-  public static fromAngle(angleInRad: number): Point2d {
+  public static angleInRadToPoint(angleInRad: number): Point2d {
     return {
       x: Math.cos(angleInRad),
       y: Math.sin(angleInRad),
     };
-  }
-
-  public static getAngleBetweenVectors(v1: Point2d, v2: Point2d): number {
-    return Math.atan2(v2.y - v1.y, v2.x - v1.x);
   }
 
   // rotation of the coordinate system
@@ -46,10 +47,15 @@ export class Vector2Utils {
     };
   }
 
-  public static angleToPoint(angleInRad: number): Point2d {
-    return {
-      x: Math.cos(angleInRad),
-      y: Math.sin(angleInRad),
-    };
+  public static pointToAngleInDegrees(point: Point2d): number {
+    const angleInRad = Math.atan2(point.y, point.x);
+    let angleInDeg = angleInRad * (180 / Math.PI);
+
+    // Приводим к диапазону [0, 360)
+    if (angleInDeg < 0) {
+      angleInDeg += 360;
+    }
+
+    return angleInDeg;
   }
 }

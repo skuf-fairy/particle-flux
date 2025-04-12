@@ -45,7 +45,11 @@ export class NumberUtils {
   }
 
   public static degreesToRadians(angleInDegrees: number): number {
-    return (angleInDegrees * Math.PI) / 180;
+    return (NumberUtils.normalizedDegrees(angleInDegrees) * Math.PI) / 180;
+  }
+
+  public static radiansToDegrees(angleInRad: number): number {
+    return NumberUtils.normalizedDegrees(angleInRad * (180 / Math.PI)); // [0...360]
   }
 
   // truncates the number to 2 numbers after the decimal point
@@ -64,5 +68,9 @@ export class NumberUtils {
 
   public static getOrderedMinMax(a: number, b: number): [number, number] {
     return a > b ? [b, a] : [a, b];
+  }
+
+  public static normalizedDegrees(degrees: number): number {
+    return ((degrees % 360) + 360) % 360;
   }
 }

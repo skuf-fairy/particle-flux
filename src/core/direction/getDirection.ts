@@ -1,5 +1,4 @@
 import {DirectionConfig} from './direction.types';
-import {NumberUtils} from '../../utils/NumberUtils';
 import {realRandom} from '../../utils/random/RealRandom';
 import {Point2d} from '../../types';
 import {isStaticDirectionBehaviorConfig} from './direction.typeguards';
@@ -14,7 +13,7 @@ export function getDirection(config: DirectionConfig): {
     : realRandom.generateFloatNumber(config.minAngle, config.maxAngle);
 
   return {
-    vector: Vector2Utils.angleToPoint(NumberUtils.degreesToRadians(angle)),
+    vector: Vector2Utils.angleInDegreesToPoint(angle),
     angle,
   };
 }

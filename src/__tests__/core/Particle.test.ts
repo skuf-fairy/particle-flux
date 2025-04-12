@@ -85,12 +85,12 @@ describe('Particle', () => {
 
     it('Необходимо проверить, что после половины жизни частицы, ее параметры должны измениться на половину', () => {
       updateParticle(particle, 1, 5);
-      expect(particle.view?.alpha).toEqual(0.5);
+      expect(particle.view.alpha).toEqual(0.5);
     });
 
     it('Время жизни частицы закончилось, все параметры должны перейти в конечно состояние', () => {
       updateParticle(particle, 1, 5);
-      expect(particle.view?.alpha).toEqual(1);
+      expect(particle.view.alpha).toEqual(1);
     });
   });
 
@@ -119,8 +119,8 @@ describe('Particle', () => {
       updateParticle(particle2, 1 / 2, 5 / 2);
       updateParticle(particle2, 1 / 2, 5 / 2);
 
-      expect(particle1.view?.x).toEqual(particle2.view?.x);
-      expect(particle1.view?.y).toEqual(particle2.view?.y);
+      expect(particle1.view.x).toEqual(particle2.view.x);
+      expect(particle1.view.y).toEqual(particle2.view.y);
     });
 
     it('Immutability for gravity', () => {
@@ -150,8 +150,8 @@ describe('Particle', () => {
       updateParticle(particle2, 1 / 2, 5 / 2);
       updateParticle(particle2, 1 / 2, 5 / 2);
 
-      expect(particle1.view?.x).toEqual(particle2.view?.x);
-      expect(particle1.view?.y).toEqual(particle2.view?.y);
+      expect(particle1.view.x).toEqual(particle2.view.x);
+      expect(particle1.view.y).toEqual(particle2.view.y);
     });
 
     it('Immutability for path', () => {
@@ -178,8 +178,8 @@ describe('Particle', () => {
       updateParticle(particle2, 1 / 2, 5 / 2);
       updateParticle(particle2, 1 / 2, 5 / 2);
 
-      expect(particle1.view?.x).toEqual(particle2.view?.x);
-      expect(particle1.view?.y).toEqual(particle2.view?.y);
+      expect(particle1.view.x).toEqual(particle2.view.x);
+      expect(particle1.view.y).toEqual(particle2.view.y);
     });
   });
 

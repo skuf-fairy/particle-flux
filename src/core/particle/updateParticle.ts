@@ -46,14 +46,17 @@ export function updateParticle<View extends ViewParticle>(
     view.x += particle.direction.x * speed;
     view.y += particle.direction.y * speed;
   } else {
-    // todo наверное лучше накопление
     const gravityShift =
       typeof particle.gravityBehavior === 'number'
         ? particle.gravityBehavior
         : getScalarBehaviorValue(particle.gravityBehavior, lifeTimeNormalizedProgress);
 
+    particle.deltaDirection.y += gravityShift * elapsedDelta;
+    particle.direction.y += particle.deltaDirection.y;
+    particle.view.angle = particle.directionRotation = Vector2Utils.pointToAngleInDegrees(particle.direction);
+
     view.x += particle.direction.x * speed;
-    view.y += (particle.direction.y + gravityShift) * speed;
+    view.y += particle.direction.y * speed;
   }
 
   if (particle.alphaBehavior !== null) {
