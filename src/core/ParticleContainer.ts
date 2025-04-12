@@ -1,4 +1,6 @@
-import {isParticleDead, isParticleInUse, noUseParticle} from 'src';
+import {isParticleDead} from './particle/isParticleDead';
+import {isParticleInUse} from './particle/isParticleInUse';
+import {noUseParticle} from './particle/noUseParticle';
 import {IParticleContainer, ViewContainer, IParticle, ViewParticle} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {createUnusedParticle} from './particle/createUnusedParticle';
