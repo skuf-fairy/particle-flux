@@ -27,4 +27,8 @@ describe('ConfigManager', () => {
   it('The immutability of the initial config', () => {
     expect(initialConfig).toEqual(TEST_CONFIG());
   });
+
+  it('Конфиг должен приводится к JSON', () => {
+    expect(JSON.parse(JSON.stringify(configManager.fullConfig))).toEqual(configManager.fullConfig);
+  });
 });
