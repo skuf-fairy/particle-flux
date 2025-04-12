@@ -63,6 +63,7 @@ Examples of some animations and effects that can be created using the emitter. A
 - [Cartoon Smoke Blast](https://codepen.io/vladosina/pen/QwLPmdM)
 - [Flame](https://codepen.io/vladosina/pen/mybgxwV)
 - [Snow Flow](https://codepen.io/vladosina/pen/ZYzZoKg)
+- [SVG & PIXI equal animation](https://codepen.io/vladosina/pen/xbxvxNw)
 
 ## Particle Emitter Config
 

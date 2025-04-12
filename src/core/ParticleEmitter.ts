@@ -5,7 +5,7 @@ import {Ticker} from '../utils/Ticker';
 import {realRandom} from '../utils/random/RealRandom';
 import {isRangeValue} from '../typeguards';
 
-export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
+export class ParticleEmitter {
   public readonly config: ConfigManager;
 
   // timer time
@@ -17,7 +17,7 @@ export class ParticleEmitter<V extends ViewParticle = ViewParticle> {
   private readonly ticker: ITicker;
 
   constructor(
-    viewContainer: ViewContainer<V>,
+    viewContainer: ViewContainer<ViewParticle>,
     viewFactory: ViewRenderFn[] | ViewRenderFn,
     initialConfig: ParticleEmitterConfig,
   ) {
