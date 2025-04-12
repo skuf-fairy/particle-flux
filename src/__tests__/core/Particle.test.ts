@@ -3,9 +3,13 @@ import {TEST_VIEW_FACTORY} from '../constants';
 import {TestViewContainer} from '../TestViewContainer';
 import {IParticle, ParticleConfig} from '../../types';
 import {TestViewParticle} from '../TestViewParticle';
-import {createUnusedParticle, createView, isParticleInUse, updateParticle, useParticle} from '../../core/Particle';
 import {STANDARD_DELTA_MS} from '../../utils/Ticker';
 import {SpawnShapeType} from '../../core/spawn-shapes/spawn-shapes.types';
+import {createUnusedParticle} from '../../core/particle/createUnusedParticle';
+import {createView} from '../../core/particle/createView';
+import {updateParticle} from '../../core/particle/updateParticle';
+import {useParticle} from '../../core/particle/useParticle';
+import {isParticleInUse} from '../../core/particle/isParticleInUse';
 
 const TEST_PARTICLE_CONFIG: ParticleConfig = {
   lifeTime: {

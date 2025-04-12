@@ -14,7 +14,9 @@ export {
 } from './types';
 
 export {isRangeValue} from './typeguards';
-export {isParticleDead, isParticleInUse, noUseParticle} from './core/Particle';
+export {isParticleDead} from './core/particle/isParticleDead';
+export {isParticleInUse} from './core/particle/isParticleInUse';
+export {noUseParticle} from './core/particle/noUseParticle';
 
 // behaviors
 

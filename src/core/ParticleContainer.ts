@@ -1,16 +1,12 @@
+import {isParticleDead, isParticleInUse, noUseParticle} from 'src';
 import {IParticleContainer, ViewContainer, IParticle, ViewParticle} from '../types';
 import {ConfigManager} from './ConfigManager';
-import {
-  createUnusedParticle,
-  useParticle,
-  noUseParticle,
-  updateParticle,
-  isParticleInUse,
-  createView,
-  removeParticle,
-  isParticleDead,
-  wasParticleRemoved,
-} from './Particle';
+import {createUnusedParticle} from './particle/createUnusedParticle';
+import {createView} from './particle/createView';
+import {removeParticle} from './particle/removeParticle';
+import {updateParticle} from './particle/updateParticle';
+import {useParticle} from './particle/useParticle';
+import {wasParticleRemoved} from './particle/wasParticleRemoved';
 
 /**
  * A container for particles, where you can add and remove game objects, as well as get them from the container.

@@ -3,10 +3,11 @@ import {ParticleContainer} from '../../core/ParticleContainer';
 import {TEST_CONFIG, TEST_VIEW_FACTORY} from '../constants';
 import {ConfigManager} from '../../core/ConfigManager';
 import {TestViewContainer} from '../TestViewContainer';
-import {isParticleInUse, noUseParticle} from '../../core/Particle';
 import {IParticle, ViewParticle} from '../../types';
 import {TestViewParticle} from '../TestViewParticle';
 import {STANDARD_DELTA_MS} from '../../utils/Ticker';
+import {isParticleInUse} from '../../core/particle/isParticleInUse';
+import {noUseParticle} from '../../core/particle/noUseParticle';
 
 const testParticleLinkedList = (
   particleArray: IParticle<TestViewParticle>[],
