@@ -1,6 +1,6 @@
 import {ViewContainer, ViewParticle} from '../types';
 
-export class TestViewContainer implements ViewContainer<ViewParticle> {
+export class TestViewContainer implements ViewContainer {
   public children: ViewParticle[];
 
   constructor() {

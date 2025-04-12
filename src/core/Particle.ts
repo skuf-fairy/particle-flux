@@ -66,7 +66,7 @@ function getInitialParticleState(): Omit<IParticle, 'view'> {
   };
 }
 
-export function createUnusedParticle(viewContainer: ViewContainer<ViewParticle>, view: ViewParticle): IParticle {
+export function createUnusedParticle(viewContainer: ViewContainer, view: ViewParticle): IParticle {
   viewContainer.addChild(view);
   view.visible = false;
 
@@ -76,7 +76,7 @@ export function createUnusedParticle(viewContainer: ViewContainer<ViewParticle>,
   };
 }
 
-export function removeParticle(viewContainer: ViewContainer<ViewParticle>, particle: IParticle): void {
+export function removeParticle(viewContainer: ViewContainer, particle: IParticle): void {
   viewContainer.removeChild(particle.view);
 }
 

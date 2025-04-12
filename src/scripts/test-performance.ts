@@ -15,7 +15,7 @@ class TestViewParticle implements ViewParticle {
   height: number = 1;
 }
 
-class TestViewContainer implements ViewContainer<ViewParticle> {
+class TestViewContainer implements ViewContainer {
   public children: ViewParticle[];
 
   constructor() {

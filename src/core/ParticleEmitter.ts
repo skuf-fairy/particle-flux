@@ -1,5 +1,5 @@
 import {ParticleContainer} from './ParticleContainer';
-import {IParticle, ITicker, ParticleEmitterConfig, ViewContainer, ViewParticle, ViewRenderFn} from '../types';
+import {IParticle, ITicker, ParticleEmitterConfig, ViewContainer, ViewRenderFn} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {Ticker} from '../utils/Ticker';
 import {realRandom} from '../utils/random/RealRandom';
@@ -17,7 +17,7 @@ export class ParticleEmitter {
   private readonly ticker: ITicker;
 
   constructor(
-    viewContainer: ViewContainer<ViewParticle>,
+    viewContainer: ViewContainer,
     viewFactory: ViewRenderFn[] | ViewRenderFn,
     initialConfig: ParticleEmitterConfig,
   ) {

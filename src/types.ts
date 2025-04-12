@@ -33,9 +33,9 @@ export interface ViewParticle {
 }
 
 // an external display container to which the particles are added
-export interface ViewContainer<U extends ViewParticle> {
-  addChild(children: U): void;
-  removeChild(children: U): void;
+export interface ViewContainer {
+  addChild(children: ViewParticle): void;
+  removeChild(children: ViewParticle): void;
 }
 
 export interface IParticleContainer {

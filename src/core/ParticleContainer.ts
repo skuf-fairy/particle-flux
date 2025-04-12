@@ -1,4 +1,4 @@
-import {IParticleContainer, ViewContainer, ViewParticle, IParticle} from '../types';
+import {IParticleContainer, ViewContainer, IParticle} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {
   createUnusedParticle,
@@ -20,7 +20,7 @@ export class ParticleContainer implements IParticleContainer {
   public availableParticleHead: IParticle | null;
   private containerParticlesCount: number;
 
-  constructor(private readonly viewContainer: ViewContainer<ViewParticle>, private readonly config: ConfigManager) {
+  constructor(private readonly viewContainer: ViewContainer, private readonly config: ConfigManager) {
     this.particleHead = null;
     this.availableParticleHead = null;
     this.containerParticlesCount = 0;
