@@ -60,7 +60,7 @@ export function updateParticle<View extends ViewParticle>(
       gravityShift = getDeltaBehaviorValue(gravityBehavior, elapsedDelta);
     }
 
-    particle.deltaDirection.y += gravityShift * GRAVITY_DEFAULT_MULTIPLIER * elapsedDelta;
+    particle.deltaDirection.y += (gravityShift / GRAVITY_DEFAULT_MULTIPLIER) * elapsedDelta;
     particle.direction.y += particle.deltaDirection.y;
     particle.view.angle = particle.directionRotation = Vector2Utils.pointToAngleInDegrees(particle.direction);
 
