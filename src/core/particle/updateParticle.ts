@@ -66,11 +66,13 @@ export function updateParticle<View extends ViewParticle>(
 
   if (particle.rotationBehavior !== null) {
     if (isDeltaBehavior(particle.rotationBehavior)) {
-      view.angle = getDeltaBehaviorValue(particle.rotationBehavior, elapsedDelta);
+      view.angle = particle.directionRotation + getDeltaBehaviorValue(particle.rotationBehavior, elapsedDelta);
     } else if (isScriptBehavior(particle.rotationBehavior)) {
-      view.angle = getScriptBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
+      view.angle =
+        particle.directionRotation + getScriptBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
     } else if (isScalarBehavior(particle.rotationBehavior)) {
-      view.angle = getScalarBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
+      view.angle =
+        particle.directionRotation + getScalarBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
     }
   }
 
