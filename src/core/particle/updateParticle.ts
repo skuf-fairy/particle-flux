@@ -36,14 +36,14 @@ export function updateParticle<View extends ViewParticle>(
 
   const speed = particle.speed * elapsedDelta;
 
-  if (particle.usePathFunc) {
+  if (particle.pathFunc) {
     particle.deltaPath.x = particle.deltaPath.x + speed;
-    particle.deltaPath.y = particle.pathFunc!(particle.deltaPath.x);
+    particle.deltaPath.y = particle.pathFunc(particle.deltaPath.x);
     const delta = Vector2Utils.rotate(particle.deltaPath, -Math.PI / 2);
 
     view.x = particle.initialPosition.x + delta.x;
     view.y = particle.initialPosition.y + delta.y;
-  } else if (!particle.useGravity) {
+  } else if (!particle.gravityBehavior) {
     view.x += particle.direction.x * speed;
     view.y += particle.direction.y * speed;
   } else {

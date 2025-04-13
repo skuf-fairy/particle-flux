@@ -109,22 +109,17 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
   if (config.gravity) {
     if (isDeltaBehaviorConfig(config.gravity)) {
       particle.gravityBehavior = getDeltaBehavior(config.gravity);
-      particle.useGravity = true;
     } else if (isScalarStaticBehavior(config.gravity)) {
       particle.gravityBehavior = getStaticBehaviorValue(config.gravity);
-      particle.useGravity = true;
     } else if (isScalarDynamicBehavior(config.gravity)) {
       particle.gravityBehavior = getScalarBehavior(config.gravity);
-      particle.useGravity = true;
     } else if (isScriptBehaviorConfig(config.gravity)) {
       particle.gravityBehavior = getScriptBehavior(config.gravity);
-      particle.useGravity = true;
     }
   }
 
   if (config.path) {
     particle.pathFunc = parsePath(config.path.path);
-    particle.usePathFunc = true;
   }
 
   updateParticle(particle, 0, 0);
