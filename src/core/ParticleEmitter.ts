@@ -26,6 +26,8 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   private readonly container: ParticleContainer<View>;
   private readonly ticker: ITicker;
 
+  private skipFirstEmit: boolean;
+
   constructor(
     viewContainer: ViewContainer<View>,
     viewFactory: ViewFactory<View>,
@@ -35,6 +37,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     this.config = new ConfigManager(initialConfig, viewFactory);
     this.container = new ParticleContainer(viewContainer, this.config);
 
+    this.skipFirstEmit = false;
     this.currentTime = 0;
     this.currentSpawnInterval = this.getNextSpawnTime();
     this.prevSpawnTime = 0;
@@ -57,6 +60,11 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     for (let i = 0; i < count; i++) {
       this.emit();
     }
+
+    if (!this.isEmitActive()) {
+      this.skipFirstEmit = true;
+      this.startEmit();
+    }
   }
 
   /**
@@ -73,6 +81,11 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
       if (particle) {
         particles.push(particle);
       }
+    }
+
+    if (!this.isEmitActive()) {
+      this.skipFirstEmit = true;
+      this.startEmit();
     }
 
     return particles;
@@ -165,7 +178,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     }
 
     // первый кадр, нужно заспавнить первую волну
-    if (this.currentTime === 0) {
+    if (this.currentTime === 0 && !this.skipFirstEmit) {
       const deltaBetweenCurrentTimeAndCurrentSpawnTime = Math.max(0, newCurrentTime - this.currentSpawnInterval);
       const count = this.createParticlesBetweenFrames(deltaBetweenCurrentTimeAndCurrentSpawnTime, newCurrentTime);
       this.prevSpawnTime = count > 1 ? this.currentSpawnInterval * count : 0;
@@ -286,6 +299,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
 
   // resets the emitter time
   private resetTime(): void {
+    this.skipFirstEmit = false;
     this.currentTime = this.config.spawnTimeout !== undefined ? -this.config.spawnTimeout : 0;
     this.prevSpawnTime = 0;
     this.currentSpawnInterval = this.getNextSpawnTime();
