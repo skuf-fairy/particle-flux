@@ -176,41 +176,42 @@ describe('ParticleEmitter', () => {
       });
     });
 
-    // describe('Интервал больше дельты между кадрами', () => {
-    //   // 4 - просто константа, чтобы сдвинуть время спавна на промежуток после первого обновления
-    //   const spawnInterval = STANDARD_DELTA_MS * 2 + 4;
-    //   const initialConfig: ParticleEmitterConfig = {
-    //     emitterConfig: {
-    //       spawnInterval: spawnInterval,
-    //       autoStart: false,
-    //     },
-    //     particleConfig: {
-    //       lifeTime: {
-    //         value: 100,
-    //       },
-    //     },
-    //   };
+    describe('Интервал больше дельты между кадрами', () => {
+      // 4 - просто константа, чтобы сдвинуть время спавна на промежуток после первого обновления
+      const spawnInterval = STANDARD_DELTA_MS * 2 + 4;
+      const initialConfig: ParticleEmitterConfig = {
+        emitterConfig: {
+          spawnInterval: spawnInterval,
+          autoStart: false,
+        },
+        particleConfig: {
+          lifeTime: {
+            value: 100,
+          },
+        },
+      };
 
-    //   const particleEmitter = new ParticleEmitter(new TestViewContainer(), TEST_VIEW_FACTORY, initialConfig);
+      const particleEmitter = new ParticleEmitter(new TestViewContainer(), TEST_VIEW_FACTORY, initialConfig);
 
-    //   const report0 = particleEmitter.update(1, STANDARD_DELTA_MS);
-    //   const report1 = particleEmitter.update(1, STANDARD_DELTA_MS);
-    //   const report2 = particleEmitter.update(1, STANDARD_DELTA_MS);
+      const report0 = particleEmitter.update(1, STANDARD_DELTA_MS);
+      const report1 = particleEmitter.update(1, STANDARD_DELTA_MS);
+      const report2 = particleEmitter.update(1, STANDARD_DELTA_MS);
 
-    //   it('Cоздано верное количество частиц', () => {
-    //     expect(report0.particleCreatedCount).toEqual(1);
-    //     expect(report1.particleCreatedCount).toEqual(0);
-    //     expect(report2.particleCreatedCount).toEqual(1);
-    //     expect(particleEmitter.getParticlesCount()).toEqual(2);
-    //   });
+      it('Cоздано верное количество частиц', () => {
+        expect(report0.particleCreatedCount).toEqual(1);
+        expect(report1.particleCreatedCount).toEqual(0);
+        expect(report2.particleCreatedCount).toEqual(1);
+        expect(particleEmitter.getParticlesCount()).toEqual(2);
+      });
 
-    //   it('Верные временные интервалы', () => {
-    //     expect(report1.deltaBetweenCurrentTimeAndCurrentSpawnTime).toEqual(0);
-    //     expect(report1.prevSpawnTime).toEqual(0);
-    //     expect(report2.deltaBetweenCurrentTimeAndCurrentSpawnTime).toEqual(STANDARD_DELTA_MS * 2 - spawnInterval);
-    //     expect(report2.currentTime).toEqual(STANDARD_DELTA_MS * 2);
-    //     expect(report2.prevSpawnTime).toEqual(spawnInterval);
-    //   });
-    // });
+      it('Верные временные интервалы', () => {
+        expect(report0.currentTime).toEqual(STANDARD_DELTA_MS);
+        expect(report1.deltaBetweenCurrentTimeAndCurrentSpawnTime).toEqual(0);
+        expect(report1.prevSpawnTime).toEqual(0);
+        expect(report2.deltaBetweenCurrentTimeAndCurrentSpawnTime).toEqual(STANDARD_DELTA_MS * 3 - spawnInterval);
+        expect(report2.currentTime).toEqual(STANDARD_DELTA_MS * 3);
+        expect(report2.prevSpawnTime).toEqual(spawnInterval);
+      });
+    });
   });
 });
