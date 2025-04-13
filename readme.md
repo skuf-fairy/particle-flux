@@ -64,6 +64,7 @@ Examples of some animations and effects that can be created using the emitter. A
 - [Flame](https://codepen.io/vladosina/pen/mybgxwV)
 - [Snow Flow](https://codepen.io/vladosina/pen/ZYzZoKg)
 - [Trail particles](https://codepen.io/vladosina/pen/mydNWNQ)
+- [Fountain](https://codepen.io/vladosina/pen/wBvVxzJ)
 - [SVG & PIXI equal animation](https://codepen.io/vladosina/pen/xbxvxNw)
 
 ## Particle Emitter Config
