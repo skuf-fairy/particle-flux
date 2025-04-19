@@ -28,6 +28,8 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
 
   private skipFirstEmit: boolean;
 
+  private lastUpdateReport: UpdateReport;
+
   constructor(
     viewContainer: ViewContainer<View>,
     viewFactory: ViewFactory<View>,
@@ -41,6 +43,13 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     this.currentTime = 0;
     this.currentSpawnInterval = this.getNextSpawnTime();
     this.prevSpawnTime = 0;
+
+    this.lastUpdateReport = {
+      currentTime: 0,
+      prevSpawnTime: 0,
+      particleCreatedCount: 0,
+      deltaBetweenCurrentTimeAndCurrentSpawnTime: 0,
+    };
 
     this.resetTime();
 
@@ -169,12 +178,12 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     if (newCurrentTime < 0) {
       this.currentTime = newCurrentTime;
 
-      return {
-        currentTime: this.currentTime,
-        prevSpawnTime: this.prevSpawnTime,
-        particleCreatedCount: 0,
-        deltaBetweenCurrentTimeAndCurrentSpawnTime: 0,
-      };
+      this.lastUpdateReport.currentTime = this.currentTime;
+      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
+      this.lastUpdateReport.particleCreatedCount = 0;
+      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = 0;
+
+      return this.lastUpdateReport;
     }
 
     // первый кадр, нужно заспавнить первую волну
@@ -184,12 +193,12 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
       this.prevSpawnTime = count > 1 ? this.currentSpawnInterval * count : 0;
       this.currentTime = newCurrentTime;
 
-      return {
-        currentTime: this.currentTime,
-        prevSpawnTime: this.prevSpawnTime,
-        particleCreatedCount: count,
-        deltaBetweenCurrentTimeAndCurrentSpawnTime,
-      };
+      this.lastUpdateReport.currentTime = this.currentTime;
+      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
+      this.lastUpdateReport.particleCreatedCount = count;
+      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = deltaBetweenCurrentTimeAndCurrentSpawnTime;
+
+      return this.lastUpdateReport;
     }
     // выходим из таймаута, нужно спавнить первую волну
     else if (this.currentTime <= 0 && newCurrentTime >= 0) {
@@ -199,12 +208,12 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
       this.prevSpawnTime = count > 1 ? this.currentSpawnInterval * count : 0;
       this.currentTime = newCurrentTime;
 
-      return {
-        currentTime: this.currentTime,
-        prevSpawnTime: this.prevSpawnTime,
-        particleCreatedCount: count,
-        deltaBetweenCurrentTimeAndCurrentSpawnTime: this.currentTime + deltaMS,
-      };
+      this.lastUpdateReport.currentTime = this.currentTime;
+      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
+      this.lastUpdateReport.particleCreatedCount = count;
+      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = this.currentTime + deltaMS;
+
+      return this.lastUpdateReport;
     }
 
     this.currentTime = newCurrentTime;
@@ -218,13 +227,13 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
         this.stopEmit();
       }
 
+      this.lastUpdateReport.currentTime = this.currentTime;
+      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
+      this.lastUpdateReport.particleCreatedCount = 0;
+      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = 0;
+
       // Otherwise, we just don't let them spawn any further.
-      return {
-        currentTime: this.currentTime,
-        prevSpawnTime: this.prevSpawnTime,
-        particleCreatedCount: 0,
-        deltaBetweenCurrentTimeAndCurrentSpawnTime: 0,
-      };
+      return this.lastUpdateReport;
     }
 
     const deltaBetweenCurrentTimeAndCurrentSpawnTime =
@@ -237,20 +246,20 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
       this.prevSpawnTime += this.currentSpawnInterval * count;
       this.currentSpawnInterval = this.getNextSpawnTime();
 
-      return {
-        currentTime: this.currentTime,
-        prevSpawnTime: this.prevSpawnTime,
-        particleCreatedCount: count,
-        deltaBetweenCurrentTimeAndCurrentSpawnTime,
-      };
+      this.lastUpdateReport.currentTime = this.currentTime;
+      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
+      this.lastUpdateReport.particleCreatedCount = count;
+      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = deltaBetweenCurrentTimeAndCurrentSpawnTime;
+
+      return this.lastUpdateReport;
     }
 
-    return {
-      currentTime: this.currentTime,
-      prevSpawnTime: this.prevSpawnTime,
-      particleCreatedCount: 0,
-      deltaBetweenCurrentTimeAndCurrentSpawnTime: 0,
-    };
+    this.lastUpdateReport.currentTime = this.currentTime;
+    this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
+    this.lastUpdateReport.particleCreatedCount = 0;
+    this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = 0;
+
+    return this.lastUpdateReport;
   };
 
   private createParticlesBetweenFrames(deltaBetweenCurrentTimeAndCurrentSpawnTime: number, deltaMS: number): number {
