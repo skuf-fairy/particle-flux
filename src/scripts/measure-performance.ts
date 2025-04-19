@@ -31,7 +31,7 @@ class TestViewContainer implements ViewContainer<ViewParticle> {
   }
 }
 
-export function testParticleFluxPerformance() {
+export function measureUpdateParticlesPerformance() {
   const emitter = new ParticleEmitter(new TestViewContainer(), () => new TestViewParticle(), {
     emitterConfig: {
       autoStart: false,
@@ -58,4 +58,5 @@ export function testParticleFluxPerformance() {
   return () => emitter.updateContainer(1, 1000 / 60);
 }
 
-console.log(measureFuncExecuteTime(testParticleFluxPerformance(), 200));
+console.log('measure update particles performance');
+console.log(measureFuncExecuteTime(measureUpdateParticlesPerformance(), 200));
