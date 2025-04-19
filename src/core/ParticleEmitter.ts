@@ -10,7 +10,7 @@ interface UpdateReport {
   currentTime: number;
   prevSpawnTime: number;
   particleCreatedCount: number;
-  deltaBetweenCurrentTimeAndCurrentSpawnTime: number;
+  spawnTimeDelta: number;
 }
 
 export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
@@ -26,8 +26,6 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   private readonly container: ParticleContainer<View>;
   private readonly ticker: ITicker;
 
-  private skipFirstEmit: boolean;
-
   private lastUpdateReport: UpdateReport;
 
   constructor(
@@ -39,7 +37,6 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     this.config = new ConfigManager(initialConfig, viewFactory);
     this.container = new ParticleContainer(viewContainer, this.config);
 
-    this.skipFirstEmit = false;
     this.currentTime = 0;
     this.currentSpawnInterval = this.getNextSpawnTime();
     this.prevSpawnTime = 0;
@@ -48,12 +45,13 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
       currentTime: 0,
       prevSpawnTime: 0,
       particleCreatedCount: 0,
-      deltaBetweenCurrentTimeAndCurrentSpawnTime: 0,
+      spawnTimeDelta: 0,
     };
 
     this.resetTime();
 
     if (this.config.autoStart === undefined || this.config.autoStart) {
+      // при автостарте создается первая волна
       this.startEmit();
     }
   }
@@ -71,8 +69,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     }
 
     if (!this.isEmitActive()) {
-      this.skipFirstEmit = true;
-      this.startEmit();
+      this.startTime();
     }
   }
 
@@ -80,29 +77,18 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
    * Creates a wave of particles, no more than the specified max Particles number of particles
    * The emitter starts
    */
-  public emitWave(): IParticle<View>[] {
-    const countPerWave = this.config.spawnParticlesPerWave || 1;
-    const count = this.getAvailableForEmitParticlesCount(countPerWave);
-    const particles: IParticle<View>[] = [];
-
-    for (let i = 0; i < count; i++) {
-      const particle = this.emit();
-      if (particle) {
-        particles.push(particle);
-      }
-    }
+  public emitWave(): void {
+    this.createParticleWave(0, 0);
 
     if (!this.isEmitActive()) {
-      this.skipFirstEmit = true;
-      this.startEmit();
+      this.startTime();
     }
-
-    return particles;
   }
 
+  // помимо старта времени создаст еще и первую волну частиц
   public startEmit(): void {
-    this.resetTime();
-    this.ticker.start();
+    this.startTime();
+    this.createParticlesBetweenFrames(0);
   }
 
   public pauseEmit(): void {
@@ -178,40 +164,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     if (newCurrentTime < 0) {
       this.currentTime = newCurrentTime;
 
-      this.lastUpdateReport.currentTime = this.currentTime;
-      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
-      this.lastUpdateReport.particleCreatedCount = 0;
-      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = 0;
-
-      return this.lastUpdateReport;
-    }
-
-    // первый кадр, нужно заспавнить первую волну
-    if (this.currentTime === 0 && !this.skipFirstEmit) {
-      const deltaBetweenCurrentTimeAndCurrentSpawnTime = Math.max(0, newCurrentTime - this.currentSpawnInterval);
-      const count = this.createParticlesBetweenFrames(deltaBetweenCurrentTimeAndCurrentSpawnTime, newCurrentTime);
-      this.prevSpawnTime = count > 1 ? this.currentSpawnInterval * count : 0;
-      this.currentTime = newCurrentTime;
-
-      this.lastUpdateReport.currentTime = this.currentTime;
-      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
-      this.lastUpdateReport.particleCreatedCount = count;
-      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = deltaBetweenCurrentTimeAndCurrentSpawnTime;
-
-      return this.lastUpdateReport;
-    }
-    // выходим из таймаута, нужно спавнить первую волну
-    else if (this.currentTime <= 0 && newCurrentTime >= 0) {
-      const deltaBetweenCurrentTimeAndCurrentSpawnTime = Math.max(0, newCurrentTime - this.currentSpawnInterval);
-
-      const count = this.createParticlesBetweenFrames(deltaBetweenCurrentTimeAndCurrentSpawnTime, newCurrentTime);
-      this.prevSpawnTime = count > 1 ? this.currentSpawnInterval * count : 0;
-      this.currentTime = newCurrentTime;
-
-      this.lastUpdateReport.currentTime = this.currentTime;
-      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
-      this.lastUpdateReport.particleCreatedCount = count;
-      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = this.currentTime + deltaMS;
+      this.updateReport(0, 0);
 
       return this.lastUpdateReport;
     }
@@ -227,60 +180,43 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
         this.stopEmit();
       }
 
-      this.lastUpdateReport.currentTime = this.currentTime;
-      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
-      this.lastUpdateReport.particleCreatedCount = 0;
-      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = 0;
+      this.updateReport(0, 0);
 
       // Otherwise, we just don't let them spawn any further.
       return this.lastUpdateReport;
     }
 
-    const deltaBetweenCurrentTimeAndCurrentSpawnTime =
-      this.currentTime - (this.prevSpawnTime + this.currentSpawnInterval);
+    const spawnTimeDelta = this.currentTime - (this.prevSpawnTime + this.currentSpawnInterval);
 
     // Time to create another wave of particles
-    if (deltaBetweenCurrentTimeAndCurrentSpawnTime >= 0) {
-      const count = this.createParticlesBetweenFrames(deltaBetweenCurrentTimeAndCurrentSpawnTime, deltaMS);
+    if (spawnTimeDelta >= 0) {
+      const count = this.createParticlesBetweenFrames(spawnTimeDelta);
 
       this.prevSpawnTime += this.currentSpawnInterval * count;
       this.currentSpawnInterval = this.getNextSpawnTime();
 
-      this.lastUpdateReport.currentTime = this.currentTime;
-      this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
-      this.lastUpdateReport.particleCreatedCount = count;
-      this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = deltaBetweenCurrentTimeAndCurrentSpawnTime;
+      this.updateReport(count, spawnTimeDelta);
 
       return this.lastUpdateReport;
     }
 
-    this.lastUpdateReport.currentTime = this.currentTime;
-    this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
-    this.lastUpdateReport.particleCreatedCount = 0;
-    this.lastUpdateReport.deltaBetweenCurrentTimeAndCurrentSpawnTime = 0;
+    this.updateReport(0, 0);
 
     return this.lastUpdateReport;
   };
 
-  private createParticlesBetweenFrames(deltaBetweenCurrentTimeAndCurrentSpawnTime: number, deltaMS: number): number {
+  // timeInterval - временной отрезок, на котором могли бы создаться частицы
+  private createParticlesBetweenFrames(timeInterval: number): number {
     const spawnInterval = this.currentSpawnInterval || 1;
-    // время задержки спавна
     // сколько раз могли бы заспавниться частицы за прошедшее время между кадрами
-    const count = Math.floor(deltaBetweenCurrentTimeAndCurrentSpawnTime / spawnInterval) + 1;
+    const spawnParticlesWaveCount = Math.floor(timeInterval / spawnInterval) + 1;
 
-    for (let i = 0; i < count; i++) {
-      const particles = this.emitWave();
-
-      // возраст, который успели прожить частицы, до handleUpdate
-      const particleAge = deltaBetweenCurrentTimeAndCurrentSpawnTime - i * spawnInterval;
-      if (particleAge > 0) {
-        particles.forEach((p) => {
-          updateParticle(p, particleAge / deltaMS, particleAge);
-        });
-      }
+    for (let i = 0; i < spawnParticlesWaveCount; i++) {
+      // timeInterval - i * spawnInterval - возраст, который успели прожить частицы
+      this.createParticleWave(timeInterval - i * spawnInterval, timeInterval);
     }
 
-    return count;
+    return spawnParticlesWaveCount;
   }
 
   // creates a particle with a transferred chance of creation
@@ -308,10 +244,9 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
 
   // resets the emitter time
   private resetTime(): void {
-    this.skipFirstEmit = false;
     this.currentTime = this.config.spawnTimeout !== undefined ? -this.config.spawnTimeout : 0;
-    this.prevSpawnTime = 0;
     this.currentSpawnInterval = this.getNextSpawnTime();
+    this.prevSpawnTime = this.currentTime < 0 ? -this.currentSpawnInterval : 0;
   }
 
   private getAvailableForEmitParticlesCount(emitParticlesCount: number): number {
@@ -325,5 +260,29 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
 
   private getSpawnTime(): number {
     return Math.abs(this.config.spawnTime || Number.POSITIVE_INFINITY);
+  }
+
+  private startTime(): void {
+    this.resetTime();
+    this.ticker.start();
+  }
+
+  private createParticleWave(particleAge: number, timeInterval: number): void {
+    const countPerWave = this.config.spawnParticlesPerWave || 1;
+    const count = this.getAvailableForEmitParticlesCount(countPerWave);
+
+    for (let i = 0; i < count; i++) {
+      const particle = this.emit();
+      if (particle && particleAge > 0) {
+        updateParticle(particle, particleAge / (timeInterval || 1), particleAge);
+      }
+    }
+  }
+
+  private updateReport(particleCreatedCount: number, spawnTimeDelta: number): void {
+    this.lastUpdateReport.currentTime = this.currentTime;
+    this.lastUpdateReport.prevSpawnTime = this.prevSpawnTime;
+    this.lastUpdateReport.particleCreatedCount = particleCreatedCount;
+    this.lastUpdateReport.spawnTimeDelta = spawnTimeDelta;
   }
 }
