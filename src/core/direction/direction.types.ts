@@ -1,12 +1,12 @@
 export interface DirectionRangeConfig {
   minAngle: number;
   maxAngle: number;
-  isFollow?: boolean;
+  isRotateByDirection?: boolean;
 }
 
 export interface StaticDirectionConfig {
   angle: number;
-  isFollow?: boolean;
+  isRotateByDirection?: boolean;
 }
 
 export type DirectionConfig = DirectionRangeConfig | StaticDirectionConfig;

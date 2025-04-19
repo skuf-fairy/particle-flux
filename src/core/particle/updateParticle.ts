@@ -67,7 +67,7 @@ export function updateParticle<View extends ViewParticle>(
     view.y += particle.direction.y * speed;
   }
 
-  if (particle.isFollowDirection) {
+  if (particle.isRotateByDirection) {
     particle.view.angle = particle.directionRotation = Vector2Utils.pointToAngleInDegrees(particle.direction);
   }
 

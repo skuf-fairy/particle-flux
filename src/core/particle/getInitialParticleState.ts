@@ -11,7 +11,7 @@ export function getInitialParticleState<View extends ViewParticle>(): Omit<IPart
     speedBehavior: null,
     gravityBehavior: 0,
     pathFunc: null,
-    isFollowDirection: false,
+    isRotateByDirection: false,
 
     next: null,
     prev: null,
