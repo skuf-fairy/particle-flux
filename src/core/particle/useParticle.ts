@@ -9,6 +9,8 @@ import {
   isScalarBehaviorConfig,
   isScalarDynamicBehavior,
 } from '../base-behaviors/scalar-behavior/scalar-behavior.typeguards';
+import {isNumberScriptBehaviorConfig} from '../base-behaviors/script-behavior/number-script-behavior/number-script-behavior.typeguards';
+import {isPoint2dScriptBehaviorConfig} from '../base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.typeguards';
 import {getScriptBehavior} from '../base-behaviors/script-behavior/script-behavior';
 import {isScriptBehaviorConfig} from '../base-behaviors/script-behavior/script-behavior.typeguards';
 import {getVectorBehavior} from '../base-behaviors/vector-behavior/vector-behavior';
@@ -16,9 +18,9 @@ import {isVectorBehaviorConfig} from '../base-behaviors/vector-behavior/vector-b
 import {
   isColorStaticBehaviorConfig,
   isColorDynamicBehaviorConfig,
-  isColorScriptBehaviorConfig,
 } from '../behaviors/color-behavior/color-behavior.typeguards';
 import {getColorStaticBehaviorValue, getColorDynamicBehavior} from '../behaviors/color-behavior/color-dynamic-behavior';
+import {isColorScriptBehaviorConfig} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeBehavior} from '../behaviors/life-time-behavior/life-time-behavior';
 import {getDirection} from '../direction/getDirection';
 import {getSpawnPosition} from '../spawn-shapes/getSpawnPosition';
@@ -89,7 +91,9 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
       particle.view.scale.x = particle.view.scale.y = getStaticBehaviorValue(config.scale);
     } else if (isScalarBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getScalarBehavior(config.scale);
-    } else if (isScriptBehaviorConfig<Point2d>(config.scale)) {
+    } else if (isNumberScriptBehaviorConfig(config.scale)) {
+      particle.scaleBehavior = getScriptBehavior<number>(config.scale);
+    } else if (isPoint2dScriptBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getScriptBehavior<Point2d>(config.scale);
     } else if (isVectorBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getVectorBehavior(config.scale);

@@ -1,4 +1,4 @@
+import {NumberScriptBehaviorConfig} from '../../base-behaviors/script-behavior/number-script-behavior/number-script-behavior.types';
 import {ScalarBehaviorConfig} from '../../base-behaviors/scalar-behavior/scalar-behavior.types';
-import {ScriptBehaviorConfig} from '../../base-behaviors/script-behavior/script-behavior.types';
 
-export type AlphaBehaviorConfig = ScalarBehaviorConfig | ScriptBehaviorConfig<number>;
+export type AlphaBehaviorConfig = ScalarBehaviorConfig | NumberScriptBehaviorConfig;

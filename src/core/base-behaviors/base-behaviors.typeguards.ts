@@ -12,7 +12,7 @@ export function isVectorBehavior(behavior: AnyBaseBehavior): behavior is VectorB
   return behavior.type === BaseBehaviorType.Vector;
 }
 
-export function isScriptBehavior<T>(behavior: AnyBaseBehavior): behavior is ScriptBehavior<T> {
+export function isScriptBehavior<V>(behavior: AnyBaseBehavior): behavior is ScriptBehavior<V> {
   return behavior.type === BaseBehaviorType.Script;
 }
 

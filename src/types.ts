@@ -14,6 +14,9 @@ import {ScalarBehavior} from './core/base-behaviors/scalar-behavior/scalar-behav
 import {ScriptBehavior} from './core/base-behaviors/script-behavior/script-behavior.types';
 import {VectorBehavior} from './core/base-behaviors/vector-behavior/vector-behavior.types';
 import {DeltaBehavior} from './core/base-behaviors/delta-behavior/delta-behavior.types';
+import {NumberScriptBehavior} from './core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior.types';
+import {Point2dScriptBehavior} from './core/base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.types';
+import {ColorScriptBehavior} from './core/behaviors/color-behavior/color-script-behavior/color-script-behavior.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 
@@ -63,14 +66,14 @@ export interface IParticle<View extends ViewParticle> {
   directionRotation: number;
   direction: Point2d;
   isRotateByDirection: boolean;
-  speedBehavior: ScalarBehavior | ScriptBehavior<number> | null;
+  speedBehavior: ScalarBehavior | NumberScriptBehavior | null;
   pathFunc: PathFunction | null;
-  gravityBehavior: ScalarBehavior | ScriptBehavior<number> | DeltaBehavior | number;
+  gravityBehavior: ScalarBehavior | NumberScriptBehavior | DeltaBehavior | number;
 
-  alphaBehavior: ScalarBehavior | ScriptBehavior<number> | null;
-  rotationBehavior: ScalarBehavior | DeltaBehavior | ScriptBehavior<number> | null;
-  scaleBehavior: ScalarBehavior | ScriptBehavior<Point2d> | VectorBehavior | null;
-  colorBehavior: ColorDynamicBehavior | ScriptBehavior<string> | null;
+  alphaBehavior: ScalarBehavior | NumberScriptBehavior | null;
+  rotationBehavior: ScalarBehavior | DeltaBehavior | NumberScriptBehavior | null;
+  scaleBehavior: ScalarBehavior | Point2dScriptBehavior | NumberScriptBehavior | VectorBehavior | null;
+  colorBehavior: ColorDynamicBehavior | ColorScriptBehavior | null;
 }
 
 export interface ITicker {

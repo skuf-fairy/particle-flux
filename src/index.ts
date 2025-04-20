@@ -36,7 +36,16 @@ export {
   ScalarDynamicBehaviorConfig,
   ScalarStaticBehaviorConfig,
 } from './core/base-behaviors/scalar-behavior/scalar-behavior.types';
-export {ScriptBehaviorConfig, TimeScriptConfig} from './core/base-behaviors/script-behavior/script-behavior.types';
+export {
+  ScriptBehaviorConfig,
+  ScriptTimeConfig,
+  ScriptBehavior,
+} from './core/base-behaviors/script-behavior/script-behavior.types';
+export {isNumberScriptBehaviorConfig} from './core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior.typeguards';
+export {NumberScriptBehaviorConfig} from './core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior.types';
+export {isPoint2dScriptBehaviorConfig} from './core/base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.typeguards';
+export {Point2dScriptBehaviorConfig} from './core/base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.types';
+
 export {VectorBehaviorConfig} from './core/base-behaviors/vector-behavior/vector-behavior.types';
 export {DeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/delta-behavior.types';
 
@@ -49,8 +58,11 @@ export {
 export {
   isColorStaticBehaviorConfig,
   isColorDynamicBehaviorConfig,
-  isColorScriptBehaviorConfig,
 } from './core/behaviors/color-behavior/color-behavior.typeguards';
+export {
+  isColorScriptBehaviorConfig,
+  isColorScriptBehavior,
+} from './core/behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 export {DirectionConfig, DirectionRangeConfig, StaticDirectionConfig} from './core/direction/direction.types';
 export {isStaticDirectionBehaviorConfig, isDirectionRangeBehaviorConfig} from './core/direction/direction.typeguards';
 export {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/gravity-behavior.types';

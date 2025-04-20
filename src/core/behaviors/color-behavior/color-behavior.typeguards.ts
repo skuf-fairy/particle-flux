@@ -1,4 +1,3 @@
-import {ScriptBehaviorConfig} from '../../base-behaviors/script-behavior/script-behavior.types';
 import {
   AnyColorBehavior,
   ColorBehaviorConfig,
@@ -7,6 +6,7 @@ import {
   ColorDynamicBehaviorConfig,
   ColorStaticBehaviorConfig,
 } from './color-behavior.types';
+import {ColorScriptBehavior} from './color-script-behavior/color-script-behavior.types';
 
 export function isColorStaticBehaviorConfig(config: ColorBehaviorConfig): config is ColorStaticBehaviorConfig {
   return 'value' in config;
@@ -14,10 +14,6 @@ export function isColorStaticBehaviorConfig(config: ColorBehaviorConfig): config
 
 export function isColorDynamicBehaviorConfig(config: ColorBehaviorConfig): config is ColorDynamicBehaviorConfig {
   return 'start' in config && 'end' in config;
-}
-
-export function isColorScriptBehaviorConfig(config: ColorBehaviorConfig): config is ScriptBehaviorConfig<string> {
-  return 'script' in config;
 }
 
 export function isColorDynamicBehavior(behavior: AnyColorBehavior): behavior is ColorDynamicBehavior {

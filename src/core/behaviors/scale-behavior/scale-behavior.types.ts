@@ -1,6 +1,10 @@
+import {Point2dScriptBehavior} from '../../base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.types';
 import {ScalarBehaviorConfig} from '../../base-behaviors/scalar-behavior/scalar-behavior.types';
-import {ScriptBehaviorConfig} from '../../base-behaviors/script-behavior/script-behavior.types';
+import {NumberScriptBehaviorConfig} from '../../base-behaviors/script-behavior/number-script-behavior/number-script-behavior.types';
 import {VectorBehaviorConfig} from '../../base-behaviors/vector-behavior/vector-behavior.types';
-import {Point2d} from '../../../types';
 
-export type ScaleBehaviorConfig = ScalarBehaviorConfig | ScriptBehaviorConfig<Point2d | number> | VectorBehaviorConfig;
+export type ScaleBehaviorConfig =
+  | ScalarBehaviorConfig
+  | NumberScriptBehaviorConfig
+  | Point2dScriptBehavior
+  | VectorBehaviorConfig;

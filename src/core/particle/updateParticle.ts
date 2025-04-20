@@ -9,10 +9,15 @@ import {
 } from '../base-behaviors/base-behaviors.typeguards';
 import {getDeltaBehaviorValue} from '../base-behaviors/delta-behavior/delta-behavior';
 import {getScalarBehaviorValue} from '../base-behaviors/scalar-behavior/scalar-behavior';
-import {getScriptBehaviorValue} from '../base-behaviors/script-behavior/script-behavior';
+import {getNumberScriptBehaviorValue} from '../base-behaviors/script-behavior/number-script-behavior/number-script-behavior';
+import {isNumberScriptBehavior} from '../base-behaviors/script-behavior/number-script-behavior/number-script-behavior.typeguards';
+import {getPoint2dScriptBehaviorValue} from '../base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior';
+import {isPoint2dScriptBehavior} from '../base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.typeguards';
 import {getVectorBehaviorValue} from '../base-behaviors/vector-behavior/vector-behavior';
 import {isColorDynamicBehavior} from '../behaviors/color-behavior/color-behavior.typeguards';
 import {getColorDynamicBehaviorValue} from '../behaviors/color-behavior/color-dynamic-behavior';
+import {getColorScriptBehaviorValue} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior';
+import {isColorScriptBehavior} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeNormalizedProgress} from '../behaviors/life-time-behavior/life-time-behavior';
 
 export function updateParticle<View extends ViewParticle>(
@@ -29,8 +34,8 @@ export function updateParticle<View extends ViewParticle>(
   if (particle.speedBehavior !== null) {
     if (isScalarBehavior(particle.speedBehavior)) {
       particle.speed = getScalarBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
-    } else if (isScriptBehavior(particle.speedBehavior)) {
-      particle.speed = getScriptBehaviorValue<number>(particle.speedBehavior, lifeTimeNormalizedProgress);
+    } else if (isNumberScriptBehavior(particle.speedBehavior)) {
+      particle.speed = getNumberScriptBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
     }
   }
 
@@ -54,8 +59,8 @@ export function updateParticle<View extends ViewParticle>(
       gravityShift = gravityBehavior;
     } else if (isScalarBehavior(gravityBehavior)) {
       gravityShift = getScalarBehaviorValue(gravityBehavior, lifeTimeNormalizedProgress);
-    } else if (isScriptBehavior(gravityBehavior)) {
-      gravityShift = getScriptBehaviorValue<number>(gravityBehavior, lifeTimeNormalizedProgress);
+    } else if (isNumberScriptBehavior(gravityBehavior)) {
+      gravityShift = getNumberScriptBehaviorValue(gravityBehavior, lifeTimeNormalizedProgress);
     } else if (isDeltaBehavior(gravityBehavior)) {
       gravityShift = getDeltaBehaviorValue(gravityBehavior, elapsedDelta);
     }
@@ -74,17 +79,18 @@ export function updateParticle<View extends ViewParticle>(
   if (particle.alphaBehavior !== null) {
     if (isScalarBehavior(particle.alphaBehavior)) {
       view.alpha = getScalarBehaviorValue(particle.alphaBehavior, lifeTimeNormalizedProgress);
-    } else if (isScriptBehavior(particle.alphaBehavior)) {
-      view.alpha = getScriptBehaviorValue(particle.alphaBehavior, lifeTimeNormalizedProgress);
+    } else if (isNumberScriptBehavior(particle.alphaBehavior)) {
+      view.alpha = getNumberScriptBehaviorValue(particle.alphaBehavior, lifeTimeNormalizedProgress);
     }
   }
 
   if (particle.rotationBehavior !== null) {
     if (isDeltaBehavior(particle.rotationBehavior)) {
       view.angle = particle.directionRotation + getDeltaBehaviorValue(particle.rotationBehavior, elapsedDelta);
-    } else if (isScriptBehavior(particle.rotationBehavior)) {
+    } else if (isNumberScriptBehavior(particle.rotationBehavior)) {
       view.angle =
-        particle.directionRotation + getScriptBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
+        particle.directionRotation +
+        getNumberScriptBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
     } else if (isScalarBehavior(particle.rotationBehavior)) {
       view.angle =
         particle.directionRotation + getScalarBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
@@ -94,8 +100,11 @@ export function updateParticle<View extends ViewParticle>(
   if (particle.scaleBehavior !== null) {
     if (isScalarBehavior(particle.scaleBehavior)) {
       view.scale.x = view.scale.y = getScalarBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
-    } else if (isScriptBehavior(particle.scaleBehavior)) {
-      view.scale = getScriptBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
+    } else if (isNumberScriptBehavior(particle.scaleBehavior)) {
+      const scaleValue = getNumberScriptBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
+      view.scale.x = view.scale.y = scaleValue;
+    } else if (isPoint2dScriptBehavior(particle.scaleBehavior)) {
+      view.scale = getPoint2dScriptBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
     } else if (isVectorBehavior(particle.scaleBehavior)) {
       view.scale = getVectorBehaviorValue(particle.scaleBehavior, elapsedDelta);
     }
@@ -104,8 +113,8 @@ export function updateParticle<View extends ViewParticle>(
   if (particle.colorBehavior !== null) {
     if (isColorDynamicBehavior(particle.colorBehavior)) {
       view.tint = getColorDynamicBehaviorValue(particle.colorBehavior, lifeTimeNormalizedProgress);
-    } else if (isScriptBehavior(particle.colorBehavior)) {
-      view.tint = getScriptBehaviorValue<string>(particle.colorBehavior, lifeTimeNormalizedProgress);
+    } else if (isColorScriptBehavior(particle.colorBehavior)) {
+      view.tint = getColorScriptBehaviorValue(particle.colorBehavior, lifeTimeNormalizedProgress);
     }
   }
 }

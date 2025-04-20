@@ -1,17 +1,18 @@
 import {describe, expect, it} from 'vitest';
-import {getScriptBehaviorValue} from '../../../core/base-behaviors/script-behavior/script-behavior';
 import {BaseBehaviorType} from '../../../core/base-behaviors/base-behaviors.types';
+import {getNumberScriptBehaviorValue} from '../../../core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior';
 
 describe('Script behavior', () => {
   it('При времени жизни 0 должен возвращаться первое значение из скрипта', () => {
     expect(
-      getScriptBehaviorValue(
+      getNumberScriptBehaviorValue(
         {
           script: [
             {value: 0, time: 0},
             {value: 1, time: 1},
           ],
           lastValueIndex: 1,
+          isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
         0,
@@ -21,13 +22,14 @@ describe('Script behavior', () => {
 
   it('При времени жизни 1 должен возвращаться последнее значение из скрипта', () => {
     expect(
-      getScriptBehaviorValue(
+      getNumberScriptBehaviorValue(
         {
           script: [
             {value: 0, time: 0},
             {value: 1, time: 1},
           ],
           lastValueIndex: 1,
+          isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
         1,
@@ -37,7 +39,7 @@ describe('Script behavior', () => {
 
   it('При разных значениях времени жизни должны возвращаться соответствующие значения из скрипта', () => {
     expect(
-      getScriptBehaviorValue(
+      getNumberScriptBehaviorValue(
         {
           script: [
             {value: 0, time: 0},
@@ -45,6 +47,7 @@ describe('Script behavior', () => {
             {value: 1, time: 1},
           ],
           lastValueIndex: 1,
+          isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
         0.5,
@@ -52,7 +55,7 @@ describe('Script behavior', () => {
     ).toEqual(0.5);
 
     expect(
-      getScriptBehaviorValue(
+      getNumberScriptBehaviorValue(
         {
           script: [
             {value: 0, time: 0},
@@ -60,6 +63,7 @@ describe('Script behavior', () => {
             {value: 1, time: 1},
           ],
           lastValueIndex: 1,
+          isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
         0.25,
@@ -67,7 +71,7 @@ describe('Script behavior', () => {
     ).toEqual(0);
 
     expect(
-      getScriptBehaviorValue(
+      getNumberScriptBehaviorValue(
         {
           script: [
             {value: 0, time: 0},
@@ -75,6 +79,7 @@ describe('Script behavior', () => {
             {value: 1, time: 1},
           ],
           lastValueIndex: 1,
+          isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
         0.75,
@@ -84,7 +89,7 @@ describe('Script behavior', () => {
 
   it('Поиск значения не с последнего примененного значения', () => {
     expect(
-      getScriptBehaviorValue(
+      getNumberScriptBehaviorValue(
         {
           script: [
             {value: 0, time: 0},
@@ -94,10 +99,49 @@ describe('Script behavior', () => {
             {value: 1, time: 1},
           ],
           lastValueIndex: 2,
+          isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
         0.9,
       ),
     ).toEqual(0.85);
+  });
+
+  it('Проверка интерполированного значения', () => {
+    expect(
+      getNumberScriptBehaviorValue(
+        {
+          script: [
+            {value: 0, time: 0},
+            {value: 0.5, time: 0.5},
+            {value: 0.75, time: 0.75},
+            {value: 0.85, time: 0.85},
+            {value: 1, time: 1},
+          ],
+          lastValueIndex: 1,
+          isInterpolate: true,
+          type: BaseBehaviorType.Script,
+        },
+        0.25,
+      ),
+    ).toEqual(0.25);
+
+    expect(
+      getNumberScriptBehaviorValue(
+        {
+          script: [
+            {value: 0, time: 0},
+            {value: 0.5, time: 0.5},
+            {value: 0.75, time: 0.75},
+            {value: 0.85, time: 0.85},
+            {value: 1, time: 1},
+          ],
+          lastValueIndex: 1,
+          isInterpolate: true,
+          type: BaseBehaviorType.Script,
+        },
+        0.75,
+      ),
+    ).toEqual(0.75);
   });
 });

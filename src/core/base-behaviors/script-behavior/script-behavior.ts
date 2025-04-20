@@ -1,6 +1,4 @@
-import {ScriptBehaviorConfig, ScriptBehavior} from './script-behavior.types';
-import {ArrayUtils} from '../../../utils/ArrayUtils';
-import {NumberUtils} from '../../../utils/NumberUtils';
+import {ScriptBehavior, ScriptBehaviorConfig} from './script-behavior.types';
 import {BaseBehaviorType} from '../base-behaviors.types';
 
 export function getScriptBehavior<V>(config: ScriptBehaviorConfig<V>): ScriptBehavior<V> {
@@ -8,26 +6,22 @@ export function getScriptBehavior<V>(config: ScriptBehaviorConfig<V>): ScriptBeh
     throw new Error('Script config must contain at least 1 item');
   }
 
+  if (config.script.some((item) => item.time < 0 || item.time > 1)) {
+    throw new Error('Значения времени в скрипте должны быть от 0 до 1');
+  }
+
   return {
     script: config.script.slice().sort((a, b) => a.time - b.time),
     lastValueIndex: 1,
+    isInterpolate: config.isInterpolate === true,
     type: BaseBehaviorType.Script,
   };
 }
 
-export function getScriptBehaviorValue<V>(behavior: ScriptBehavior<V>, lifeTimeNormalizedProgress: number): V {
-  const script = behavior.script;
-
-  if (lifeTimeNormalizedProgress === 0) return script[0].value;
-  if (lifeTimeNormalizedProgress === 1) return ArrayUtils.last(script)!.value;
-
-  for (let i = behavior.lastValueIndex; i < script.length; i++) {
-    if (lifeTimeNormalizedProgress >= script[i - 1].time && lifeTimeNormalizedProgress < script[i].time) {
-      behavior.lastValueIndex = i;
-      return script[i - 1].value;
-    }
-  }
-
-  // the check was on initialization, but here we skip
-  return ArrayUtils.last(script)!.value;
+export function getProgressBetweenScriptItems(
+  lifeTimeNormalizedProgress: number,
+  prevScriptItemTime: number,
+  currentScriptItemTime: number,
+) {
+  return (lifeTimeNormalizedProgress - prevScriptItemTime) / (currentScriptItemTime - prevScriptItemTime);
 }
