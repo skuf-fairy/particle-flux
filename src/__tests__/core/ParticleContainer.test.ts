@@ -248,6 +248,7 @@ describe('ParticleContainer', () => {
 
     container.update(1, STANDARD_DELTA_MS);
     configManager.view = (): ViewParticle => new TestViewParticle();
+    container.update(1, STANDARD_DELTA_MS);
 
     it('При смене рендер функции, пул частиц должен очиститься, так как старые инстансы отображений нельзя теперь переиспользовать', () => {
       expect(container.availableParticleHead).toEqual(null);
@@ -256,6 +257,12 @@ describe('ParticleContainer', () => {
     it('Активные частицы должны быть в таком же состоянии', () => {
       expect(container.getParticlesCount()).toEqual(5);
       expect(container.getParticlesArray()).toEqual(particleArray);
+    });
+
+    it('Частицам должен проставиться флаг isDestroyAfterDeath', () => {
+      container.getParticlesArray().forEach((p) => {
+        expect(p.isDestroyAfterDeath).toEqual(true);
+      });
     });
   });
 });

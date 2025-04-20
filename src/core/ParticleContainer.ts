@@ -73,10 +73,17 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     let pointer: IParticle<View> | null = this.particleHead;
 
     while (pointer !== null) {
-      if (wasParticleRemoved(pointer) || isNeedRemoveParticle(pointer)) {
+      if (wasParticleRemoved(pointer)) {
         removeParticle(this.viewContainer, pointer);
         pointer = this.removeActiveParticle(pointer, false);
-      } else if (isParticleDead(pointer) || !isParticleInUse(pointer)) {
+      } else if (isParticleDead(pointer)) {
+        if (isNeedRemoveParticle(pointer)) {
+          pointer = this.removeActiveParticle(pointer, false);
+        } else {
+          noUseParticle(pointer);
+          pointer = this.removeActiveParticle(pointer, true);
+        }
+      } else if (!isParticleInUse(pointer)) {
         noUseParticle(pointer);
         pointer = this.removeActiveParticle(pointer, true);
       } else {
