@@ -28,7 +28,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
       this.getParticlesArray().forEach((p) => {
         p.isDestroyAfterDeath = true;
       });
-      this.getPoolParticlesArray();
+      this.clearPool();
     });
   }
 
