@@ -9,6 +9,7 @@ import {removeParticle} from './particle/removeParticle';
 import {updateParticle} from './particle/updateParticle';
 import {useParticle} from './particle/useParticle';
 import {wasParticleRemoved} from './particle/wasParticleRemoved';
+import {isNeedRemoveParticle} from './particle/isNeedRemoveParticle';
 
 /**
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
@@ -24,7 +25,10 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     this.containerParticlesCount = 0;
 
     this.config.subscribeToViewChange(() => {
-      this.clearPool();
+      this.getParticlesArray().forEach((p) => {
+        p.isDestroyAfterDeath = true;
+      });
+      this.getPoolParticlesArray();
     });
   }
 
@@ -69,7 +73,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     let pointer: IParticle<View> | null = this.particleHead;
 
     while (pointer !== null) {
-      if (wasParticleRemoved(pointer)) {
+      if (wasParticleRemoved(pointer) || isNeedRemoveParticle(pointer)) {
         removeParticle(this.viewContainer, pointer);
         pointer = this.removeActiveParticle(pointer, false);
       } else if (isParticleDead(pointer) || !isParticleInUse(pointer)) {

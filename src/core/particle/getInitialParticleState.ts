@@ -23,5 +23,7 @@ export function getInitialParticleState<View extends ViewParticle>(): Omit<IPart
     rotationBehavior: null,
     scaleBehavior: null,
     colorBehavior: null,
+
+    isDestroyAfterDeath: false,
   };
 }

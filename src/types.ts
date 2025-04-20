@@ -74,6 +74,8 @@ export interface IParticle<View extends ViewParticle> {
   rotationBehavior: ScalarBehavior | DeltaBehavior | NumberScriptBehavior | null;
   scaleBehavior: ScalarBehavior | Point2dScriptBehavior | NumberScriptBehavior | VectorBehavior | null;
   colorBehavior: ColorDynamicBehavior | ColorScriptBehavior | null;
+
+  isDestroyAfterDeath: boolean;
 }
 
 export interface ITicker {
