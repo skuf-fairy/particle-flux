@@ -11,12 +11,14 @@ export class Ticker implements ITicker {
   private isStarted: boolean;
   private deltaBetweenFrames: number;
   private callback: TickerCallback;
+  private rafId: number;
 
   constructor(cb: TickerCallback) {
     this.lastTime = null;
     this.isStarted = false;
     this.deltaBetweenFrames = 0;
     this.callback = cb;
+    this.rafId = -1;
   }
 
   // FPS = 1 / deltaMS * 1000
@@ -57,15 +59,16 @@ export class Ticker implements ITicker {
         this.callback(this.elapsedDelta, this.deltaBetweenFrames);
       }
 
-      globalWindow?.requestAnimationFrame(update);
+      this.rafId = globalWindow?.requestAnimationFrame(update) || -1;
     };
 
-    globalWindow?.requestAnimationFrame(update);
+    this.rafId = globalWindow?.requestAnimationFrame(update) || -1;
   }
 
   public stop(): void {
     if (!this.isStarted) return;
 
+    globalWindow?.cancelAnimationFrame(this.rafId);
     this.lastTime = null;
     this.isStarted = false;
     this.deltaBetweenFrames = 0;
