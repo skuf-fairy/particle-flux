@@ -78,6 +78,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
         pointer = this.removeActiveParticle(pointer, false);
       } else if (isParticleDead(pointer)) {
         if (isNeedRemoveParticle(pointer)) {
+          removeParticle(this.viewContainer, pointer);
           pointer = this.removeActiveParticle(pointer, false);
         } else {
           noUseParticle(pointer);
@@ -107,7 +108,11 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
       temp.next = null;
       temp.prev = null;
 
-      this.addParticleToPool(temp);
+      if (isNeedRemoveParticle(temp)) {
+        removeParticle(this.viewContainer, temp);
+      } else {
+        this.addParticleToPool(temp);
+      }
     }
 
     this.particleHead = null;
