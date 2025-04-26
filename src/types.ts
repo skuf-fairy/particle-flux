@@ -47,6 +47,13 @@ export interface IParticleContainer<View extends ViewParticle> {
   update(elapsedDelta: number, deltaMS: number): void;
 }
 
+export interface InitialViewState {
+  scale: Point2d;
+  alpha: number;
+  tint: string | number;
+  angle: number;
+}
+
 export interface IParticle<View extends ViewParticle> {
   view: View;
   next: IParticle<View> | null;
@@ -75,7 +82,7 @@ export interface IParticle<View extends ViewParticle> {
 
   isDestroyAfterDeath: boolean;
 
-  initialViewState: ViewParticle;
+  initialViewState: InitialViewState;
 }
 
 export interface ITicker {

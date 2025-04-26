@@ -1,5 +1,5 @@
 import {DEFAULT_LIFE_TIME_CONFIG} from '../../constants';
-import {ViewParticle, IParticle, ParticleConfig, Point2d} from '../../types';
+import {ViewParticle, IParticle, ParticleConfig, Point2d, InitialViewState} from '../../types';
 import {parsePath} from '../../utils/parsePath';
 import {getDeltaBehavior} from '../base-behaviors/delta-behavior/delta-behavior';
 import {isDeltaBehaviorConfig} from '../base-behaviors/delta-behavior/delta-behavior.typeguards';
@@ -134,14 +134,10 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
   updateParticle(particle, 0, 0);
 }
 
-function resetParticleViewToInitialState(view: ViewParticle, initialViewState: ViewParticle): void {
-  view.x = initialViewState.x;
-  view.y = initialViewState.y;
+function resetParticleViewToInitialState(view: ViewParticle, initialViewState: InitialViewState): void {
   view.scale.x = initialViewState.scale.x;
   view.scale.y = initialViewState.scale.y;
   view.alpha = initialViewState.alpha;
   view.tint = initialViewState.tint;
   view.angle = initialViewState.angle;
-  view.width = initialViewState.width;
-  view.height = initialViewState.height;
 }
