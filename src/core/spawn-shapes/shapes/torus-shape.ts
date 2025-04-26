@@ -6,20 +6,19 @@ import {NumberUtils} from '../../../utils/NumberUtils';
 const getRandomPointFromTorus = (
   x: number,
   y: number,
+  // расстояние от центра до центра трубки
   innerRadius: number,
+  // радиус трубки
   outerRadius: number,
   startAngle: number,
   endAngle: number,
 ): Point2d => {
-  // Generating a random angle in radians
-  const radians = NumberUtils.degreesToRadians(realRandom.generateFloatNumber(startAngle, endAngle));
-
-  // Generating a random radius value ranging from the inner to the outer radius
-  const r = realRandom.generateFloatNumber(innerRadius, outerRadius);
+  const theta = NumberUtils.degreesToRadians(realRandom.generateFloatNumber(startAngle, endAngle));
+  const phi = Math.random() * Math.PI * 2;
 
   // Calculating the coordinates of a point
-  const pointX = x + r * Math.cos(radians);
-  const pointY = y + r * Math.sin(radians);
+  const pointX = x + (innerRadius + outerRadius * Math.cos(phi)) * Math.cos(theta);
+  const pointY = y + (innerRadius + outerRadius * Math.cos(phi)) * Math.sin(theta);
 
   return {x: pointX, y: pointY};
 };
