@@ -135,8 +135,6 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
 }
 
 function resetParticleViewToInitialState(view: ViewParticle, initialViewState: InitialViewState): void {
-  view.scale.x = initialViewState.scale.x;
-  view.scale.y = initialViewState.scale.y;
   view.alpha = initialViewState.alpha;
   view.tint = initialViewState.tint;
   view.angle = initialViewState.angle;
