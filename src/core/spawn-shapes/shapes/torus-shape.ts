@@ -12,14 +12,14 @@ const getRandomPointFromTorus = (
   endAngle: number,
 ): Point2d => {
   // Generating a random angle in radians
-  const angle = realRandom.generateFloatNumber(startAngle, endAngle);
+  const radians = NumberUtils.degreesToRadians(realRandom.generateFloatNumber(startAngle, endAngle));
 
   // Generating a random radius value ranging from the inner to the outer radius
   const r = realRandom.generateFloatNumber(innerRadius, outerRadius);
 
   // Calculating the coordinates of a point
-  const pointX = x + r * Math.cos(angle);
-  const pointY = y + r * Math.sin(angle);
+  const pointX = x + r * Math.cos(radians);
+  const pointY = y + r * Math.sin(radians);
 
   return {x: pointX, y: pointY};
 };
@@ -30,7 +30,7 @@ export function getSpawnPositionOfTorus(config: SpawnTorusShape): Point2d {
     config.y,
     config.innerRadius || 0,
     config.outerRadius,
-    NumberUtils.degreesToRadians(config.startAngle || 0),
-    NumberUtils.degreesToRadians(config.endAngle || 360),
+    config.startAngle || 0,
+    config.endAngle || 360,
   );
 }
