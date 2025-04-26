@@ -93,7 +93,7 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
 
   if (config.scale) {
     if (isScalarStaticBehavior(config.scale)) {
-      view.scale.x = particle.view.scale.y = getStaticBehaviorValue(config.scale);
+      view.scale.x = view.scale.y = getStaticBehaviorValue(config.scale);
     } else if (isScalarBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getScalarBehavior(config.scale);
     } else if (isNumberScriptBehaviorConfig(config.scale)) {
@@ -135,6 +135,8 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
 }
 
 function resetParticleViewToInitialState(view: ViewParticle, initialViewState: InitialViewState): void {
+  view.scale.x = initialViewState.scale.x;
+  view.scale.y = initialViewState.scale.y;
   view.alpha = initialViewState.alpha;
   view.tint = initialViewState.tint;
   view.angle = initialViewState.angle;

@@ -48,6 +48,7 @@ export interface IParticleContainer<View extends ViewParticle> {
 }
 
 export interface InitialViewState {
+  scale: Point2d;
   alpha: number;
   tint: string | number;
   angle: number;
