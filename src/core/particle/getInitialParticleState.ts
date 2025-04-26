@@ -25,5 +25,18 @@ export function getInitialParticleState<View extends ViewParticle>(): Omit<IPart
     colorBehavior: null,
 
     isDestroyAfterDeath: false,
+
+    initialViewState: {
+      x: 0,
+      y: 0,
+      scale: {x: 1, y: 1},
+      alpha: 1,
+      tint: '#ffffff',
+      angle: 0,
+      destroyed: false,
+      visible: false,
+      width: 0,
+      height: 0,
+    },
   };
 }

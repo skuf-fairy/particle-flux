@@ -11,5 +11,17 @@ export function createUnusedParticle<View extends ViewParticle>(
   return {
     view,
     ...getInitialParticleState(),
+    initialViewState: {
+      x: view.x,
+      y: view.y,
+      scale: view.scale,
+      alpha: view.alpha,
+      tint: view.tint,
+      angle: view.angle,
+      destroyed: false,
+      visible: false,
+      width: view.width,
+      height: view.height,
+    },
   };
 }

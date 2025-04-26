@@ -11,7 +11,6 @@ import {TickerCallback} from './utils/Ticker';
 import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 import {PathConfig, PathFunction} from './core/path/path.types';
 import {ScalarBehavior} from './core/base-behaviors/scalar-behavior/scalar-behavior.types';
-import {ScriptBehavior} from './core/base-behaviors/script-behavior/script-behavior.types';
 import {VectorBehavior} from './core/base-behaviors/vector-behavior/vector-behavior.types';
 import {DeltaBehavior} from './core/base-behaviors/delta-behavior/delta-behavior.types';
 import {NumberScriptBehavior} from './core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior.types';
@@ -32,7 +31,6 @@ export interface ViewParticle {
   visible: boolean;
   width: number;
   height: number;
-  [key: string | number]: any;
 }
 
 // an external display container to which the particles are added
@@ -76,6 +74,8 @@ export interface IParticle<View extends ViewParticle> {
   colorBehavior: ColorDynamicBehavior | ColorScriptBehavior | null;
 
   isDestroyAfterDeath: boolean;
+
+  initialViewState: ViewParticle;
 }
 
 export interface ITicker {

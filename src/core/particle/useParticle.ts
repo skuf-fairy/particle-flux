@@ -28,6 +28,11 @@ import {getInitialParticleState} from './getInitialParticleState';
 import {updateParticle} from './updateParticle';
 
 export function useParticle<View extends ViewParticle>(particle: IParticle<View>, config: ParticleConfig): void {
+  const view = particle.view;
+  const initialViewState = particle.initialViewState;
+
+  resetParticleViewToInitialState(view, initialViewState);
+
   Object.assign(particle, getInitialParticleState());
 
   particle.inUse = true;
@@ -41,8 +46,8 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
     ? getSpawnPosition(config.spawnShape, config.spawnPosition)
     : config.spawnPosition || {x: 0, y: 0};
 
-  particle.view.x = particle.initialPosition.x;
-  particle.view.y = particle.initialPosition.y;
+  view.x = particle.initialPosition.x;
+  view.y = particle.initialPosition.y;
 
   if (config.direction) {
     const direction = getDirection(config.direction);
@@ -50,7 +55,7 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
     particle.isRotateByDirection = config.direction.isRotateByDirection === true;
 
     if (particle.isRotateByDirection) {
-      particle.view.angle = particle.directionRotation = direction.angle;
+      view.angle = particle.directionRotation = direction.angle;
     }
   }
 
@@ -66,7 +71,7 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
 
   if (config.alpha) {
     if (isScalarStaticBehavior(config.alpha)) {
-      particle.view.alpha = getStaticBehaviorValue(config.alpha);
+      view.alpha = getStaticBehaviorValue(config.alpha);
     } else if (isScriptBehaviorConfig(config.alpha)) {
       particle.alphaBehavior = getScriptBehavior(config.alpha);
     } else if (isScalarBehaviorConfig(config.alpha)) {
@@ -78,7 +83,7 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
     if (isDeltaBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getDeltaBehavior(config.rotation);
     } else if (isScalarStaticBehavior(config.rotation)) {
-      particle.view.angle += getStaticBehaviorValue(config.rotation);
+      view.angle += getStaticBehaviorValue(config.rotation);
     } else if (isScalarBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getScalarBehavior(config.rotation);
     } else if (isScriptBehaviorConfig(config.rotation)) {
@@ -88,7 +93,7 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
 
   if (config.scale) {
     if (isScalarStaticBehavior(config.scale)) {
-      particle.view.scale.x = particle.view.scale.y = getStaticBehaviorValue(config.scale);
+      view.scale.x = particle.view.scale.y = getStaticBehaviorValue(config.scale);
     } else if (isScalarBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getScalarBehavior(config.scale);
     } else if (isNumberScriptBehaviorConfig(config.scale)) {
@@ -102,7 +107,7 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
 
   if (config.color) {
     if (isColorStaticBehaviorConfig(config.color)) {
-      particle.view.tint = getColorStaticBehaviorValue(config.color);
+      view.tint = getColorStaticBehaviorValue(config.color);
     } else if (isColorDynamicBehaviorConfig(config.color)) {
       particle.colorBehavior = getColorDynamicBehavior(config.color);
     } else if (isColorScriptBehaviorConfig(config.color)) {
@@ -127,4 +132,16 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
   }
 
   updateParticle(particle, 0, 0);
+}
+
+function resetParticleViewToInitialState(view: ViewParticle, initialViewState: ViewParticle): void {
+  view.x = initialViewState.x;
+  view.y = initialViewState.y;
+  view.scale.x = initialViewState.scale.x;
+  view.scale.y = initialViewState.scale.y;
+  view.alpha = initialViewState.alpha;
+  view.tint = initialViewState.tint;
+  view.angle = initialViewState.angle;
+  view.width = initialViewState.width;
+  view.height = initialViewState.height;
 }
