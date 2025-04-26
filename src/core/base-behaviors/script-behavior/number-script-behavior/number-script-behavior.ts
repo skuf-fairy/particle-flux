@@ -22,7 +22,6 @@ export function getNumberScriptBehaviorValue(
       behavior.lastValueIndex = i;
 
       if (behavior.isInterpolate) {
-        console.log(getProgressBetweenScriptItems(lifeTimeNormalizedProgress, script[i - 1].time, script[i].time));
         return lerp(
           script[i - 1].value,
           script[i].value,

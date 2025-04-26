@@ -2,14 +2,14 @@
 
 A particle system for various graphics libraries in JavaScript.
 
-An interactive editor for configuring of the emitter. TODO
+An interactive [editor](https://skuf-fairy.github.io/pixi-particles-flux-editor/) for configuring of the emitter.
 
 ## Using the pixi.js (v8) example
 
 A simple example of using an emitter
 
 ```typescript
-import {ParticleFlux} from 'particle-flux';
+import {ParticleEmitter} from 'particle-flux';
 import {Application, Assets, Sprite} from 'pixi.js';
 
 async function init() {
@@ -29,7 +29,7 @@ async function init() {
   }
 
   // create emitter
-  new ParticleFlux<ContainerChild>(app.stage, createParticle, {
+  new ParticleEmitter<ContainerChild>(app.stage, createParticle, {
     emitterConfig: {spawnInterval: 150},
     particleBehaviorsConfig: {
       lifeTime: {value: 250},
@@ -127,26 +127,27 @@ Determines the auto-start of the emitter, that is, the creation of particles. By
 A configuration for each particle that defines its initial position, direction of motion, velocity, and other parameters for its display.
 
 ```typescript
-interface ParticleBehaviorConfig {
-  lifeTime: LifeTimeBehaviorConfig;
-  spawnPosition?: SpawnPositionBehaviorConfig;
+interface ParticleConfig {
+  lifeTime?: LifeTimeBehaviorConfig;
+  spawnPosition?: SpawnPositionConfig;
   spawnShape?: SpawnShapeBehavior;
-  direction?: DirectionBehaviorConfig;
+  direction?: DirectionConfig;
   speed?: SpeedBehaviorConfig;
   scale?: ScaleBehaviorConfig;
   alpha?: AlphaBehaviorConfig;
   gravity?: GravityBehaviorConfig;
   rotation?: RotationBehaviorConfig;
   color?: ColorBehaviorConfig;
-  path?: PathBehaviorConfig;
+  path?: PathConfig;
 }
 ```
 
 ### Life Time
 
-Determines the lifetime of the particle. Required field. Specified in milliseconds.
+Determines the lifetime of the particle. Specified in milliseconds.
 Parameters that change over time relative to the lifetime of the particle.
 It can be static, meaning the lifetime of each created particle will always be the same.
+If you do not pass the value, the lifetime will be infinite.
 
 ```typescript
 interface LifeTimeStaticBehaviorConfig {
@@ -168,7 +169,7 @@ interface LifeTimeRangeBehaviorConfig {
 Defines the initial position of the particle or, if **Spawn Shape** is specified, the position relative to which the position is calculated using the config in **Spawn Shape**. By default, this is the origin.
 
 ```typescript
-interface SpawnPositionBehaviorConfig {
+interface SpawnPositionConfig {
   x: number;
   y: number;
 }
@@ -263,7 +264,7 @@ interface DirectionRangeBehaviorConfig {
 
 ### Path
 
-TODO
+The function of changing the position of the object, example: **2.5*sin(10*x)**
 
 ```typescript
 interface PathBehaviorConfig {
@@ -279,7 +280,7 @@ interface PathBehaviorConfig {
 | Alpha    | Yes                        | Yes                         | Yes                  | No                   | No                  |
 | Speed    | Yes                        | Yes                         | Yes                  | No                   | No                  |
 | Color    | Yes                        | Yes                         | Yes                  | No                   | No                  |
-| Gravity  | Yes                        | Yes                         | No                   | No                   | No                  |
+| Gravity  | Yes                        | Yes                         | Yes                  | No                   | Yes                 |
 | Rotation | Yes                        | Yes                         | Yes                  | No                   | Yes                 |
 
 ### ScalarStaticBehaviorConfig
@@ -287,10 +288,22 @@ interface PathBehaviorConfig {
 A static value that will be constant throughout the life of the particle.
 
 ```typescript
-interface ScalarStaticBehaviorConfig extends ScalarBaseBehaviorConfig {
+interface ScalarStaticBehaviorConfig {
   value: number;
+  multiplier?: Multiplier;
+}
+```
+
+### ScalarDynamicBehaviorConfig
+
+The interpolated parameter change from the start of a particle's life to its end
+
+```typescript
+interface ScalarDynamicBehaviorConfig {
+  start: number;
+  end: number;
   easing?: EasingName;
-  mult?: Multiplier;
+  multiplier?: Multiplier;
 }
 ```
 
@@ -299,10 +312,11 @@ interface ScalarStaticBehaviorConfig extends ScalarBaseBehaviorConfig {
 The value is changed according to the prescribed script. You must specify the array as **time - value**. The time is normalized, it varies from 0 to 1, where 0 is the beginning of the particle's life, and 1 is the end.
 
 ```typescript
-type TimeScriptConfig<V> = {time: number; value: V}[];
+type ScriptTimeConfig<V> = {time: number; value: V}[];
 
 interface ScriptBehaviorConfig<V> {
-  script: TimeScriptConfig<V>;
+  script: ScriptTimeConfig<V>;
+  isInterpolate?: boolean; // interpolate between the current value and the next one for a smoother transition
 }
 ```
 
@@ -340,13 +354,13 @@ interface VectorBehaviorConfig {
 
 ### DeltaBehaviorConfig
 
-The value \* mult value changes every frame by the delta constant
+The value changes every frame by the delta constant
 
 ```typescript
 interface DeltaBehaviorConfig {
   value: number;
   delta: number;
-  mult?: Multiplier;
+  multiplier?: Multiplier;
 }
 ```
 

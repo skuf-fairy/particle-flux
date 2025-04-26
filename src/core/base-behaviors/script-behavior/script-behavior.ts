@@ -23,5 +23,6 @@ export function getProgressBetweenScriptItems(
   prevScriptItemTime: number,
   currentScriptItemTime: number,
 ) {
-  return (lifeTimeNormalizedProgress - prevScriptItemTime) / (currentScriptItemTime - prevScriptItemTime);
+  const delta = currentScriptItemTime - prevScriptItemTime;
+  return (lifeTimeNormalizedProgress - prevScriptItemTime) / (delta || 1);
 }
