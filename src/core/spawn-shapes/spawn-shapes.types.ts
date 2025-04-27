@@ -29,12 +29,12 @@ export type Chain = Point2d[];
 
 export type PolygonalChain = Chain | Chain[];
 
-export interface PolygonalChainShape {
+export interface SpawnPolygonalChainShape {
   type: SpawnShapeType.Polygon;
   chain: PolygonalChain;
 }
 
-export type SpawnShape = SpawnRectangleShape | SpawnTorusShape | SpawnPointShape | PolygonalChainShape;
+export type SpawnShape = SpawnRectangleShape | SpawnTorusShape | SpawnPointShape | SpawnPolygonalChainShape;
 
 export interface SpawnShapeBehavior {
   shape: SpawnShape;

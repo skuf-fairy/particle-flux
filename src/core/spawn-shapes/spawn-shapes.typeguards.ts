@@ -5,7 +5,7 @@ import {
   SpawnRectangleShape,
   SpawnPointShape,
   SpawnTorusShape,
-  PolygonalChainShape,
+  SpawnPolygonalChainShape,
   SpawnShape,
 } from './spawn-shapes.types';
 
@@ -21,10 +21,10 @@ export function isSpawnRectangleShape(spawnShape: SpawnShape): spawnShape is Spa
   return spawnShape.type === SpawnShapeType.Rectangle;
 }
 
-export function isTorusShape(spawnShape: SpawnShape): spawnShape is SpawnTorusShape {
+export function isSpawnTorusShape(spawnShape: SpawnShape): spawnShape is SpawnTorusShape {
   return spawnShape.type === SpawnShapeType.Torus;
 }
 
-export function isPolygonalShape(spawnShape: SpawnShape): spawnShape is PolygonalChainShape {
+export function isSpawnPolygonalShape(spawnShape: SpawnShape): spawnShape is SpawnPolygonalChainShape {
   return spawnShape.type === SpawnShapeType.Polygon;
 }

@@ -85,7 +85,7 @@ export {
   SpawnRectangleShape,
   SpawnTorusShape,
   SpawnPointShape,
-  PolygonalChainShape,
+  SpawnPolygonalChainShape,
   SpawnShapeBehavior,
   SpawnShapeType,
   Chain,
@@ -96,8 +96,8 @@ export {
   isSinglePolygonalChain,
   isSpawnPointShape,
   isSpawnRectangleShape,
-  isTorusShape,
-  isPolygonalShape,
+  isSpawnTorusShape,
+  isSpawnPolygonalShape,
 } from './core/spawn-shapes/spawn-shapes.typeguards';
 
 export {EasingName, EasingFunction} from './utils/easing/easing.types';

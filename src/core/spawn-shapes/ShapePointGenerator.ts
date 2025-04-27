@@ -3,7 +3,7 @@ import {PseudoRandom} from '../../utils/random/PseudoRandom';
 import {NumberUtils} from '../../utils/NumberUtils';
 import {
   Chain,
-  PolygonalChainShape,
+  SpawnPolygonalChainShape,
   SpawnRectangleShape,
   SpawnShapeBehavior,
   SpawnShapeType,
@@ -116,7 +116,7 @@ export class ShapePointGenerator {
     }
   }
 
-  private setSpawnPositionOfPolygonalShape(shape: PolygonalChainShape): void {
+  private setSpawnPositionOfPolygonalShape(shape: SpawnPolygonalChainShape): void {
     const chain = shape.chain;
 
     if (chain.length > 0) {
