@@ -1,11 +1,18 @@
 import {NumberUtils} from '../NumberUtils';
 import {AbstractRandom} from './Random';
+import {realRandom} from './RealRandom';
 
 // implementation of the Park-Miller-Carta method
 export class PseudoRandom extends AbstractRandom {
   private prevValue!: number;
   private callsCounter!: number;
   public randomSeed!: number;
+
+  constructor(randomSeed: number, callsCounter: number = 0) {
+    super();
+
+    this.init(randomSeed, callsCounter);
+  }
 
   public init(randomSeed: number, callsCounter: number = 0): void {
     this.reset();
@@ -46,7 +53,7 @@ export class PseudoRandom extends AbstractRandom {
     const [min, max] = NumberUtils.getOrderedMinMax(minValue, maxValue);
 
     if (min >= 0 && min < 1 && max >= 0 && max < 1) {
-      return (this.random() / 2147483646) * (max - min + 1) + min;
+      return (this.random() / 2147483646) * (max - min) + min;
     }
 
     return (this.random() / 2147483646) * (max - min + 1) + min;

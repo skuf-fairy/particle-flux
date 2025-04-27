@@ -1,30 +1,30 @@
 import {
   PolygonalChain,
   Chain,
-  SpawnShapeBehavior,
   SpawnShapeType,
   SpawnRectangleShape,
   SpawnPointShape,
   SpawnTorusShape,
   PolygonalChainShape,
+  SpawnShape,
 } from './spawn-shapes.types';
 
 export function isSinglePolygonalChain(chain: PolygonalChain): chain is Chain {
   return !Array.isArray(chain[0]);
 }
 
-export function isSpawnPointShape(shape: SpawnShapeBehavior): shape is SpawnPointShape {
-  return shape.type === SpawnShapeType.Point;
+export function isSpawnPointShape(spawnShape: SpawnShape): spawnShape is SpawnPointShape {
+  return spawnShape.type === SpawnShapeType.Point;
 }
 
-export function isSpawnRectangleShape(shape: SpawnShapeBehavior): shape is SpawnRectangleShape {
-  return shape.type === SpawnShapeType.Rectangle;
+export function isSpawnRectangleShape(spawnShape: SpawnShape): spawnShape is SpawnRectangleShape {
+  return spawnShape.type === SpawnShapeType.Rectangle;
 }
 
-export function isTorusShape(shape: SpawnShapeBehavior): shape is SpawnTorusShape {
-  return shape.type === SpawnShapeType.Torus;
+export function isTorusShape(spawnShape: SpawnShape): spawnShape is SpawnTorusShape {
+  return spawnShape.type === SpawnShapeType.Torus;
 }
 
-export function isPolygonalShape(shape: SpawnShapeBehavior): shape is PolygonalChainShape {
-  return shape.type === SpawnShapeType.Polygon;
+export function isPolygonalShape(spawnShape: SpawnShape): spawnShape is PolygonalChainShape {
+  return spawnShape.type === SpawnShapeType.Polygon;
 }

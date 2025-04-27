@@ -5,6 +5,7 @@ import {Ticker} from '../utils/Ticker';
 import {realRandom} from '../utils/random/RealRandom';
 import {isRangeValue} from '../typeguards';
 import {updateParticle} from './particle/updateParticle';
+import {ShapePointGenerator} from './spawn-shapes/ShapePointGenerator';
 
 interface UpdateReport {
   currentTime: number;
@@ -25,6 +26,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
 
   private readonly container: ParticleContainer<View>;
   private readonly ticker: ITicker;
+  private readonly shapePointGenerator: ShapePointGenerator;
 
   private lastUpdateReport: UpdateReport;
 
@@ -35,7 +37,8 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   ) {
     this.ticker = new Ticker(this.handleUpdate);
     this.config = new ConfigManager(initialConfig, viewFactory);
-    this.container = new ParticleContainer(viewContainer, this.config);
+    this.shapePointGenerator = new ShapePointGenerator();
+    this.container = new ParticleContainer(viewContainer, this.config, this.shapePointGenerator);
 
     this.currentTime = 0;
     this.currentSpawnInterval = this.getNextSpawnTime();
@@ -272,11 +275,17 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     const count = this.getAvailableForEmitParticlesCount(countPerWave);
 
     for (let i = 0; i < count; i++) {
+      if (this.config.spawnShape?.isGroupWave) {
+        this.shapePointGenerator.reset();
+      }
+
       const particle = this.emit();
       if (particle && particleAge > 0) {
         updateParticle(particle, particleAge / (timeInterval || 1), particleAge);
       }
     }
+
+    this.shapePointGenerator.refresh();
   }
 
   private updateReport(particleCreatedCount: number, spawnTimeDelta: number): void {

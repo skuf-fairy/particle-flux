@@ -34,4 +34,9 @@ export interface PolygonalChainShape {
   chain: PolygonalChain;
 }
 
-export type SpawnShapeBehavior = SpawnRectangleShape | SpawnTorusShape | SpawnPointShape | PolygonalChainShape;
+export type SpawnShape = SpawnRectangleShape | SpawnTorusShape | SpawnPointShape | PolygonalChainShape;
+
+export interface SpawnShapeBehavior {
+  shape: SpawnShape;
+  isGroupWave?: boolean;
+}

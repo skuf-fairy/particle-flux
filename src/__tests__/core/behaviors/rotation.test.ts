@@ -8,6 +8,7 @@ import {useParticle} from '../../../core/particle/useParticle';
 import {ParticleConfig} from '../../../types';
 import {STANDARD_DELTA_MS} from '../../../utils/Ticker';
 import {TestViewContainer} from '../../TestViewContainer';
+import {ShapePointGenerator} from '../../../core/spawn-shapes/ShapePointGenerator';
 
 describe('Обновление поворота отображения', () => {
   const particleConfig: ParticleConfig = {
@@ -27,7 +28,8 @@ describe('Обновление поворота отображения', () => {
   const view = createView(TEST_VIEW_FACTORY);
 
   const particle = createUnusedParticle(viewContainer, view);
-  useParticle(particle, particleConfig);
+  const shapePointGenerator = new ShapePointGenerator();
+  useParticle(particle, particleConfig, shapePointGenerator);
 
   updateParticle(particle, 1, STANDARD_DELTA_MS);
 

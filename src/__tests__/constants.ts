@@ -28,11 +28,13 @@ export const TEST_CONFIG = (): ParticleEmitterConfig => ({
       ],
     },
     spawnShape: {
-      type: SpawnShapeType.Rectangle,
-      x: 0,
-      y: 0,
-      width: 100,
-      height: 100,
+      shape: {
+        type: SpawnShapeType.Rectangle,
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      },
     },
   },
 });

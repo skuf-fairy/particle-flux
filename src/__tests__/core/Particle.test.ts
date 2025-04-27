@@ -10,6 +10,7 @@ import {createView} from '../../core/particle/createView';
 import {updateParticle} from '../../core/particle/updateParticle';
 import {useParticle} from '../../core/particle/useParticle';
 import {isParticleInUse} from '../../core/particle/isParticleInUse';
+import {ShapePointGenerator} from '../../core/spawn-shapes/ShapePointGenerator';
 
 const TEST_PARTICLE_CONFIG: ParticleConfig = {
   lifeTime: {
@@ -66,7 +67,9 @@ describe('Particle', () => {
     const viewContainer = new TestViewContainer();
 
     const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
-    useParticle(particle, TEST_PARTICLE_CONFIG);
+    const shapePointGenerator = new ShapePointGenerator();
+
+    useParticle(particle, TEST_PARTICLE_CONFIG, shapePointGenerator);
 
     testUsedParticle(particle, viewContainer);
 
@@ -81,7 +84,9 @@ describe('Particle', () => {
     const viewContainer = new TestViewContainer();
 
     const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
-    useParticle(particle, TEST_PARTICLE_CONFIG);
+    const shapePointGenerator = new ShapePointGenerator();
+
+    useParticle(particle, TEST_PARTICLE_CONFIG, shapePointGenerator);
 
     it('Необходимо проверить, что после половины жизни частицы, ее параметры должны измениться на половину', () => {
       updateParticle(particle, 1, 5);
@@ -111,9 +116,10 @@ describe('Particle', () => {
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+      const shapePointGenerator = new ShapePointGenerator();
 
-      useParticle(particle1, particleConfig);
-      useParticle(particle2, particleConfig);
+      useParticle(particle1, particleConfig, shapePointGenerator);
+      useParticle(particle2, particleConfig, shapePointGenerator);
 
       updateParticle(particle1, 1, 5);
       updateParticle(particle2, 1 / 2, 5 / 2);
@@ -142,9 +148,10 @@ describe('Particle', () => {
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+      const shapePointGenerator = new ShapePointGenerator();
 
-      useParticle(particle1, particleConfig);
-      useParticle(particle2, particleConfig);
+      useParticle(particle1, particleConfig, shapePointGenerator);
+      useParticle(particle2, particleConfig, shapePointGenerator);
 
       updateParticle(particle1, 1, 5);
       updateParticle(particle2, 1 / 2, 5 / 2);
@@ -170,9 +177,10 @@ describe('Particle', () => {
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+      const shapePointGenerator = new ShapePointGenerator();
 
-      useParticle(particle1, particleConfig);
-      useParticle(particle2, particleConfig);
+      useParticle(particle1, particleConfig, shapePointGenerator);
+      useParticle(particle2, particleConfig, shapePointGenerator);
 
       updateParticle(particle1, 1, 5);
       updateParticle(particle2, 1 / 2, 5 / 2);
@@ -193,11 +201,13 @@ describe('Particle', () => {
         maxAngle: 360,
       },
       spawnShape: {
-        type: SpawnShapeType.Rectangle,
-        x: 0,
-        y: 0,
-        width: 100,
-        height: 100,
+        shape: {
+          type: SpawnShapeType.Rectangle,
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100,
+        },
       },
     };
     const viewContainer = new TestViewContainer();
@@ -205,8 +215,10 @@ describe('Particle', () => {
     const initialAlpha = view.alpha;
 
     const particle = createUnusedParticle(viewContainer, view);
+    const shapePointGenerator = new ShapePointGenerator();
 
-    useParticle(particle, particleConfig);
+    useParticle(particle, particleConfig, shapePointGenerator);
+
     const initX = particle.view.x;
     const initY = particle.view.y;
 

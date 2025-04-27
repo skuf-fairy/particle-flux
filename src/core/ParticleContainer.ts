@@ -10,6 +10,7 @@ import {updateParticle} from './particle/updateParticle';
 import {useParticle} from './particle/useParticle';
 import {wasParticleRemoved} from './particle/wasParticleRemoved';
 import {isNeedRemoveParticle} from './particle/isNeedRemoveParticle';
+import {ShapePointGenerator} from './spawn-shapes/ShapePointGenerator';
 
 /**
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
@@ -19,7 +20,11 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
   public availableParticleHead: IParticle<View> | null;
   private containerParticlesCount: number;
 
-  constructor(private readonly viewContainer: ViewContainer<View>, private readonly config: ConfigManager<View>) {
+  constructor(
+    private readonly viewContainer: ViewContainer<View>,
+    private readonly config: ConfigManager<View>,
+    private readonly shapePointGenerator: ShapePointGenerator,
+  ) {
     this.particleHead = null;
     this.availableParticleHead = null;
     this.containerParticlesCount = 0;
@@ -151,7 +156,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     const particle: IParticle<View> =
       this.getParticleFromPool() || createUnusedParticle(this.viewContainer, createView(this.config.view));
 
-    useParticle(particle, this.config.particleConfig);
+    useParticle(particle, this.config.particleConfig, this.shapePointGenerator);
 
     this.addParticleInUsedParticles(particle);
 

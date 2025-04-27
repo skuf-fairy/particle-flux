@@ -8,6 +8,7 @@ import {TestViewParticle} from '../TestViewParticle';
 import {STANDARD_DELTA_MS} from '../../utils/Ticker';
 import {isParticleInUse} from '../../core/particle/isParticleInUse';
 import {noUseParticle} from '../../core/particle/noUseParticle';
+import {ShapePointGenerator} from '../../core/spawn-shapes/ShapePointGenerator';
 
 const testParticleLinkedList = (
   particleArray: IParticle<TestViewParticle>[],
@@ -63,7 +64,8 @@ describe('ParticleContainer', () => {
   describe('Add in container', () => {
     describe('Добавили 1 частицу в контейнер', () => {
       const viewContainer = new TestViewContainer();
-      const container = new ParticleContainer(viewContainer, configManager);
+      const shapePointGenerator = new ShapePointGenerator();
+      const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
       const particleArray: IParticle<TestViewParticle>[] = [];
 
@@ -77,7 +79,8 @@ describe('ParticleContainer', () => {
 
     describe('Добавили много частиц в контейнер', () => {
       const viewContainer = new TestViewContainer();
-      const container = new ParticleContainer(viewContainer, configManager);
+      const shapePointGenerator = new ShapePointGenerator();
+      const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
       const particleArray: IParticle<TestViewParticle>[] = [];
 
@@ -95,7 +98,8 @@ describe('ParticleContainer', () => {
 
   describe('Перемещение неиспользуемых частиц в пул неактивных', () => {
     const viewContainer = new TestViewContainer();
-    const container = new ParticleContainer(viewContainer, configManager);
+    const shapePointGenerator = new ShapePointGenerator();
+    const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
     const particleArray: IParticle<TestViewParticle>[] = [];
 
@@ -133,7 +137,8 @@ describe('ParticleContainer', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
     const viewContainer = new TestViewContainer();
-    const container = new ParticleContainer(viewContainer, configManager);
+    const shapePointGenerator = new ShapePointGenerator();
+    const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
     const particleArray: IParticle<TestViewParticle>[] = [];
 
@@ -155,7 +160,8 @@ describe('ParticleContainer', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
     const viewContainer = new TestViewContainer();
-    const container = new ParticleContainer(viewContainer, configManager);
+    const shapePointGenerator = new ShapePointGenerator();
+    const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
     const particleArray: IParticle<ViewParticle>[] = [];
 
@@ -186,7 +192,8 @@ describe('ParticleContainer', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
     const viewContainer = new TestViewContainer();
-    const container = new ParticleContainer(viewContainer, configManager);
+    const shapePointGenerator = new ShapePointGenerator();
+    const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
     container.fillPool(5);
     const particles = container.getPoolParticlesArray();
@@ -211,7 +218,8 @@ describe('ParticleContainer', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
     const viewContainer = new TestViewContainer();
-    const container = new ParticleContainer(viewContainer, configManager);
+    const shapePointGenerator = new ShapePointGenerator();
+    const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
     container.fillPool(5);
     const poolParticles = container.getPoolParticlesArray();
@@ -236,7 +244,8 @@ describe('ParticleContainer', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
     const viewContainer = new TestViewContainer();
-    const container = new ParticleContainer(viewContainer, configManager);
+    const shapePointGenerator = new ShapePointGenerator();
+    const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
     const particleArray: IParticle<TestViewParticle>[] = [];
 

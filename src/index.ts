@@ -90,6 +90,7 @@ export {
   SpawnShapeType,
   Chain,
   PolygonalChain,
+  SpawnShape,
 } from './core/spawn-shapes/spawn-shapes.types';
 export {
   isSinglePolygonalChain,

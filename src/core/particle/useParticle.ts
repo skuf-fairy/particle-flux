@@ -23,11 +23,15 @@ import {getColorStaticBehaviorValue, getColorDynamicBehavior} from '../behaviors
 import {isColorScriptBehaviorConfig} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeBehavior} from '../behaviors/life-time-behavior/life-time-behavior';
 import {getDirection} from '../direction/getDirection';
-import {getSpawnPosition} from '../spawn-shapes/getSpawnPosition';
+import {ShapePointGenerator} from '../spawn-shapes/ShapePointGenerator';
 import {getInitialParticleState} from './getInitialParticleState';
 import {updateParticle} from './updateParticle';
 
-export function useParticle<View extends ViewParticle>(particle: IParticle<View>, config: ParticleConfig): void {
+export function useParticle<View extends ViewParticle>(
+  particle: IParticle<View>,
+  config: ParticleConfig,
+  shapePointGenerator: ShapePointGenerator,
+): void {
   const view = particle.view;
   const initialViewState = particle.initialViewState;
 
@@ -43,7 +47,7 @@ export function useParticle<View extends ViewParticle>(particle: IParticle<View>
   particle.age = 0;
 
   particle.initialPosition = config.spawnShape
-    ? getSpawnPosition(config.spawnShape, config.spawnPosition)
+    ? shapePointGenerator.getShapeRandomPoint(config.spawnShape, config.spawnPosition)
     : config.spawnPosition || {x: 0, y: 0};
 
   view.x = particle.initialPosition.x;
