@@ -14,10 +14,10 @@ const getRandomPointFromTorus = (
   // Generating a random angle in radians
   const radians = NumberUtils.degreesToRadians(realRandom.generateFloatNumber(startAngle, endAngle));
 
+  const [minRadius, maxRadius] = NumberUtils.getOrderedMinMax(innerRadius, outerRadius);
+
   // Generating a random radius value ranging from the inner to the outer radius
-  const r = Math.sqrt(
-    Math.random() * (outerRadius * outerRadius - innerRadius * innerRadius) + innerRadius * innerRadius,
-  );
+  const r = Math.sqrt(Math.random() * (maxRadius * maxRadius - minRadius * minRadius) + minRadius * minRadius);
 
   // Calculating the coordinates of a point
   const pointX = x + r * Math.cos(radians);

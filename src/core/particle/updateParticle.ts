@@ -20,6 +20,9 @@ import {getColorScriptBehaviorValue} from '../behaviors/color-behavior/color-scr
 import {isColorScriptBehavior} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeNormalizedProgress} from '../behaviors/life-time-behavior/life-time-behavior';
 
+// todo перенести
+const scaleCache = {x: 0, y: 0};
+
 export function updateParticle<View extends ViewParticle>(
   particle: IParticle<View>,
   elapsedDelta: number,
@@ -99,10 +102,11 @@ export function updateParticle<View extends ViewParticle>(
 
   if (particle.scaleBehavior !== null) {
     if (isScalarBehavior(particle.scaleBehavior)) {
-      view.scale.x = view.scale.y = getScalarBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
+      scaleCache.x = scaleCache.y = getScalarBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
+      view.scale = scaleCache;
     } else if (isNumberScriptBehavior(particle.scaleBehavior)) {
-      const scaleValue = getNumberScriptBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
-      view.scale.x = view.scale.y = scaleValue;
+      scaleCache.x = scaleCache.y = getNumberScriptBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
+      view.scale = scaleCache;
     } else if (isPoint2dScriptBehavior(particle.scaleBehavior)) {
       view.scale = getPoint2dScriptBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
     } else if (isVectorBehavior(particle.scaleBehavior)) {
