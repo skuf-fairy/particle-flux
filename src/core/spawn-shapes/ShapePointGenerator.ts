@@ -1,7 +1,7 @@
 import {Point2d} from 'src/types';
 import {PseudoRandom} from '../../utils/random/PseudoRandom';
 import {NumberUtils} from '../../utils/NumberUtils';
-import {Chain, SpawnPolygonalChainShape, SpawnRectangleShape, SpawnShape, SpawnShapeType} from './spawn-shapes.types';
+import {Chain, SpawnChainShape, SpawnRectangleShape, SpawnShape, SpawnShapeType} from './spawn-shapes.types';
 import {realRandom} from '../../utils/random/RealRandom';
 
 const MAX_RANDOM_SEED = 100000;
@@ -48,8 +48,8 @@ export class ShapePointGenerator {
         );
         break;
 
-      case SpawnShapeType.Polygon:
-        this.setSpawnPositionOfPolygonalShape(shape);
+      case SpawnShapeType.Chain:
+        this.setRandomPointOnChain(shape);
         break;
     }
 
@@ -85,7 +85,9 @@ export class ShapePointGenerator {
     this.pointCache.y = this.pseudoRandom.generateFloatNumber(shape.y, shape.y + shape.height);
   }
 
-  private setRandomPointOnChain(chain: Chain): void {
+  private setRandomPointOnChain(shape: SpawnChainShape): void {
+    const chain = shape.chain;
+
     if (chain.length === 1) {
       this.pointCache.x = chain[0].x;
       this.pointCache.y = chain[0].y;
@@ -93,18 +95,7 @@ export class ShapePointGenerator {
       const endPointIndex = this.pseudoRandom.generateIntegerNumber(1, chain.length - 1);
 
       this.pointCache.x = this.pseudoRandom.generateFloatNumber(chain[endPointIndex].x, chain[endPointIndex].x);
-      this.pointCache.y = this.pseudoRandom.generateFloatNumber(chain[endPointIndex - 1].x, chain[endPointIndex - 1].y);
-    } else {
-      this.pointCache.x = 0;
-      this.pointCache.y = 0;
-    }
-  }
-
-  private setSpawnPositionOfPolygonalShape(shape: SpawnPolygonalChainShape): void {
-    const chain = shape.chain;
-
-    if (chain.length > 0) {
-      this.setRandomPointOnChain(chain);
+      this.pointCache.y = this.pseudoRandom.generateFloatNumber(chain[endPointIndex - 1].y, chain[endPointIndex - 1].y);
     } else {
       this.pointCache.x = 0;
       this.pointCache.y = 0;

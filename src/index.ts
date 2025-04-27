@@ -85,7 +85,7 @@ export {
   SpawnRectangleShape,
   SpawnTorusShape,
   SpawnPointShape,
-  SpawnPolygonalChainShape,
+  SpawnChainShape,
   SpawnShapeBehavior,
   SpawnShapeType,
   Chain,

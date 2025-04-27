@@ -4,7 +4,7 @@ export enum SpawnShapeType {
   Point = 'Point',
   Rectangle = 'Rectangle',
   Torus = 'Torus',
-  Polygon = 'Polygon',
+  Chain = 'Chain',
 }
 
 export interface SpawnRectangleShape extends Point2d {
@@ -27,12 +27,12 @@ export interface SpawnPointShape extends Point2d {
 
 export type Chain = Point2d[];
 
-export interface SpawnPolygonalChainShape {
-  type: SpawnShapeType.Polygon;
+export interface SpawnChainShape {
+  type: SpawnShapeType.Chain;
   chain: Chain;
 }
 
-export type SpawnShape = SpawnRectangleShape | SpawnTorusShape | SpawnPointShape | SpawnPolygonalChainShape;
+export type SpawnShape = SpawnRectangleShape | SpawnTorusShape | SpawnPointShape | SpawnChainShape;
 
 export interface SpawnShapeBehavior {
   shape: SpawnShape | SpawnShape[];
