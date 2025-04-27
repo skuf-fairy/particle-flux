@@ -94,8 +94,8 @@ export class ShapePointGenerator {
     } else if (chain.length > 1) {
       const endPointIndex = this.pseudoRandom.generateIntegerNumber(1, chain.length - 1);
 
-      this.pointCache.x = this.pseudoRandom.generateFloatNumber(chain[endPointIndex].x, chain[endPointIndex].x);
-      this.pointCache.y = this.pseudoRandom.generateFloatNumber(chain[endPointIndex - 1].y, chain[endPointIndex - 1].y);
+      this.pointCache.x = this.pseudoRandom.generateFloatNumber(chain[endPointIndex - 1].x, chain[endPointIndex].x);
+      this.pointCache.y = this.pseudoRandom.generateFloatNumber(chain[endPointIndex - 1].y, chain[endPointIndex].y);
     } else {
       this.pointCache.x = 0;
       this.pointCache.y = 0;
