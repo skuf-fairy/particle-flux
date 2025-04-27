@@ -1,12 +1,7 @@
 import {GRAVITY_DEFAULT_MULTIPLIER} from '../../constants';
 import {ViewParticle, IParticle} from '../../types';
 import {Vector2Utils} from '../../utils/Vector2Utils';
-import {
-  isScalarBehavior,
-  isScriptBehavior,
-  isDeltaBehavior,
-  isVectorBehavior,
-} from '../base-behaviors/base-behaviors.typeguards';
+import {isScalarBehavior, isDeltaBehavior, isVectorBehavior} from '../base-behaviors/base-behaviors.typeguards';
 import {getDeltaBehaviorValue} from '../base-behaviors/delta-behavior/delta-behavior';
 import {getScalarBehaviorValue} from '../base-behaviors/scalar-behavior/scalar-behavior';
 import {getNumberScriptBehaviorValue} from '../base-behaviors/script-behavior/number-script-behavior/number-script-behavior';

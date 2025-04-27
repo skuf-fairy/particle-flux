@@ -27,6 +27,9 @@ import {ShapePointGenerator} from '../spawn-shapes/ShapePointGenerator';
 import {getInitialParticleState} from './getInitialParticleState';
 import {updateParticle} from './updateParticle';
 
+// todo перенести
+const scaleCache = {x: 0, y: 0};
+
 export function useParticle<View extends ViewParticle>(
   particle: IParticle<View>,
   config: ParticleConfig,
@@ -97,7 +100,8 @@ export function useParticle<View extends ViewParticle>(
 
   if (config.scale) {
     if (isScalarStaticBehaviorConfig(config.scale)) {
-      view.scale.x = view.scale.y = getStaticBehaviorValue(config.scale);
+      scaleCache.x = scaleCache.y = getStaticBehaviorValue(config.scale);
+      view.scale = scaleCache;
     } else if (isScalarBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getScalarBehavior(config.scale);
     } else if (isNumberScriptBehaviorConfig(config.scale)) {
@@ -139,8 +143,7 @@ export function useParticle<View extends ViewParticle>(
 }
 
 function resetParticleViewToInitialState(view: ViewParticle, initialViewState: InitialViewState): void {
-  view.scale.x = initialViewState.scale.x;
-  view.scale.y = initialViewState.scale.y;
+  view.scale = initialViewState.scale;
   view.alpha = initialViewState.alpha;
   view.tint = initialViewState.tint;
   view.angle = initialViewState.angle;
