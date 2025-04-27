@@ -1,6 +1,4 @@
 import {
-  PolygonalChain,
-  Chain,
   SpawnShapeType,
   SpawnRectangleShape,
   SpawnPointShape,
@@ -8,10 +6,6 @@ import {
   SpawnPolygonalChainShape,
   SpawnShape,
 } from './spawn-shapes.types';
-
-export function isSinglePolygonalChain(chain: PolygonalChain): chain is Chain {
-  return !Array.isArray(chain[0]);
-}
 
 export function isSpawnPointShape(spawnShape: SpawnShape): spawnShape is SpawnPointShape {
   return spawnShape.type === SpawnShapeType.Point;

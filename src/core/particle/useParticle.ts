@@ -50,7 +50,7 @@ export function useParticle<View extends ViewParticle>(
   particle.age = 0;
 
   particle.initialPosition = config.spawnShape
-    ? shapePointGenerator.getShapeRandomPoint(config.spawnShape, config.spawnPosition)
+    ? shapePointGenerator.getShapeRandomPoint(config.spawnShape.shape, config.spawnPosition)
     : config.spawnPosition || {x: 0, y: 0};
 
   view.x = particle.initialPosition.x;

@@ -8,24 +8,20 @@ describe('ShapePointGenerator', () => {
     const shapePointGenerator = new ShapePointGenerator();
     const point1 = cloneDeep(
       shapePointGenerator.getShapeRandomPoint({
-        shape: {
-          type: SpawnShapeType.Rectangle,
-          x: 0,
-          y: 0,
-          width: 10000,
-          height: 10000,
-        },
+        type: SpawnShapeType.Rectangle,
+        x: 0,
+        y: 0,
+        width: 10000,
+        height: 10000,
       }),
     );
     const point2 = cloneDeep(
       shapePointGenerator.getShapeRandomPoint({
-        shape: {
-          type: SpawnShapeType.Rectangle,
-          x: 0,
-          y: 0,
-          width: 10000,
-          height: 10000,
-        },
+        type: SpawnShapeType.Rectangle,
+        x: 0,
+        y: 0,
+        width: 10000,
+        height: 10000,
       }),
     );
 
@@ -36,23 +32,19 @@ describe('ShapePointGenerator', () => {
   it('Обе частицы создаются в одной и той же точке', () => {
     const shapePointGenerator = new ShapePointGenerator();
     const point1 = shapePointGenerator.getShapeRandomPoint({
-      shape: {
-        type: SpawnShapeType.Rectangle,
-        x: 0,
-        y: 0,
-        width: 10000,
-        height: 10000,
-      },
+      type: SpawnShapeType.Rectangle,
+      x: 0,
+      y: 0,
+      width: 10000,
+      height: 10000,
     });
     shapePointGenerator.reset();
     const point2 = shapePointGenerator.getShapeRandomPoint({
-      shape: {
-        type: SpawnShapeType.Rectangle,
-        x: 0,
-        y: 0,
-        width: 10000,
-        height: 10000,
-      },
+      type: SpawnShapeType.Rectangle,
+      x: 0,
+      y: 0,
+      width: 10000,
+      height: 10000,
     });
 
     expect(point1.x).toEqual(point2.x);

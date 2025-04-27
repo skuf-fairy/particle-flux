@@ -89,11 +89,9 @@ export {
   SpawnShapeBehavior,
   SpawnShapeType,
   Chain,
-  PolygonalChain,
   SpawnShape,
 } from './core/spawn-shapes/spawn-shapes.types';
 export {
-  isSinglePolygonalChain,
   isSpawnPointShape,
   isSpawnRectangleShape,
   isSpawnTorusShape,

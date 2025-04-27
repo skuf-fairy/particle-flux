@@ -1,35 +1,31 @@
 import {Point2d} from 'src/types';
 import {PseudoRandom} from '../../utils/random/PseudoRandom';
 import {NumberUtils} from '../../utils/NumberUtils';
-import {
-  Chain,
-  SpawnPolygonalChainShape,
-  SpawnRectangleShape,
-  SpawnShapeBehavior,
-  SpawnShapeType,
-} from './spawn-shapes.types';
-import {isSinglePolygonalChain} from './spawn-shapes.typeguards';
+import {Chain, SpawnPolygonalChainShape, SpawnRectangleShape, SpawnShape, SpawnShapeType} from './spawn-shapes.types';
 import {realRandom} from '../../utils/random/RealRandom';
+
+const MAX_RANDOM_SEED = 100000;
+const MIN_RANDOM_SEED = 1;
 
 export class ShapePointGenerator {
   private readonly pseudoRandom: PseudoRandom;
   private pointCache: Point2d;
 
   constructor() {
-    this.pseudoRandom = new PseudoRandom(realRandom.generateIntegerNumber(1, 100000));
+    this.pseudoRandom = new PseudoRandom(realRandom.generateIntegerNumber(MIN_RANDOM_SEED, MAX_RANDOM_SEED));
     this.pointCache = {x: 0, y: 0};
   }
 
   public refresh(): void {
-    this.pseudoRandom.init(realRandom.generateIntegerNumber(1, 100000));
+    this.pseudoRandom.init(realRandom.generateIntegerNumber(MIN_RANDOM_SEED, MAX_RANDOM_SEED));
   }
 
   public reset(): void {
     this.pseudoRandom.reset();
   }
 
-  public getShapeRandomPoint(spawnShape: SpawnShapeBehavior, relativePoint?: Point2d): Point2d {
-    const shape = spawnShape.shape;
+  public getShapeRandomPoint(spawnShape: SpawnShape | SpawnShape[], relativePoint?: Point2d): Point2d {
+    const shape = Array.isArray(spawnShape) ? this.pseudoRandom.choice(spawnShape) : spawnShape;
 
     switch (shape.type) {
       case SpawnShapeType.Point:
@@ -89,22 +85,15 @@ export class ShapePointGenerator {
     this.pointCache.y = this.pseudoRandom.generateFloatNumber(shape.y, shape.y + shape.height);
   }
 
-  private setRandomPointOnLine(pointA: Point2d, pointB: Point2d): void {
-    // Calculating the coordinates of a random point between point and pointB
-    this.pointCache.x = this.pseudoRandom.generateFloatNumber(pointA.x, pointB.x);
-    this.pointCache.y = this.pseudoRandom.generateFloatNumber(pointA.y, pointB.y);
-  }
-
   private setRandomPointOnChain(chain: Chain): void {
     if (chain.length === 1) {
       this.pointCache.x = chain[0].x;
       this.pointCache.y = chain[0].y;
     } else if (chain.length > 1) {
       const endPointIndex = this.pseudoRandom.generateIntegerNumber(1, chain.length - 1);
-      const endPoint = {x: chain[endPointIndex].x, y: chain[endPointIndex].y};
-      const startPoint = {x: chain[endPointIndex - 1].x, y: chain[endPointIndex - 1].y};
 
-      this.setRandomPointOnLine(startPoint, endPoint);
+      this.pointCache.x = this.pseudoRandom.generateFloatNumber(chain[endPointIndex].x, chain[endPointIndex].x);
+      this.pointCache.y = this.pseudoRandom.generateFloatNumber(chain[endPointIndex - 1].x, chain[endPointIndex - 1].y);
     } else {
       this.pointCache.x = 0;
       this.pointCache.y = 0;
@@ -115,11 +104,7 @@ export class ShapePointGenerator {
     const chain = shape.chain;
 
     if (chain.length > 0) {
-      if (isSinglePolygonalChain(chain)) {
-        this.setRandomPointOnChain(chain);
-      } else {
-        this.setRandomPointOnChain(this.pseudoRandom.choice(chain));
-      }
+      this.setRandomPointOnChain(chain);
     } else {
       this.pointCache.x = 0;
       this.pointCache.y = 0;
