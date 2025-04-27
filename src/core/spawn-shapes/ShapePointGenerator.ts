@@ -77,10 +77,7 @@ export class ShapePointGenerator {
     const [minRadius, maxRadius] = NumberUtils.getOrderedMinMax(innerRadius, outerRadius);
 
     // Generating a random radius value ranging from the inner to the outer radius
-    const r = Math.sqrt(
-      this.pseudoRandom.generateFloatNumber(0, 1) * (maxRadius * maxRadius - minRadius * minRadius) +
-        minRadius * minRadius,
-    );
+    const r = Math.sqrt(this.pseudoRandom.generateFloatNumber(minRadius * minRadius, maxRadius * maxRadius));
 
     // Calculating the coordinates of a point
     this.pointCache.x = x + r * Math.cos(radians);
@@ -93,11 +90,9 @@ export class ShapePointGenerator {
   }
 
   private setRandomPointOnLine(pointA: Point2d, pointB: Point2d): void {
-    const randomFactor = this.pseudoRandom.generateFloatNumber(0, 1); // Generating a random number from 0 to 1
-
     // Calculating the coordinates of a random point between point and pointB
-    this.pointCache.x = pointA.x + randomFactor * (pointB.x - pointA.x);
-    this.pointCache.y = pointA.y + randomFactor * (pointB.y - pointA.y);
+    this.pointCache.x = this.pseudoRandom.generateFloatNumber(pointA.x, pointB.x);
+    this.pointCache.y = this.pseudoRandom.generateFloatNumber(pointA.y, pointB.y);
   }
 
   private setRandomPointOnChain(chain: Chain): void {
