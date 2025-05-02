@@ -1,4 +1,4 @@
-export interface DirectionRangeConfig {
+export interface RangeDirectionConfig {
   minAngle: number;
   maxAngle: number;
   isRotateByDirection?: boolean;
@@ -9,4 +9,4 @@ export interface StaticDirectionConfig {
   isRotateByDirection?: boolean;
 }
 
-export type DirectionConfig = DirectionRangeConfig | StaticDirectionConfig;
+export type DirectionConfig = RangeDirectionConfig | StaticDirectionConfig;
