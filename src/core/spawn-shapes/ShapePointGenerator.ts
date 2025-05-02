@@ -1,7 +1,7 @@
-import {Point2d} from 'src/types';
+import {Point2d} from '../../types';
 import {PseudoRandom} from '../../utils/random/PseudoRandom';
 import {NumberUtils} from '../../utils/NumberUtils';
-import {Chain, SpawnChainShape, SpawnRectangleShape, SpawnShape, SpawnShapeType} from './spawn-shapes.types';
+import {SpawnChainShape, SpawnRectangleShape, SpawnShape, SpawnShapeType} from './spawn-shapes.types';
 import {realRandom} from '../../utils/random/RealRandom';
 
 const MAX_RANDOM_SEED = 100000;
