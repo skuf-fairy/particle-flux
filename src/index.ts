@@ -24,7 +24,7 @@ export {noUseParticle} from './core/particle/noUseParticle';
 export {isScriptBehaviorConfig} from './core/base-behaviors/script-behavior/script-behavior.typeguards';
 export {isVectorBehaviorConfig} from './core/base-behaviors/vector-behavior/vector-behavior.typeguards';
 export {
-  isScalarDynamicBehaviorConfig,
+  isScalarTransitionBehaviorConfig,
   isScalarStaticBehaviorConfig,
   isScalarBehaviorConfig,
 } from './core/base-behaviors/scalar-behavior/scalar-behavior.typeguards';
@@ -33,7 +33,7 @@ export {isDeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/delta-
 // configs
 export {
   ScalarBehaviorConfig,
-  ScalarDynamicBehaviorConfig,
+  ScalarTransitionBehaviorConfig,
   ScalarStaticBehaviorConfig,
 } from './core/base-behaviors/scalar-behavior/scalar-behavior.types';
 export {

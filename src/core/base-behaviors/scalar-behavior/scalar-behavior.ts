@@ -1,13 +1,13 @@
 import {NumberUtils} from '../../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
-import {ScalarBehavior, ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from './scalar-behavior.types';
+import {ScalarBehavior, ScalarTransitionBehaviorConfig, ScalarStaticBehaviorConfig} from './scalar-behavior.types';
 import {BaseBehaviorType} from '../base-behaviors.types';
 import {getMultiplierValue} from '../../../utils/multiplier';
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const lerp = NumberUtils.lerp;
 
-export function getScalarBehavior(config: ScalarDynamicBehaviorConfig): ScalarBehavior {
+export function getScalarBehavior(config: ScalarTransitionBehaviorConfig): ScalarBehavior {
   return {
     startValue: config.start * getMultiplierValue(config.multiplier || 1),
     endValue: config.end * getMultiplierValue(config.multiplier || 1),

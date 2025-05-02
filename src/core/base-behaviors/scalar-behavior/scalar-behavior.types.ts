@@ -2,7 +2,7 @@ import {Multiplier} from '../../../types';
 import {EasingFunction, EasingName} from '../../../utils/easing/easing.types';
 import {BaseBehaviorType} from '../base-behaviors.types';
 
-export interface ScalarDynamicBehaviorConfig {
+export interface ScalarTransitionBehaviorConfig {
   start: number;
   end: number;
   easing?: EasingName;
@@ -14,7 +14,7 @@ export interface ScalarStaticBehaviorConfig {
   multiplier?: Multiplier;
 }
 
-export type ScalarBehaviorConfig = ScalarDynamicBehaviorConfig | ScalarStaticBehaviorConfig;
+export type ScalarBehaviorConfig = ScalarTransitionBehaviorConfig | ScalarStaticBehaviorConfig;
 
 export interface ScalarBehavior {
   startValue: number;

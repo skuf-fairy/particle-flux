@@ -3,7 +3,7 @@ import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
 import {EasingName} from '../../../utils/easing/easing.types';
 import {
   isScalarStaticBehaviorConfig,
-  isScalarDynamicBehaviorConfig,
+  isScalarTransitionBehaviorConfig,
 } from '../scalar-behavior/scalar-behavior.typeguards';
 import {VectorBehaviorConfig, VectorBehavior} from './vector-behavior.types';
 import {BaseBehaviorType} from '../base-behaviors.types';
@@ -26,18 +26,18 @@ export function getVectorBehavior(config: VectorBehaviorConfig): VectorBehavior 
   if (isScalarStaticBehaviorConfig(config.x) && isScalarStaticBehaviorConfig(config.y)) {
     startValue = {x: config.x.value * multiplierX, y: config.y.value * multiplierY};
     endValue = {x: config.x.value * multiplierX, y: config.y.value * multiplierY};
-  } else if (isScalarDynamicBehaviorConfig(config.x) && isScalarDynamicBehaviorConfig(config.y)) {
+  } else if (isScalarTransitionBehaviorConfig(config.x) && isScalarTransitionBehaviorConfig(config.y)) {
     startValue = {x: config.x.start * multiplierX, y: config.y.start * multiplierY};
     endValue = {x: config.x.end * multiplierX, y: config.y.end * multiplierY};
 
     easingX = EASING_FUNCTIONS[config.x.easing || EasingName.linear];
     easingY = EASING_FUNCTIONS[config.y.easing || EasingName.linear];
-  } else if (isScalarStaticBehaviorConfig(config.x) && isScalarDynamicBehaviorConfig(config.y)) {
+  } else if (isScalarStaticBehaviorConfig(config.x) && isScalarTransitionBehaviorConfig(config.y)) {
     startValue = {x: config.x.value * multiplierX, y: config.y.start * multiplierY};
     endValue = {x: config.x.value * multiplierX, y: config.y.end * multiplierY};
 
     easingY = EASING_FUNCTIONS[config.y.easing || EasingName.linear];
-  } else if (isScalarDynamicBehaviorConfig(config.x) && isScalarStaticBehaviorConfig(config.y)) {
+  } else if (isScalarTransitionBehaviorConfig(config.x) && isScalarStaticBehaviorConfig(config.y)) {
     startValue = {x: config.x.start * multiplierX, y: config.y.value * multiplierY};
     endValue = {x: config.x.end * multiplierX, y: config.y.value * multiplierY};
 

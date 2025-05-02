@@ -1,7 +1,13 @@
 import {AnyBaseBehaviorConfig} from '../base-behaviors.types';
-import {ScalarBehaviorConfig, ScalarDynamicBehaviorConfig, ScalarStaticBehaviorConfig} from './scalar-behavior.types';
+import {
+  ScalarTransitionBehaviorConfig,
+  ScalarStaticBehaviorConfig,
+  ScalarBehaviorConfig,
+} from './scalar-behavior.types';
 
-export function isScalarDynamicBehaviorConfig(config: AnyBaseBehaviorConfig): config is ScalarDynamicBehaviorConfig {
+export function isScalarTransitionBehaviorConfig(
+  config: AnyBaseBehaviorConfig,
+): config is ScalarTransitionBehaviorConfig {
   return 'start' in config && 'end' in config;
 }
 
@@ -10,5 +16,5 @@ export function isScalarStaticBehaviorConfig(config: AnyBaseBehaviorConfig): con
 }
 
 export function isScalarBehaviorConfig(config: AnyBaseBehaviorConfig): config is ScalarBehaviorConfig {
-  return 'start' in config && 'end' in config;
+  return isScalarTransitionBehaviorConfig(config) || isScalarStaticBehaviorConfig(config);
 }

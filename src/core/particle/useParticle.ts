@@ -6,8 +6,7 @@ import {isDeltaBehaviorConfig} from '../base-behaviors/delta-behavior/delta-beha
 import {getStaticBehaviorValue, getScalarBehavior} from '../base-behaviors/scalar-behavior/scalar-behavior';
 import {
   isScalarStaticBehaviorConfig,
-  isScalarBehaviorConfig,
-  isScalarDynamicBehaviorConfig,
+  isScalarTransitionBehaviorConfig,
 } from '../base-behaviors/scalar-behavior/scalar-behavior.typeguards';
 import {isNumberScriptBehaviorConfig} from '../base-behaviors/script-behavior/number-script-behavior/number-script-behavior.typeguards';
 import {isPoint2dScriptBehaviorConfig} from '../base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.typeguards';
@@ -71,7 +70,7 @@ export function useParticle<View extends ViewParticle>(
       particle.speed = getStaticBehaviorValue(config.speed);
     } else if (isScriptBehaviorConfig(config.speed)) {
       particle.speedBehavior = getScriptBehavior(config.speed);
-    } else if (isScalarBehaviorConfig(config.speed)) {
+    } else if (isScalarTransitionBehaviorConfig(config.speed)) {
       particle.speedBehavior = getScalarBehavior(config.speed);
     }
   }
@@ -81,7 +80,7 @@ export function useParticle<View extends ViewParticle>(
       view.alpha = getStaticBehaviorValue(config.alpha);
     } else if (isScriptBehaviorConfig(config.alpha)) {
       particle.alphaBehavior = getScriptBehavior(config.alpha);
-    } else if (isScalarBehaviorConfig(config.alpha)) {
+    } else if (isScalarTransitionBehaviorConfig(config.alpha)) {
       particle.alphaBehavior = getScalarBehavior(config.alpha);
     }
   }
@@ -91,7 +90,7 @@ export function useParticle<View extends ViewParticle>(
       particle.rotationBehavior = getDeltaBehavior(config.rotation);
     } else if (isScalarStaticBehaviorConfig(config.rotation)) {
       view.angle += getStaticBehaviorValue(config.rotation);
-    } else if (isScalarBehaviorConfig(config.rotation)) {
+    } else if (isScalarTransitionBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getScalarBehavior(config.rotation);
     } else if (isScriptBehaviorConfig(config.rotation)) {
       particle.rotationBehavior = getScriptBehavior(config.rotation);
@@ -102,7 +101,7 @@ export function useParticle<View extends ViewParticle>(
     if (isScalarStaticBehaviorConfig(config.scale)) {
       scaleCache.x = scaleCache.y = getStaticBehaviorValue(config.scale);
       view.scale = scaleCache;
-    } else if (isScalarBehaviorConfig(config.scale)) {
+    } else if (isScalarTransitionBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getScalarBehavior(config.scale);
     } else if (isNumberScriptBehaviorConfig(config.scale)) {
       particle.scaleBehavior = getScriptBehavior<number>(config.scale);
@@ -128,7 +127,7 @@ export function useParticle<View extends ViewParticle>(
       particle.gravityBehavior = getDeltaBehavior(config.gravity);
     } else if (isScalarStaticBehaviorConfig(config.gravity)) {
       particle.gravityBehavior = getStaticBehaviorValue(config.gravity);
-    } else if (isScalarDynamicBehaviorConfig(config.gravity)) {
+    } else if (isScalarTransitionBehaviorConfig(config.gravity)) {
       particle.gravityBehavior = getScalarBehavior(config.gravity);
     } else if (isScriptBehaviorConfig(config.gravity)) {
       particle.gravityBehavior = getScriptBehavior(config.gravity);
