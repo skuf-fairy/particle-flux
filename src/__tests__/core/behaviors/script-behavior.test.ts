@@ -9,7 +9,7 @@ describe('Script behavior', () => {
         {
           script: [
             {value: 0, time: 0},
-            {value: 1, time: 1},
+            {value: 1, time: 100},
           ],
           lastValueIndex: 1,
           isInterpolate: false,
@@ -26,13 +26,13 @@ describe('Script behavior', () => {
         {
           script: [
             {value: 0, time: 0},
-            {value: 1, time: 1},
+            {value: 1, time: 100},
           ],
           lastValueIndex: 1,
           isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
-        1,
+        100,
       ),
     ).toEqual(1);
   });
@@ -43,14 +43,14 @@ describe('Script behavior', () => {
         {
           script: [
             {value: 0, time: 0},
-            {value: 0.5, time: 0.5},
-            {value: 1, time: 1},
+            {value: 0.5, time: 50},
+            {value: 1, time: 100},
           ],
           lastValueIndex: 1,
           isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
-        0.5,
+        50,
       ),
     ).toEqual(0.5);
 
@@ -59,14 +59,14 @@ describe('Script behavior', () => {
         {
           script: [
             {value: 0, time: 0},
-            {value: 0.5, time: 0.5},
-            {value: 1, time: 1},
+            {value: 0.5, time: 50},
+            {value: 1, time: 100},
           ],
           lastValueIndex: 1,
           isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
-        0.25,
+        25,
       ),
     ).toEqual(0);
 
@@ -75,14 +75,14 @@ describe('Script behavior', () => {
         {
           script: [
             {value: 0, time: 0},
-            {value: 0.5, time: 0.5},
-            {value: 1, time: 1},
+            {value: 0.5, time: 50},
+            {value: 1, time: 100},
           ],
           lastValueIndex: 1,
           isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
-        0.75,
+        75,
       ),
     ).toEqual(0.5);
   });
@@ -93,16 +93,16 @@ describe('Script behavior', () => {
         {
           script: [
             {value: 0, time: 0},
-            {value: 0.5, time: 0.5},
-            {value: 0.75, time: 0.75},
-            {value: 0.85, time: 0.85},
-            {value: 1, time: 1},
+            {value: 0.5, time: 50},
+            {value: 0.75, time: 75},
+            {value: 0.85, time: 85},
+            {value: 1, time: 100},
           ],
           lastValueIndex: 2,
           isInterpolate: false,
           type: BaseBehaviorType.Script,
         },
-        0.9,
+        90,
       ),
     ).toEqual(0.85);
   });
@@ -113,16 +113,16 @@ describe('Script behavior', () => {
         {
           script: [
             {value: 0, time: 0},
-            {value: 0.5, time: 0.5},
-            {value: 0.75, time: 0.75},
-            {value: 0.85, time: 0.85},
-            {value: 1, time: 1},
+            {value: 0.5, time: 50},
+            {value: 0.75, time: 75},
+            {value: 0.85, time: 85},
+            {value: 1, time: 100},
           ],
           lastValueIndex: 1,
           isInterpolate: true,
           type: BaseBehaviorType.Script,
         },
-        0.25,
+        25,
       ),
     ).toEqual(0.25);
 
@@ -131,16 +131,16 @@ describe('Script behavior', () => {
         {
           script: [
             {value: 0, time: 0},
-            {value: 0.5, time: 0.5},
-            {value: 0.75, time: 0.75},
-            {value: 0.85, time: 0.85},
-            {value: 1, time: 1},
+            {value: 0.5, time: 50},
+            {value: 0.75, time: 75},
+            {value: 0.85, time: 85},
+            {value: 1, time: 100},
           ],
           lastValueIndex: 1,
           isInterpolate: true,
           type: BaseBehaviorType.Script,
         },
-        0.75,
+        75,
       ),
     ).toEqual(0.75);
   });

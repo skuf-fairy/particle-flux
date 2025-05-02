@@ -1,3 +1,4 @@
+import {START_SCRIPT_TIME, END_SCRIPT_TIME} from '../../../../constants';
 import {Point2d} from '../../../../types';
 import {ArrayUtils} from '../../../../utils/ArrayUtils';
 import {NumberUtils} from '../../../../utils/NumberUtils';
@@ -8,6 +9,8 @@ import {Point2dScriptBehavior} from './point2d-script-behavior.types';
 const lerp = NumberUtils.lerp;
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const last = ArrayUtils.last;
+// eslint-disable-next-line @typescript-eslint/unbound-method
+const first = ArrayUtils.first;
 
 const cachePoint2d: Point2d = {x: 0, y: 0};
 
@@ -17,8 +20,8 @@ export function getPoint2dScriptBehaviorValue(
 ): Point2d {
   const script = behavior.script;
 
-  if (lifeTimeNormalizedProgress === 0) return script[0].value;
-  if (lifeTimeNormalizedProgress === 1) return last(script)!.value;
+  if (lifeTimeNormalizedProgress === START_SCRIPT_TIME) return first(script)!.value;
+  if (lifeTimeNormalizedProgress === END_SCRIPT_TIME) return last(script)!.value;
 
   for (let i = behavior.lastValueIndex; i < script.length; i++) {
     if (lifeTimeNormalizedProgress >= script[i - 1].time && lifeTimeNormalizedProgress < script[i].time) {

@@ -24,7 +24,7 @@ export const TEST_CONFIG = (): ParticleEmitterConfig => ({
     color: {
       script: [
         {time: 0, value: '#ffffff'},
-        {time: 0, value: '#000000'},
+        {time: 100, value: '#000000'},
       ],
     },
     spawnShape: {

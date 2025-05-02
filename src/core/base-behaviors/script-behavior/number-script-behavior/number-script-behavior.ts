@@ -1,3 +1,4 @@
+import {END_SCRIPT_TIME, START_SCRIPT_TIME} from '../../../../constants';
 import {ArrayUtils} from '../../../../utils/ArrayUtils';
 import {NumberUtils} from '../../../../utils/NumberUtils';
 import {getProgressBetweenScriptItems} from '../script-behavior';
@@ -7,6 +8,8 @@ import {NumberScriptBehavior} from './number-script-behavior.types';
 const lerp = NumberUtils.lerp;
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const last = ArrayUtils.last;
+// eslint-disable-next-line @typescript-eslint/unbound-method
+const first = ArrayUtils.first;
 
 export function getNumberScriptBehaviorValue(
   behavior: NumberScriptBehavior,
@@ -14,8 +17,8 @@ export function getNumberScriptBehaviorValue(
 ): number {
   const script = behavior.script;
 
-  if (lifeTimeNormalizedProgress === 0) return script[0].value;
-  if (lifeTimeNormalizedProgress === 1) return last(script)!.value;
+  if (lifeTimeNormalizedProgress === START_SCRIPT_TIME) return first(script)!.value;
+  if (lifeTimeNormalizedProgress === END_SCRIPT_TIME) return last(script)!.value;
 
   for (let i = behavior.lastValueIndex; i < script.length; i++) {
     if (lifeTimeNormalizedProgress >= script[i - 1].time && lifeTimeNormalizedProgress < script[i].time) {
