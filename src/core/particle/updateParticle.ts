@@ -69,8 +69,8 @@ export function updateParticle<View extends ViewParticle>(
     //   particle.direction.y += getDeltaBehaviorValue(gravityBehavior, elapsedDelta) / GRAVITY_DEFAULT_MULTIPLIER;
     // }
 
-    view.x += particle.direction.x * elapsedDelta;
-    view.y += ((oldY + particle.direction.y) / 2) * elapsedDelta;
+    view.x += particle.direction.x * speed * elapsedDelta;
+    view.y += ((oldY + particle.direction.y) / 2) * speed * elapsedDelta;
   }
 
   if (particle.isRotateByDirection) {
