@@ -14,15 +14,15 @@ import {ShapePointGenerator} from '../../core/spawn-shapes/ShapePointGenerator';
 
 const TEST_PARTICLE_CONFIG: ParticleConfig = {
   lifeTime: {
-    value: 10,
+    value: STANDARD_DELTA_MS * 2,
   },
   alpha: {
     start: 0,
     end: 1,
   },
   speed: {
-    start: 0,
-    end: 1,
+    start: 4,
+    end: 8,
   },
 };
 
@@ -76,7 +76,7 @@ describe('Particle', () => {
     it('The particle has been initialized correctly and is in a state of use.', () => {
       expect(particle.direction.x).toEqual(0);
       expect(particle.direction.y).toEqual(0);
-      expect(particle.speed).toEqual(0);
+      expect(particle.speed).toEqual(4);
     });
   });
 
@@ -89,102 +89,90 @@ describe('Particle', () => {
     useParticle(particle, TEST_PARTICLE_CONFIG, shapePointGenerator);
 
     it('Необходимо проверить, что после половины жизни частицы, ее параметры должны измениться на половину', () => {
-      updateParticle(particle, 1, 5);
+      updateParticle(particle, 1, STANDARD_DELTA_MS);
+
       expect(particle.view.alpha).toEqual(0.5);
     });
 
     it('Время жизни частицы закончилось, все параметры должны перейти в конечно состояние', () => {
-      updateParticle(particle, 1, 5);
+      updateParticle(particle, 1, STANDARD_DELTA_MS);
+
       expect(particle.view.alpha).toEqual(1);
     });
   });
 
   describe('Immutability of the update', () => {
     it('Both particles should have the same positions after updating', () => {
-      const particleConfig: ParticleConfig = {
-        lifeTime: {
-          value: 10,
-        },
-        direction: {
-          angle: 90,
-        },
-        speed: {
-          value: 1,
-        },
-      };
       const viewContainer = new TestViewContainer();
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const shapePointGenerator = new ShapePointGenerator();
 
-      useParticle(particle1, particleConfig, shapePointGenerator);
-      useParticle(particle2, particleConfig, shapePointGenerator);
+      useParticle(particle1, TEST_PARTICLE_CONFIG, shapePointGenerator);
+      useParticle(particle2, TEST_PARTICLE_CONFIG, shapePointGenerator);
 
-      updateParticle(particle1, 1, 5);
-      updateParticle(particle2, 1 / 2, 5 / 2);
-      updateParticle(particle2, 1 / 2, 5 / 2);
+      // 60 FPS
+      for (let i = 0; i < 60; i++) {
+        updateParticle(particle1, 1, STANDARD_DELTA_MS);
+      }
+
+      // 30 FPS
+      for (let i = 0; i < 30; i++) {
+        updateParticle(particle2, 2, STANDARD_DELTA_MS * 2);
+      }
 
       expect(particle1.view.x).toEqual(particle2.view.x);
       expect(particle1.view.y).toEqual(particle2.view.y);
     });
 
     it('Immutability for gravity', () => {
-      const particleConfig: ParticleConfig = {
-        lifeTime: {
-          value: 10,
-        },
-        direction: {
-          angle: 90,
-        },
-        speed: {
-          value: 1,
-        },
-        gravity: {
-          value: 0.1,
-        },
-      };
       const viewContainer = new TestViewContainer();
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const shapePointGenerator = new ShapePointGenerator();
+      // todo проблема с динамической скоростью
+      const particleConfig: ParticleConfig = {...TEST_PARTICLE_CONFIG, gravity: {value: 0.5}, speed: {value: 1000}};
 
       useParticle(particle1, particleConfig, shapePointGenerator);
       useParticle(particle2, particleConfig, shapePointGenerator);
 
-      updateParticle(particle1, 1, 5);
-      updateParticle(particle2, 1 / 2, 5 / 2);
-      updateParticle(particle2, 1 / 2, 5 / 2);
+      // 60 FPS
+      for (let i = 0; i < 10; i++) {
+        updateParticle(particle1, 1, STANDARD_DELTA_MS);
+      }
+
+      // 30 FPS
+      for (let i = 0; i < 5; i++) {
+        updateParticle(particle2, 2, STANDARD_DELTA_MS * 2);
+      }
 
       expect(particle1.view.x).toEqual(particle2.view.x);
       expect(particle1.view.y).toEqual(particle2.view.y);
     });
 
     it('Immutability for path', () => {
-      const particleConfig: ParticleConfig = {
-        lifeTime: {
-          value: 10,
-        },
-        path: {
-          path: 'sin(x)',
-        },
-        speed: {
-          value: 1,
-        },
-      };
       const viewContainer = new TestViewContainer();
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const shapePointGenerator = new ShapePointGenerator();
 
+      const particleConfig: ParticleConfig = {...TEST_PARTICLE_CONFIG, path: {path: 'sin(x)'}, speed: {value: 1000}};
+
       useParticle(particle1, particleConfig, shapePointGenerator);
       useParticle(particle2, particleConfig, shapePointGenerator);
 
-      updateParticle(particle1, 1, 5);
-      updateParticle(particle2, 1 / 2, 5 / 2);
-      updateParticle(particle2, 1 / 2, 5 / 2);
+      // 60 FPS
+      for (let i = 0; i < 10; i++) {
+        updateParticle(particle1, 1, STANDARD_DELTA_MS);
+      }
+
+      // 30 FPS
+      for (let i = 0; i < 5; i++) {
+        updateParticle(particle2, 2, STANDARD_DELTA_MS * 2);
+      }
 
       expect(particle1.view.x).toEqual(particle2.view.x);
       expect(particle1.view.y).toEqual(particle2.view.y);

@@ -58,6 +58,7 @@ export function useParticle<View extends ViewParticle>(
   if (config.direction) {
     const direction = getDirection(config.direction);
     particle.direction = direction.vector;
+
     particle.isRotateByDirection = config.direction.isRotateByDirection === true;
 
     if (particle.isRotateByDirection) {

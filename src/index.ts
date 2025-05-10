@@ -100,3 +100,5 @@ export {
 
 export {EasingName, EasingFunction} from './utils/easing/easing.types';
 export {EASING_FUNCTIONS} from './utils/easing/easing-functions';
+
+export {START_SCRIPT_TIME, END_SCRIPT_TIME} from './constants';

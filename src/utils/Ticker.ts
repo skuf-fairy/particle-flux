@@ -59,10 +59,10 @@ export class Ticker implements ITicker {
         this.callback(this.elapsedDelta, this.deltaBetweenFrames);
       }
 
-      this.rafId = globalWindow?.requestAnimationFrame(update) || -1;
+      this.requestAnimationFrame(update);
     };
 
-    this.rafId = globalWindow?.requestAnimationFrame(update) || -1;
+    this.requestAnimationFrame(update);
   }
 
   public stop(): void {
@@ -96,5 +96,9 @@ export class Ticker implements ITicker {
 
   private isWrongDeltaBetweenFrames(): boolean {
     return this.deltaBetweenFrames <= 0;
+  }
+
+  private requestAnimationFrame(update: () => void): void {
+    this.rafId = globalWindow?.requestAnimationFrame(update) || -1;
   }
 }

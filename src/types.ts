@@ -67,7 +67,6 @@ export interface IParticle<View extends ViewParticle> {
   speed: number;
   deltaPath: Point2d;
   initialPosition: Point2d;
-  deltaDirection: Point2d;
   directionRotation: number;
   direction: Point2d;
   isRotateByDirection: boolean;

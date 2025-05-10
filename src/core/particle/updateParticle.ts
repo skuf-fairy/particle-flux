@@ -29,45 +29,48 @@ export function updateParticle<View extends ViewParticle>(
 
   const lifeTimeNormalizedProgress = getLifeTimeNormalizedProgress(particle.age, particle.lifeTime);
 
+  let speed = particle.speed;
+
   if (particle.speedBehavior !== null) {
     if (isScalarBehavior(particle.speedBehavior)) {
-      particle.speed = getScalarBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
+      speed = particle.speed = getScalarBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
     } else if (isNumberScriptBehavior(particle.speedBehavior)) {
-      particle.speed = getNumberScriptBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
+      speed = particle.speed = getNumberScriptBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
     }
   }
 
-  const speed = particle.speed * elapsedDelta;
-
   if (particle.pathFunc) {
-    particle.deltaPath.x = particle.deltaPath.x + speed;
+    particle.deltaPath.x += speed * elapsedDelta;
     particle.deltaPath.y = particle.pathFunc(particle.deltaPath.x);
+
     const delta = Vector2Utils.rotate(particle.deltaPath, -Math.PI / 2);
 
     view.x = particle.initialPosition.x + delta.x;
     view.y = particle.initialPosition.y + delta.y;
   } else if (!particle.gravityBehavior) {
-    view.x += particle.direction.x * speed;
-    view.y += particle.direction.y * speed;
+    view.x += particle.direction.x * speed * elapsedDelta;
+    view.y += particle.direction.y * speed * elapsedDelta;
   } else {
     const gravityBehavior = particle.gravityBehavior;
 
-    let gravityShift: number = 0;
+    const oldY = particle.direction.y;
+
     if (typeof gravityBehavior === 'number') {
-      gravityShift = gravityBehavior;
-    } else if (isScalarBehavior(gravityBehavior)) {
-      gravityShift = getScalarBehaviorValue(gravityBehavior, lifeTimeNormalizedProgress);
-    } else if (isNumberScriptBehavior(gravityBehavior)) {
-      gravityShift = getNumberScriptBehaviorValue(gravityBehavior, lifeTimeNormalizedProgress);
-    } else if (isDeltaBehavior(gravityBehavior)) {
-      gravityShift = getDeltaBehaviorValue(gravityBehavior, elapsedDelta);
+      particle.direction.y += (gravityBehavior * elapsedDelta) / GRAVITY_DEFAULT_MULTIPLIER;
     }
 
-    particle.deltaDirection.y += (gravityShift / GRAVITY_DEFAULT_MULTIPLIER) * elapsedDelta;
-    particle.direction.y += particle.deltaDirection.y;
+    // else if (isScalarBehavior(gravityBehavior)) {
+    //   particle.direction.y +=
+    //     getScalarBehaviorValue(gravityBehavior, lifeTimeNormalizedProgress) / GRAVITY_DEFAULT_MULTIPLIER;
+    // } else if (isNumberScriptBehavior(gravityBehavior)) {
+    //   particle.direction.y +=
+    //     getNumberScriptBehaviorValue(gravityBehavior, lifeTimeNormalizedProgress) / GRAVITY_DEFAULT_MULTIPLIER;
+    // } else if (isDeltaBehavior(gravityBehavior)) {
+    //   particle.direction.y += getDeltaBehaviorValue(gravityBehavior, elapsedDelta) / GRAVITY_DEFAULT_MULTIPLIER;
+    // }
 
-    view.x += particle.direction.x * speed;
-    view.y += particle.direction.y * speed;
+    view.x += particle.direction.x * elapsedDelta;
+    view.y += ((oldY + particle.direction.y) / 2) * elapsedDelta;
   }
 
   if (particle.isRotateByDirection) {
