@@ -48,9 +48,12 @@ export function useParticle<View extends ViewParticle>(
   particle.lifeTime = getLifeTimeBehavior(config.lifeTime || DEFAULT_LIFE_TIME_CONFIG);
   particle.age = 0;
 
-  particle.initialPosition = config.spawnShape
+  const initialPosition = config.spawnShape
     ? shapePointGenerator.getShapeRandomPoint(config.spawnShape.shape, config.spawnPosition)
     : config.spawnPosition || {x: 0, y: 0};
+
+  particle.initialPosition.x = initialPosition.x;
+  particle.initialPosition.y = initialPosition.y;
 
   view.x = particle.initialPosition.x;
   view.y = particle.initialPosition.y;
