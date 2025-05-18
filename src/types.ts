@@ -108,7 +108,7 @@ export interface EmitterConfig {
   spawnTimeout?: number;
   maxParticles?: number;
   spawnParticlesPerWave?: number;
-  spawnChance?: number;
+  spawnChance?: number; // [0, 100]
   autoStart?: boolean;
 }
 
@@ -141,6 +141,11 @@ export interface ParticleConfig {
 export interface ParticleEmitterConfig {
   emitterConfig: EmitterConfig;
   particleConfig: ParticleConfig;
+}
+
+export interface ExtraOptions {
+  onStartEmit?: VoidFunction;
+  onStopEmit?: VoidFunction;
 }
 
 export type RangeValue = {

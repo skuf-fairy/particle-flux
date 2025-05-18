@@ -1,5 +1,13 @@
 import {ParticleContainer} from './ParticleContainer';
-import {IParticle, ITicker, ParticleEmitterConfig, ViewContainer, ViewFactory, ViewParticle} from '../types';
+import {
+  ExtraOptions,
+  IParticle,
+  ITicker,
+  ParticleEmitterConfig,
+  ViewContainer,
+  ViewFactory,
+  ViewParticle,
+} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {Ticker} from '../utils/Ticker';
 import {realRandom} from '../utils/random/RealRandom';
@@ -30,10 +38,13 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
 
   private lastUpdateReport: UpdateReport;
 
+  private extraOptions: ExtraOptions;
+
   constructor(
     viewContainer: ViewContainer<View>,
     viewFactory: ViewFactory<View>,
     initialConfig: ParticleEmitterConfig,
+    extraOptions?: ExtraOptions,
   ) {
     this.ticker = new Ticker(this.handleUpdate);
     this.config = new ConfigManager(initialConfig, viewFactory);
@@ -52,6 +63,8 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     };
 
     this.resetTime();
+
+    this.extraOptions = extraOptions || {};
 
     if (this.config.autoStart === undefined || this.config.autoStart) {
       // при автостарте создается первая волна
@@ -107,9 +120,8 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
    * Cleans the container and resets the time
    */
   public stopEmit(): void {
-    this.ticker.stop();
+    this.stopTime();
     this.clean();
-    this.resetTime();
   }
 
   public restart(): void {
@@ -180,7 +192,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     if (this.currentTime >= this.getSpawnTime()) {
       // if the operating time is up, then we monitor the container, when it is empty, then we need to stop the emitter.
       if (this.container.getParticlesCount() === 0) {
-        this.stopEmit();
+        this.stopTime();
       }
 
       this.updateReport(0, 0);
@@ -268,6 +280,13 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   private startTime(): void {
     this.resetTime();
     this.ticker.start();
+    this.extraOptions.onStartEmit?.();
+  }
+
+  private stopTime(): void {
+    this.ticker.stop();
+    this.resetTime();
+    this.extraOptions.onStopEmit?.();
   }
 
   private createParticleWave(particleAge: number, timeInterval: number): void {
