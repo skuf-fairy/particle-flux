@@ -28,7 +28,7 @@ export function getScriptBehavior<V>(config: ScriptBehaviorConfig<V>): ScriptBeh
       .map((item) => ({value: item.value, time: item.time / END_SCRIPT_TIME}))
       .sort((a, b) => a.time - b.time),
     lastValueIndex: 1,
-    isInterpolate: config.isInterpolate === undefined && config.isInterpolate === true,
+    isInterpolate: config.isInterpolate === undefined || config.isInterpolate === true,
     type: BaseBehaviorType.Script,
   };
 }
