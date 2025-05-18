@@ -104,7 +104,10 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   // помимо старта времени создаст еще и первую волну частиц
   public startEmit(): void {
     this.startTime();
-    this.createParticlesBetweenFrames(0);
+
+    if (this.currentTime >= 0) {
+      this.createParticlesBetweenFrames(0);
+    }
   }
 
   public pauseEmit(): void {
