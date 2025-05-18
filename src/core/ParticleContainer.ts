@@ -156,7 +156,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     const particle: IParticle<View> =
       this.getParticleFromPool() || createUnusedParticle(this.viewContainer, createView(this.config.view));
 
-    useParticle(particle, this.config.particleConfig, this.shapePointGenerator);
+    useParticle(particle, this.config, this.shapePointGenerator);
 
     this.addParticleInUsedParticles(particle);
 

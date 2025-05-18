@@ -21,6 +21,7 @@ import {
 import {getColorStaticBehaviorValue, getColorDynamicBehavior} from '../behaviors/color-behavior/color-dynamic-behavior';
 import {isColorScriptBehaviorConfig} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeBehavior} from '../behaviors/life-time-behavior/life-time-behavior';
+import {ConfigManager} from '../ConfigManager';
 import {getDirection} from '../direction/getDirection';
 import {ShapePointGenerator} from '../spawn-shapes/ShapePointGenerator';
 import {getInitialParticleState} from './getInitialParticleState';
@@ -31,7 +32,7 @@ const scaleCache = {x: 0, y: 0};
 
 export function useParticle<View extends ViewParticle>(
   particle: IParticle<View>,
-  config: ParticleConfig,
+  config: ConfigManager<View>,
   shapePointGenerator: ShapePointGenerator,
 ): void {
   const view = particle.view;
@@ -50,7 +51,7 @@ export function useParticle<View extends ViewParticle>(
 
   const initialPosition = config.spawnShape
     ? shapePointGenerator.getShapeRandomPoint(config.spawnShape.shape, config.spawnPosition)
-    : config.spawnPosition || {x: 0, y: 0};
+    : config.spawnPosition;
 
   particle.initialPosition.x = initialPosition.x;
   particle.initialPosition.y = initialPosition.y;
@@ -58,15 +59,13 @@ export function useParticle<View extends ViewParticle>(
   view.x = particle.initialPosition.x;
   view.y = particle.initialPosition.y;
 
-  if (config.direction) {
-    const direction = getDirection(config.direction);
-    particle.direction = direction.vector;
+  const direction = getDirection(config.direction);
+  particle.direction = direction.vector;
 
-    particle.isRotateByDirection = config.direction.isRotateByDirection === true;
+  particle.isRotateByDirection = config.direction.isRotateByDirection === true;
 
-    if (particle.isRotateByDirection) {
-      view.angle = particle.directionRotation = direction.angle;
-    }
+  if (particle.isRotateByDirection) {
+    view.angle = particle.directionRotation = direction.angle;
   }
 
   if (config.speed) {
