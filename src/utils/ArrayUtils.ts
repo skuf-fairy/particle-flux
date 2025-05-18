@@ -19,4 +19,8 @@ export class ArrayUtils {
 
     return Array.from({length: (stop - start) / Math.abs(step) + 1}, (value, index) => start + index * Math.abs(step));
   }
+
+  public static clone<T>(array: T[]): T[] {
+    return array.slice();
+  }
 }

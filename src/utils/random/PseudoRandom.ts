@@ -1,6 +1,5 @@
 import {NumberUtils} from '../NumberUtils';
 import {AbstractRandom} from './Random';
-import {realRandom} from './RealRandom';
 
 // implementation of the Park-Miller-Carta method
 export class PseudoRandom extends AbstractRandom {
