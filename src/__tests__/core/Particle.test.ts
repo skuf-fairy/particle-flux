@@ -11,6 +11,7 @@ import {updateParticle} from '../../core/particle/updateParticle';
 import {useParticle} from '../../core/particle/useParticle';
 import {isParticleInUse} from '../../core/particle/isParticleInUse';
 import {ShapePointGenerator} from '../../core/spawn-shapes/ShapePointGenerator';
+import {ParticleViewContainer} from '../../core/ViewContainer';
 
 const TEST_PARTICLE_CONFIG: ParticleConfig = {
   lifeTime: {
@@ -57,16 +58,18 @@ const testUsedParticle = (particle: IParticle<TestViewParticle>, viewContainer: 
 describe('Particle', () => {
   describe('Creating a unused particle', () => {
     const viewContainer = new TestViewContainer();
+    const particleViewContainer = new ParticleViewContainer(viewContainer);
 
-    const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+    const particle = createUnusedParticle(particleViewContainer, createView(TEST_VIEW_FACTORY));
 
     testUnusedParticle(particle, viewContainer);
   });
 
   describe('useParticle', () => {
     const viewContainer = new TestViewContainer();
+    const particleViewContainer = new ParticleViewContainer(viewContainer);
 
-    const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+    const particle = createUnusedParticle(particleViewContainer, createView(TEST_VIEW_FACTORY));
     const shapePointGenerator = new ShapePointGenerator();
 
     useParticle(particle, TEST_PARTICLE_CONFIG, shapePointGenerator);
@@ -81,7 +84,7 @@ describe('Particle', () => {
   });
 
   describe('updateParticle', () => {
-    const viewContainer = new TestViewContainer();
+    const viewContainer = new ParticleViewContainer(new TestViewContainer());
 
     const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
     const shapePointGenerator = new ShapePointGenerator();
@@ -103,7 +106,7 @@ describe('Particle', () => {
 
   describe('Immutability of the update', () => {
     it('Both particles should have the same positions after updating', () => {
-      const viewContainer = new TestViewContainer();
+      const viewContainer = new ParticleViewContainer(new TestViewContainer());
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
@@ -127,7 +130,7 @@ describe('Particle', () => {
     });
 
     it('Immutability for gravity', () => {
-      const viewContainer = new TestViewContainer();
+      const viewContainer = new ParticleViewContainer(new TestViewContainer());
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
@@ -153,7 +156,7 @@ describe('Particle', () => {
     });
 
     it('Immutability for path', () => {
-      const viewContainer = new TestViewContainer();
+      const viewContainer = new ParticleViewContainer(new TestViewContainer());
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
@@ -198,7 +201,7 @@ describe('Particle', () => {
         },
       },
     };
-    const viewContainer = new TestViewContainer();
+    const viewContainer = new ParticleViewContainer(new TestViewContainer());
     const view = createView(TEST_VIEW_FACTORY);
     const initialAlpha = view.alpha;
 
