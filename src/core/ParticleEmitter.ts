@@ -14,7 +14,7 @@ import {realRandom} from '../utils/random/RealRandom';
 import {isRangeValue} from '../typeguards';
 import {updateParticle} from './particle/updateParticle';
 import {ShapePointGenerator} from './spawn-shapes/ShapePointGenerator';
-import {MAX_SPAWN_CHANCE, MIN_SPAWN_CHANCE} from 'src/constants';
+import {MAX_SPAWN_CHANCE, MIN_SPAWN_CHANCE} from '../constants';
 
 interface UpdateReport {
   currentTime: number;
