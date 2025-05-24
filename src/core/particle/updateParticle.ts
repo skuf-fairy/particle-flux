@@ -43,7 +43,7 @@ export function updateParticle<View extends ViewParticle>(
     particle.deltaPath.x += speed * elapsedDelta;
     particle.deltaPath.y = particle.pathFunc(particle.deltaPath.x);
 
-    const delta = Vector2Utils.rotate(particle.deltaPath, -Math.PI / 2);
+    const delta = Vector2Utils.rotate(particle.deltaPath, Math.atan2(particle.direction.y, particle.direction.x));
 
     view.x = particle.initialPosition.x + delta.x;
     view.y = particle.initialPosition.y + delta.y;
