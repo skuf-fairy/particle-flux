@@ -17,8 +17,8 @@ export interface StaticDirectionConfig {
 }
 
 export interface SpawnBurstDirectionConfig {
-  start: number;
-  spacing: number;
+  startAngle: number;
+  deltaAngle: number;
   isRotateByDirection?: boolean;
 }
 

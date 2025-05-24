@@ -14,5 +14,5 @@ export function isDirectionRangeBehaviorConfig(config: DirectionConfig): config 
 }
 
 export function isSpawnBurstDirectionBehaviorConfig(config: DirectionConfig): config is SpawnBurstDirectionConfig {
-  return 'start' in config && 'spacing' in config;
+  return 'startAngle' in config && 'deltaAngle' in config;
 }

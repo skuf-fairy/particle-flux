@@ -20,7 +20,7 @@ export function getDirection(config: RangeDirectionConfig | StaticDirectionConfi
 }
 
 export function getSpawnBurstDirection(config: SpawnBurstDirectionConfig, index: number): SpawnParticleDirection {
-  const angle = config.start + index * config.spacing;
+  const angle = config.startAngle + index * config.deltaAngle;
 
   return {
     vector: Vector2Utils.angleInDegreesToPoint(angle),
