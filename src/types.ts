@@ -40,7 +40,7 @@ export interface ViewContainer<View extends ViewParticle> {
 }
 
 export interface IParticleContainer<View extends ViewParticle> {
-  createParticle(): void;
+  createParticle(waveParticleIndex: number): void;
   getParticlesCount(): number;
   getParticlesArray(): IParticle<View>[];
   clear(): void;

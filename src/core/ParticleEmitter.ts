@@ -14,6 +14,7 @@ import {realRandom} from '../utils/random/RealRandom';
 import {isRangeValue} from '../typeguards';
 import {updateParticle} from './particle/updateParticle';
 import {ShapePointGenerator} from './spawn-shapes/ShapePointGenerator';
+import {MAX_SPAWN_CHANCE, MIN_SPAWN_CHANCE} from 'src/constants';
 
 interface UpdateReport {
   currentTime: number;
@@ -81,7 +82,8 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     const count = this.getAvailableForEmitParticlesCount(particlesCount);
 
     for (let i = 0; i < count; i++) {
-      this.emit();
+      // создание через emitOnce не считается за создание волны
+      this.emit(0);
     }
 
     if (!this.isEmitActive()) {
@@ -238,13 +240,13 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   }
 
   // creates a particle with a transferred chance of creation
-  private emit(): IParticle<View> | undefined {
+  private emit(waveParticleIndex: number): IParticle<View> | undefined {
     if (this.config.spawnChance !== undefined) {
-      if (realRandom.generateIntegerNumber(1, 100) <= this.config.spawnChance) {
-        return this.container.createParticle();
+      if (realRandom.generateIntegerNumber(MIN_SPAWN_CHANCE, MAX_SPAWN_CHANCE) <= this.config.spawnChance) {
+        return this.container.createParticle(waveParticleIndex);
       }
     } else {
-      return this.container.createParticle();
+      return this.container.createParticle(waveParticleIndex);
     }
   }
 
@@ -301,7 +303,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
         this.shapePointGenerator.reset();
       }
 
-      const particle = this.emit();
+      const particle = this.emit(i);
       if (particle && particleAge > 0) {
         updateParticle(particle, particleAge / (timeInterval || 1), particleAge);
       }

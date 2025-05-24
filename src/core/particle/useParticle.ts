@@ -1,5 +1,5 @@
 import {DEFAULT_LIFE_TIME_CONFIG} from '../../constants';
-import {ViewParticle, IParticle, ParticleConfig, Point2d, InitialViewState} from '../../types';
+import {ViewParticle, IParticle, Point2d, InitialViewState} from '../../types';
 import {parsePath} from '../../utils/parsePath';
 import {getDeltaBehavior} from '../base-behaviors/delta-behavior/delta-behavior';
 import {isDeltaBehaviorConfig} from '../base-behaviors/delta-behavior/delta-behavior.typeguards';
@@ -22,7 +22,9 @@ import {getColorStaticBehaviorValue, getColorDynamicBehavior} from '../behaviors
 import {isColorScriptBehaviorConfig} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeBehavior} from '../behaviors/life-time-behavior/life-time-behavior';
 import {ConfigManager} from '../ConfigManager';
-import {getDirection} from '../direction/getDirection';
+import {isSpawnBurstDirectionBehaviorConfig} from '../direction/direction.typeguards';
+import {SpawnParticleDirection} from '../direction/direction.types';
+import {getDirection, getSpawnBurstDirection} from '../direction/getDirection';
 import {ShapePointGenerator} from '../spawn-shapes/ShapePointGenerator';
 import {getInitialParticleState} from './getInitialParticleState';
 import {updateParticle} from './updateParticle';
@@ -34,6 +36,7 @@ export function useParticle<View extends ViewParticle>(
   particle: IParticle<View>,
   config: ConfigManager<View>,
   shapePointGenerator: ShapePointGenerator,
+  waveParticleIndex: number,
 ): void {
   const view = particle.view;
   const initialViewState = particle.initialViewState;
@@ -59,8 +62,14 @@ export function useParticle<View extends ViewParticle>(
   view.x = particle.initialPosition.x;
   view.y = particle.initialPosition.y;
 
-  const direction = getDirection(config.direction);
-  particle.direction = direction.vector;
+  let direction: SpawnParticleDirection;
+
+  if (isSpawnBurstDirectionBehaviorConfig(config.direction)) {
+    direction = getSpawnBurstDirection(config.direction, waveParticleIndex);
+  } else {
+    direction = getDirection(config.direction);
+    particle.direction = direction.vector;
+  }
 
   particle.isRotateByDirection = config.direction.isRotateByDirection === true;
 
