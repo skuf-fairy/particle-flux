@@ -1,9 +1,8 @@
-import {ViewParticle, IParticle} from '../../types';
-import {ParticleViewContainer} from '../ViewContainer';
+import {ViewParticle, IParticle, ViewContainer} from '../../types';
 
 export function removeParticle<View extends ViewParticle>(
-  viewContainer: ParticleViewContainer<View>,
+  viewContainer: ViewContainer<View>,
   particle: IParticle<View>,
 ): void {
-  viewContainer.remove(particle.view);
+  viewContainer.removeChild(particle.view);
 }

@@ -34,25 +34,10 @@ export interface ViewParticle {
 }
 
 // an external display container to which the particles are added
-export interface PixiViewContainer<View extends ViewParticle> {
+export interface ViewContainer<View extends ViewParticle> {
   addChild(child: View): void;
   removeChild(child: View): void;
 }
-
-export interface PixiParticleViewContainer<View extends ViewParticle> {
-  addParticle(child: View): void;
-  removeParticle(child: View): void;
-}
-
-export interface SVGViewContainer<View extends ViewParticle> {
-  append(child: View): void;
-  remove(child: View): void;
-}
-
-export type ViewContainer<View extends ViewParticle> =
-  | PixiViewContainer<View>
-  | PixiParticleViewContainer<View>
-  | SVGViewContainer<View>;
 
 export interface IParticleContainer<View extends ViewParticle> {
   createParticle(waveParticleIndex: number): void;

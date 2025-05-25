@@ -9,7 +9,6 @@ import {STANDARD_DELTA_MS} from '../../utils/Ticker';
 import {isParticleInUse} from '../../core/particle/isParticleInUse';
 import {noUseParticle} from '../../core/particle/noUseParticle';
 import {ShapePointGenerator} from '../../core/spawn-shapes/ShapePointGenerator';
-import {ParticleViewContainer} from '../../core/ViewContainer';
 
 const testParticleLinkedList = (
   particleArray: IParticle<TestViewParticle>[],
@@ -64,13 +63,13 @@ describe('ParticleContainer', () => {
 
   describe('Add in container', () => {
     describe('Добавили 1 частицу в контейнер', () => {
-      const viewContainer = new ParticleViewContainer(new TestViewContainer());
+      const viewContainer = new TestViewContainer();
       const shapePointGenerator = new ShapePointGenerator();
       const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
       const particleArray: IParticle<TestViewParticle>[] = [];
 
-      particleArray.unshift(container.createParticle());
+      particleArray.unshift(container.createParticle(0));
       testParticleLinkedList(particleArray, container);
 
       it('Пул частиц должен быть пустой', () => {
@@ -79,14 +78,14 @@ describe('ParticleContainer', () => {
     });
 
     describe('Добавили много частиц в контейнер', () => {
-      const viewContainer = new ParticleViewContainer(new TestViewContainer());
+      const viewContainer = new TestViewContainer();
       const shapePointGenerator = new ShapePointGenerator();
       const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
       const particleArray: IParticle<TestViewParticle>[] = [];
 
       for (let i = 0; i < 5; i++) {
-        particleArray.unshift(container.createParticle());
+        particleArray.unshift(container.createParticle(i));
       }
 
       testParticleLinkedList(particleArray, container);
@@ -98,7 +97,7 @@ describe('ParticleContainer', () => {
   });
 
   describe('Перемещение неиспользуемых частиц в пул неактивных', () => {
-    const viewContainer = new ParticleViewContainer(new TestViewContainer());
+    const viewContainer = new TestViewContainer();
 
     const shapePointGenerator = new ShapePointGenerator();
     const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
@@ -106,7 +105,7 @@ describe('ParticleContainer', () => {
     const particleArray: IParticle<TestViewParticle>[] = [];
 
     for (let i = 0; i < 10; i++) {
-      particleArray.unshift(container.createParticle());
+      particleArray.unshift(container.createParticle(i));
     }
 
     const firstParticle = particleArray.splice(particleArray.length - 1, 1)[0];
@@ -138,14 +137,14 @@ describe('ParticleContainer', () => {
   describe('Clear the container', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
-    const viewContainer = new ParticleViewContainer(new TestViewContainer());
+    const viewContainer = new TestViewContainer();
     const shapePointGenerator = new ShapePointGenerator();
     const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
     const particleArray: IParticle<TestViewParticle>[] = [];
 
     for (let i = 0; i < 5; i++) {
-      particleArray.unshift(container.createParticle());
+      particleArray.unshift(container.createParticle(i));
     }
 
     container.clear();
@@ -161,14 +160,14 @@ describe('ParticleContainer', () => {
   describe('Очистка от уничтоженных частиц', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
-    const viewContainer = new ParticleViewContainer(new TestViewContainer());
+    const viewContainer = new TestViewContainer();
     const shapePointGenerator = new ShapePointGenerator();
     const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
     const particleArray: IParticle<ViewParticle>[] = [];
 
     for (let i = 0; i < 10; i++) {
-      particleArray.unshift(container.createParticle());
+      particleArray.unshift(container.createParticle(i));
     }
 
     const destroyedParticle = particleArray.splice(2, 1)[0];
@@ -193,7 +192,7 @@ describe('ParticleContainer', () => {
   describe('Fill the particle pool', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
-    const viewContainer = new ParticleViewContainer(new TestViewContainer());
+    const viewContainer = new TestViewContainer();
     const shapePointGenerator = new ShapePointGenerator();
     const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
@@ -219,7 +218,7 @@ describe('ParticleContainer', () => {
   describe('Использование пула при создании новых частиц', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
-    const viewContainer = new ParticleViewContainer(new TestViewContainer());
+    const viewContainer = new TestViewContainer();
     const shapePointGenerator = new ShapePointGenerator();
     const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
@@ -228,7 +227,7 @@ describe('ParticleContainer', () => {
     const firstUnusedParticle = poolParticles[0];
     poolParticles.shift();
 
-    const usedParticle = container.createParticle();
+    const usedParticle = container.createParticle(0);
 
     container.update(1, STANDARD_DELTA_MS);
 
@@ -245,7 +244,7 @@ describe('ParticleContainer', () => {
   describe('Изменение рендер функции в конфиге', () => {
     const initialConfig = TEST_CONFIG();
     const configManager = new ConfigManager(initialConfig, TEST_VIEW_FACTORY);
-    const viewContainer = new ParticleViewContainer(new TestViewContainer());
+    const viewContainer = new TestViewContainer();
     const shapePointGenerator = new ShapePointGenerator();
     const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
@@ -254,7 +253,7 @@ describe('ParticleContainer', () => {
     container.fillPool(10);
 
     for (let i = 0; i < 5; i++) {
-      particleArray.unshift(container.createParticle());
+      particleArray.unshift(container.createParticle(i));
     }
 
     container.update(1, STANDARD_DELTA_MS);

@@ -11,7 +11,6 @@ import {updateParticle} from '../../core/particle/updateParticle';
 import {useParticle} from '../../core/particle/useParticle';
 import {isParticleInUse} from '../../core/particle/isParticleInUse';
 import {ShapePointGenerator} from '../../core/spawn-shapes/ShapePointGenerator';
-import {ParticleViewContainer} from '../../core/ViewContainer';
 import {ConfigManager} from '../../core/ConfigManager';
 import {Vector2Utils} from '../../utils/Vector2Utils';
 
@@ -67,18 +66,16 @@ const testUsedParticle = (particle: IParticle<TestViewParticle>, viewContainer: 
 describe('Particle', () => {
   describe('Creating a unused particle', () => {
     const viewContainer = new TestViewContainer();
-    const particleViewContainer = new ParticleViewContainer(viewContainer);
 
-    const particle = createUnusedParticle(particleViewContainer, createView(TEST_VIEW_FACTORY));
+    const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
 
     testUnusedParticle(particle, viewContainer);
   });
 
   describe('useParticle', () => {
     const viewContainer = new TestViewContainer();
-    const particleViewContainer = new ParticleViewContainer(viewContainer);
 
-    const particle = createUnusedParticle(particleViewContainer, createView(TEST_VIEW_FACTORY));
+    const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
     const shapePointGenerator = new ShapePointGenerator();
 
     useParticle(
@@ -99,7 +96,7 @@ describe('Particle', () => {
   });
 
   describe('updateParticle', () => {
-    const viewContainer = new ParticleViewContainer(new TestViewContainer());
+    const viewContainer = new TestViewContainer();
 
     const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
     const shapePointGenerator = new ShapePointGenerator();
@@ -126,7 +123,7 @@ describe('Particle', () => {
 
   describe('Независимость позиции частицы от частоты обновления экрана', () => {
     it('Позиции обеих частиц равны', () => {
-      const viewContainer = new ParticleViewContainer(new TestViewContainer());
+      const viewContainer = new TestViewContainer();
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
@@ -162,7 +159,7 @@ describe('Particle', () => {
     });
 
     it('Позиции обеих частиц равны (гравитация', () => {
-      const viewContainer = new ParticleViewContainer(new TestViewContainer());
+      const viewContainer = new TestViewContainer();
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
@@ -202,7 +199,7 @@ describe('Particle', () => {
     });
 
     it('Позиции обеих частиц равны (path)', () => {
-      const viewContainer = new ParticleViewContainer(new TestViewContainer());
+      const viewContainer = new TestViewContainer();
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
@@ -257,7 +254,7 @@ describe('Particle', () => {
         },
       },
     };
-    const viewContainer = new ParticleViewContainer(new TestViewContainer());
+    const viewContainer = new TestViewContainer();
     const view = createView(TEST_VIEW_FACTORY);
     const initialAlpha = view.alpha;
 

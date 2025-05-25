@@ -14,7 +14,6 @@ import {realRandom} from '../utils/random/RealRandom';
 import {isRangeValue} from '../typeguards';
 import {updateParticle} from './particle/updateParticle';
 import {ShapePointGenerator} from './spawn-shapes/ShapePointGenerator';
-import {ParticleViewContainer} from './ViewContainer';
 import {MAX_SPAWN_CHANCE, MIN_SPAWN_CHANCE} from '../constants';
 
 interface UpdateReport {
@@ -51,11 +50,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     this.ticker = new Ticker(this.handleUpdate);
     this.config = new ConfigManager(initialConfig, viewFactory);
     this.shapePointGenerator = new ShapePointGenerator();
-    this.container = new ParticleContainer(
-      new ParticleViewContainer(viewContainer),
-      this.config,
-      this.shapePointGenerator,
-    );
+    this.container = new ParticleContainer(viewContainer, this.config, this.shapePointGenerator);
 
     this.currentTime = 0;
     this.currentSpawnInterval = this.getNextSpawnTime();

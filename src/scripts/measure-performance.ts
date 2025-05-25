@@ -1,4 +1,4 @@
-import {ViewParticle, Point2d, PixiViewContainer} from '../types';
+import {ViewParticle, Point2d, ViewContainer} from '../types';
 import {ParticleEmitter} from '../core/ParticleEmitter';
 import {measureFuncExecuteTime} from './measureFuncExecuteTime';
 
@@ -15,7 +15,7 @@ class TestViewParticle implements ViewParticle {
   height: number = 1;
 }
 
-class TestViewContainer implements PixiViewContainer<ViewParticle> {
+class TestViewContainer implements ViewContainer<ViewParticle> {
   public children: ViewParticle[];
 
   constructor() {
