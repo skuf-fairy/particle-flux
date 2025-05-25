@@ -68,9 +68,9 @@ export function useParticle<View extends ViewParticle>(
     direction = getSpawnBurstDirection(config.direction, waveParticleIndex);
   } else {
     direction = getDirection(config.direction);
+    particle.direction = direction.vector;
   }
 
-  particle.direction = direction.vector;
   particle.isRotateByDirection = config.direction.isRotateByDirection === true;
 
   if (particle.isRotateByDirection) {
