@@ -11,6 +11,7 @@ import {updateParticle} from '../../core/particle/updateParticle';
 import {useParticle} from '../../core/particle/useParticle';
 import {isParticleInUse} from '../../core/particle/isParticleInUse';
 import {ShapePointGenerator} from '../../core/spawn-shapes/ShapePointGenerator';
+import {ParticleViewContainer} from '../../core/ViewContainer';
 import {ConfigManager} from '../../core/ConfigManager';
 import {Vector2Utils} from '../../utils/Vector2Utils';
 
@@ -66,22 +67,25 @@ const testUsedParticle = (particle: IParticle<TestViewParticle>, viewContainer: 
 describe('Particle', () => {
   describe('Creating a unused particle', () => {
     const viewContainer = new TestViewContainer();
+    const particleViewContainer = new ParticleViewContainer(viewContainer);
 
-    const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+    const particle = createUnusedParticle(particleViewContainer, createView(TEST_VIEW_FACTORY));
 
     testUnusedParticle(particle, viewContainer);
   });
 
   describe('useParticle', () => {
     const viewContainer = new TestViewContainer();
+    const particleViewContainer = new ParticleViewContainer(viewContainer);
 
-    const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
+    const particle = createUnusedParticle(particleViewContainer, createView(TEST_VIEW_FACTORY));
     const shapePointGenerator = new ShapePointGenerator();
 
     useParticle(
       particle,
       new ConfigManager<ViewParticle>(TEST_PARTICLE_CONFIG, TEST_VIEW_FACTORY),
       shapePointGenerator,
+      0,
     );
 
     testUsedParticle(particle, viewContainer);
@@ -95,7 +99,7 @@ describe('Particle', () => {
   });
 
   describe('updateParticle', () => {
-    const viewContainer = new TestViewContainer();
+    const viewContainer = new ParticleViewContainer(new TestViewContainer());
 
     const particle = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
     const shapePointGenerator = new ShapePointGenerator();
@@ -104,6 +108,7 @@ describe('Particle', () => {
       particle,
       new ConfigManager<ViewParticle>(TEST_PARTICLE_CONFIG, TEST_VIEW_FACTORY),
       shapePointGenerator,
+      0,
     );
 
     it('Необходимо проверить, что после половины жизни частицы, ее параметры должны измениться на половину', () => {
@@ -121,7 +126,7 @@ describe('Particle', () => {
 
   describe('Независимость позиции частицы от частоты обновления экрана', () => {
     it('Позиции обеих частиц равны', () => {
-      const viewContainer = new TestViewContainer();
+      const viewContainer = new ParticleViewContainer(new TestViewContainer());
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
@@ -131,12 +136,14 @@ describe('Particle', () => {
         particle1,
         new ConfigManager<ViewParticle>(TEST_PARTICLE_CONFIG, TEST_VIEW_FACTORY),
         shapePointGenerator,
+        0,
       );
 
       useParticle(
         particle2,
         new ConfigManager<ViewParticle>(TEST_PARTICLE_CONFIG, TEST_VIEW_FACTORY),
         shapePointGenerator,
+        0,
       );
 
       // 60 FPS
@@ -154,8 +161,8 @@ describe('Particle', () => {
       expect(particle1.view.y).toEqual(particle2.view.y);
     });
 
-    it('Позиции обеих частиц равны (гравитация)', () => {
-      const viewContainer = new TestViewContainer();
+    it('Позиции обеих частиц равны (гравитация', () => {
+      const viewContainer = new ParticleViewContainer(new TestViewContainer());
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
@@ -170,12 +177,14 @@ describe('Particle', () => {
         particle1,
         new ConfigManager<ViewParticle>({...TEST_PARTICLE_CONFIG, particleConfig}, TEST_VIEW_FACTORY),
         shapePointGenerator,
+        0,
       );
 
       useParticle(
         particle2,
         new ConfigManager<ViewParticle>({...TEST_PARTICLE_CONFIG, particleConfig}, TEST_VIEW_FACTORY),
         shapePointGenerator,
+        0,
       );
 
       // 60 FPS
@@ -193,7 +202,7 @@ describe('Particle', () => {
     });
 
     it('Позиции обеих частиц равны (path)', () => {
-      const viewContainer = new TestViewContainer();
+      const viewContainer = new ParticleViewContainer(new TestViewContainer());
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
       const particle2 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));
@@ -208,12 +217,14 @@ describe('Particle', () => {
         particle1,
         new ConfigManager<ViewParticle>({...TEST_PARTICLE_CONFIG, particleConfig}, TEST_VIEW_FACTORY),
         shapePointGenerator,
+        0,
       );
 
       useParticle(
         particle2,
         new ConfigManager<ViewParticle>({...TEST_PARTICLE_CONFIG, particleConfig}, TEST_VIEW_FACTORY),
         shapePointGenerator,
+        0,
       );
 
       // 60 FPS
@@ -246,7 +257,7 @@ describe('Particle', () => {
         },
       },
     };
-    const viewContainer = new TestViewContainer();
+    const viewContainer = new ParticleViewContainer(new TestViewContainer());
     const view = createView(TEST_VIEW_FACTORY);
     const initialAlpha = view.alpha;
 
@@ -257,6 +268,7 @@ describe('Particle', () => {
       particle,
       new ConfigManager<ViewParticle>({...TEST_PARTICLE_CONFIG, particleConfig}, TEST_VIEW_FACTORY),
       shapePointGenerator,
+      0,
     );
 
     const initX = particle.view.x;

@@ -1,11 +1,12 @@
-import {ViewParticle, ViewContainer, IParticle} from '../../types';
+import {ViewParticle, IParticle} from '../../types';
+import {ParticleViewContainer} from '../ViewContainer';
 import {getInitialParticleState} from './getInitialParticleState';
 
 export function createUnusedParticle<View extends ViewParticle>(
-  viewContainer: ViewContainer<View>,
+  viewContainer: ParticleViewContainer<View>,
   view: View,
 ): IParticle<View> {
-  viewContainer.addChild(view);
+  viewContainer.add(view);
   view.visible = false;
 
   return {

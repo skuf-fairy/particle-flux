@@ -11,6 +11,7 @@ import {useParticle} from './particle/useParticle';
 import {wasParticleRemoved} from './particle/wasParticleRemoved';
 import {isNeedRemoveParticle} from './particle/isNeedRemoveParticle';
 import {ShapePointGenerator} from './spawn-shapes/ShapePointGenerator';
+import {ParticleViewContainer} from './ViewContainer';
 
 /**
  * A container for particles, where you can add and remove game objects, as well as get them from the container.
@@ -21,7 +22,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
   private containerParticlesCount: number;
 
   constructor(
-    private readonly viewContainer: ViewContainer<View>,
+    private readonly viewContainer: ParticleViewContainer<View>,
     private readonly config: ConfigManager<View>,
     private readonly shapePointGenerator: ShapePointGenerator,
   ) {

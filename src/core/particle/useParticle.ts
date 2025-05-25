@@ -125,6 +125,7 @@ export function useParticle<View extends ViewParticle>(
   }
 
   if (config.color) {
+    // todo обработка number значения?
     if (isColorStaticBehaviorConfig(config.color)) {
       view.tint = getColorStaticBehaviorValue(config.color);
     } else if (isColorDynamicBehaviorConfig(config.color)) {
