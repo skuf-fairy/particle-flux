@@ -1,5 +1,13 @@
 import {ParticleContainer} from './ParticleContainer';
-import {IParticle, ITicker, ParticleEmitterConfig, ViewContainer, ViewFactory, ViewParticle} from '../types';
+import {
+  ExtraOptions,
+  IParticle,
+  ITicker,
+  ParticleEmitterConfig,
+  ViewContainer,
+  ViewFactory,
+  ViewParticle,
+} from '../types';
 import {ConfigManager} from './ConfigManager';
 import {Ticker} from '../utils/Ticker';
 import {realRandom} from '../utils/random/RealRandom';
@@ -7,6 +15,7 @@ import {isRangeValue} from '../typeguards';
 import {updateParticle} from './particle/updateParticle';
 import {ShapePointGenerator} from './spawn-shapes/ShapePointGenerator';
 import {ParticleViewContainer} from './ViewContainer';
+import {MAX_SPAWN_CHANCE, MIN_SPAWN_CHANCE} from '../constants';
 
 interface UpdateReport {
   currentTime: number;
@@ -31,10 +40,13 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
 
   private lastUpdateReport: UpdateReport;
 
+  private extraOptions: ExtraOptions;
+
   constructor(
     viewContainer: ViewContainer<View>,
     viewFactory: ViewFactory<View>,
     initialConfig: ParticleEmitterConfig,
+    extraOptions?: ExtraOptions,
   ) {
     this.ticker = new Ticker(this.handleUpdate);
     this.config = new ConfigManager(initialConfig, viewFactory);
@@ -58,6 +70,8 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
 
     this.resetTime();
 
+    this.extraOptions = extraOptions || {};
+
     if (this.config.autoStart === undefined || this.config.autoStart) {
       // при автостарте создается первая волна
       this.startEmit();
@@ -73,7 +87,8 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     const count = this.getAvailableForEmitParticlesCount(particlesCount);
 
     for (let i = 0; i < count; i++) {
-      this.emit();
+      // создание через emitOnce не считается за создание волны
+      this.emit(0);
     }
 
     if (!this.isEmitActive()) {
@@ -96,7 +111,10 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   // помимо старта времени создаст еще и первую волну частиц
   public startEmit(): void {
     this.startTime();
-    this.createParticlesBetweenFrames(0);
+
+    if (this.currentTime >= 0) {
+      this.createParticlesBetweenFrames(0);
+    }
   }
 
   public pauseEmit(): void {
@@ -112,9 +130,8 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
    * Cleans the container and resets the time
    */
   public stopEmit(): void {
-    this.ticker.stop();
+    this.stopTime();
     this.clean();
-    this.resetTime();
   }
 
   public restart(): void {
@@ -185,7 +202,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
     if (this.currentTime >= this.getSpawnTime()) {
       // if the operating time is up, then we monitor the container, when it is empty, then we need to stop the emitter.
       if (this.container.getParticlesCount() === 0) {
-        this.stopEmit();
+        this.stopTime();
       }
 
       this.updateReport(0, 0);
@@ -228,13 +245,13 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   }
 
   // creates a particle with a transferred chance of creation
-  private emit(): IParticle<View> | undefined {
+  private emit(waveParticleIndex: number): IParticle<View> | undefined {
     if (this.config.spawnChance !== undefined) {
-      if (realRandom.generateIntegerNumber(1, 100) <= this.config.spawnChance) {
-        return this.container.createParticle();
+      if (realRandom.generateIntegerNumber(MIN_SPAWN_CHANCE, MAX_SPAWN_CHANCE) <= this.config.spawnChance) {
+        return this.container.createParticle(waveParticleIndex);
       }
     } else {
-      return this.container.createParticle();
+      return this.container.createParticle(waveParticleIndex);
     }
   }
 
@@ -273,6 +290,13 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
   private startTime(): void {
     this.resetTime();
     this.ticker.start();
+    this.extraOptions.onStartEmit?.();
+  }
+
+  private stopTime(): void {
+    this.ticker.stop();
+    this.resetTime();
+    this.extraOptions.onStopEmit?.();
   }
 
   private createParticleWave(particleAge: number, timeInterval: number): void {
@@ -284,7 +308,7 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
         this.shapePointGenerator.reset();
       }
 
-      const particle = this.emit();
+      const particle = this.emit(i);
       if (particle && particleAge > 0) {
         updateParticle(particle, particleAge / (timeInterval || 1), particleAge);
       }

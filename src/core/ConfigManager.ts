@@ -18,7 +18,7 @@ import {SpawnPositionConfig} from './spawn-position/spawn-position.types';
 import {SpawnShapeBehavior} from './spawn-shapes/spawn-shapes.types';
 import {ColorBehaviorConfig} from './behaviors/color-behavior/color-behavior.types';
 import {cloneDeep} from '../utils/cloneDeep';
-import {DEFAULT_LIFE_TIME_CONFIG} from '../constants';
+import {DEFAULT_DIRECTION_CONFIG, DEFAULT_LIFE_TIME_CONFIG, DEFAULT_SPAWN_POSITION} from '../constants';
 import {PathConfig} from './path/path.types';
 import {EventEmitter} from '../utils/EventEmitter';
 
@@ -135,7 +135,7 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   set speed(config: SpeedBehaviorConfig | undefined) {
-    this.config.particleConfig.speed = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.speed = cloneDeep(config);
   }
 
   get speed(): SpeedBehaviorConfig | undefined {
@@ -143,15 +143,15 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   set direction(config: DirectionConfig | undefined) {
-    this.config.particleConfig.direction = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.direction = cloneDeep(config || DEFAULT_DIRECTION_CONFIG);
   }
 
-  get direction(): DirectionConfig | undefined {
-    return this.config.particleConfig.direction;
+  get direction(): DirectionConfig {
+    return this.config.particleConfig.direction || DEFAULT_DIRECTION_CONFIG;
   }
 
   set path(config: PathConfig | undefined) {
-    this.config.particleConfig.path = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.path = cloneDeep(config);
   }
 
   get path(): PathConfig | undefined {
@@ -159,7 +159,7 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   set alpha(config: AlphaBehaviorConfig | undefined) {
-    this.config.particleConfig.alpha = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.alpha = cloneDeep(config);
   }
 
   get alpha(): AlphaBehaviorConfig | undefined {
@@ -167,7 +167,7 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   set scale(config: ScaleBehaviorConfig | undefined) {
-    this.config.particleConfig.scale = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.scale = cloneDeep(config);
   }
 
   get scale(): ScaleBehaviorConfig | undefined {
@@ -175,7 +175,7 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   set gravity(config: GravityBehaviorConfig | undefined) {
-    this.config.particleConfig.gravity = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.gravity = cloneDeep(config);
   }
 
   get gravity(): GravityBehaviorConfig | undefined {
@@ -183,7 +183,7 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   set rotation(config: RotationBehaviorConfig | undefined) {
-    this.config.particleConfig.rotation = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.rotation = cloneDeep(config);
   }
 
   get rotation(): RotationBehaviorConfig | undefined {
@@ -191,15 +191,15 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   set spawnPosition(config: SpawnPositionConfig | undefined) {
-    this.config.particleConfig.spawnPosition = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.spawnPosition = cloneDeep(config || DEFAULT_SPAWN_POSITION);
   }
 
-  get spawnPosition(): SpawnPositionConfig | undefined {
-    return this.config.particleConfig.spawnPosition;
+  get spawnPosition(): SpawnPositionConfig {
+    return this.config.particleConfig.spawnPosition || DEFAULT_SPAWN_POSITION;
   }
 
   set spawnShape(config: SpawnShapeBehavior | undefined) {
-    this.config.particleConfig.spawnShape = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.spawnShape = cloneDeep(config);
   }
 
   get spawnShape(): SpawnShapeBehavior | undefined {
@@ -207,7 +207,7 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   set color(config: ColorBehaviorConfig | undefined) {
-    this.config.particleConfig.color = config === undefined ? undefined : cloneDeep(config);
+    this.config.particleConfig.color = cloneDeep(config);
   }
 
   get color(): ColorBehaviorConfig | undefined {

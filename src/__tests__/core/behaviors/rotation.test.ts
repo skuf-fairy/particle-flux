@@ -5,24 +5,28 @@ import {createUnusedParticle} from '../../../core/particle/createUnusedParticle'
 import {createView} from '../../../core/particle/createView';
 import {updateParticle} from '../../../core/particle/updateParticle';
 import {useParticle} from '../../../core/particle/useParticle';
-import {ParticleConfig} from '../../../types';
+import {ParticleEmitterConfig, ViewParticle} from '../../../types';
 import {STANDARD_DELTA_MS} from '../../../utils/Ticker';
 import {TestViewContainer} from '../../TestViewContainer';
 import {ShapePointGenerator} from '../../../core/spawn-shapes/ShapePointGenerator';
 import {ParticleViewContainer} from '../../../core/ViewContainer';
+import {ConfigManager} from '../../../core/ConfigManager';
 
 describe('Обновление поворота отображения', () => {
-  const particleConfig: ParticleConfig = {
-    lifeTime: {
-      value: 10,
-    },
-    direction: {
-      angle: 90,
-      isRotateByDirection: true,
-    },
-    rotation: {
-      value: 0,
-      delta: 1,
+  const particleConfig: ParticleEmitterConfig = {
+    emitterConfig: {autoStart: false},
+    particleConfig: {
+      lifeTime: {
+        value: 10,
+      },
+      direction: {
+        angle: 90,
+        isRotateByDirection: true,
+      },
+      rotation: {
+        value: 0,
+        delta: 1,
+      },
     },
   };
   const viewContainer = new ParticleViewContainer(new TestViewContainer());
@@ -30,7 +34,7 @@ describe('Обновление поворота отображения', () => {
 
   const particle = createUnusedParticle(viewContainer, view);
   const shapePointGenerator = new ShapePointGenerator();
-  useParticle(particle, particleConfig, shapePointGenerator);
+  useParticle(particle, new ConfigManager<ViewParticle>(particleConfig, TEST_VIEW_FACTORY), shapePointGenerator, 0);
 
   updateParticle(particle, 1, STANDARD_DELTA_MS);
 

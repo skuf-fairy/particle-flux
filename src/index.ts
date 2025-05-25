@@ -63,8 +63,17 @@ export {
   isColorScriptBehaviorConfig,
   isColorScriptBehavior,
 } from './core/behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
-export {DirectionConfig, RangeDirectionConfig, StaticDirectionConfig} from './core/direction/direction.types';
-export {isStaticDirectionBehaviorConfig, isDirectionRangeBehaviorConfig} from './core/direction/direction.typeguards';
+export {
+  DirectionConfig,
+  RangeDirectionConfig,
+  StaticDirectionConfig,
+  SpawnBurstDirectionConfig,
+} from './core/direction/direction.types';
+export {
+  isStaticDirectionBehaviorConfig,
+  isDirectionRangeBehaviorConfig,
+  isSpawnBurstDirectionBehaviorConfig,
+} from './core/direction/direction.typeguards';
 export {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/gravity-behavior.types';
 export {
   LifeTimeBehaviorConfig,

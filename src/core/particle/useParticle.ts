@@ -1,5 +1,5 @@
 import {DEFAULT_LIFE_TIME_CONFIG} from '../../constants';
-import {ViewParticle, IParticle, ParticleConfig, Point2d, InitialViewState} from '../../types';
+import {ViewParticle, IParticle, Point2d, InitialViewState} from '../../types';
 import {parsePath} from '../../utils/parsePath';
 import {getDeltaBehavior} from '../base-behaviors/delta-behavior/delta-behavior';
 import {isDeltaBehaviorConfig} from '../base-behaviors/delta-behavior/delta-behavior.typeguards';
@@ -21,7 +21,10 @@ import {
 import {getColorStaticBehaviorValue, getColorDynamicBehavior} from '../behaviors/color-behavior/color-dynamic-behavior';
 import {isColorScriptBehaviorConfig} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeBehavior} from '../behaviors/life-time-behavior/life-time-behavior';
-import {getDirection} from '../direction/getDirection';
+import {ConfigManager} from '../ConfigManager';
+import {isSpawnBurstDirectionBehaviorConfig} from '../direction/direction.typeguards';
+import {SpawnParticleDirection} from '../direction/direction.types';
+import {getDirection, getSpawnBurstDirection} from '../direction/getDirection';
 import {ShapePointGenerator} from '../spawn-shapes/ShapePointGenerator';
 import {getInitialParticleState} from './getInitialParticleState';
 import {updateParticle} from './updateParticle';
@@ -31,8 +34,9 @@ const scaleCache = {x: 0, y: 0};
 
 export function useParticle<View extends ViewParticle>(
   particle: IParticle<View>,
-  config: ParticleConfig,
+  config: ConfigManager<View>,
   shapePointGenerator: ShapePointGenerator,
+  waveParticleIndex: number,
 ): void {
   const view = particle.view;
   const initialViewState = particle.initialViewState;
@@ -48,22 +52,29 @@ export function useParticle<View extends ViewParticle>(
   particle.lifeTime = getLifeTimeBehavior(config.lifeTime || DEFAULT_LIFE_TIME_CONFIG);
   particle.age = 0;
 
-  particle.initialPosition = config.spawnShape
+  const initialPosition = config.spawnShape
     ? shapePointGenerator.getShapeRandomPoint(config.spawnShape.shape, config.spawnPosition)
-    : config.spawnPosition || {x: 0, y: 0};
+    : config.spawnPosition;
+
+  particle.initialPosition.x = initialPosition.x;
+  particle.initialPosition.y = initialPosition.y;
 
   view.x = particle.initialPosition.x;
   view.y = particle.initialPosition.y;
 
-  if (config.direction) {
-    const direction = getDirection(config.direction);
-    particle.direction = direction.vector;
+  let direction: SpawnParticleDirection;
 
-    particle.isRotateByDirection = config.direction.isRotateByDirection === true;
+  if (isSpawnBurstDirectionBehaviorConfig(config.direction)) {
+    direction = getSpawnBurstDirection(config.direction, waveParticleIndex);
+  } else {
+    direction = getDirection(config.direction);
+  }
 
-    if (particle.isRotateByDirection) {
-      view.angle = particle.directionRotation = direction.angle;
-    }
+  particle.direction = direction.vector;
+  particle.isRotateByDirection = config.direction.isRotateByDirection === true;
+
+  if (particle.isRotateByDirection) {
+    view.angle = particle.directionRotation = direction.angle;
   }
 
   if (config.speed) {

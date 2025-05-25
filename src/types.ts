@@ -55,7 +55,7 @@ export type ViewContainer<View extends ViewParticle> =
   | SVGViewContainer<View>;
 
 export interface IParticleContainer<View extends ViewParticle> {
-  createParticle(): void;
+  createParticle(waveParticleIndex: number): void;
   getParticlesCount(): number;
   getParticlesArray(): IParticle<View>[];
   clear(): void;
@@ -123,7 +123,7 @@ export interface EmitterConfig {
   spawnTimeout?: number;
   maxParticles?: number;
   spawnParticlesPerWave?: number;
-  spawnChance?: number;
+  spawnChance?: number; // [0, 100]
   autoStart?: boolean;
 }
 
@@ -156,6 +156,11 @@ export interface ParticleConfig {
 export interface ParticleEmitterConfig {
   emitterConfig: EmitterConfig;
   particleConfig: ParticleConfig;
+}
+
+export interface ExtraOptions {
+  onStartEmit?: VoidFunction;
+  onStopEmit?: VoidFunction;
 }
 
 export type RangeValue = {

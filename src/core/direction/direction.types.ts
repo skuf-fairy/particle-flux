@@ -1,3 +1,10 @@
+import {Point2d} from '../../types';
+
+export interface SpawnParticleDirection {
+  vector: Point2d;
+  angle: number;
+}
+
 export interface RangeDirectionConfig {
   minAngle: number;
   maxAngle: number;
@@ -9,4 +16,10 @@ export interface StaticDirectionConfig {
   isRotateByDirection?: boolean;
 }
 
-export type DirectionConfig = RangeDirectionConfig | StaticDirectionConfig;
+export interface SpawnBurstDirectionConfig {
+  startAngle: number;
+  deltaAngle: number;
+  isRotateByDirection?: boolean;
+}
+
+export type DirectionConfig = RangeDirectionConfig | StaticDirectionConfig | SpawnBurstDirectionConfig;
