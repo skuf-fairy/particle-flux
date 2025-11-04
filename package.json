@@ -17,7 +17,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,js}\"",
     "lint": "eslint 'src/**/*.{ts,tsx,js}'",
     "typecheck": "tsc --noEmit",
-    "measure-performance": "ts-node src/scripts/measure-performance"
+    "measure-performance": "ts-node src/scripts/measure-performance",
+    "publish": "npm publish"
   },
   "lint-staged": {
     "*.{js,ts}": [

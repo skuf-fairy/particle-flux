@@ -185,7 +185,7 @@ The area for creating a particle is a point.
 
 ```typescript
 interface SpawnPointShape {
-  type: SpawnShapeType.Point;
+  type: 'Point';
   x: number;
   y: number;
 }
@@ -197,7 +197,7 @@ The area for creating the particle is a rectangle parallel to the X-axis.
 
 ```typescript
 interface SpawnRectangleShape {
-  type: SpawnShapeType.Rectangle;
+  type: 'Rectangle';
   x: number;
   y: number;
   width: number;
@@ -207,11 +207,11 @@ interface SpawnRectangleShape {
 
 #### Torus Spawn Shape
 
-Область для создания частицы - торус. Если не заданы опциональные параметры, то будет круг.
+The area for creating a particle is a torus. If no optional parameters are set, then there will be a circle.
 
 ```typescript
 interface SpawnTorusShape {
-  type: SpawnShapeType.Torus;
+  type: 'Torus';
   x: number;
   y: number;
   outerRadius: number;
@@ -234,7 +234,7 @@ interface Point2d {
 type Chain = Point2d[];
 
 interface PolygonalChainShape {
-  type: SpawnShapeType.Polygon;
+  type: 'Polygon';
   chain: Chain | Chain[];
 }
 ```
