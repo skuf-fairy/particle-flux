@@ -1,6 +1,5 @@
 import {describe, expect, it} from 'vitest';
 import {ShapePointGenerator} from '../../../core/spawn-shapes/ShapePointGenerator';
-import {SpawnShapeType} from '../../../core/spawn-shapes/spawn-shapes.types';
 import {cloneDeep} from '../../../utils/cloneDeep';
 
 describe('ShapePointGenerator', () => {
@@ -8,7 +7,7 @@ describe('ShapePointGenerator', () => {
     const shapePointGenerator = new ShapePointGenerator();
     const point1 = cloneDeep(
       shapePointGenerator.getShapeRandomPoint({
-        type: SpawnShapeType.Rectangle,
+        type: 'Rectangle',
         x: 0,
         y: 0,
         width: 10000,
@@ -17,7 +16,7 @@ describe('ShapePointGenerator', () => {
     );
     const point2 = cloneDeep(
       shapePointGenerator.getShapeRandomPoint({
-        type: SpawnShapeType.Rectangle,
+        type: 'Rectangle',
         x: 0,
         y: 0,
         width: 10000,
@@ -32,7 +31,7 @@ describe('ShapePointGenerator', () => {
   it('Обе частицы создаются в одной и той же точке', () => {
     const shapePointGenerator = new ShapePointGenerator();
     const point1 = shapePointGenerator.getShapeRandomPoint({
-      type: SpawnShapeType.Rectangle,
+      type: 'Rectangle',
       x: 0,
       y: 0,
       width: 10000,
@@ -40,7 +39,7 @@ describe('ShapePointGenerator', () => {
     });
     shapePointGenerator.reset();
     const point2 = shapePointGenerator.getShapeRandomPoint({
-      type: SpawnShapeType.Rectangle,
+      type: 'Rectangle',
       x: 0,
       y: 0,
       width: 10000,

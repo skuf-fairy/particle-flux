@@ -6,7 +6,6 @@ import {
 } from './color-behavior.types';
 import {NumberUtils} from '../../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
-import {EasingName} from '../../../utils/easing/easing.types';
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const lerp = NumberUtils.lerpColor;
@@ -15,7 +14,7 @@ export function getColorTransitionBehavior(config: ColorTransitionBehaviorConfig
   return {
     startColor: config.start,
     endColor: config.end,
-    easing: config.easing ? EASING_FUNCTIONS[EasingName.linear] : null,
+    easing: config.easing ? EASING_FUNCTIONS['linear'] : null,
     type: ColorBehaviorType.Transition,
   };
 }

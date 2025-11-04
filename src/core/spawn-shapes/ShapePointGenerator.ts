@@ -28,16 +28,16 @@ export class ShapePointGenerator {
     const shape = Array.isArray(spawnShape) ? this.pseudoRandom.choice(spawnShape) : spawnShape;
 
     switch (shape.type) {
-      case SpawnShapeType.Point:
+      case 'Point':
         this.pointCache.x = shape.x;
         this.pointCache.y = shape.y;
         break;
 
-      case SpawnShapeType.Rectangle:
+      case 'Rectangle':
         this.setSpawnPositionOfRectangle(shape);
         break;
 
-      case SpawnShapeType.Torus:
+      case 'Torus':
         this.setRandomPointFromTorus(
           shape.x,
           shape.y,
@@ -48,7 +48,7 @@ export class ShapePointGenerator {
         );
         break;
 
-      case SpawnShapeType.Chain:
+      case 'Chain':
         this.setRandomPointOnChain(shape);
         break;
     }

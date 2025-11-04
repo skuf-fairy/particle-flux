@@ -246,7 +246,7 @@ describe('Particle', () => {
       },
       spawnShape: {
         shape: {
-          type: SpawnShapeType.Rectangle,
+          type: 'Rectangle',
           x: 0,
           y: 0,
           width: 100,

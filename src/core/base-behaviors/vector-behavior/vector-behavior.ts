@@ -1,6 +1,5 @@
 import {NumberUtils} from '../../../utils/NumberUtils';
 import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
-import {EasingName} from '../../../utils/easing/easing.types';
 import {
   isScalarStaticBehaviorConfig,
   isScalarTransitionBehaviorConfig,
@@ -20,8 +19,8 @@ export function getVectorBehavior(config: VectorBehaviorConfig): VectorBehavior 
   const multiplierX = getMultiplierValue(config.x.multiplier || 1);
   const multiplierY = getMultiplierValue(config.y.multiplier || 1);
 
-  let easingX = EASING_FUNCTIONS[EasingName.linear];
-  let easingY = EASING_FUNCTIONS[EasingName.linear];
+  let easingX = EASING_FUNCTIONS['linear'];
+  let easingY = EASING_FUNCTIONS['linear'];
 
   if (isScalarStaticBehaviorConfig(config.x) && isScalarStaticBehaviorConfig(config.y)) {
     startValue = {x: config.x.value * multiplierX, y: config.y.value * multiplierY};
@@ -30,18 +29,18 @@ export function getVectorBehavior(config: VectorBehaviorConfig): VectorBehavior 
     startValue = {x: config.x.start * multiplierX, y: config.y.start * multiplierY};
     endValue = {x: config.x.end * multiplierX, y: config.y.end * multiplierY};
 
-    easingX = EASING_FUNCTIONS[config.x.easing || EasingName.linear];
-    easingY = EASING_FUNCTIONS[config.y.easing || EasingName.linear];
+    easingX = EASING_FUNCTIONS[config.x.easing || 'linear'];
+    easingY = EASING_FUNCTIONS[config.y.easing || 'linear'];
   } else if (isScalarStaticBehaviorConfig(config.x) && isScalarTransitionBehaviorConfig(config.y)) {
     startValue = {x: config.x.value * multiplierX, y: config.y.start * multiplierY};
     endValue = {x: config.x.value * multiplierX, y: config.y.end * multiplierY};
 
-    easingY = EASING_FUNCTIONS[config.y.easing || EasingName.linear];
+    easingY = EASING_FUNCTIONS[config.y.easing || 'linear'];
   } else if (isScalarTransitionBehaviorConfig(config.x) && isScalarStaticBehaviorConfig(config.y)) {
     startValue = {x: config.x.start * multiplierX, y: config.y.value * multiplierY};
     endValue = {x: config.x.end * multiplierX, y: config.y.value * multiplierY};
 
-    easingX = EASING_FUNCTIONS[config.x.easing || EasingName.linear];
+    easingX = EASING_FUNCTIONS[config.x.easing || 'linear'];
   }
 
   return {
