@@ -18,7 +18,7 @@
     "lint": "eslint 'src/**/*.{ts,tsx,js}'",
     "typecheck": "tsc --noEmit",
     "measure-performance": "ts-node src/scripts/measure-performance",
-    "npm-publish": "yarn build && npm publish"
+    "npm-publish": "yarn build; npm publish"
   },
   "lint-staged": {
     "*.{js,ts}": [
