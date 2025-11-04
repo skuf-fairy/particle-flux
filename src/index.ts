@@ -100,6 +100,7 @@ export {
   Chain,
   SpawnShape,
 } from './core/spawn-shapes/spawn-shapes.types';
+export {SPAWN_SHAPE_TYPES_LIST} from './core/spawn-shapes/spawn-shapes.constants';
 export {
   isSpawnPointShape,
   isSpawnRectangleShape,
@@ -108,6 +109,7 @@ export {
 } from './core/spawn-shapes/spawn-shapes.typeguards';
 
 export {EasingName, EasingFunction} from './utils/easing/easing.types';
+export {EASING_NAME_LIST} from './utils/easing/easing.constants';
 export {EASING_FUNCTIONS} from './utils/easing/easing-functions';
 
 export {START_SCRIPT_TIME, END_SCRIPT_TIME} from './constants';
