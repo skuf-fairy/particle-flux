@@ -1,5 +1,5 @@
 import {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/alpha-behavior.types';
-import {ColorBehaviorConfig, ColorDynamicBehavior} from './core/behaviors/color-behavior/color-behavior.types';
+import {ColorBehaviorConfig, ColorTransitionBehavior} from './core/behaviors/color-behavior/color-behavior.types';
 import {DirectionConfig} from './core/direction/direction.types';
 import {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/gravity-behavior.types';
 import {LifeTimeBehaviorConfig} from './core/behaviors/life-time-behavior/life-time-behavior.types';
@@ -77,7 +77,7 @@ export interface IParticle<View extends ViewParticle> {
   alphaBehavior: ScalarBehavior | NumberScriptBehavior | null;
   rotationBehavior: ScalarBehavior | DeltaBehavior | NumberScriptBehavior | null;
   scaleBehavior: ScalarBehavior | Point2dScriptBehavior | NumberScriptBehavior | VectorBehavior | null;
-  colorBehavior: ColorDynamicBehavior | ColorScriptBehavior | null;
+  colorBehavior: ColorTransitionBehavior | ColorScriptBehavior | null;
 
   isDestroyAfterDeath: boolean;
 
@@ -108,7 +108,7 @@ export interface EmitterConfig {
   spawnTimeout?: number;
   maxParticles?: number;
   spawnParticlesPerWave?: number;
-  spawnChance?: number; // [0, 100]
+  spawnChance?: number; // значение от 0 до 100 включительно
   autoStart?: boolean;
 }
 
@@ -143,6 +143,7 @@ export interface ParticleEmitterConfig {
   particleConfig: ParticleConfig;
 }
 
+// дополнительные параметры для эмииттера
 export interface ExtraOptions {
   onStartEmit?: VoidFunction;
   onStopEmit?: VoidFunction;

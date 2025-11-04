@@ -158,7 +158,7 @@ describe('Particle', () => {
       expect(particle1.view.y).toEqual(particle2.view.y);
     });
 
-    it('Позиции обеих частиц равны (гравитация', () => {
+    it('Позиции обеих частиц равны (гравитация)', () => {
       const viewContainer = new TestViewContainer();
 
       const particle1 = createUnusedParticle(viewContainer, createView(TEST_VIEW_FACTORY));

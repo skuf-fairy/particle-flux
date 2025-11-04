@@ -177,20 +177,23 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
       if (this.particleHead !== null) {
         this.particleHead.prev = null;
       }
-    } else if (particle.prev !== null) {
-      particle.prev.next = particle.next;
-
-      if (particle.next !== null) {
-        particle.next.prev = particle.prev;
+    } else {
+      if (particle.prev !== null) {
+        particle.prev.next = particle.next;
+        if (particle.next !== null) {
+          particle.next.prev = particle.prev;
+        }
+      } else {
+        // Если particle.prev === null, но particle не является головой, это ошибка
+        // В этом случае, возможно, стоит выбросить ошибку или обработать ситуацию
+        console.warn('Particle is not head but has no previous');
       }
     }
 
     let next: IParticle<View> | null = null;
     if (isMoveInPool) {
-      // сохраняем частицу, которая будет добавлена в пул
       const temp = particle;
       next = particle.next;
-      // обнуляем следующую, тк эта будет добавлена в пул
       temp.next = null;
       temp.prev = null;
       this.addParticleToPool(temp);

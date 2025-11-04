@@ -16,9 +16,12 @@ import {getVectorBehavior} from '../base-behaviors/vector-behavior/vector-behavi
 import {isVectorBehaviorConfig} from '../base-behaviors/vector-behavior/vector-behavior.typeguards';
 import {
   isColorStaticBehaviorConfig,
-  isColorDynamicBehaviorConfig,
+  isColorTransitionBehaviorConfig,
 } from '../behaviors/color-behavior/color-behavior.typeguards';
-import {getColorStaticBehaviorValue, getColorDynamicBehavior} from '../behaviors/color-behavior/color-dynamic-behavior';
+import {
+  getColorStaticBehaviorValue,
+  getColorTransitionBehavior,
+} from '../behaviors/color-behavior/color-transition-behavior';
 import {isColorScriptBehaviorConfig} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeBehavior} from '../behaviors/life-time-behavior/life-time-behavior';
 import {ConfigManager} from '../ConfigManager';
@@ -39,11 +42,13 @@ export function useParticle<View extends ViewParticle>(
   waveParticleIndex: number,
 ): void {
   const view = particle.view;
+
+  // нужно сбросить частицу в изначально состояние, так как конфиг мог измениться
   const initialViewState = particle.initialViewState;
 
-  resetParticleViewToInitialState(view, initialViewState);
+  Object.assign(particle, {...getInitialParticleState(), initialViewState});
 
-  Object.assign(particle, getInitialParticleState());
+  resetParticleViewToInitialState(view, initialViewState);
 
   particle.inUse = true;
 
@@ -68,9 +73,9 @@ export function useParticle<View extends ViewParticle>(
     direction = getSpawnBurstDirection(config.direction, waveParticleIndex);
   } else {
     direction = getDirection(config.direction);
-    particle.direction = direction.vector;
   }
 
+  particle.direction = direction.vector;
   particle.isRotateByDirection = config.direction.isRotateByDirection === true;
 
   if (particle.isRotateByDirection) {
@@ -125,11 +130,10 @@ export function useParticle<View extends ViewParticle>(
   }
 
   if (config.color) {
-    // todo обработка number значения?
     if (isColorStaticBehaviorConfig(config.color)) {
       view.tint = getColorStaticBehaviorValue(config.color);
-    } else if (isColorDynamicBehaviorConfig(config.color)) {
-      particle.colorBehavior = getColorDynamicBehavior(config.color);
+    } else if (isColorTransitionBehaviorConfig(config.color)) {
+      particle.colorBehavior = getColorTransitionBehavior(config.color);
     } else if (isColorScriptBehaviorConfig(config.color)) {
       particle.colorBehavior = getScriptBehavior<string>(config.color);
     }

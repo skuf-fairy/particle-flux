@@ -9,8 +9,8 @@ import {isNumberScriptBehavior} from '../base-behaviors/script-behavior/number-s
 import {getPoint2dScriptBehaviorValue} from '../base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior';
 import {isPoint2dScriptBehavior} from '../base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.typeguards';
 import {getVectorBehaviorValue} from '../base-behaviors/vector-behavior/vector-behavior';
-import {isColorDynamicBehavior} from '../behaviors/color-behavior/color-behavior.typeguards';
-import {getColorDynamicBehaviorValue} from '../behaviors/color-behavior/color-dynamic-behavior';
+import {isColorTransitionBehavior} from '../behaviors/color-behavior/color-behavior.typeguards';
+import {getColorTransitionBehaviorValue} from '../behaviors/color-behavior/color-transition-behavior';
 import {getColorScriptBehaviorValue} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior';
 import {isColorScriptBehavior} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeNormalizedProgress} from '../behaviors/life-time-behavior/life-time-behavior';
@@ -113,8 +113,8 @@ export function updateParticle<View extends ViewParticle>(
   }
 
   if (particle.colorBehavior !== null) {
-    if (isColorDynamicBehavior(particle.colorBehavior)) {
-      view.tint = getColorDynamicBehaviorValue(particle.colorBehavior, lifeTimeNormalizedProgress);
+    if (isColorTransitionBehavior(particle.colorBehavior)) {
+      view.tint = getColorTransitionBehaviorValue(particle.colorBehavior, lifeTimeNormalizedProgress);
     } else if (isColorScriptBehavior(particle.colorBehavior)) {
       view.tint = getColorScriptBehaviorValue(particle.colorBehavior, lifeTimeNormalizedProgress);
     }

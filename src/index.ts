@@ -52,12 +52,12 @@ export {DeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/delta-be
 export {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/alpha-behavior.types';
 export {
   ColorBehaviorConfig,
-  ColorDynamicBehaviorConfig,
+  ColorTransitionBehaviorConfig,
   ColorStaticBehaviorConfig,
 } from './core/behaviors/color-behavior/color-behavior.types';
 export {
   isColorStaticBehaviorConfig,
-  isColorDynamicBehaviorConfig,
+  isColorTransitionBehaviorConfig,
 } from './core/behaviors/color-behavior/color-behavior.typeguards';
 export {
   isColorScriptBehaviorConfig,

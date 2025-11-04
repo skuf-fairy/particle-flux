@@ -1,7 +1,7 @@
 import {EasingFunction, EasingName} from '../../../utils/easing/easing.types';
 import {ColorScriptBehavior, ColorScriptBehaviorConfig} from './color-script-behavior/color-script-behavior.types';
 
-export interface ColorDynamicBehaviorConfig {
+export interface ColorTransitionBehaviorConfig {
   start: string;
   end: string;
   easing?: EasingName;
@@ -11,17 +11,17 @@ export interface ColorStaticBehaviorConfig {
   value: string;
 }
 
-export type ColorBehaviorConfig = ColorStaticBehaviorConfig | ColorDynamicBehaviorConfig | ColorScriptBehaviorConfig;
+export type ColorBehaviorConfig = ColorStaticBehaviorConfig | ColorTransitionBehaviorConfig | ColorScriptBehaviorConfig;
 
-export interface ColorDynamicBehavior {
+export interface ColorTransitionBehavior {
   startColor: string;
   endColor: string;
   easing: EasingFunction | null;
-  type: ColorBehaviorType.Dynamic;
+  type: ColorBehaviorType.Transition;
 }
 
 export enum ColorBehaviorType {
-  Dynamic = 'Dynamic',
+  Transition = 'Transition',
 }
 
-export type AnyColorBehavior = ColorDynamicBehavior | ColorScriptBehavior;
+export type AnyColorBehavior = ColorTransitionBehavior | ColorScriptBehavior;
