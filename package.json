@@ -1,6 +1,6 @@
 {
   "name": "particle-flux",
-  "version": "0.16.1",
+  "version": "0.16.2",
   "main": "lib/index.js",
   "license": "UNLICENSED",
   "files": [
@@ -18,7 +18,7 @@
     "lint": "eslint 'src/**/*.{ts,tsx,js}'",
     "typecheck": "tsc --noEmit",
     "measure-performance": "ts-node src/scripts/measure-performance",
-    "publish": "npm publish"
+    "npm-publish": "npm publish"
   },
   "lint-staged": {
     "*.{js,ts}": [
