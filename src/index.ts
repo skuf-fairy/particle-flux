@@ -41,6 +41,8 @@ export {
   ScriptTimeConfig,
   ScriptBehavior,
 } from './core/base-behaviors/script-behavior/script-behavior.types';
+export {START_SCRIPT_TIME, END_SCRIPT_TIME} from './core/base-behaviors/script-behavior/script-behavior.constants';
+
 export {isNumberScriptBehaviorConfig} from './core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior.typeguards';
 export {NumberScriptBehaviorConfig} from './core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior.types';
 export {isPoint2dScriptBehaviorConfig} from './core/base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.typeguards';
@@ -100,16 +102,14 @@ export {
   Chain,
   SpawnShape,
 } from './core/spawn-shapes/spawn-shapes.types';
-export {SPAWN_SHAPE_TYPES_LIST} from './core/spawn-shapes/spawn-shapes.constants';
 export {
   isSpawnPointShape,
   isSpawnRectangleShape,
   isSpawnTorusShape,
-  isSpawnPolygonalShape,
+  isSpawnChainShape,
 } from './core/spawn-shapes/spawn-shapes.typeguards';
+export {SPAWN_SHAPE_TYPES_LIST} from './core/spawn-shapes/spawn-shapes.constants';
 
 export {EasingName, EasingFunction} from './utils/easing/easing.types';
+export {EASING_FUNCTIONS} from './utils/easing/easing.functions';
 export {EASING_NAME_LIST} from './utils/easing/easing.constants';
-export {EASING_FUNCTIONS} from './utils/easing/easing-functions';
-
-export {START_SCRIPT_TIME, END_SCRIPT_TIME} from './constants';

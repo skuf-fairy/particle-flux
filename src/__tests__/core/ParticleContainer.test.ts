@@ -98,7 +98,6 @@ describe('ParticleContainer', () => {
 
   describe('Перемещение неиспользуемых частиц в пул неактивных', () => {
     const viewContainer = new TestViewContainer();
-
     const shapePointGenerator = new ShapePointGenerator();
     const container = new ParticleContainer(viewContainer, configManager, shapePointGenerator);
 
@@ -147,7 +146,7 @@ describe('ParticleContainer', () => {
       particleArray.unshift(container.createParticle(i));
     }
 
-    container.clear();
+    container.clearActiveParticles();
 
     it('Нет активных частиц. Активные добавились в пул', () => {
       expect(container.getParticlesCount()).toEqual(0);

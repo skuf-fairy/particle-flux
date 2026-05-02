@@ -1,5 +1,5 @@
 import {NumberUtils} from '../../../utils/NumberUtils';
-import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
+import {EASING_FUNCTIONS} from '../../../utils/easing/easing.functions';
 import {
   isScalarStaticBehaviorConfig,
   isScalarTransitionBehaviorConfig,
@@ -7,7 +7,7 @@ import {
 import {VectorBehaviorConfig, VectorBehavior} from './vector-behavior.types';
 import {BaseBehaviorType} from '../base-behaviors.types';
 import {Point2d} from '../../../types';
-import {getMultiplierValue} from '../../../utils/multiplier';
+import {getMultiplierValue} from '../../../utils/getMultiplierValue';
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const lerp = NumberUtils.lerp;

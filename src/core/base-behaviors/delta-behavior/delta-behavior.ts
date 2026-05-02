@@ -1,6 +1,6 @@
 import {DeltaBehaviorConfig, DeltaBehavior} from './delta-behavior.types';
 import {BaseBehaviorType} from '../base-behaviors.types';
-import {getMultiplierValue} from '../../../utils/multiplier';
+import {getMultiplierValue} from '../../../utils/getMultiplierValue';
 
 export function getDeltaBehavior(config: DeltaBehaviorConfig): DeltaBehavior {
   return {

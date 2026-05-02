@@ -13,6 +13,7 @@ describe('Script behavior', () => {
           ],
           lastValueIndex: 1,
           isInterpolate: false,
+          multiplier: 1,
           type: BaseBehaviorType.Script,
         },
         0,
@@ -30,9 +31,10 @@ describe('Script behavior', () => {
           ],
           lastValueIndex: 1,
           isInterpolate: false,
+          multiplier: 1,
           type: BaseBehaviorType.Script,
         },
-        100,
+        1,
       ),
     ).toEqual(1);
   });
@@ -48,9 +50,10 @@ describe('Script behavior', () => {
           ],
           lastValueIndex: 1,
           isInterpolate: false,
+          multiplier: 1,
           type: BaseBehaviorType.Script,
         },
-        50,
+        0.5,
       ),
     ).toEqual(0.5);
 
@@ -64,9 +67,10 @@ describe('Script behavior', () => {
           ],
           lastValueIndex: 1,
           isInterpolate: false,
+          multiplier: 1,
           type: BaseBehaviorType.Script,
         },
-        25,
+        0.25,
       ),
     ).toEqual(0);
 
@@ -80,9 +84,10 @@ describe('Script behavior', () => {
           ],
           lastValueIndex: 1,
           isInterpolate: false,
+          multiplier: 1,
           type: BaseBehaviorType.Script,
         },
-        75,
+        0.75,
       ),
     ).toEqual(0.5);
   });
@@ -100,9 +105,10 @@ describe('Script behavior', () => {
           ],
           lastValueIndex: 2,
           isInterpolate: false,
+          multiplier: 1,
           type: BaseBehaviorType.Script,
         },
-        90,
+        0.9,
       ),
     ).toEqual(0.85);
   });
@@ -120,9 +126,10 @@ describe('Script behavior', () => {
           ],
           lastValueIndex: 1,
           isInterpolate: true,
+          multiplier: 1,
           type: BaseBehaviorType.Script,
         },
-        25,
+        0.25,
       ),
     ).toEqual(0.25);
 
@@ -138,10 +145,32 @@ describe('Script behavior', () => {
           ],
           lastValueIndex: 1,
           isInterpolate: true,
+          multiplier: 1,
           type: BaseBehaviorType.Script,
         },
-        75,
+        0.75,
       ),
     ).toEqual(0.75);
+  });
+
+  it('Проверка интерполированного значения с множителем', () => {
+    expect(
+      getNumberScriptBehaviorValue(
+        {
+          script: [
+            {value: 0, time: 0},
+            {value: 0.5, time: 50},
+            {value: 0.75, time: 75},
+            {value: 0.85, time: 85},
+            {value: 1, time: 100},
+          ],
+          lastValueIndex: 1,
+          isInterpolate: true,
+          multiplier: 2,
+          type: BaseBehaviorType.Script,
+        },
+        0.25,
+      ),
+    ).toEqual(0.5);
   });
 });

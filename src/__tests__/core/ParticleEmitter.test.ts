@@ -152,10 +152,11 @@ describe('ParticleEmitter', () => {
       const report2 = {...particleEmitter.update(1, STANDARD_DELTA_MS)};
 
       it('Cоздано верное количество частиц', () => {
+        // 1000 / 60 = 16.6666666666, spawnInterval = 5, так что в 1 кадр должно создаваться 3 частицы
         expect(report0.particleCreatedCount).toEqual(3);
         expect(report1.particleCreatedCount).toEqual(3);
-        expect(report2.particleCreatedCount).toEqual(4); // успевает заспавниться еще одна
-        expect(particleEmitter.getParticlesCount()).toEqual(10);
+        expect(report2.particleCreatedCount).toEqual(3);
+        expect(particleEmitter.getParticlesCount()).toEqual(9);
       });
 
       it('Верные временные интервалы', () => {
@@ -163,10 +164,10 @@ describe('ParticleEmitter', () => {
         expect(report0.spawnTimeDelta).toEqual(STANDARD_DELTA_MS - spawnInterval);
         expect(report1.currentTime).toEqual(STANDARD_DELTA_MS * 2);
         expect(report1.spawnTimeDelta).toEqual(STANDARD_DELTA_MS * 2 - (report0.prevSpawnTime + spawnInterval));
-        expect(report1.prevSpawnTime).toEqual(report0.prevSpawnTime + spawnInterval * report0.particleCreatedCount);
+        expect(report1.prevSpawnTime).toEqual(report1.currentTime);
         expect(report2.spawnTimeDelta).toEqual(STANDARD_DELTA_MS * 3 - (report1.prevSpawnTime + spawnInterval));
         expect(report2.currentTime).toEqual(STANDARD_DELTA_MS * 3);
-        expect(report2.prevSpawnTime).toEqual(report1.prevSpawnTime + spawnInterval * report2.particleCreatedCount);
+        expect(report2.prevSpawnTime).toEqual(report2.currentTime);
       });
     });
 
@@ -206,7 +207,7 @@ describe('ParticleEmitter', () => {
         expect(report1.prevSpawnTime).toEqual(0);
         expect(report2.spawnTimeDelta).toEqual(STANDARD_DELTA_MS * 3 - spawnInterval);
         expect(report2.currentTime).toEqual(STANDARD_DELTA_MS * 3);
-        expect(report2.prevSpawnTime).toEqual(spawnInterval);
+        expect(report2.prevSpawnTime).toEqual(report2.currentTime);
       });
     });
   });

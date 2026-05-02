@@ -1,4 +1,3 @@
-import {SpawnShapeType} from '../core/spawn-shapes/spawn-shapes.types';
 import {ParticleEmitterConfig, ViewParticle, ViewRenderFn} from '../types';
 import {TestViewParticle} from './TestViewParticle';
 
@@ -29,7 +28,7 @@ export const TEST_CONFIG = (): ParticleEmitterConfig => ({
     },
     spawnShape: {
       shape: {
-        type: SpawnShapeType.Rectangle,
+        type: 'Rectangle',
         x: 0,
         y: 0,
         width: 100,

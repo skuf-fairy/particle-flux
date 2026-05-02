@@ -16,7 +16,7 @@ export type ColorBehaviorConfig = ColorStaticBehaviorConfig | ColorTransitionBeh
 export interface ColorTransitionBehavior {
   startColor: string;
   endColor: string;
-  easing: EasingFunction | null;
+  easing?: EasingFunction;
   type: ColorBehaviorType.Transition;
 }
 

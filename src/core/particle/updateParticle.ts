@@ -15,7 +15,6 @@ import {getColorScriptBehaviorValue} from '../behaviors/color-behavior/color-scr
 import {isColorScriptBehavior} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 import {getLifeTimeNormalizedProgress} from '../behaviors/life-time-behavior/life-time-behavior';
 
-// todo перенести
 const scaleCache = {x: 0, y: 0};
 
 export function updateParticle<View extends ViewParticle>(

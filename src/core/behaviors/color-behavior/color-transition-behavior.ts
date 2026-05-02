@@ -5,7 +5,7 @@ import {
   ColorStaticBehaviorConfig,
 } from './color-behavior.types';
 import {NumberUtils} from '../../../utils/NumberUtils';
-import {EASING_FUNCTIONS} from '../../../utils/easing/easing-functions';
+import {EASING_FUNCTIONS} from '../../../utils/easing/easing.functions';
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const lerp = NumberUtils.lerpColor;
@@ -14,7 +14,7 @@ export function getColorTransitionBehavior(config: ColorTransitionBehaviorConfig
   return {
     startColor: config.start,
     endColor: config.end,
-    easing: config.easing ? EASING_FUNCTIONS['linear'] : null,
+    easing: config.easing ? EASING_FUNCTIONS[config.easing] : undefined,
     type: ColorBehaviorType.Transition,
   };
 }
@@ -27,7 +27,9 @@ export function getColorTransitionBehaviorValue(
   behavior: ColorTransitionBehavior,
   lifeTimeNormalizedProgress: number,
 ): string {
-  return behavior.easing !== null
-    ? lerp(behavior.startColor, behavior.endColor, behavior.easing(lifeTimeNormalizedProgress))
-    : lerp(behavior.startColor, behavior.endColor, lifeTimeNormalizedProgress);
+  return lerp(
+    behavior.startColor,
+    behavior.endColor,
+    behavior.easing ? behavior.easing(lifeTimeNormalizedProgress) : lifeTimeNormalizedProgress,
+  );
 }

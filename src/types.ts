@@ -43,7 +43,7 @@ export interface IParticleContainer<View extends ViewParticle> {
   createParticle(waveParticleIndex: number): void;
   getParticlesCount(): number;
   getParticlesArray(): IParticle<View>[];
-  clear(): void;
+  clearActiveParticles(): void;
   update(elapsedDelta: number, deltaMS: number): void;
 }
 

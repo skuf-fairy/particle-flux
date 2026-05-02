@@ -1,7 +1,24 @@
+import {DEFAULT_SEED} from '../../constants';
 import {ArrayUtils} from '../ArrayUtils';
 import {IRandomGenerator} from './IRandom';
+import {PseudoRandomGenerator} from './generators/PseudoRandomGenerator';
+import {RealRandom} from './generators/RealRandomGenerator';
 
-export abstract class AbstractRandom implements IRandomGenerator {
+export class Random {
+  constructor(private readonly randomGenerator: IRandomGenerator) {}
+
+  public randomInt(min: number, max: number): number {
+    return this.randomGenerator.generateIntegerNumber(min, max);
+  }
+
+  public randomFloat(min: number, max: number): number {
+    return this.randomGenerator.generateFloatNumber(min, max);
+  }
+
+  public reset(): void {
+    this.randomGenerator.reset();
+  }
+
   public getArrayFromValues<T>(valuesArray: T[], length: number): T[] {
     if (length === 0) return [];
 
@@ -26,17 +43,19 @@ export abstract class AbstractRandom implements IRandomGenerator {
 
   public generateNumberArray(length: number, minValue: number, maxValue: number, isInteger: boolean = true): number[] {
     return ArrayUtils.range(0, length - 1).map(() =>
-      isInteger ? this.generateIntegerNumber(minValue, maxValue) : this.generateFloatNumber(minValue, maxValue),
+      isInteger
+        ? this.randomGenerator.generateIntegerNumber(minValue, maxValue)
+        : this.randomGenerator.generateFloatNumber(minValue, maxValue),
     );
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public getRandomArrayIndex(array: Array<any>): number {
-    return this.generateIntegerNumber(0, array.length - 1);
+    return this.randomGenerator.generateIntegerNumber(0, array.length - 1);
   }
 
   public generateRandomHexColor(): string {
-    return `#${Math.floor(this.generateFloatNumber(0, 1) * 0xffffff)
+    return `#${Math.floor(this.randomGenerator.generateFloatNumber(0, 1) * 0xffffff)
       .toString(16)
       .padEnd(6, '0')}`;
   }
@@ -45,13 +64,13 @@ export abstract class AbstractRandom implements IRandomGenerator {
     const result = ArrayUtils.clone(array);
 
     for (let i = result.length - 1; i > 0; i--) {
-      const j = this.generateIntegerNumber(0, i);
+      const j = this.randomGenerator.generateIntegerNumber(0, i);
       [result[i], result[j]] = [result[j], result[i]];
     }
 
     return result;
   }
-
-  public abstract generateIntegerNumber(min: number, max: number): number;
-  public abstract generateFloatNumber(min: number, max: number): number;
 }
+
+export const realRandom = new Random(new RealRandom());
+export const pseudoRandom = new Random(new PseudoRandomGenerator(DEFAULT_SEED));

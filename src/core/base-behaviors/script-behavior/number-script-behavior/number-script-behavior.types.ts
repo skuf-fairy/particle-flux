@@ -1,4 +1,10 @@
+import {Multiplier} from '../../../../types';
 import {ScriptBehavior, ScriptBehaviorConfig} from '../script-behavior.types';
 
-export type NumberScriptBehavior = ScriptBehavior<number>;
-export type NumberScriptBehaviorConfig = ScriptBehaviorConfig<number>;
+export interface NumberScriptBehavior extends ScriptBehavior<number> {
+  multiplier: number;
+}
+
+export interface NumberScriptBehaviorConfig extends ScriptBehaviorConfig<number> {
+  multiplier?: Multiplier;
+}

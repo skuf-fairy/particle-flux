@@ -8,12 +8,13 @@ import {createView} from './particle/createView';
 import {removeParticle} from './particle/removeParticle';
 import {updateParticle} from './particle/updateParticle';
 import {useParticle} from './particle/useParticle';
-import {wasParticleRemoved} from './particle/wasParticleRemoved';
-import {isNeedRemoveParticle} from './particle/isNeedRemoveParticle';
+import {isParticleRemoved} from './particle/isParticleRemoved';
+import {shouldRemoveParticle} from './particle/shouldRemoveParticle';
 import {ShapePointGenerator} from './spawn-shapes/ShapePointGenerator';
 
 /**
- * A container for particles, where you can add and remove game objects, as well as get them from the container.
+ * Контейнер частиц
+ * Реализует паттерн Object Pool
  */
 export class ParticleContainer<View extends ViewParticle> implements IParticleContainer<View> {
   public particleHead: IParticle<View> | null;
@@ -37,7 +38,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     });
   }
 
-  // returns active particles
+  // вернет массив активных частиц
   public getParticlesArray(): IParticle<View>[] {
     const particleList: IParticle<View>[] = [];
 
@@ -78,11 +79,11 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     let pointer: IParticle<View> | null = this.particleHead;
 
     while (pointer !== null) {
-      if (wasParticleRemoved(pointer)) {
+      if (isParticleRemoved(pointer)) {
         removeParticle(this.viewContainer, pointer);
         pointer = this.removeActiveParticle(pointer, false);
       } else if (isParticleDead(pointer)) {
-        if (isNeedRemoveParticle(pointer)) {
+        if (shouldRemoveParticle(pointer)) {
           removeParticle(this.viewContainer, pointer);
           pointer = this.removeActiveParticle(pointer, false);
         } else {
@@ -100,7 +101,8 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     }
   }
 
-  public clear(): void {
+  // удаляет активные частицы, которые переместятся в пул неактивных
+  public clearActiveParticles(): void {
     let particle: IParticle<View> | null = this.particleHead;
 
     while (particle !== null) {
@@ -113,10 +115,10 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
       temp.next = null;
       temp.prev = null;
 
-      if (isNeedRemoveParticle(temp)) {
+      if (shouldRemoveParticle(temp)) {
         removeParticle(this.viewContainer, temp);
       } else {
-        this.addParticleToPool(temp);
+        this.addParticleInPool(temp);
       }
     }
 
@@ -125,7 +127,8 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     this.containerParticlesCount = 0;
   }
 
-  public clearViewContainer(): void {
+  // полная очистка контейнера (активные + пул)
+  public clearActiveParticlesAndPool(): void {
     let particle: IParticle<View> | null = this.particleHead;
 
     while (particle !== null) {
@@ -154,11 +157,12 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
 
   public createParticle(waveParticleIndex: number): IParticle<View> {
     const particle: IParticle<View> =
-      this.getParticleFromPool() || createUnusedParticle(this.viewContainer, createView(this.config.view));
+      this.getFirstAvailableParticleFromPool() ||
+      createUnusedParticle(this.viewContainer, createView(this.config.view));
 
     useParticle(particle, this.config, this.shapePointGenerator, waveParticleIndex);
 
-    this.addParticleInUsedParticles(particle);
+    this.addToUsedParticles(particle);
 
     this.containerParticlesCount++;
 
@@ -167,7 +171,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
 
   public fillPool(count: number): void {
     for (let i = 0; i < count; i++) {
-      this.addParticleToPool(createUnusedParticle<View>(this.viewContainer, createView(this.config.view)));
+      this.addParticleInPool(createUnusedParticle<View>(this.viewContainer, createView(this.config.view)));
     }
   }
 
@@ -185,8 +189,36 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
         }
       } else {
         // Если particle.prev === null, но particle не является головой, это ошибка
-        // В этом случае, возможно, стоит выбросить ошибку или обработать ситуацию
         console.warn('Particle is not head but has no previous');
+
+        // Попытка восстановления: ищем particle в списке и восстанавливаем связи
+        let current = this.particleHead;
+        let found = false;
+
+        while (current !== null) {
+          if (current.next === particle) {
+            // нашли предыдущий элемент
+            particle.prev = current;
+            found = true;
+            break;
+          }
+          current = current.next;
+        }
+
+        if (!found) {
+          // частица не найдена в списке — возможно, она уже удалена
+          // безопасно удаляем ссылки и продолжаем
+          particle.next = null;
+          return particle.next;
+        }
+
+        // После восстановления связи — продолжаем удаление
+        if (particle.prev !== null) {
+          particle.prev.next = particle.next;
+          if (particle.next !== null) {
+            particle.next.prev = particle.prev;
+          }
+        }
       }
     }
 
@@ -196,7 +228,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
       next = particle.next;
       temp.next = null;
       temp.prev = null;
-      this.addParticleToPool(temp);
+      this.addParticleInPool(temp);
     } else {
       next = particle.next;
     }
@@ -204,7 +236,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     return next;
   }
 
-  private addParticleInUsedParticles(particle: IParticle<View>): void {
+  private addToUsedParticles(particle: IParticle<View>): void {
     if (this.particleHead === null) {
       this.particleHead = particle;
     } else {
@@ -214,7 +246,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     }
   }
 
-  private addParticleToPool(particle: IParticle<View>): void {
+  private addParticleInPool(particle: IParticle<View>): void {
     if (this.availableParticleHead === null) {
       this.availableParticleHead = particle;
     } else {
@@ -224,7 +256,7 @@ export class ParticleContainer<View extends ViewParticle> implements IParticleCo
     }
   }
 
-  private getParticleFromPool(): IParticle<View> | null {
+  private getFirstAvailableParticleFromPool(): IParticle<View> | null {
     if (this.availableParticleHead === null) return null;
 
     const particle = this.availableParticleHead;

@@ -1,23 +1,23 @@
+import {Random, realRandom} from '../../utils/random/Random';
 import {Point2d} from '../../types';
-import {PseudoRandom} from '../../utils/random/PseudoRandom';
 import {NumberUtils} from '../../utils/NumberUtils';
-import {SpawnChainShape, SpawnRectangleShape, SpawnShape, SpawnShapeType} from './spawn-shapes.types';
-import {realRandom} from '../../utils/random/RealRandom';
+import {SpawnChainShape, SpawnRectangleShape, SpawnShape} from './spawn-shapes.types';
+import {PseudoRandomGenerator} from '../../utils/random/generators/PseudoRandomGenerator';
 
 const MAX_RANDOM_SEED = 100000;
 const MIN_RANDOM_SEED = 1;
 
 export class ShapePointGenerator {
-  private readonly pseudoRandom: PseudoRandom;
+  private pseudoRandom: Random;
   private pointCache: Point2d;
 
   constructor() {
-    this.pseudoRandom = new PseudoRandom(realRandom.generateIntegerNumber(MIN_RANDOM_SEED, MAX_RANDOM_SEED));
+    this.pseudoRandom = new Random(new PseudoRandomGenerator(realRandom.randomInt(MIN_RANDOM_SEED, MAX_RANDOM_SEED)));
     this.pointCache = {x: 0, y: 0};
   }
 
   public refresh(): void {
-    this.pseudoRandom.init(realRandom.generateIntegerNumber(MIN_RANDOM_SEED, MAX_RANDOM_SEED));
+    this.pseudoRandom = new Random(new PseudoRandomGenerator(realRandom.randomInt(MIN_RANDOM_SEED, MAX_RANDOM_SEED)));
   }
 
   public reset(): void {
@@ -68,12 +68,12 @@ export class ShapePointGenerator {
     endAngle: number,
   ): void {
     // Generating a random angle in radians
-    const radians = NumberUtils.degreesToRadians(this.pseudoRandom.generateFloatNumber(startAngle, endAngle));
+    const radians = NumberUtils.degreesToRadians(this.pseudoRandom.randomFloat(startAngle, endAngle));
 
     const [minRadius, maxRadius] = NumberUtils.getOrderedMinMax(innerRadius, outerRadius);
 
     // Generating a random radius value ranging from the inner to the outer radius
-    const r = Math.sqrt(this.pseudoRandom.generateFloatNumber(minRadius * minRadius, maxRadius * maxRadius));
+    const r = Math.sqrt(this.pseudoRandom.randomFloat(minRadius * minRadius, maxRadius * maxRadius));
 
     // Calculating the coordinates of a point
     this.pointCache.x = x + r * Math.cos(radians);
@@ -81,8 +81,8 @@ export class ShapePointGenerator {
   }
 
   private setSpawnPositionOfRectangle(shape: SpawnRectangleShape): void {
-    this.pointCache.x = this.pseudoRandom.generateFloatNumber(shape.x, shape.x + shape.width);
-    this.pointCache.y = this.pseudoRandom.generateFloatNumber(shape.y, shape.y + shape.height);
+    this.pointCache.x = this.pseudoRandom.randomFloat(shape.x, shape.x + shape.width);
+    this.pointCache.y = this.pseudoRandom.randomFloat(shape.y, shape.y + shape.height);
   }
 
   private setRandomPointOnChain(shape: SpawnChainShape): void {
@@ -92,10 +92,16 @@ export class ShapePointGenerator {
       this.pointCache.x = chain[0].x;
       this.pointCache.y = chain[0].y;
     } else if (chain.length > 1) {
-      const endPointIndex = this.pseudoRandom.generateIntegerNumber(1, chain.length - 1);
+      // Выбираем случайный сегмент (две точки) на линии
+      const randomIndex = this.pseudoRandom.randomInt(1, chain.length - 1);
+      const pointA = chain[randomIndex - 1];
+      const pointB = chain[randomIndex];
 
-      this.pointCache.x = this.pseudoRandom.generateFloatNumber(chain[endPointIndex - 1].x, chain[endPointIndex].x);
-      this.pointCache.y = this.pseudoRandom.generateFloatNumber(chain[endPointIndex - 1].y, chain[endPointIndex].y);
+      // Вычисляем случайную точку между pointA и pointB
+      const t = this.pseudoRandom.randomFloat(0, 1); // параметр от 0 до 1
+
+      this.pointCache.x = pointA.x + (pointB.x - pointA.x) * t;
+      this.pointCache.y = pointA.y + (pointB.y - pointA.y) * t;
     } else {
       this.pointCache.x = 0;
       this.pointCache.y = 0;

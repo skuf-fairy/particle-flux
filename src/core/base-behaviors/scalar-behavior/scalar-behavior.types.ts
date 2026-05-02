@@ -19,6 +19,6 @@ export type ScalarBehaviorConfig = ScalarTransitionBehaviorConfig | ScalarStatic
 export interface ScalarBehavior {
   startValue: number;
   endValue: number;
-  easing: EasingFunction | null;
+  easing?: EasingFunction;
   type: BaseBehaviorType.Scalar;
 }

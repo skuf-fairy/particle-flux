@@ -8,8 +8,7 @@ export const DEFAULT_SPAWN_POSITION: Point2d = {x: 0, y: 0};
 
 export const GRAVITY_DEFAULT_MULTIPLIER = 100;
 
-export const START_SCRIPT_TIME = 0;
-export const END_SCRIPT_TIME = 100;
-
 export const MIN_SPAWN_CHANCE = 0;
 export const MAX_SPAWN_CHANCE = 100;
+
+export const DEFAULT_SEED = 1;

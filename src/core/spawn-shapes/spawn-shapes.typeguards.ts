@@ -12,6 +12,6 @@ export function isSpawnTorusShape(spawnShape: SpawnShape): spawnShape is SpawnTo
   return spawnShape.type === 'Torus';
 }
 
-export function isSpawnPolygonalShape(spawnShape: SpawnShape): spawnShape is SpawnChainShape {
+export function isSpawnChainShape(spawnShape: SpawnShape): spawnShape is SpawnChainShape {
   return spawnShape.type === 'Chain';
 }

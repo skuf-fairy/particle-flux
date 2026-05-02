@@ -18,7 +18,7 @@ import {SpawnPositionConfig} from './spawn-position/spawn-position.types';
 import {SpawnShapeBehavior} from './spawn-shapes/spawn-shapes.types';
 import {ColorBehaviorConfig} from './behaviors/color-behavior/color-behavior.types';
 import {cloneDeep} from '../utils/cloneDeep';
-import {DEFAULT_DIRECTION_CONFIG, DEFAULT_LIFE_TIME_CONFIG, DEFAULT_SPAWN_POSITION} from '../constants';
+import {DEFAULT_LIFE_TIME_CONFIG, DEFAULT_DIRECTION_CONFIG, DEFAULT_SPAWN_POSITION} from '../constants';
 import {PathConfig} from './path/path.types';
 import {EventEmitter} from '../utils/EventEmitter';
 
@@ -191,7 +191,7 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   set spawnPosition(config: SpawnPositionConfig | undefined) {
-    this.config.particleConfig.spawnPosition = cloneDeep(config || DEFAULT_SPAWN_POSITION);
+    this.config.particleConfig.spawnPosition = cloneDeep(config ? {x: config.x, y: config.y} : DEFAULT_SPAWN_POSITION);
   }
 
   get spawnPosition(): SpawnPositionConfig {

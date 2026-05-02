@@ -4,7 +4,6 @@ import {TestViewContainer} from '../TestViewContainer';
 import {IParticle, ParticleConfig, ParticleEmitterConfig, ViewParticle} from '../../types';
 import {TestViewParticle} from '../TestViewParticle';
 import {STANDARD_DELTA_MS} from '../../utils/Ticker';
-import {SpawnShapeType} from '../../core/spawn-shapes/spawn-shapes.types';
 import {createUnusedParticle} from '../../core/particle/createUnusedParticle';
 import {createView} from '../../core/particle/createView';
 import {updateParticle} from '../../core/particle/updateParticle';

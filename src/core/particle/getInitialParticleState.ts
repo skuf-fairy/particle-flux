@@ -7,7 +7,6 @@ export function getInitialParticleState<View extends ViewParticle>(): Omit<IPart
     initialPosition: {x: 0, y: 0},
     directionRotation: 0,
     direction: {x: 0, y: 0},
-    // velocity: {x: 0, y: 0},
     speedBehavior: null,
     gravityBehavior: 0,
     pathFunc: null,
