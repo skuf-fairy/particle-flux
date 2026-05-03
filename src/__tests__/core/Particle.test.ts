@@ -11,7 +11,7 @@ import {useParticle} from '../../core/particle/useParticle';
 import {isParticleInUse} from '../../core/particle/isParticleInUse';
 import {ShapePointGenerator} from '../../core/spawn-shapes/ShapePointGenerator';
 import {ConfigManager} from '../../core/ConfigManager';
-import {Vector2Utils} from '../../utils/Vector2Utils';
+import {angleInDegreesToPoint} from '../../utils/vector2d/angleInDegreesToPoint';
 
 const PARTICLE_LIFETIME = 1000;
 
@@ -22,11 +22,13 @@ const TEST_PARTICLE_CONFIG: ParticleEmitterConfig = {
       value: PARTICLE_LIFETIME,
     },
     alpha: {
-      start: 0,
-      end: 1,
+      timelapses: [
+        {time: 0, value: 0},
+        {time: 100, value: 1},
+      ],
     },
     speed: {
-      value: 4,
+      timelapses: [{time: 100, value: 4}],
     },
     direction: {
       angle: 0,
@@ -87,7 +89,7 @@ describe('Particle', () => {
     testUsedParticle(particle, viewContainer);
 
     it('The particle has been initialized correctly and is in a state of use.', () => {
-      const particleDirection = Vector2Utils.angleInDegreesToPoint(0);
+      const particleDirection = angleInDegreesToPoint(0);
       expect(particle.direction.x).toEqual(particleDirection.x);
       expect(particle.direction.y).toEqual(particleDirection.y);
       expect(particle.speed).toEqual(4);
@@ -166,7 +168,9 @@ describe('Particle', () => {
       // todo проблема с динамической скоростью
       const particleConfig: ParticleConfig = {
         ...TEST_PARTICLE_CONFIG.particleConfig,
-        gravity: {value: 0.5},
+        gravity: {
+          timelapses: [{time: 0, value: 0.5}],
+        },
       };
 
       useParticle(

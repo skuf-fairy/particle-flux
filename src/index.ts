@@ -6,65 +6,26 @@ export {
   EmitterConfig,
   ViewContainer,
   ViewParticle,
-  Multiplier,
   Point2d,
   IParticle,
   IParticleContainer,
-  RangeValue,
-  NumberValue,
+  RandomRange,
 } from './types';
 
-export {isRangeValue} from './typeguards';
 export {isParticleDead} from './core/particle/isParticleDead';
 export {isParticleInUse} from './core/particle/isParticleInUse';
 export {noUseParticle} from './core/particle/noUseParticle';
 
-// behaviors
-
-export {isScriptBehaviorConfig} from './core/base-behaviors/script-behavior/script-behavior.typeguards';
-export {isVectorBehaviorConfig} from './core/base-behaviors/vector-behavior/vector-behavior.typeguards';
-export {
-  isScalarTransitionBehaviorConfig,
-  isScalarStaticBehaviorConfig,
-  isScalarBehaviorConfig,
-} from './core/base-behaviors/scalar-behavior/scalar-behavior.typeguards';
-export {isDeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/delta-behavior.typeguards';
-
 // configs
-export {
-  ScalarBehaviorConfig,
-  ScalarTransitionBehaviorConfig,
-  ScalarStaticBehaviorConfig,
-} from './core/base-behaviors/scalar-behavior/scalar-behavior.types';
-export {
-  ScriptBehaviorConfig,
-  ScriptTimeConfig,
-  ScriptBehavior,
-} from './core/base-behaviors/script-behavior/script-behavior.types';
-export {START_SCRIPT_TIME, END_SCRIPT_TIME} from './core/base-behaviors/script-behavior/script-behavior.constants';
 
-export {isNumberScriptBehaviorConfig} from './core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior.typeguards';
-export {NumberScriptBehaviorConfig} from './core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior.types';
-export {isPoint2dScriptBehaviorConfig} from './core/base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.typeguards';
-export {Point2dScriptBehaviorConfig} from './core/base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.types';
+export {
+  TimelapsesConfig,
+  TimelapsesBehavior,
+  TimelapsesArray,
+  NumberTimelapsesConfig,
+} from './core/behaviors/timelapses/timelapses.types';
+export {START_SCRIPT_TIME, END_SCRIPT_TIME} from './core/behaviors/timelapses/timelapses.constants';
 
-export {VectorBehaviorConfig} from './core/base-behaviors/vector-behavior/vector-behavior.types';
-export {DeltaBehaviorConfig} from './core/base-behaviors/delta-behavior/delta-behavior.types';
-
-export {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/alpha-behavior.types';
-export {
-  ColorBehaviorConfig,
-  ColorTransitionBehaviorConfig,
-  ColorStaticBehaviorConfig,
-} from './core/behaviors/color-behavior/color-behavior.types';
-export {
-  isColorStaticBehaviorConfig,
-  isColorTransitionBehaviorConfig,
-} from './core/behaviors/color-behavior/color-behavior.typeguards';
-export {
-  isColorScriptBehaviorConfig,
-  isColorScriptBehavior,
-} from './core/behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
 export {
   DirectionConfig,
   RangeDirectionConfig,
@@ -76,7 +37,6 @@ export {
   isDirectionRangeBehaviorConfig,
   isSpawnBurstDirectionBehaviorConfig,
 } from './core/direction/direction.typeguards';
-export {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/gravity-behavior.types';
 export {
   LifeTimeBehaviorConfig,
   LifeTimeRangeBehaviorConfig,
@@ -87,9 +47,6 @@ export {
   isLifeTimeRangeBehaviorConfig,
 } from './core/behaviors/life-time-behavior/life-time-behavior.typeguards';
 export {PathConfig} from './core/path/path.types';
-export {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/scale-behavior.types';
-export {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/speed-behavior.types';
-export {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/rotation-behavior.types';
 export {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 
 export {

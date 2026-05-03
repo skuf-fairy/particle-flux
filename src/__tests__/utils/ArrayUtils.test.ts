@@ -1,24 +1,8 @@
-import {ArrayUtils} from '../../utils/ArrayUtils';
 import {describe, expect, it} from 'vitest';
+import {range} from '../../utils/array/range';
 
 describe('ArrayUtils', () => {
-  describe('ArrayUtils.last', () => {
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    const last = ArrayUtils.last;
-
-    it('The method returns the last element of the array', () => {
-      expect(last([1, 2])).toEqual(2);
-    });
-
-    it('The method returns undefined because the array is empty', () => {
-      expect(last([])).toEqual(undefined);
-    });
-  });
-
   describe('ArrayUtils.range', () => {
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    const range = ArrayUtils.range;
-
     it('The method returns a valid array in the positive direction', () => {
       expect(range(1, 5)).toEqual([1, 2, 3, 4, 5]);
     });

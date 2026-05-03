@@ -14,14 +14,16 @@ export const TEST_CONFIG = (): ParticleEmitterConfig => ({
       value: 100,
     },
     scale: {
-      value: 1,
+      timelapses: [{time: 0, value: 1}],
     },
     alpha: {
-      start: 0,
-      end: 1,
+      timelapses: [
+        {time: 0, value: 1},
+        {time: 100, value: 1},
+      ],
     },
     color: {
-      script: [
+      timelapses: [
         {time: 0, value: '#ffffff'},
         {time: 100, value: '#000000'},
       ],

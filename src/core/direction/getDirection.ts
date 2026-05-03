@@ -5,8 +5,8 @@ import {
   StaticDirectionConfig,
 } from './direction.types';
 import {isStaticDirectionBehaviorConfig} from './direction.typeguards';
-import {Vector2Utils} from '../../utils/Vector2Utils';
 import {realRandom} from '../../utils/random/Random';
+import {angleInDegreesToPoint} from '../../utils/vector2d/angleInDegreesToPoint';
 
 export function getDirection(config: RangeDirectionConfig | StaticDirectionConfig): SpawnParticleDirection {
   const angle = isStaticDirectionBehaviorConfig(config)
@@ -14,7 +14,7 @@ export function getDirection(config: RangeDirectionConfig | StaticDirectionConfi
     : realRandom.randomFloat(config.minAngle, config.maxAngle);
 
   return {
-    vector: Vector2Utils.angleInDegreesToPoint(angle),
+    vector: angleInDegreesToPoint(angle),
     angle,
   };
 }
@@ -23,7 +23,7 @@ export function getSpawnBurstDirection(config: SpawnBurstDirectionConfig, index:
   const angle = config.startAngle + index * config.deltaAngle;
 
   return {
-    vector: Vector2Utils.angleInDegreesToPoint(angle),
+    vector: angleInDegreesToPoint(angle),
     angle,
   };
 }

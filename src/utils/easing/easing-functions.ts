@@ -11,7 +11,7 @@ const c3 = c1 + 1;
 const c4 = (2 * PI) / 3;
 const c5 = (2 * PI) / 4.5;
 
-const bounceOut: EasingFunction = function (x) {
+const bounceOut: EasingFunction = function (x: number) {
   const n1 = 7.5625;
   const d1 = 2.75;
 

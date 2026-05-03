@@ -1,4 +1,4 @@
-import {NumberUtils} from '../../NumberUtils';
+import {getOrderedMinMax} from '../../getOrderedMinMax';
 import {IRandomGenerator} from '../IRandom';
 
 // implementation of the Park-Miller-Carta method
@@ -39,13 +39,13 @@ export class PseudoRandomGenerator implements IRandomGenerator {
   }
 
   public generateIntegerNumber(minValue: number, maxValue: number): number {
-    const [min, max] = NumberUtils.getOrderedMinMax(minValue, maxValue);
+    const [min, max] = getOrderedMinMax(minValue, maxValue);
 
     return Math.floor((this.random() / 2147483646) * (max - min + 1) + min);
   }
 
   public generateFloatNumber(minValue: number, maxValue: number): number {
-    const [min, max] = NumberUtils.getOrderedMinMax(minValue, maxValue);
+    const [min, max] = getOrderedMinMax(minValue, maxValue);
 
     return (this.random() / 2147483646) * (max - min) + min;
   }

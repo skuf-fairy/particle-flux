@@ -1,21 +1,14 @@
-import {AlphaBehaviorConfig} from './core/behaviors/alpha-behavior/alpha-behavior.types';
-import {ColorBehaviorConfig, ColorTransitionBehavior} from './core/behaviors/color-behavior/color-behavior.types';
 import {DirectionConfig} from './core/direction/direction.types';
-import {GravityBehaviorConfig} from './core/behaviors/gravity-behavior/gravity-behavior.types';
 import {LifeTimeBehaviorConfig} from './core/behaviors/life-time-behavior/life-time-behavior.types';
-import {RotationBehaviorConfig} from './core/behaviors/rotation-behavior/rotation-behavior.types';
-import {ScaleBehaviorConfig} from './core/behaviors/scale-behavior/scale-behavior.types';
 import {SpawnShapeBehavior} from './core/spawn-shapes/spawn-shapes.types';
-import {SpeedBehaviorConfig} from './core/behaviors/speed-behavior/speed-behavior.types';
 import {TickerCallback} from './utils/Ticker';
 import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 import {PathConfig, PathFunction} from './core/path/path.types';
-import {ScalarBehavior} from './core/base-behaviors/scalar-behavior/scalar-behavior.types';
-import {VectorBehavior} from './core/base-behaviors/vector-behavior/vector-behavior.types';
-import {DeltaBehavior} from './core/base-behaviors/delta-behavior/delta-behavior.types';
-import {NumberScriptBehavior} from './core/base-behaviors/script-behavior/number-script-behavior/number-script-behavior.types';
-import {Point2dScriptBehavior} from './core/base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.types';
-import {ColorScriptBehavior} from './core/behaviors/color-behavior/color-script-behavior/color-script-behavior.types';
+import {
+  NumberTimelapsesConfig,
+  TimelapsesBehavior,
+  TimelapsesConfig,
+} from './core/behaviors/timelapses/timelapses.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 
@@ -70,14 +63,14 @@ export interface IParticle<View extends ViewParticle> {
   directionRotation: number;
   direction: Point2d;
   isRotateByDirection: boolean;
-  speedBehavior: ScalarBehavior | NumberScriptBehavior | null;
+  speedBehavior: TimelapsesBehavior<number> | null;
   pathFunc: PathFunction | null;
-  gravityBehavior: ScalarBehavior | NumberScriptBehavior | DeltaBehavior | number;
+  gravityBehavior: TimelapsesBehavior<number> | number;
 
-  alphaBehavior: ScalarBehavior | NumberScriptBehavior | null;
-  rotationBehavior: ScalarBehavior | DeltaBehavior | NumberScriptBehavior | null;
-  scaleBehavior: ScalarBehavior | Point2dScriptBehavior | NumberScriptBehavior | VectorBehavior | null;
-  colorBehavior: ColorTransitionBehavior | ColorScriptBehavior | null;
+  alphaBehavior: TimelapsesBehavior<number> | null;
+  rotationBehavior: TimelapsesBehavior<number> | null;
+  scaleBehavior: TimelapsesBehavior<number> | null;
+  colorBehavior: TimelapsesBehavior<string> | null;
 
   isDestroyAfterDeath: boolean;
 
@@ -103,7 +96,7 @@ export type ViewRenderFn<View extends ViewParticle> = () => View;
 export type ViewFactory<View extends ViewParticle> = ViewRenderFn<View>[] | ViewRenderFn<View>;
 
 export interface EmitterConfig {
-  spawnInterval?: NumberValue;
+  spawnInterval?: number | RandomRange;
   spawnTime?: number;
   spawnTimeout?: number;
   maxParticles?: number;
@@ -122,17 +115,17 @@ export interface ParticleConfig {
   // does not change with time, indicates the direction of movement
   direction?: DirectionConfig;
   // parameters that change over time
-  speed?: SpeedBehaviorConfig;
+  speed?: NumberTimelapsesConfig;
   // particle size
-  scale?: ScaleBehaviorConfig;
+  scale?: NumberTimelapsesConfig;
   // particle transparency
-  alpha?: AlphaBehaviorConfig;
+  alpha?: NumberTimelapsesConfig;
   // gravity
-  gravity?: GravityBehaviorConfig;
+  gravity?: NumberTimelapsesConfig;
   // rotation
-  rotation?: RotationBehaviorConfig;
+  rotation?: NumberTimelapsesConfig;
   // color
-  color?: ColorBehaviorConfig;
+  color?: TimelapsesConfig<string>;
   // path
   path?: PathConfig;
 }
@@ -149,11 +142,7 @@ export interface ExtraOptions {
   onStopEmit?: VoidFunction;
 }
 
-export type RangeValue = {
+export type RandomRange = {
   min: number;
   max: number;
 };
-
-export type NumberValue = RangeValue | number;
-
-export type Multiplier = NumberValue;

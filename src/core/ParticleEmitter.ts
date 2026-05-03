@@ -10,10 +10,9 @@ import {
 } from '../types';
 import {ConfigManager} from './ConfigManager';
 import {Ticker} from '../utils/Ticker';
-import {isRangeValue} from '../typeguards';
 import {ShapePointGenerator} from './spawn-shapes/ShapePointGenerator';
 import {ParticleSpawner} from './ParticleSpawner';
-import {realRandom} from '../utils/random/Random';
+import {getRandomValue} from '../utils/getRandomValue';
 
 // отчет для тестов
 interface UpdateReport {
@@ -226,11 +225,11 @@ export class ParticleEmitter<View extends ViewParticle = ViewParticle> {
       return Number.POSITIVE_INFINITY;
     }
 
-    if (isRangeValue(spawnInterval)) {
-      return realRandom.randomInt(spawnInterval.min, spawnInterval.max);
+    if (typeof spawnInterval === 'number') {
+      return spawnInterval;
+    } else {
+      return getRandomValue(spawnInterval);
     }
-
-    return spawnInterval;
   }
 
   // resets the emitter time

@@ -41,7 +41,7 @@ export function measureUpdateParticlesPerformance() {
         value: 600000,
       },
       speed: {
-        value: 1,
+        timelapses: [{time: 0, value: 1}],
       },
       direction: {
         minAngle: 0,

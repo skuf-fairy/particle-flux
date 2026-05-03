@@ -1,6 +1,6 @@
 import {
   EmitterConfig,
-  NumberValue,
+  RandomRange,
   ParticleConfig,
   ParticleEmitterConfig,
   ViewFactory,
@@ -8,19 +8,14 @@ import {
   ViewRenderFn,
 } from '../types';
 import {LifeTimeBehaviorConfig} from './behaviors/life-time-behavior/life-time-behavior.types';
-import {SpeedBehaviorConfig} from './behaviors/speed-behavior/speed-behavior.types';
 import {DirectionConfig} from './direction/direction.types';
-import {AlphaBehaviorConfig} from './behaviors/alpha-behavior/alpha-behavior.types';
-import {ScaleBehaviorConfig} from './behaviors/scale-behavior/scale-behavior.types';
-import {GravityBehaviorConfig} from './behaviors/gravity-behavior/gravity-behavior.types';
-import {RotationBehaviorConfig} from './behaviors/rotation-behavior/rotation-behavior.types';
 import {SpawnPositionConfig} from './spawn-position/spawn-position.types';
 import {SpawnShapeBehavior} from './spawn-shapes/spawn-shapes.types';
-import {ColorBehaviorConfig} from './behaviors/color-behavior/color-behavior.types';
 import {cloneDeep} from '../utils/cloneDeep';
 import {DEFAULT_LIFE_TIME_CONFIG, DEFAULT_DIRECTION_CONFIG, DEFAULT_SPAWN_POSITION} from '../constants';
 import {PathConfig} from './path/path.types';
 import {EventEmitter} from '../utils/EventEmitter';
+import {NumberTimelapsesConfig, TimelapsesConfig} from './behaviors/timelapses/timelapses.types';
 
 export class ConfigManager<View extends ViewParticle> {
   private config: ParticleEmitterConfig;
@@ -65,11 +60,11 @@ export class ConfigManager<View extends ViewParticle> {
   }
 
   // emitter config
-  set spawnInterval(interval: NumberValue | undefined) {
+  set spawnInterval(interval: number | RandomRange | undefined) {
     this.config.emitterConfig.spawnInterval = interval;
   }
 
-  get spawnInterval(): NumberValue | undefined {
+  get spawnInterval(): number | RandomRange | undefined {
     return this.config.emitterConfig.spawnInterval;
   }
 
@@ -134,11 +129,11 @@ export class ConfigManager<View extends ViewParticle> {
     }
   }
 
-  set speed(config: SpeedBehaviorConfig | undefined) {
+  set speed(config: NumberTimelapsesConfig | undefined) {
     this.config.particleConfig.speed = cloneDeep(config);
   }
 
-  get speed(): SpeedBehaviorConfig | undefined {
+  get speed(): NumberTimelapsesConfig | undefined {
     return this.config.particleConfig.speed;
   }
 
@@ -158,35 +153,35 @@ export class ConfigManager<View extends ViewParticle> {
     return this.config.particleConfig.path;
   }
 
-  set alpha(config: AlphaBehaviorConfig | undefined) {
+  set alpha(config: TimelapsesConfig<number> | undefined) {
     this.config.particleConfig.alpha = cloneDeep(config);
   }
 
-  get alpha(): AlphaBehaviorConfig | undefined {
+  get alpha(): TimelapsesConfig<number> | undefined {
     return this.config.particleConfig.alpha;
   }
 
-  set scale(config: ScaleBehaviorConfig | undefined) {
+  set scale(config: TimelapsesConfig<number> | undefined) {
     this.config.particleConfig.scale = cloneDeep(config);
   }
 
-  get scale(): ScaleBehaviorConfig | undefined {
+  get scale(): TimelapsesConfig<number> | undefined {
     return this.config.particleConfig.scale;
   }
 
-  set gravity(config: GravityBehaviorConfig | undefined) {
+  set gravity(config: TimelapsesConfig<number> | undefined) {
     this.config.particleConfig.gravity = cloneDeep(config);
   }
 
-  get gravity(): GravityBehaviorConfig | undefined {
+  get gravity(): TimelapsesConfig<number> | undefined {
     return this.config.particleConfig.gravity;
   }
 
-  set rotation(config: RotationBehaviorConfig | undefined) {
+  set rotation(config: TimelapsesConfig<number> | undefined) {
     this.config.particleConfig.rotation = cloneDeep(config);
   }
 
-  get rotation(): RotationBehaviorConfig | undefined {
+  get rotation(): TimelapsesConfig<number> | undefined {
     return this.config.particleConfig.rotation;
   }
 
@@ -206,11 +201,11 @@ export class ConfigManager<View extends ViewParticle> {
     return this.config.particleConfig.spawnShape;
   }
 
-  set color(config: ColorBehaviorConfig | undefined) {
+  set color(config: TimelapsesConfig<string> | undefined) {
     this.config.particleConfig.color = cloneDeep(config);
   }
 
-  get color(): ColorBehaviorConfig | undefined {
+  get color(): TimelapsesConfig<string> | undefined {
     return this.config.particleConfig.color;
   }
 

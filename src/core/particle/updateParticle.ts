@@ -1,19 +1,11 @@
 import {GRAVITY_DEFAULT_MULTIPLIER} from '../../constants';
 import {ViewParticle, IParticle} from '../../types';
-import {Vector2Utils} from '../../utils/Vector2Utils';
-import {isScalarBehavior, isDeltaBehavior, isVectorBehavior} from '../base-behaviors/base-behaviors.typeguards';
-import {getDeltaBehaviorValue} from '../base-behaviors/delta-behavior/delta-behavior';
-import {getScalarBehaviorValue} from '../base-behaviors/scalar-behavior/scalar-behavior';
-import {getNumberScriptBehaviorValue} from '../base-behaviors/script-behavior/number-script-behavior/number-script-behavior';
-import {isNumberScriptBehavior} from '../base-behaviors/script-behavior/number-script-behavior/number-script-behavior.typeguards';
-import {getPoint2dScriptBehaviorValue} from '../base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior';
-import {isPoint2dScriptBehavior} from '../base-behaviors/script-behavior/point2d-script-behavior/point2d-script-behavior.typeguards';
-import {getVectorBehaviorValue} from '../base-behaviors/vector-behavior/vector-behavior';
-import {isColorTransitionBehavior} from '../behaviors/color-behavior/color-behavior.typeguards';
-import {getColorTransitionBehaviorValue} from '../behaviors/color-behavior/color-transition-behavior';
-import {getColorScriptBehaviorValue} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior';
-import {isColorScriptBehavior} from '../behaviors/color-behavior/color-script-behavior/color-script-behavior.typeguards';
+import {lerpColor} from '../../utils/color/lerpColor';
+import {lerp} from '../../utils/lerp';
+import {pointToAngleInDegrees} from '../../utils/vector2d/pointToAngleInDegrees';
+import {rotate} from '../../utils/vector2d/rotate';
 import {getLifeTimeNormalizedProgress} from '../behaviors/life-time-behavior/life-time-behavior';
+import {getTimelapsesValue} from '../behaviors/timelapses/getTimelapsesValue';
 
 const scaleCache = {x: 0, y: 0};
 
@@ -28,27 +20,21 @@ export function updateParticle<View extends ViewParticle>(
 
   const lifeTimeNormalizedProgress = getLifeTimeNormalizedProgress(particle.age, particle.lifeTime);
 
-  let speed = particle.speed;
-
-  if (particle.speedBehavior !== null) {
-    if (isScalarBehavior(particle.speedBehavior)) {
-      speed = particle.speed = getScalarBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
-    } else if (isNumberScriptBehavior(particle.speedBehavior)) {
-      speed = particle.speed = getNumberScriptBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress);
-    }
-  }
+  particle.speed = particle.speedBehavior
+    ? getTimelapsesValue(particle.speedBehavior, lifeTimeNormalizedProgress, lerp)
+    : 0;
 
   if (particle.pathFunc) {
-    particle.deltaPath.x += speed * elapsedDelta;
+    particle.deltaPath.x += particle.speed * elapsedDelta;
     particle.deltaPath.y = particle.pathFunc(particle.deltaPath.x);
 
-    const delta = Vector2Utils.rotate(particle.deltaPath, Math.atan2(particle.direction.y, particle.direction.x));
+    const delta = rotate(particle.deltaPath, Math.atan2(particle.direction.y, particle.direction.x));
 
     view.x = particle.initialPosition.x + delta.x;
     view.y = particle.initialPosition.y + delta.y;
   } else if (!particle.gravityBehavior) {
-    view.x += particle.direction.x * speed * elapsedDelta;
-    view.y += particle.direction.y * speed * elapsedDelta;
+    view.x += particle.direction.x * particle.speed * elapsedDelta;
+    view.y += particle.direction.y * particle.speed * elapsedDelta;
   } else {
     const gravityBehavior = particle.gravityBehavior;
 
@@ -68,54 +54,29 @@ export function updateParticle<View extends ViewParticle>(
     //   particle.direction.y += getDeltaBehaviorValue(gravityBehavior, elapsedDelta) / GRAVITY_DEFAULT_MULTIPLIER;
     // }
 
-    view.x += particle.direction.x * speed * elapsedDelta;
-    view.y += ((oldY + particle.direction.y) / 2) * speed * elapsedDelta;
+    view.x += particle.direction.x * particle.speed * elapsedDelta;
+    view.y += ((oldY + particle.direction.y) / 2) * particle.speed * elapsedDelta;
   }
 
   if (particle.isRotateByDirection) {
-    particle.view.angle = particle.directionRotation = Vector2Utils.pointToAngleInDegrees(particle.direction);
+    particle.view.angle = particle.directionRotation = pointToAngleInDegrees(particle.direction);
   }
 
   if (particle.alphaBehavior !== null) {
-    if (isScalarBehavior(particle.alphaBehavior)) {
-      view.alpha = getScalarBehaviorValue(particle.alphaBehavior, lifeTimeNormalizedProgress);
-    } else if (isNumberScriptBehavior(particle.alphaBehavior)) {
-      view.alpha = getNumberScriptBehaviorValue(particle.alphaBehavior, lifeTimeNormalizedProgress);
-    }
+    view.alpha = getTimelapsesValue(particle.alphaBehavior, lifeTimeNormalizedProgress, lerp);
   }
 
   if (particle.rotationBehavior !== null) {
-    if (isDeltaBehavior(particle.rotationBehavior)) {
-      view.angle = particle.directionRotation + getDeltaBehaviorValue(particle.rotationBehavior, elapsedDelta);
-    } else if (isNumberScriptBehavior(particle.rotationBehavior)) {
-      view.angle =
-        particle.directionRotation +
-        getNumberScriptBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
-    } else if (isScalarBehavior(particle.rotationBehavior)) {
-      view.angle =
-        particle.directionRotation + getScalarBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress);
-    }
+    view.angle =
+      particle.directionRotation + getTimelapsesValue(particle.rotationBehavior, lifeTimeNormalizedProgress, lerp);
   }
 
   if (particle.scaleBehavior !== null) {
-    if (isScalarBehavior(particle.scaleBehavior)) {
-      scaleCache.x = scaleCache.y = getScalarBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
-      view.scale = scaleCache;
-    } else if (isNumberScriptBehavior(particle.scaleBehavior)) {
-      scaleCache.x = scaleCache.y = getNumberScriptBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
-      view.scale = scaleCache;
-    } else if (isPoint2dScriptBehavior(particle.scaleBehavior)) {
-      view.scale = getPoint2dScriptBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress);
-    } else if (isVectorBehavior(particle.scaleBehavior)) {
-      view.scale = getVectorBehaviorValue(particle.scaleBehavior, elapsedDelta);
-    }
+    scaleCache.x = scaleCache.y = getTimelapsesValue(particle.scaleBehavior, lifeTimeNormalizedProgress, lerp);
+    view.scale = scaleCache;
   }
 
   if (particle.colorBehavior !== null) {
-    if (isColorTransitionBehavior(particle.colorBehavior)) {
-      view.tint = getColorTransitionBehaviorValue(particle.colorBehavior, lifeTimeNormalizedProgress);
-    } else if (isColorScriptBehavior(particle.colorBehavior)) {
-      view.tint = getColorScriptBehaviorValue(particle.colorBehavior, lifeTimeNormalizedProgress);
-    }
+    view.tint = getTimelapsesValue(particle.colorBehavior, lifeTimeNormalizedProgress, lerpColor);
   }
 }

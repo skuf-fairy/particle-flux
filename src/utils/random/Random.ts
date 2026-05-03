@@ -1,5 +1,6 @@
 import {DEFAULT_SEED} from '../../constants';
-import {ArrayUtils} from '../ArrayUtils';
+import {cloneArray} from '../array/cloneArray';
+import {range} from '../array/range';
 import {IRandomGenerator} from './IRandom';
 import {PseudoRandomGenerator} from './generators/PseudoRandomGenerator';
 import {RealRandom} from './generators/RealRandomGenerator';
@@ -22,7 +23,7 @@ export class Random {
   public getArrayFromValues<T>(valuesArray: T[], length: number): T[] {
     if (length === 0) return [];
 
-    return ArrayUtils.range(0, length - 1).map(() => this.choice(valuesArray));
+    return range(0, length - 1).map(() => this.choice(valuesArray));
   }
 
   /**
@@ -38,11 +39,11 @@ export class Random {
   }
 
   public choiceList<T>(valuesArray: T[], length: number): T[] {
-    return ArrayUtils.range(0, length - 1).map(() => this.choice(valuesArray));
+    return range(0, length - 1).map(() => this.choice(valuesArray));
   }
 
   public generateNumberArray(length: number, minValue: number, maxValue: number, isInteger: boolean = true): number[] {
-    return ArrayUtils.range(0, length - 1).map(() =>
+    return range(0, length - 1).map(() =>
       isInteger
         ? this.randomGenerator.generateIntegerNumber(minValue, maxValue)
         : this.randomGenerator.generateFloatNumber(minValue, maxValue),
@@ -61,7 +62,7 @@ export class Random {
   }
 
   public shuffle<T>(array: T[]): T[] {
-    const result = ArrayUtils.clone(array);
+    const result = cloneArray(array);
 
     for (let i = result.length - 1; i > 0; i--) {
       const j = this.randomGenerator.generateIntegerNumber(0, i);

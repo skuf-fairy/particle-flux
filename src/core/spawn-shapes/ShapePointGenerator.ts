@@ -1,8 +1,9 @@
 import {Random, realRandom} from '../../utils/random/Random';
 import {Point2d} from '../../types';
-import {NumberUtils} from '../../utils/NumberUtils';
 import {SpawnChainShape, SpawnRectangleShape, SpawnShape} from './spawn-shapes.types';
 import {PseudoRandomGenerator} from '../../utils/random/generators/PseudoRandomGenerator';
+import {degreesToRadians} from '../../utils/rotation/degreesToRadians';
+import {getOrderedMinMax} from '../../utils/getOrderedMinMax';
 
 const MAX_RANDOM_SEED = 100000;
 const MIN_RANDOM_SEED = 1;
@@ -68,9 +69,9 @@ export class ShapePointGenerator {
     endAngle: number,
   ): void {
     // Generating a random angle in radians
-    const radians = NumberUtils.degreesToRadians(this.pseudoRandom.randomFloat(startAngle, endAngle));
+    const radians = degreesToRadians(this.pseudoRandom.randomFloat(startAngle, endAngle));
 
-    const [minRadius, maxRadius] = NumberUtils.getOrderedMinMax(innerRadius, outerRadius);
+    const [minRadius, maxRadius] = getOrderedMinMax(innerRadius, outerRadius);
 
     // Generating a random radius value ranging from the inner to the outer radius
     const r = Math.sqrt(this.pseudoRandom.randomFloat(minRadius * minRadius, maxRadius * maxRadius));
