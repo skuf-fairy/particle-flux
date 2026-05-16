@@ -1,10 +1,10 @@
-import {DirectionConfig} from './core/direction/direction.types';
+import {DirectionConfig} from './core/behaviors/direction/direction.types';
 import {LifeTimeBehaviorConfig} from './core/behaviors/life-time-behavior/life-time-behavior.types';
 import {SpawnShapeBehavior} from './core/spawn-shapes/spawn-shapes.types';
 import {TickerCallback} from './utils/Ticker';
 import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
-import {PathConfig, PathFunction} from './core/path/path.types';
-import {AnyBehavior, NumberTimelapsesConfig, TimelapsesConfig} from './core/behaviors/timelapses/timelapses.types';
+import {PathConfig, PathFunction} from './core/behaviors/path/path.types';
+import {AnyBehavior, NumberTimelapsesConfig, TimelapsesConfig} from './core/behaviors/particle-value/timelapses.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 

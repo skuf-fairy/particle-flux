@@ -5,7 +5,7 @@ import {lerp} from '../../utils/lerp';
 import {pointToAngleInDegrees} from '../../utils/vector2d/pointToAngleInDegrees';
 import {rotate} from '../../utils/vector2d/rotate';
 import {getLifeTimeNormalizedProgress} from '../behaviors/life-time-behavior/life-time-behavior';
-import {getBehaviorValue} from '../behaviors/timelapses/getBehaviorValue';
+import {getBehaviorValue} from '../behaviors/particle-value/getBehaviorValue';
 
 const scaleCache = {x: 0, y: 0};
 

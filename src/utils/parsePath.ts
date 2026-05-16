@@ -1,4 +1,4 @@
-import {PathFunction} from '../core/path/path.types';
+import {PathFunction} from '../core/behaviors/path/path.types';
 
 /**
  * A hand picked list of Math functions (and a couple properties) that are

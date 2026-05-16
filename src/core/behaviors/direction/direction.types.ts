@@ -1,4 +1,4 @@
-import {Point2d} from '../../types';
+import {Point2d} from '../../../types';
 
 export interface SpawnParticleDirection {
   vector: Point2d;

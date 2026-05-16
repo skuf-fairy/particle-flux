@@ -1,5 +1,5 @@
-import {END_SCRIPT_TIME, START_SCRIPT_TIME} from '../timelapses/timelapses.constants';
-import {TimelapsesBehavior, TimelapsesConfig} from '../timelapses/timelapses.types';
+import {END_SCRIPT_TIME, START_SCRIPT_TIME} from './timelapses.constants';
+import {TimelapsesBehavior, TimelapsesConfig} from './timelapses.types';
 
 export function getColorTimelapsesBehavior(config: TimelapsesConfig<string>): TimelapsesBehavior<string> {
   if (config.timelapses.length === 0) {

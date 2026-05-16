@@ -8,14 +8,14 @@ import {
   ViewRenderFn,
 } from '../types';
 import {LifeTimeBehaviorConfig} from './behaviors/life-time-behavior/life-time-behavior.types';
-import {DirectionConfig} from './direction/direction.types';
+import {DirectionConfig} from './behaviors/direction/direction.types';
 import {SpawnPositionConfig} from './spawn-position/spawn-position.types';
 import {SpawnShapeBehavior} from './spawn-shapes/spawn-shapes.types';
 import {cloneDeep} from '../utils/cloneDeep';
 import {DEFAULT_LIFE_TIME_CONFIG, DEFAULT_DIRECTION_CONFIG, DEFAULT_SPAWN_POSITION} from '../constants';
-import {PathConfig} from './path/path.types';
+import {PathConfig} from './behaviors/path/path.types';
 import {EventEmitter} from '../utils/EventEmitter';
-import {NumberTimelapsesConfig, TimelapsesConfig} from './behaviors/timelapses/timelapses.types';
+import {NumberTimelapsesConfig, TimelapsesConfig} from './behaviors/particle-value/timelapses.types';
 
 export class ConfigManager<View extends ViewParticle> {
   private config: ParticleEmitterConfig;

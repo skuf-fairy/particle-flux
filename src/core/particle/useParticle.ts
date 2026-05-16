@@ -3,14 +3,14 @@ import {ViewParticle, IParticle, InitialViewState} from '../../types';
 import {parsePath} from '../../utils/parsePath';
 import {getLifeTimeBehavior} from '../behaviors/life-time-behavior/life-time-behavior';
 import {ConfigManager} from '../ConfigManager';
-import {isSpawnBurstDirectionBehaviorConfig} from '../direction/direction.typeguards';
-import {SpawnParticleDirection} from '../direction/direction.types';
-import {getDirection, getSpawnBurstDirection} from '../direction/getDirection';
+import {isSpawnBurstDirectionBehaviorConfig} from '../behaviors/direction/direction.typeguards';
+import {SpawnParticleDirection} from '../behaviors/direction/direction.types';
+import {getDirection, getSpawnBurstDirection} from '../behaviors/direction/getDirection';
 import {ShapePointGenerator} from '../spawn-shapes/ShapePointGenerator';
 import {getInitialParticleState} from './getInitialParticleState';
 import {updateParticle} from './updateParticle';
-import {getColorTimelapsesBehavior} from '../behaviors/color-timelapses/getColorTimelapsesBehavior';
-import {getNumberTimelapsesBehavior} from '../behaviors/timelapses/getNumberTimelapsesBehavior';
+import {getColorTimelapsesBehavior} from '../behaviors/particle-value/getColorTimelapsesBehavior';
+import {getNumberTimelapsesBehavior} from '../behaviors/particle-value/getNumberTimelapsesBehavior';
 
 const scaleCache = {x: 0, y: 0};
 

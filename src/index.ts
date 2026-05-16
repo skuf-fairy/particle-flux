@@ -23,20 +23,20 @@ export {
   TimelapsesBehavior,
   TimelapsesArray,
   NumberTimelapsesConfig,
-} from './core/behaviors/timelapses/timelapses.types';
-export {START_SCRIPT_TIME, END_SCRIPT_TIME} from './core/behaviors/timelapses/timelapses.constants';
+} from './core/behaviors/particle-value/timelapses.types';
+export {START_SCRIPT_TIME, END_SCRIPT_TIME} from './core/behaviors/particle-value/timelapses.constants';
 
 export {
   DirectionConfig,
   RangeDirectionConfig,
   StaticDirectionConfig,
   SpawnBurstDirectionConfig,
-} from './core/direction/direction.types';
+} from './core/behaviors/direction/direction.types';
 export {
   isStaticDirectionBehaviorConfig,
   isDirectionRangeBehaviorConfig,
   isSpawnBurstDirectionBehaviorConfig,
-} from './core/direction/direction.typeguards';
+} from './core/behaviors/direction/direction.typeguards';
 export {
   LifeTimeBehaviorConfig,
   LifeTimeRangeBehaviorConfig,
@@ -46,7 +46,7 @@ export {
   isLifeTimeStaticBehaviorConfig,
   isLifeTimeRangeBehaviorConfig,
 } from './core/behaviors/life-time-behavior/life-time-behavior.typeguards';
-export {PathConfig} from './core/path/path.types';
+export {PathConfig} from './core/behaviors/path/path.types';
 export {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 
 export {
