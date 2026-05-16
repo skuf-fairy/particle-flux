@@ -24,6 +24,7 @@ export function getNumberTimelapsesBehavior(config: NumberTimelapsesConfig): Any
     return {
       min: config.timelapses[0].value * multiplier,
       max: config.timelapses[1].value * multiplier,
+      easing: config.easing || 'linear',
       isTransition: true,
     };
   }

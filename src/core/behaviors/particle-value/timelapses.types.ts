@@ -1,4 +1,5 @@
 import {RandomRange} from '../../../types';
+import {EasingName} from '../../../utils/easing/easing.types';
 
 export type TimelapsesArray<V> = {time: number; value: V}[];
 
@@ -15,6 +16,7 @@ export interface TransitionBehavior<V> {
   min: V;
   max: V;
   isTransition: true;
+  easing: EasingName;
 }
 
 export interface TimelapsesBehavior<V> {
@@ -26,6 +28,7 @@ export type AnyBehavior<V> = StaticBehavior<V> | TransitionBehavior<V> | Timelap
 
 export interface NumberTimelapsesConfig extends TimelapsesConfig<number> {
   randomRange?: RandomRange;
+  easing?: EasingName;
 }
 
 export type lerpFunction<T> = (a: T, b: T, p: number) => T;

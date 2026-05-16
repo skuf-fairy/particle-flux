@@ -1,3 +1,4 @@
+import {EASING_FUNCTIONS} from '../../../utils/easing/easing.functions';
 import {getTimelapsesValue} from './getTimelapsesValue';
 import {AnyBehavior, lerpFunction, StaticBehavior, TimelapsesBehavior, TransitionBehavior} from './timelapses.types';
 
@@ -15,7 +16,11 @@ export function getBehaviorValue<V>(
   const transitionBehavior = behavior as TransitionBehavior<V>;
 
   if (transitionBehavior.isTransition) {
-    return lerp(transitionBehavior.min, transitionBehavior.max, lifeTimeNormalizedProgress);
+    return lerp(
+      transitionBehavior.min,
+      transitionBehavior.max,
+      EASING_FUNCTIONS[transitionBehavior.easing](lifeTimeNormalizedProgress),
+    );
   }
 
   return getTimelapsesValue(behavior as TimelapsesBehavior<V>, lifeTimeNormalizedProgress, lerp);
