@@ -5,7 +5,7 @@ import {lerp} from '../../utils/lerp';
 import {pointToAngleInDegrees} from '../../utils/vector2d/pointToAngleInDegrees';
 import {rotate} from '../../utils/vector2d/rotate';
 import {getLifeTimeNormalizedProgress} from '../behaviors/life-time-behavior/life-time-behavior';
-import {getTimelapsesValue} from '../behaviors/timelapses/getTimelapsesValue';
+import {getBehaviorValue} from '../behaviors/timelapses/getBehaviorValue';
 
 const scaleCache = {x: 0, y: 0};
 
@@ -21,7 +21,7 @@ export function updateParticle<View extends ViewParticle>(
   const lifeTimeNormalizedProgress = getLifeTimeNormalizedProgress(particle.age, particle.lifeTime);
 
   particle.speed = particle.speedBehavior
-    ? getTimelapsesValue(particle.speedBehavior, lifeTimeNormalizedProgress, lerp)
+    ? getBehaviorValue(particle.speedBehavior, lifeTimeNormalizedProgress, lerp)
     : 0;
 
   if (particle.pathFunc) {
@@ -63,20 +63,20 @@ export function updateParticle<View extends ViewParticle>(
   }
 
   if (particle.alphaBehavior !== null) {
-    view.alpha = getTimelapsesValue(particle.alphaBehavior, lifeTimeNormalizedProgress, lerp);
+    view.alpha = getBehaviorValue(particle.alphaBehavior, lifeTimeNormalizedProgress, lerp);
   }
 
   if (particle.rotationBehavior !== null) {
     view.angle =
-      particle.directionRotation + getTimelapsesValue(particle.rotationBehavior, lifeTimeNormalizedProgress, lerp);
+      particle.directionRotation + getBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress, lerp);
   }
 
   if (particle.scaleBehavior !== null) {
-    scaleCache.x = scaleCache.y = getTimelapsesValue(particle.scaleBehavior, lifeTimeNormalizedProgress, lerp);
+    scaleCache.x = scaleCache.y = getBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress, lerp);
     view.scale = scaleCache;
   }
 
   if (particle.colorBehavior !== null) {
-    view.tint = getTimelapsesValue(particle.colorBehavior, lifeTimeNormalizedProgress, lerpColor);
+    view.tint = getBehaviorValue(particle.colorBehavior, lifeTimeNormalizedProgress, lerpColor);
   }
 }

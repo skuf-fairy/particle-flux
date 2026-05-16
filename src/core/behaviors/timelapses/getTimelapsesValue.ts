@@ -1,6 +1,4 @@
-import {TimelapsesBehavior} from './timelapses.types';
-
-type lerpFunction<T> = (a: T, b: T, p: number) => T;
+import {lerpFunction, TimelapsesBehavior} from './timelapses.types';
 
 export function getTimelapsesValue<T>(
   behavior: TimelapsesBehavior<T>,

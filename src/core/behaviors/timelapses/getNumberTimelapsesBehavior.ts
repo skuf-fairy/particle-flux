@@ -1,8 +1,8 @@
 import {getRandomValue} from '../../../utils/getRandomValue';
 import {START_SCRIPT_TIME, END_SCRIPT_TIME} from './timelapses.constants';
-import {NumberTimelapsesConfig, TimelapsesBehavior} from './timelapses.types';
+import {NumberTimelapsesConfig, AnyBehavior} from './timelapses.types';
 
-export function getNumberTimelapsesBehavior(config: NumberTimelapsesConfig): TimelapsesBehavior<number> {
+export function getNumberTimelapsesBehavior(config: NumberTimelapsesConfig): AnyBehavior<number> {
   if (config.timelapses.length === 0) {
     throw new Error('Скрипт должен содержать хотя бы 1 элемент');
   }
@@ -12,6 +12,21 @@ export function getNumberTimelapsesBehavior(config: NumberTimelapsesConfig): Tim
   }
 
   const multiplier = config.randomRange ? getRandomValue(config.randomRange) : 1;
+
+  if (config.timelapses.length === 1) {
+    return {
+      value: config.timelapses[0].value * multiplier,
+      isStatic: true,
+    };
+  }
+
+  if (config.timelapses.length === 2) {
+    return {
+      min: config.timelapses[0].value * multiplier,
+      max: config.timelapses[1].value * multiplier,
+      isTransition: true,
+    };
+  }
 
   const timelapses = config.timelapses
     .sort((a, b) => a.time - b.time)

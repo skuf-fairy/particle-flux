@@ -4,11 +4,7 @@ import {SpawnShapeBehavior} from './core/spawn-shapes/spawn-shapes.types';
 import {TickerCallback} from './utils/Ticker';
 import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 import {PathConfig, PathFunction} from './core/path/path.types';
-import {
-  NumberTimelapsesConfig,
-  TimelapsesBehavior,
-  TimelapsesConfig,
-} from './core/behaviors/timelapses/timelapses.types';
+import {AnyBehavior, NumberTimelapsesConfig, TimelapsesConfig} from './core/behaviors/timelapses/timelapses.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 
@@ -63,14 +59,14 @@ export interface IParticle<View extends ViewParticle> {
   directionRotation: number;
   direction: Point2d;
   isRotateByDirection: boolean;
-  speedBehavior: TimelapsesBehavior<number> | null;
+  speedBehavior: AnyBehavior<number> | null;
   pathFunc: PathFunction | null;
-  gravityBehavior: TimelapsesBehavior<number> | number;
+  gravityBehavior: AnyBehavior<number> | number;
 
-  alphaBehavior: TimelapsesBehavior<number> | null;
-  rotationBehavior: TimelapsesBehavior<number> | null;
-  scaleBehavior: TimelapsesBehavior<number> | null;
-  colorBehavior: TimelapsesBehavior<string> | null;
+  alphaBehavior: AnyBehavior<number> | null;
+  rotationBehavior: AnyBehavior<number> | null;
+  scaleBehavior: AnyBehavior<number> | null;
+  colorBehavior: AnyBehavior<string> | null;
 
   isDestroyAfterDeath: boolean;
 

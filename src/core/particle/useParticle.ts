@@ -10,7 +10,6 @@ import {ShapePointGenerator} from '../spawn-shapes/ShapePointGenerator';
 import {getInitialParticleState} from './getInitialParticleState';
 import {updateParticle} from './updateParticle';
 import {getColorTimelapsesBehavior} from '../behaviors/color-timelapses/getColorTimelapsesBehavior';
-import {lerp} from '../../utils/lerp';
 import {getNumberTimelapsesBehavior} from '../behaviors/timelapses/getNumberTimelapsesBehavior';
 
 const scaleCache = {x: 0, y: 0};
