@@ -31,4 +31,8 @@ export interface NumberTimelapsesConfig extends TimelapsesConfig<number> {
   easing?: EasingName;
 }
 
+export interface ColorTimelapsesConfig extends TimelapsesConfig<string> {
+  easing?: EasingName;
+}
+
 export type lerpFunction<T> = (a: T, b: T, p: number) => T;

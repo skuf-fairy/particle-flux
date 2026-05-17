@@ -32,18 +32,19 @@ async function init() {
   new ParticleEmitter<ContainerChild>(app.stage, createParticle, {
     emitterConfig: {spawnInterval: 150},
     particleBehaviorsConfig: {
-      lifeTime: {value: 250},
+      // static value
+      lifeTime: {timelapses: [time:100, value: 250]},
+      // transtion value
       speed: {
-        start: 1,
-        end: 0,
+        timelapses: [{time: 0, value: 0}, {time: 100, value: 1}]
       },
+      // transtion value
       scale: {
-        start: 1,
-        end: 0,
+        timelapses: [{time: 0, value: 0}, {time: 100, value: 1}]
       },
       alpha: {
-        start: 1,
-        end: 0,
+        // transtion value
+        timelapses: [{time: 0, value: 1}, {time: 100, value: 0}]
       },
     },
   });
@@ -128,16 +129,27 @@ A configuration for each particle that defines its initial position, direction o
 
 ```typescript
 interface ParticleConfig {
+  // lifetime of the particle
   lifeTime?: LifeTimeBehaviorConfig;
+  // the initial position of the particle
   spawnPosition?: SpawnPositionConfig;
+  // the particle creation area
   spawnShape?: SpawnShapeBehavior;
+  // does not change with time, indicates the direction of movement
   direction?: DirectionConfig;
-  speed?: SpeedBehaviorConfig;
-  scale?: ScaleBehaviorConfig;
-  alpha?: AlphaBehaviorConfig;
-  gravity?: GravityBehaviorConfig;
-  rotation?: RotationBehaviorConfig;
-  color?: ColorBehaviorConfig;
+  // parameters that change over time
+  speed?: NumberTimelapsesConfig;
+  // particle size
+  scale?: NumberTimelapsesConfig;
+  // particle transparency
+  alpha?: NumberTimelapsesConfig;
+  // gravity
+  gravity?: NumberTimelapsesConfig;
+  // rotation
+  rotation?: NumberTimelapsesConfig;
+  // color
+  color?: ColorTimelapsesConfig;
+  // path
   path?: PathConfig;
 }
 ```
@@ -274,51 +286,17 @@ interface PathBehaviorConfig {
 
 ## Parameters that change over time
 
-| Behavior | ScalarStaticBehaviorConfig | ScalarDynamicBehaviorConfig | ScriptBehaviorConfig | VectorBehaviorConfig | DeltaBehaviorConfig |
-| -------- | -------------------------- | --------------------------- | -------------------- | -------------------- | ------------------- |
-| Scale    | Yes                        | Yes                         | Yes                  | Yes                  | No                  |
-| Alpha    | Yes                        | Yes                         | Yes                  | No                   | No                  |
-| Speed    | Yes                        | Yes                         | Yes                  | No                   | No                  |
-| Color    | Yes                        | Yes                         | Yes                  | No                   | No                  |
-| Gravity  | Yes                        | Yes                         | Yes                  | No                   | Yes                 |
-| Rotation | Yes                        | Yes                         | Yes                  | No                   | Yes                 |
-
 ### ScalarStaticBehaviorConfig
 
 A static value that will be constant throughout the life of the particle.
-
-```typescript
-interface ScalarStaticBehaviorConfig {
-  value: number;
-  multiplier?: Multiplier;
-}
-```
 
 ### ScalarDynamicBehaviorConfig
 
 The interpolated parameter change from the start of a particle's life to its end
 
-```typescript
-interface ScalarDynamicBehaviorConfig {
-  start: number;
-  end: number;
-  easing?: EasingName;
-  multiplier?: Multiplier;
-}
-```
-
 ### ScriptBehaviorConfig
 
 The value is changed according to the prescribed script. You must specify the array as **time - value**. The time is normalized, it varies from 0 to 1, where 0 is the beginning of the particle's life, and 1 is the end.
-
-```typescript
-type ScriptTimeConfig<V> = {time: number; value: V}[];
-
-interface ScriptBehaviorConfig<V> {
-  script: ScriptTimeConfig<V>;
-  isInterpolate?: boolean; // interpolate between the current value and the next one for a smoother transition
-}
-```
 
 An example where the particle size increases from 1 to 3
 

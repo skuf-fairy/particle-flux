@@ -75,7 +75,17 @@ export function useParticle<View extends ViewParticle>(
   }
 
   if (config.scale) {
-    particle.scaleBehavior = getNumberTimelapsesBehavior(config.scale);
+    if ('x' in config.scale) {
+      particle.scaleBehaviorX = getNumberTimelapsesBehavior(config.scale.x);
+    } else {
+      particle.scaleBehaviorX = getNumberTimelapsesBehavior(config.scale);
+    }
+
+    if ('y' in config.scale) {
+      particle.scaleBehaviorY = getNumberTimelapsesBehavior(config.scale.y);
+    } else {
+      particle.scaleBehaviorY = getNumberTimelapsesBehavior(config.scale);
+    }
   }
 
   if (config.color) {

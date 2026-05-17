@@ -20,7 +20,8 @@ export function getInitialParticleState<View extends ViewParticle>(): Omit<IPart
 
     alphaBehavior: null,
     rotationBehavior: null,
-    scaleBehavior: null,
+    scaleBehaviorX: null,
+    scaleBehaviorY: null,
     colorBehavior: null,
 
     isDestroyAfterDeath: false,

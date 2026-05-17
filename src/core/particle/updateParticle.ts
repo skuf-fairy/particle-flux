@@ -7,8 +7,6 @@ import {rotate} from '../../utils/vector2d/rotate';
 import {getLifeTimeNormalizedProgress} from '../behaviors/life-time-behavior/life-time-behavior';
 import {getBehaviorValue} from '../behaviors/particle-value/getBehaviorValue';
 
-const scaleCache = {x: 0, y: 0};
-
 export function updateParticle<View extends ViewParticle>(
   particle: IParticle<View>,
   elapsedDelta: number,
@@ -71,9 +69,12 @@ export function updateParticle<View extends ViewParticle>(
       particle.directionRotation + getBehaviorValue(particle.rotationBehavior, lifeTimeNormalizedProgress, lerp);
   }
 
-  if (particle.scaleBehavior !== null) {
-    scaleCache.x = scaleCache.y = getBehaviorValue(particle.scaleBehavior, lifeTimeNormalizedProgress, lerp);
-    view.scale = scaleCache;
+  if (particle.scaleBehaviorX !== null) {
+    view.scale.x = getBehaviorValue(particle.scaleBehaviorX, lifeTimeNormalizedProgress, lerp);
+  }
+
+  if (particle.scaleBehaviorY !== null) {
+    view.scale.y = getBehaviorValue(particle.scaleBehaviorY, lifeTimeNormalizedProgress, lerp);
   }
 
   if (particle.colorBehavior !== null) {

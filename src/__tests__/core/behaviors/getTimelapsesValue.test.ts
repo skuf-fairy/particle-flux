@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {lerp} from '../../../utils/lerp';
-import {getTimelapsesValue} from '../../../core/behaviors/timelapses/getTimelapsesValue';
+import {getTimelapsesValue} from '../../../core/behaviors/particle-value/getTimelapsesValue';
 
 describe('Timelapses behavior', () => {
   it('При времени жизни 0 должен возвращаться первое значение из скрипта', () => {

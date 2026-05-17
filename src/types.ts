@@ -4,7 +4,12 @@ import {SpawnShapeBehavior} from './core/spawn-shapes/spawn-shapes.types';
 import {TickerCallback} from './utils/Ticker';
 import {SpawnPositionConfig} from './core/spawn-position/spawn-position.types';
 import {PathConfig, PathFunction} from './core/behaviors/path/path.types';
-import {AnyBehavior, NumberTimelapsesConfig, TimelapsesConfig} from './core/behaviors/particle-value/timelapses.types';
+import {
+  AnyBehavior,
+  ColorTimelapsesConfig,
+  NumberTimelapsesConfig,
+  TimelapsesConfig,
+} from './core/behaviors/particle-value/timelapses.types';
 
 export type GlobalWindow = Window & typeof globalThis;
 
@@ -65,7 +70,8 @@ export interface IParticle<View extends ViewParticle> {
 
   alphaBehavior: AnyBehavior<number> | null;
   rotationBehavior: AnyBehavior<number> | null;
-  scaleBehavior: AnyBehavior<number> | null;
+  scaleBehaviorX: AnyBehavior<number> | null;
+  scaleBehaviorY: AnyBehavior<number> | null;
   colorBehavior: AnyBehavior<string> | null;
 
   isDestroyAfterDeath: boolean;
@@ -113,7 +119,7 @@ export interface ParticleConfig {
   // parameters that change over time
   speed?: NumberTimelapsesConfig;
   // particle size
-  scale?: NumberTimelapsesConfig;
+  scale?: NumberTimelapsesConfig | {x: NumberTimelapsesConfig; y: NumberTimelapsesConfig};
   // particle transparency
   alpha?: NumberTimelapsesConfig;
   // gravity
@@ -121,7 +127,7 @@ export interface ParticleConfig {
   // rotation
   rotation?: NumberTimelapsesConfig;
   // color
-  color?: TimelapsesConfig<string>;
+  color?: ColorTimelapsesConfig;
   // path
   path?: PathConfig;
 }
